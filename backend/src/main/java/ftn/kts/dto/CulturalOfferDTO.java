@@ -1,19 +1,28 @@
 package ftn.kts.dto;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import ftn.kts.model.Admin;
 import ftn.kts.model.Subcategory;
 
 public class CulturalOfferDTO {
 	private Long id;
+	@NotBlank(message = "Name is required!")
 	private String name;
+	@NotBlank(message = "Description is required!")
 	private String description;
-	private float latitude;
-	private float longitude;
+	@NotNull(message = "Latitude is required!")
+	private Float latitude;
+	@NotNull(message = "Longitude is required!")
+	private Float longitude;
 	private String address;
 	private String city;
 	private String region;
 
+	@NotNull(message = "Admin ID is required!")
 	private Long admin;
+	@NotNull(message = "Category ID is required!")
 	private Long category;
 
 //	private Set<ReviewDTO> reviews;

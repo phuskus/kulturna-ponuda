@@ -2,9 +2,13 @@ package ftn.kts.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+import javax.validation.ValidationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +22,7 @@ import ftn.kts.dto.CulturalOfferDTO;
 import ftn.kts.service.CulturalOfferService;
 
 @RestController
+@Validated
 @RequestMapping("/cultural_offers")
 public class CulturalOfferController {
 	
@@ -44,7 +49,7 @@ public class CulturalOfferController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Object> addOffer(@RequestBody CulturalOfferDTO dto) {
+	public ResponseEntity<Object> addOffer(@Valid @RequestBody CulturalOfferDTO dto) {
 		try {
 			service.create(dto);
 			return new ResponseEntity<>(HttpStatus.OK);
@@ -54,7 +59,7 @@ public class CulturalOfferController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<CulturalOfferDTO> updateOffer(@RequestBody CulturalOfferDTO dto, @PathVariable long id) {
+	public ResponseEntity<Object> updateOffer(@Valid @RequestBody CulturalOfferDTO dto, @PathVariable long id) {
 		try {
 			CulturalOfferDTO updated = service.update(dto, id);
 			return new ResponseEntity<>(updated, HttpStatus.OK);
@@ -72,6 +77,5 @@ public class CulturalOfferController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
-
 
 }
