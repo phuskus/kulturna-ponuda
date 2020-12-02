@@ -1,5 +1,6 @@
 package ftn.kts.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.DiscriminatorValue;
@@ -14,7 +15,11 @@ public class RegisteredUser extends User {
 	private Set<Review> reviews;
 	
 	public RegisteredUser() {
-		
+	}
+
+	public RegisteredUser(String name, String username, String password) {
+		super(name, username, password);
+		this.reviews = new HashSet<>();
 	}
 
 	public Set<Review> getReviews() {

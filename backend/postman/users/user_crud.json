@@ -1,0 +1,119 @@
+{
+   "id":"fcd9b2f6-bc1f-75d7-9dd0-b2e307514d73",
+   "name":"user_crud",
+   "timestamp":1606945843555,
+   "requests":[
+      {
+         "collectionId":"fcd9b2f6-bc1f-75d7-9dd0-b2e307514d73",
+         "id":"1c68a944-4d98-f19a-0e95-7257a3728e91",
+         "name":"http://localhost:9001/registered_users/",
+         "description":"",
+         "url":"http://localhost:9001/registered_users/",
+         "method":"POST",
+         "headers":"Content-Type: application/json\nAuthorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImRvY3RvcjFAZ21haWwuY29tIiwiYXVkIjoid2ViIiwiaWF0IjoxNTg5MTAyNjc0LCJleHAiOjE1ODkxMDYyNzR9.SJZUadArIa6N4DaUAFA7zzW_Mx-jPqrW4j8S2EU58VnArseZZdh14tgC0Y0EAO8FO0PJlrq0m2wy06QnNw2U4w\n",
+         "data":"{\n        \"name\": \"Mika Mikic\",\n        \"username\": \"mika@gmail.com\",\n        \"password\": \"mikamika\"\n}",
+         "dataMode":"raw",
+         "timestamp":0,
+         "responses":[
+            
+         ],
+         "version":2
+      },
+      {
+         "collectionId":"fcd9b2f6-bc1f-75d7-9dd0-b2e307514d73",
+         "id":"1e3e5595-87e1-1c4a-23fc-43201b291b84",
+         "name":"http://localhost:9001/registered_users/",
+         "description":"",
+         "url":"http://localhost:9001/registered_users/",
+         "method":"GET",
+         "headers":"Content-Type: application/json\nAuthorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImRvY3RvcjFAZ21haWwuY29tIiwiYXVkIjoid2ViIiwiaWF0IjoxNTg5MTAyNjc0LCJleHAiOjE1ODkxMDYyNzR9.SJZUadArIa6N4DaUAFA7zzW_Mx-jPqrW4j8S2EU58VnArseZZdh14tgC0Y0EAO8FO0PJlrq0m2wy06QnNw2U4w\n",
+         "data":"{\n        \"name\": \"Mika Mikic Updated\",\n        \"username\": \"mika@gmail.com\",\n        \"password\": \"mikamika\"\n}",
+         "dataMode":"raw",
+         "timestamp":0,
+         "responses":[
+            
+         ],
+         "version":2
+      },
+      {
+         "collectionId":"fcd9b2f6-bc1f-75d7-9dd0-b2e307514d73",
+         "id":"3b0aa3ba-3f9c-d378-d3b5-f4bdba3e170a",
+         "name":"http://localhost:9001/registered_users",
+         "description":"",
+         "url":"http://localhost:9001/registered_users",
+         "method":"POST",
+         "headers":"Content-Type: application/json\nAuthorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImRvY3RvcjFAZ21haWwuY29tIiwiYXVkIjoid2ViIiwiaWF0IjoxNTg5MTAyNjc0LCJleHAiOjE1ODkxMDYyNzR9.SJZUadArIa6N4DaUAFA7zzW_Mx-jPqrW4j8S2EU58VnArseZZdh14tgC0Y0EAO8FO0PJlrq0m2wy06QnNw2U4w\n",
+         "data":"{\n  \"name\":\"test\",\n  \"username\":\"test\",\n  \"password\":\"test\"\n}",
+         "dataMode":"raw",
+         "timestamp":0,
+         "responses":[
+            
+         ],
+         "version":2
+      },
+      {
+         "collectionId":"fcd9b2f6-bc1f-75d7-9dd0-b2e307514d73",
+         "id":"c2767587-3cd8-133c-7c1d-dd7a29847e5f",
+         "name":"http://localhost:9001/registered_users/3",
+         "description":"",
+         "url":"http://localhost:9001/registered_users/3",
+         "method":"PUT",
+         "headers":"Content-Type: application/json\nAuthorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImRvY3RvcjFAZ21haWwuY29tIiwiYXVkIjoid2ViIiwiaWF0IjoxNTg5MTAyNjc0LCJleHAiOjE1ODkxMDYyNzR9.SJZUadArIa6N4DaUAFA7zzW_Mx-jPqrW4j8S2EU58VnArseZZdh14tgC0Y0EAO8FO0PJlrq0m2wy06QnNw2U4w\n",
+         "data":"{\n        \"name\": \"Mika Mikic Updated\",\n        \"username\": \"mika@gmail.com\",\n        \"password\": \"mikamika\"\n}",
+         "dataMode":"raw",
+         "timestamp":0,
+         "responses":[
+            
+         ],
+         "version":2
+      },
+      {
+         "collectionId":"fcd9b2f6-bc1f-75d7-9dd0-b2e307514d73",
+         "id":"cf4a0185-6a1d-c010-a02b-6524d22c4b74",
+         "name":"http://localhost:9001/registered_users/3",
+         "description":"",
+         "url":"http://localhost:9001/registered_users/3",
+         "method":"DELETE",
+         "headers":"Content-Type: application/json\nAuthorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImRvY3RvcjFAZ21haWwuY29tIiwiYXVkIjoid2ViIiwiaWF0IjoxNTg5MTAyNjc0LCJleHAiOjE1ODkxMDYyNzR9.SJZUadArIa6N4DaUAFA7zzW_Mx-jPqrW4j8S2EU58VnArseZZdh14tgC0Y0EAO8FO0PJlrq0m2wy06QnNw2U4w\n",
+         "data":"{\n        \"name\": \"Mika Mikic Updated\",\n        \"username\": \"mika@gmail.com\",\n        \"password\": \"mikamika\"\n}",
+         "dataMode":"raw",
+         "timestamp":0,
+         "responses":[
+            
+         ],
+         "version":2
+      },
+      {
+         "collectionId":"fcd9b2f6-bc1f-75d7-9dd0-b2e307514d73",
+         "id":"cf8b6da3-d1a8-8c12-b10f-788df57849cf",
+         "name":"http://localhost:9001/registered_users/2",
+         "description":"",
+         "url":"http://localhost:9001/registered_users/2",
+         "method":"DELETE",
+         "headers":"Content-Type: application/json\nAuthorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImRvY3RvcjFAZ21haWwuY29tIiwiYXVkIjoid2ViIiwiaWF0IjoxNTg5MTAyNjc0LCJleHAiOjE1ODkxMDYyNzR9.SJZUadArIa6N4DaUAFA7zzW_Mx-jPqrW4j8S2EU58VnArseZZdh14tgC0Y0EAO8FO0PJlrq0m2wy06QnNw2U4w\n",
+         "data":"{\n  \"name\":\"test\",\n  \"username\":\"test11\",\n  \"password\":\"test\"\n}",
+         "dataMode":"raw",
+         "timestamp":0,
+         "responses":[
+            
+         ],
+         "version":2
+      },
+      {
+         "collectionId":"fcd9b2f6-bc1f-75d7-9dd0-b2e307514d73",
+         "id":"fa66f570-4366-00dd-061d-50f5f24e29c9",
+         "name":"http://localhost:9001/registered_users",
+         "description":"",
+         "url":"http://localhost:9001/registered_users",
+         "method":"PUT",
+         "headers":"Content-Type: application/json\nAuthorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImRvY3RvcjFAZ21haWwuY29tIiwiYXVkIjoid2ViIiwiaWF0IjoxNTg5MTAyNjc0LCJleHAiOjE1ODkxMDYyNzR9.SJZUadArIa6N4DaUAFA7zzW_Mx-jPqrW4j8S2EU58VnArseZZdh14tgC0Y0EAO8FO0PJlrq0m2wy06QnNw2U4w\n",
+         "data":"{\n  \"name\":\"test\",\n  \"username\":\"test11\",\n  \"password\":\"test\"\n}",
+         "dataMode":"raw",
+         "timestamp":0,
+         "responses":[
+            
+         ],
+         "version":2
+      }
+   ]
+}

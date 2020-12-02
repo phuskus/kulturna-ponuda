@@ -1,4 +1,6 @@
 insert into users (name, username, password, enabled, role) values ('Mario Kujundzic', 'mario@gmail.com', 'temppassword', true, 'ADMIN');
+insert into users (name, username, password, enabled, role) values ('Pera Peric', 'pera@gmail.com', 'perapera', true, 'USER');
+
 
 insert into categories (name) values ('Institucija');
 insert into categories (name) values ('Manifestacija');
