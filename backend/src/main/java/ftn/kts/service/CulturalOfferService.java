@@ -3,6 +3,7 @@ package ftn.kts.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import ftn.kts.repository.SubcategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +18,13 @@ public class CulturalOfferService {
 
 	private CulturalOfferRepository offerRepository;
 	private AdminService adminService;
-	private SubcategoryService subcategoryService;
+	private SubcategoryRepository subcategoryRepository;
 
 	@Autowired
-	public CulturalOfferService(CulturalOfferRepository offerRepository, AdminService adminService, SubcategoryService subcategoryService) {
+	public CulturalOfferService(CulturalOfferRepository offerRepository, AdminService adminService, SubcategoryRepository subcategoryRepository) {
 		this.offerRepository = offerRepository;
 		this.adminService = adminService;
-		this.subcategoryService = subcategoryService;
+		this.subcategoryRepository = subcategoryRepository;
 	}
 
 	public List<CulturalOfferDTO> getAll() {
@@ -58,7 +59,7 @@ public class CulturalOfferService {
 	
 	private CulturalOffer toEntity(CulturalOfferDTO dto) {
 		Admin admin = adminService.getOne(dto.getAdmin());
-		Subcategory category = subcategoryService.getOne(dto.getCategory());
+		Subcategory category = subcategoryRepository.findById(dto.getCategory()).get();
 		CulturalOffer offer = new CulturalOffer(dto.getName(), dto.getDescription(), dto.getLatitude(),
 				dto.getLongitude(), dto.getAddress(), dto.getCity(), dto.getRegion(), admin,
 				category);
