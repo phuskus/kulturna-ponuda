@@ -13,6 +13,8 @@ import javax.persistence.OneToMany;
 public class RegisteredUser extends User {
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private Set<Review> reviews;
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	private Set<Subscription> subscriptions;
 	
 	public RegisteredUser() {
 	}
@@ -30,4 +32,11 @@ public class RegisteredUser extends User {
 		this.reviews = reviews;
 	}
 
+	public Set<Subscription> getSubscriptions() {
+		return subscriptions;
+	}
+
+	public void setSubscriptions(Set<Subscription> subscriptions) {
+		this.subscriptions = subscriptions;
+	}
 }
