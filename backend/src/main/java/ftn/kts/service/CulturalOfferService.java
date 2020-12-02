@@ -26,6 +26,36 @@ public class CulturalOfferService {
 		this.subcategoryService = subcategoryService;
 	}
 
+	public List<CulturalOfferDTO> getAll() {
+		List<CulturalOffer> offers = offerRepository.findAll();
+		List<CulturalOfferDTO> dtoList = new ArrayList<CulturalOfferDTO>();
+		for (CulturalOffer o : offers) {
+			dtoList.add(toDTO(o));
+		}
+		return dtoList;
+	}
+
+	public CulturalOfferDTO getOne(long id) {
+		CulturalOffer offer = offerRepository.findById(id).get();
+		CulturalOfferDTO dto = toDTO(offer);
+		return dto;
+	}
+
+	public void create(CulturalOfferDTO dto) {
+		CulturalOffer offer = toEntity(dto);
+		offerRepository.save(offer);
+	}
+	
+	public CulturalOfferDTO update(CulturalOfferDTO dto, Long id) {
+		CulturalOffer offer = offerRepository.findById(id).get();
+		updateOffer(offer, dto);		
+		return toDTO(offer);
+	}
+	
+	public void delete(Long id) {
+		offerRepository.deleteById(id);
+	}
+	
 	private CulturalOffer toEntity(CulturalOfferDTO dto) {
 		Admin admin = adminService.getOne(dto.getAdmin());
 		Subcategory category = subcategoryService.getOne(dto.getCategory());
@@ -41,19 +71,15 @@ public class CulturalOfferService {
 				entity.getCategory());
 		return dto;
 	}
-
-	public List<CulturalOfferDTO> getAll() {
-		List<CulturalOffer> offers = offerRepository.findAll();
-		List<CulturalOfferDTO> dtoList = new ArrayList<CulturalOfferDTO>();
-		for (CulturalOffer o : offers) {
-			dtoList.add(toDTO(o));
-		}
-		return dtoList;
-	}
-
-	public CulturalOfferDTO getOne(long id) {
-		CulturalOffer offer = offerRepository.findById(id).get();
-		CulturalOfferDTO dto = toDTO(offer);
-		return dto;
+	
+	private CulturalOffer updateOffer(CulturalOffer offer, CulturalOfferDTO dto) {
+		offer.setAddress(dto.getAddress());
+		offer.setCity(dto.getCity());
+		offer.setDescription(dto.getDescription());
+		offer.setLatitude(dto.getLatitude());
+		offer.setLongitude(dto.getLongitude());
+		offer.setName(dto.getName());
+		offer.setRegion(dto.getRegion());
+		return offer;
 	}
 }
