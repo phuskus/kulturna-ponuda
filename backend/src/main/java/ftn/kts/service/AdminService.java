@@ -14,7 +14,7 @@ public class AdminService {
     public AdminService(AdminRepository adminRepository) {
         this.adminRepository = adminRepository;
     }
-    
+
     public Admin getOne(Long id) {
     	return adminRepository.findById(id).get();
     }
