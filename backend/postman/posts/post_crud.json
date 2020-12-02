@@ -1,0 +1,87 @@
+{
+   "id":"4ca0f044-5d31-7c9c-cee2-4163f8686692",
+   "name":"post_crud",
+   "timestamp":1606940052889,
+   "requests":[
+      {
+         "collectionId":"4ca0f044-5d31-7c9c-cee2-4163f8686692",
+         "id":"1b303f01-62f6-d326-0796-11af581f8532",
+         "name":"http://localhost:9001/posts",
+         "description":"",
+         "url":"http://localhost:9001/posts",
+         "method":"POST",
+         "headers":"Content-Type: application/json\nAuthorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImRvY3RvcjFAZ21haWwuY29tIiwiYXVkIjoid2ViIiwiaWF0IjoxNTg5MTAyNjc0LCJleHAiOjE1ODkxMDYyNzR9.SJZUadArIa6N4DaUAFA7zzW_Mx-jPqrW4j8S2EU58VnArseZZdh14tgC0Y0EAO8FO0PJlrq0m2wy06QnNw2U4w\n",
+         "data":"{\n    \"content\": \"Novi post!\",\n    \"culturalOffer\": 1\n}",
+         "dataMode":"raw",
+         "timestamp":0,
+         "responses":[
+            
+         ],
+         "version":2
+      },
+      {
+         "collectionId":"4ca0f044-5d31-7c9c-cee2-4163f8686692",
+         "id":"1dc8c6bd-0f0d-fd2f-06c9-2e3db288790f",
+         "name":"http://localhost:9001/posts/3",
+         "description":"",
+         "url":"http://localhost:9001/posts/3",
+         "method":"GET",
+         "headers":"Content-Type: application/json\nAuthorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImRvY3RvcjFAZ21haWwuY29tIiwiYXVkIjoid2ViIiwiaWF0IjoxNTg5MTAyNjc0LCJleHAiOjE1ODkxMDYyNzR9.SJZUadArIa6N4DaUAFA7zzW_Mx-jPqrW4j8S2EU58VnArseZZdh14tgC0Y0EAO8FO0PJlrq0m2wy06QnNw2U4w\n",
+         "data":"{\n    \"id\": 3,\n    \"content\": \"Novi post je izmenjen!\",\n    \"culturalOffer\": 1\n}",
+         "dataMode":"raw",
+         "timestamp":0,
+         "responses":[
+            
+         ],
+         "version":2
+      },
+      {
+         "collectionId":"4ca0f044-5d31-7c9c-cee2-4163f8686692",
+         "id":"8efaf435-9eb1-fbf9-409f-ca3e44759694",
+         "name":"http://localhost:9001/posts/1",
+         "description":"",
+         "url":"http://localhost:9001/posts/1",
+         "method":"GET",
+         "headers":"Content-Type: application/json\nAuthorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImRvY3RvcjFAZ21haWwuY29tIiwiYXVkIjoid2ViIiwiaWF0IjoxNTg5MTAyNjc0LCJleHAiOjE1ODkxMDYyNzR9.SJZUadArIa6N4DaUAFA7zzW_Mx-jPqrW4j8S2EU58VnArseZZdh14tgC0Y0EAO8FO0PJlrq0m2wy06QnNw2U4w\n",
+         "data":"{\n    \"id\": 3,\n    \"content\": \"Novi post je izmenjen!\",\n    \"culturalOffer\": 1\n}",
+         "dataMode":"raw",
+         "timestamp":0,
+         "responses":[
+            
+         ],
+         "version":2
+      },
+      {
+         "collectionId":"4ca0f044-5d31-7c9c-cee2-4163f8686692",
+         "id":"f35936d8-8bc9-97f1-02c5-a2b09072aba5",
+         "name":"http://localhost:9001/posts/3",
+         "description":"",
+         "url":"http://localhost:9001/posts/3",
+         "method":"PUT",
+         "headers":"Content-Type: application/json\nAuthorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImRvY3RvcjFAZ21haWwuY29tIiwiYXVkIjoid2ViIiwiaWF0IjoxNTg5MTAyNjc0LCJleHAiOjE1ODkxMDYyNzR9.SJZUadArIa6N4DaUAFA7zzW_Mx-jPqrW4j8S2EU58VnArseZZdh14tgC0Y0EAO8FO0PJlrq0m2wy06QnNw2U4w\n",
+         "data":"{\n    \"id\": 3,\n    \"content\": \"Novi post je izmenjen!\",\n    \"culturalOffer\": 1\n}",
+         "dataMode":"raw",
+         "timestamp":0,
+         "responses":[
+            
+         ],
+         "version":2
+      },
+      {
+         "collectionId":"4ca0f044-5d31-7c9c-cee2-4163f8686692",
+         "id":"fadb5136-29ab-5887-b863-003b8a9a7dac",
+         "name":"http://localhost:9001/posts",
+         "description":"",
+         "url":"http://localhost:9001/posts",
+         "method":"GET",
+         "headers":"Content-Type: application/json\nAuthorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImRvY3RvcjFAZ21haWwuY29tIiwiYXVkIjoid2ViIiwiaWF0IjoxNTg5MTAyNjc0LCJleHAiOjE1ODkxMDYyNzR9.SJZUadArIa6N4DaUAFA7zzW_Mx-jPqrW4j8S2EU58VnArseZZdh14tgC0Y0EAO8FO0PJlrq0m2wy06QnNw2U4w\n",
+         "data":"{\n    \"id\": 3,\n    \"content\": \"Novi post je izmenjen!\",\n    \"culturalOffer\": 1\n}",
+         "dataMode":"raw",
+         "timestamp":0,
+         "responses":[
+            
+         ],
+         "version":2
+      }
+   ]
+}

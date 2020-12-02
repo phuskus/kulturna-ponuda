@@ -28,7 +28,7 @@ public class CulturalOfferService {
 
 	public List<CulturalOfferDTO> getAll() {
 		List<CulturalOffer> offers = offerRepository.findAll();
-		List<CulturalOfferDTO> dtoList = new ArrayList<CulturalOfferDTO>();
+		List<CulturalOfferDTO> dtoList = new ArrayList<>();
 		for (CulturalOffer o : offers) {
 			dtoList.add(toDTO(o));
 		}
@@ -48,7 +48,7 @@ public class CulturalOfferService {
 	
 	public CulturalOfferDTO update(CulturalOfferDTO dto, Long id) {
 		CulturalOffer offer = offerRepository.findById(id).get();
-		updateOffer(offer, dto);		
+		updateOffer(offer, dto);
 		return toDTO(offer);
 	}
 	
