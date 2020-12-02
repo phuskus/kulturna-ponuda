@@ -1,6 +1,5 @@
 package ftn.kts.model;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -49,25 +48,7 @@ public class CulturalOffer {
 	private Set<Picture> pictures;
 	
 	public CulturalOffer() {
-		this.reviews = new HashSet<>();
-		this.posts = new HashSet<>();
-		this.subscriptions = new HashSet<>();
-		this.pictures = new HashSet<>();
-	}
-	
-	public CulturalOffer(String name, String description, float latitude, float longitude, 
-			String address, String city, String region, Admin admin, Subcategory category) {
-		this();
-		this.name = name;
-		this.description = description;
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.address = address;
-		this.city = city;
-		this.region = region;
 		
-		this.admin = admin;
-		this.category = category;
 	}
 
 	public Long getId() {
