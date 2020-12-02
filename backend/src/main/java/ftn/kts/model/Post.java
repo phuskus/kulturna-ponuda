@@ -24,7 +24,7 @@ public class Post {
 	@ManyToOne(fetch = FetchType.EAGER)
 	private CulturalOffer culturalOffer;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
+	@OneToMany(fetch = FetchType.LAZY)
 	private Set<Picture> pictures;
 
 	public Post() {
