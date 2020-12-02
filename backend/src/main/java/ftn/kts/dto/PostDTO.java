@@ -4,13 +4,17 @@ import ftn.kts.model.CulturalOffer;
 import ftn.kts.model.Picture;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 public class PostDTO {
 
     private Long id;
+    @NotBlank(message = "Content is required!")
     private String content;
     //TODO: consider changing this to CulturalOfferDTO
+    @NotNull(message = "Cultural offer is required")
     private Long culturalOffer;
     //private Set<Picture> pictures;
 

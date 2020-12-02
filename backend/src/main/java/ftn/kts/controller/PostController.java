@@ -5,11 +5,14 @@ import ftn.kts.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@Validated
 @RequestMapping("/posts")
 public class PostController {
 
@@ -36,7 +39,7 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> addPost(@RequestBody PostDTO dto) {
+    public ResponseEntity<Object> addPost(@Valid @RequestBody PostDTO dto) {
         try {
             service.create(dto);
             return new ResponseEntity<>("Post successfully added", HttpStatus.OK);
@@ -46,7 +49,7 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updatePost(@RequestBody PostDTO dto, @PathVariable("id") Long id) {
+    public ResponseEntity<Object> updatePost(@Valid @RequestBody PostDTO dto, @PathVariable("id") Long id) {
         try {
             PostDTO updated = service.update(dto, id);
             return new ResponseEntity<>(updated, HttpStatus.OK);
