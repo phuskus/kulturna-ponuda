@@ -70,12 +70,12 @@ public class SubscriptionService {
     }
 
     private SubscriptionDTO toDTO(Subscription entity) {
-        return new SubscriptionDTO(entity.getId(), entity.getDateOfSubscription(), entity.getRegisteredUser(), entity.getSubcategory(), entity.getCulturalOffer());
+        return new SubscriptionDTO(entity.getId(), entity.getDateOfSubscription(), entity.getUser(), entity.getSubcategory(), entity.getCulturalOffer());
     }
 
     private void updateSubscription(Subscription subscription, SubscriptionDTO dto) {
         subscription.setDateOfSubscription(dto.getDateOfSubscription());
-        subscription.setRegisteredUser(registeredUserRepository.findById(dto.getRegisteredUserId()).get());
+        subscription.setUser(registeredUserRepository.findById(dto.getRegisteredUserId()).get());
 
         subscription.setCulturalOffer(culturalOfferRepository.findById(dto.getCulturalOfferId()).get());
         subscription.setSubcategory(subcategoryRepository.findById(dto.getCulturalOfferId()).get());

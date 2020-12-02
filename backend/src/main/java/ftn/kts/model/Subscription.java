@@ -18,14 +18,14 @@ public class Subscription {
 	@ManyToOne(fetch = FetchType.EAGER)
 	private CulturalOffer culturalOffer;
 	@ManyToOne(fetch = FetchType.LAZY)
-	private RegisteredUser registeredUser;
+	private RegisteredUser user;
 
 	public Subscription(Long id, Date dateOfSubscription, Subcategory subcategory, CulturalOffer culturalOffer, RegisteredUser registeredUser) {
 		this.id = id;
 		this.dateOfSubscription = dateOfSubscription;
 		this.subcategory = subcategory;
 		this.culturalOffer = culturalOffer;
-		this.registeredUser = registeredUser;
+		this.user = registeredUser;
 	}
 
 	public Long getId() {
@@ -60,11 +60,11 @@ public class Subscription {
 		this.culturalOffer = culturalOffer;
 	}
 
-	public RegisteredUser getRegisteredUser() {
-		return registeredUser;
+	public RegisteredUser getUser() {
+		return user;
 	}
 
-	public void setRegisteredUser(RegisteredUser registeredUser) {
-		this.registeredUser = registeredUser;
+	public void setUser(RegisteredUser registeredUser) {
+		this.user = registeredUser;
 	}
 }
