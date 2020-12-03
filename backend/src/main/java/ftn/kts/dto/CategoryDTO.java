@@ -3,7 +3,6 @@ package ftn.kts.dto;
 import ftn.kts.model.Subcategory;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 public class CategoryDTO {
