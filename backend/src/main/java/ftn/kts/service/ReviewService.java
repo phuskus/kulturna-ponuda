@@ -1,7 +1,10 @@
 package ftn.kts.service;
 
 import ftn.kts.dto.ReviewDTO;
+import ftn.kts.model.CulturalOffer;
+import ftn.kts.model.RegisteredUser;
 import ftn.kts.model.Review;
+import ftn.kts.model.User;
 import ftn.kts.repository.CulturalOfferRepository;
 import ftn.kts.repository.RegisteredUserRepository;
 import ftn.kts.repository.ReviewRepository;
@@ -46,7 +49,7 @@ public class ReviewService {
 
     public ReviewDTO update(ReviewDTO dto, Long id) {
         Review review = reviewRepository.findById(id).get();
-        updateCategory(review, dto);
+        reviewRepository.save(updateCategory(review, dto));
         return toDTO(review);
     }
 
@@ -56,7 +59,9 @@ public class ReviewService {
 
 
     private Review toEntity(ReviewDTO dto) {
-        return new Review(dto.getId(), dto.getRating(), dto.getContent());
+        RegisteredUser user = userRepository.findById(dto.getUser()).get();
+        CulturalOffer offer = offerRepository.findById(dto.getCulturalOffer()).get();
+        return new Review(dto.getId(), dto.getRating(), dto.getContent(), user, offer);
     }
 
     private ReviewDTO toDTO(Review review) {
