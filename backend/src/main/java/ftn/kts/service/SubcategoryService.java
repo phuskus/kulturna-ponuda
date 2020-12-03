@@ -1,9 +1,7 @@
 package ftn.kts.service;
 
 import ftn.kts.dto.SubcategoryDTO;
-import ftn.kts.dto.SubcategoryDTO;
 import ftn.kts.model.*;
-import ftn.kts.model.Subcategory;
 import ftn.kts.model.Subcategory;
 import ftn.kts.repository.CategoryRepository;
 import ftn.kts.repository.SubcategoryRepository;

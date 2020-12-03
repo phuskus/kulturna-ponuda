@@ -22,6 +22,11 @@ public class Picture {
 		
 	}
 	
+	public Picture(String path, String placeholder) {
+		this.path = path;
+		this.placeholder = placeholder;
+	}
+	
 	public Long getId() {
 		return id;
 	}
