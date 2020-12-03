@@ -18,3 +18,5 @@ insert into cultural_offers (address, city, description, latitude, longitude, na
 
 insert into posts (content, cultural_offer_id) values ('Jako vrlo veoma kul', 1);
 insert into posts (content, cultural_offer_id) values ('Otkazano zbog korone', 1);
+
+insert into pictures (path, placeholder) values ('\pictures\exit.jpg', 'Exit festival picture placeholder');
