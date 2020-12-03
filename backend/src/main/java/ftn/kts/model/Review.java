@@ -35,10 +35,12 @@ public class Review {
 
 	}
 
-	public Review(Long id, Long rating, String content) {
+	public Review(Long id, Long rating, String content, RegisteredUser user, CulturalOffer offer) {
 		this.id = id;
 		this.rating = rating;
 		this.content = content;
+		this.user = user;
+		this.culturalOffer = offer;
 	}
 	
 	public Long getId() {

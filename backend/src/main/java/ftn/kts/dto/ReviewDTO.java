@@ -4,11 +4,12 @@ import ftn.kts.model.CulturalOffer;
 import ftn.kts.model.User;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class ReviewDTO {
     private Long id;
 
-    @NotBlank(message = "Rating is required!")
+    @NotNull(message = "Rating is required!")
     private Long rating;
 
     @NotBlank(message = "Content is required!")

@@ -11,19 +11,20 @@ import ftn.kts.dto.CulturalOfferDTO;
 import ftn.kts.model.Admin;
 import ftn.kts.model.CulturalOffer;
 import ftn.kts.model.Subcategory;
+import ftn.kts.repository.AdminRepository;
 import ftn.kts.repository.CulturalOfferRepository;
 
 @Service
 public class CulturalOfferService {
 
 	private CulturalOfferRepository offerRepository;
-	private AdminService adminService;
+	private AdminRepository adminRepository;
 	private SubcategoryRepository subcategoryRepository;
 
 	@Autowired
-	public CulturalOfferService(CulturalOfferRepository offerRepository, AdminService adminService, SubcategoryRepository subcategoryRepository) {
+	public CulturalOfferService(CulturalOfferRepository offerRepository, AdminRepository adminRepository, SubcategoryRepository subcategoryRepository) {
 		this.offerRepository = offerRepository;
-		this.adminService = adminService;
+		this.adminRepository = adminRepository;
 		this.subcategoryRepository = subcategoryRepository;
 	}
 
@@ -50,6 +51,7 @@ public class CulturalOfferService {
 	public CulturalOfferDTO update(CulturalOfferDTO dto, Long id) {
 		CulturalOffer offer = offerRepository.findById(id).get();
 		updateOffer(offer, dto);
+		offerRepository.save(offer);
 		return toDTO(offer);
 	}
 	
@@ -58,7 +60,7 @@ public class CulturalOfferService {
 	}
 	
 	private CulturalOffer toEntity(CulturalOfferDTO dto) {
-		Admin admin = adminService.getOne(dto.getAdmin());
+		Admin admin = adminRepository.findById(dto.getAdmin()).get();
 		Subcategory category = subcategoryRepository.findById(dto.getCategory()).get();
 		CulturalOffer offer = new CulturalOffer(dto.getName(), dto.getDescription(), dto.getLatitude(),
 				dto.getLongitude(), dto.getAddress(), dto.getCity(), dto.getRegion(), admin,
@@ -73,7 +75,7 @@ public class CulturalOfferService {
 		return dto;
 	}
 	
-	private CulturalOffer updateOffer(CulturalOffer offer, CulturalOfferDTO dto) {
+	private void updateOffer(CulturalOffer offer, CulturalOfferDTO dto) {
 		offer.setAddress(dto.getAddress());
 		offer.setCity(dto.getCity());
 		offer.setDescription(dto.getDescription());
@@ -81,6 +83,5 @@ public class CulturalOfferService {
 		offer.setLongitude(dto.getLongitude());
 		offer.setName(dto.getName());
 		offer.setRegion(dto.getRegion());
-		return offer;
 	}
 }

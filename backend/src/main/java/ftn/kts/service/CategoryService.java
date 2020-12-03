@@ -39,6 +39,8 @@ public class CategoryService {
 
     public CategoryDTO update(CategoryDTO dto, Long id) {
         Category cat = categoryRepository.findById(id).get();
+        updateCategory(cat, dto);
+        categoryRepository.save(cat);
         return toDTO(updateCategory(cat, dto));
     }
 
