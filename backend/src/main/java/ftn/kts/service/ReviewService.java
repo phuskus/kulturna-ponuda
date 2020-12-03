@@ -5,7 +5,6 @@ import ftn.kts.model.Review;
 import ftn.kts.repository.CulturalOfferRepository;
 import ftn.kts.repository.RegisteredUserRepository;
 import ftn.kts.repository.ReviewRepository;
-import ftn.kts.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

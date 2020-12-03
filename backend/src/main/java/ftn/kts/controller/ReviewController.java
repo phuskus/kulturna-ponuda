@@ -1,7 +1,6 @@
 package ftn.kts.controller;
 
 import ftn.kts.dto.ReviewDTO;
-import ftn.kts.model.Review;
 import ftn.kts.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

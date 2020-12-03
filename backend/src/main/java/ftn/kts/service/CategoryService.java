@@ -3,7 +3,6 @@ package ftn.kts.service;
 import ftn.kts.dto.CategoryDTO;
 import ftn.kts.model.Category;
 import ftn.kts.repository.CategoryRepository;
-import ftn.kts.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
