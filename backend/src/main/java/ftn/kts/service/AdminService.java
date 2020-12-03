@@ -41,7 +41,7 @@ public class AdminService {
 
     public AdminDTO update(AdminDTO dto, Long id) {
         Admin admin = adminRepository.findById(id).get();
-        updateAdmin(admin, dto);
+        adminRepository.save(updateAdmin(admin, dto));
         return toDTO(admin);
     }
 

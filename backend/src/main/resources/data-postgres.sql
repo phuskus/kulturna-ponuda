@@ -18,3 +18,6 @@ insert into cultural_offers (address, city, description, latitude, longitude, na
 
 insert into posts (content, cultural_offer_id) values ('Jako vrlo veoma kul', 1);
 insert into posts (content, cultural_offer_id) values ('Otkazano zbog korone', 1);
+
+insert into reviews (rating, content, cultural_offer_id, user_id) values (5, 'Otkazano zbog korone', 1, 2);
+insert into reviews (rating, content, cultural_offer_id, user_id) values (0, 'Ne valja nista', 1, 2);
