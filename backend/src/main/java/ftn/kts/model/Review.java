@@ -32,7 +32,15 @@ public class Review {
 	private Set<Picture> pictures;
 
 	public Review() {
-		
+
+	}
+
+	public Review(Long id, Long rating, String content, RegisteredUser user, CulturalOffer offer) {
+		this.id = id;
+		this.rating = rating;
+		this.content = content;
+		this.user = user;
+		this.culturalOffer = offer;
 	}
 	
 	public Long getId() {

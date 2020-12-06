@@ -1,0 +1,89 @@
+{
+	"info": {
+		"_postman_id": "c93019a1-629b-4a78-bae5-85b6c6e693d4",
+		"name": "Picture CRUD",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST picture",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": []
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:9001/pictures",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"pictures"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET pictures",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "localhost:9001/pictures",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"pictures"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET picture",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "localhost:9001/pictures/1",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"pictures",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

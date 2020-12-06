@@ -16,7 +16,12 @@ public class Admin extends User {
 	private Set<CulturalOffer> culturalOffers;
 
 	public Admin() {
-		
+	}
+
+	public Admin(String name, String username, String password, Set<Category> categories, Set<CulturalOffer> culturalOffers) {
+		super(name, username, password);
+		this.categories = categories;
+		this.culturalOffers = culturalOffers;
 	}
 	
 	public Set<Category> getCategories() {

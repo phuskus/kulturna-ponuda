@@ -2,14 +2,7 @@ package ftn.kts.model;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "subscriptions")
@@ -24,11 +17,17 @@ public class Subscription {
 	private Subcategory subcategory;
 	@ManyToOne(fetch = FetchType.EAGER)
 	private CulturalOffer culturalOffer;
+	@ManyToOne(fetch = FetchType.LAZY)
+	private RegisteredUser user;
 
-	public Subscription() {
-		
+	public Subscription(Long id, Date dateOfSubscription, Subcategory subcategory, CulturalOffer culturalOffer, RegisteredUser registeredUser) {
+		this.id = id;
+		this.dateOfSubscription = dateOfSubscription;
+		this.subcategory = subcategory;
+		this.culturalOffer = culturalOffer;
+		this.user = registeredUser;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -61,4 +60,11 @@ public class Subscription {
 		this.culturalOffer = culturalOffer;
 	}
 
+	public RegisteredUser getUser() {
+		return user;
+	}
+
+	public void setUser(RegisteredUser registeredUser) {
+		this.user = registeredUser;
+	}
 }

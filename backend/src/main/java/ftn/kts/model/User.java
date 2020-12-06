@@ -48,6 +48,14 @@ public abstract class User {
 		inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
 	private List<Authority> authorities;
 
+	public User() {}
+
+	public User(String name, String username, String password) {
+		this.name = name;
+		this.username = username;
+		this.password = password;
+	}
+
 	public Long getId() {
 		return id;
 	}

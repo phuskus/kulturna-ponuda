@@ -1,5 +1,6 @@
 package ftn.kts.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -24,7 +25,12 @@ public class Category {
 	private Set<Subcategory> subcategories;
 
 	public Category() {
-		
+		this.subcategories = new HashSet<>();
+	}
+
+	public Category(Long id, String name) {
+		this.id = id;
+		this.name = name;
 	}
 	
 	public Long getId() {
