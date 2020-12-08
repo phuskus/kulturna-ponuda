@@ -1,6 +1,7 @@
 package ftn.kts.service;
 
 import ftn.kts.dto.UserDTO;
+import ftn.kts.dto.UserTokenStateDTO;
 import ftn.kts.model.Authority;
 import ftn.kts.model.RegisteredUser;
 import ftn.kts.model.User;
@@ -8,7 +9,11 @@ import ftn.kts.repository.UserRepository;
 import ftn.kts.security.CustomUserDetailsService;
 import ftn.kts.security.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -43,6 +48,17 @@ public class UserService {
         auth.add(authorityService.findByName("REGISTERED_USER"));
         user.setAuthorities(auth);
         userRepository.save(user);
+    }
+
+    public UserTokenStateDTO getLoggedIn(String username, String password) {
+        Authentication authentication =
+                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        // create token
+        User user = (User) authentication.getPrincipal();
+        String jwt = tokenUtils.generateToken(user.getUsername());
+        int expiresIn = tokenUtils.getExpiredIn();
+        return new UserTokenStateDTO(jwt, expiresIn, user.getRole());
     }
 
     private UserDTO toDTO(User entity) {

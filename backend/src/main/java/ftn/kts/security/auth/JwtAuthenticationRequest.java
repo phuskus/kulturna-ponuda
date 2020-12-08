@@ -1,6 +1,5 @@
 package ftn.kts.security.auth;
 
-// DTO za login
 public class JwtAuthenticationRequest {
 	
     private String username;
