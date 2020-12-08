@@ -1,6 +1,9 @@
-insert into users (name, username, password, enabled, role) values ('Mario Kujundzic', 'mario@gmail.com', 'temppassword', true, 'ADMIN');
-insert into users (name, username, password, enabled, role) values ('Pera Peric', 'pera@gmail.com', 'perapera', true, 'USER');
-
+/*
+    sifre su oblika "sifra+name"
+ */
+insert into users (name, username, password, enabled, role) values ('admin1', 'admin1@gmail.com', '$2a$10$1vu6VWjP9ewmLkGzcSJ9T.dUJD1K4GBAYhiE5lHI3vFucbbffKtqS', true, 'ADMIN');
+insert into users (name, username, password, enabled, role) values ('user1', 'user1@gmail.com', '$2a$10$A4XnaPtO.2ljs1Vd5iA3EuNBi5HRBWBky2pziALH0/0rQO9A8li7y', true, 'USER');
+insert into users (name, username, password, enabled, role) values ('user2', 'user2@gmail.com', '$2a$10$L4Aj951dZhgOUOmAVEf7q.C/ZB498dUOKCnWQvlsnQXtmewdAagaK', true, 'USER');
 
 insert into categories (name) values ('Institucija');
 insert into categories (name) values ('Manifestacija');

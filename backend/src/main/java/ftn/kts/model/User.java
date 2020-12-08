@@ -102,8 +102,8 @@ public abstract class User implements UserDetails {
 	}
 
 	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return (Collection<? extends GrantedAuthority>) this.authorities;
+	public List<Authority> getAuthorities() {
+		return authorities;
 	}
 
 	public void setAuthorities(List<Authority> authorities) {
