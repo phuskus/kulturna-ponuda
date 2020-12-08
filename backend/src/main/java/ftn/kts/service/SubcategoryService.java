@@ -1,6 +1,7 @@
 package ftn.kts.service;
 
 import ftn.kts.dto.SubcategoryDTO;
+import ftn.kts.exceptions.UniqueConstraintViolationException;
 import ftn.kts.model.*;
 import ftn.kts.repository.CategoryRepository;
 import ftn.kts.repository.SubcategoryRepository;
@@ -36,13 +37,16 @@ public class SubcategoryService {
 		return toDTO(getOne(id));
 	}
 
-	public void create(SubcategoryDTO dto) {
+	public void create(SubcategoryDTO dto) throws UniqueConstraintViolationException {
+		checkUnique(dto);
 		Subcategory subcategory = toEntity(dto);
 		subcategoryRepository.save(subcategory);
 	}
 
-	public SubcategoryDTO update(SubcategoryDTO dto, Long id) {
+	public SubcategoryDTO update(SubcategoryDTO dto, Long id) throws UniqueConstraintViolationException {
 		Subcategory subcategory = getOne(id);
+		dto.setId(id);
+		checkUnique(dto);
 		updateSubcategory(subcategory, dto);
 		return toDTO(subcategory);
 	}
@@ -60,9 +64,23 @@ public class SubcategoryService {
 	public List<Subcategory> getAll(long id) {
 		return subcategoryRepository.findAll();
 	}
+	
+	private void checkUnique(SubcategoryDTO dto) throws UniqueConstraintViolationException {
+		Subcategory subcategory = subcategoryRepository.findByNameIgnoringCase(dto.getName());
+		if (subcategory != null) {
+			if (dto.getId() == null) {
+				throw new UniqueConstraintViolationException("Unique key constraint violated!", "name",
+						"Category with this field already exists!");
+			} else {
+				if (!subcategory.getId().equals(dto.getId()))
+					throw new UniqueConstraintViolationException("Unique key constraint violated!", "name",
+							"Category with this field already exists!");							
+			}
+		}
+	}
 
 	private Subcategory toEntity(SubcategoryDTO dto) {
-		Category category = categoryRepository.findById(dto.getCategoryId()).get();
+		Category category = categoryRepository.findById(dto.getCategory()).get();
 		return new Subcategory(dto.getId(), dto.getName(), category);
 	}
 
@@ -72,7 +90,7 @@ public class SubcategoryService {
 
 	private void updateSubcategory(Subcategory subcategory, SubcategoryDTO dto) {
 		subcategory.setName(dto.getName());
-		subcategory.setCategory(categoryRepository.findById(dto.getCategoryId()).get());
+		subcategory.setCategory(categoryRepository.findById(dto.getCategory()).get());
 		// TODO: Add sets of subscriptions and cultural offers?
 	}
 }

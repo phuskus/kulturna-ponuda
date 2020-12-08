@@ -1,6 +1,7 @@
 package ftn.kts.service;
 
 import ftn.kts.dto.CategoryDTO;
+import ftn.kts.exceptions.UniqueConstraintViolationException;
 import ftn.kts.model.Category;
 import ftn.kts.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,43 +13,45 @@ import java.util.NoSuchElementException;
 
 @Service
 public class CategoryService {
-    private CategoryRepository categoryRepository;
+	private CategoryRepository categoryRepository;
 
-    @Autowired
-    public CategoryService(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
+	@Autowired
+	public CategoryService(CategoryRepository categoryRepository) {
+		this.categoryRepository = categoryRepository;
+	}
 
-    public List<CategoryDTO> getAllDTO() {
-        List<Category> categories = categoryRepository.findAll();
-        List<CategoryDTO> dtoList = new ArrayList<CategoryDTO>();
-        for (Category c : categories)
-            dtoList.add(toDTO(c));
-        return dtoList;
-    }
+	public List<CategoryDTO> getAllDTO() {
+		List<Category> categories = categoryRepository.findAll();
+		List<CategoryDTO> dtoList = new ArrayList<CategoryDTO>();
+		for (Category c : categories)
+			dtoList.add(toDTO(c));
+		return dtoList;
+	}
 
-    public CategoryDTO getOneDTO(long id) {
-        Category category = getOne(id);
-        return toDTO(category);
-    }
+	public CategoryDTO getOneDTO(long id) {
+		Category category = getOne(id);
+		return toDTO(category);
+	}
 
+	public void create(CategoryDTO dto) throws UniqueConstraintViolationException {
+		checkUnique(dto);
+		Category category = toEntity(dto);
+		categoryRepository.save(category);
+	}
 
-    public void create(CategoryDTO dto) {
-        Category category = toEntity(dto);
-        categoryRepository.save(category);
-    }
+	public CategoryDTO update(CategoryDTO dto, Long id) throws UniqueConstraintViolationException {
+		Category category = getOne(id);
+		dto.setId(id);
+		checkUnique(dto);
+		updateCategory(category, dto);
+		categoryRepository.save(category);
+		return toDTO(updateCategory(category, dto));
+	}
 
-    public CategoryDTO update(CategoryDTO dto, Long id) {
-        Category category = getOne(id);
-        updateCategory(category, dto);
-        categoryRepository.save(category);
-        return toDTO(updateCategory(category, dto));
-    }
-
-    public void delete(Long id) {
-        Category category = getOne(id);
-        categoryRepository.delete(category);
-    }
+	public void delete(Long id) {
+		Category category = getOne(id);
+		categoryRepository.delete(category);
+	}
 
 	public Category getOne(long id) {
 		return categoryRepository.findById(id)
@@ -58,17 +61,31 @@ public class CategoryService {
 	public List<Category> getAll(long id) {
 		return categoryRepository.findAll();
 	}
-    
-    private Category toEntity(CategoryDTO dto) {
-        return new Category(dto.getId(), dto.getName());
-    }
 
-    private CategoryDTO toDTO(Category cat) {
-        return new CategoryDTO(cat.getId(), cat.getName(), cat.getSubcategories());
-    }
+	private void checkUnique(CategoryDTO dto) throws UniqueConstraintViolationException {
+		Category category = categoryRepository.findByNameIgnoringCase(dto.getName());
+		if (category != null) {
+			if (dto.getId() == null) {
+				throw new UniqueConstraintViolationException("Unique key constraint violated!", "name",
+						"Category with this field already exists!");
+			} else {
+				if (!category.getId().equals(dto.getId()))
+					throw new UniqueConstraintViolationException("Unique key constraint violated!", "name",
+							"Category with this field already exists!");							
+			}
+		}
+	}
 
-    private Category updateCategory(Category category, CategoryDTO dto){
-        category.setName(dto.getName());
-        return category;
-    }
+	private Category toEntity(CategoryDTO dto) {
+		return new Category(dto.getId(), dto.getName());
+	}
+
+	private CategoryDTO toDTO(Category cat) {
+		return new CategoryDTO(cat.getId(), cat.getName(), cat.getSubcategories());
+	}
+
+	private Category updateCategory(Category category, CategoryDTO dto) {
+		category.setName(dto.getName());
+		return category;
+	}
 }

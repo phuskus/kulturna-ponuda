@@ -15,26 +15,18 @@ import org.springframework.web.context.request.WebRequest;
 @ControllerAdvice
 public class ExceptionHandlers {
 
-	public static boolean ignoreSQLException(String sqlState) {
+	
+	
 
-		if (sqlState == null) {
-			System.out.println("The SQL state is not defined!");
-			return false;
-		}
-
-		// X0Y32: Jar file already exists in schema
-		if (sqlState.equalsIgnoreCase("X0Y32"))
-			return true;
-
-		// 42Y55: Table already exists in schema
-		if (sqlState.equalsIgnoreCase("42Y55"))
-			return true;
-
-		return false;
+	@ExceptionHandler(UniqueConstraintViolationException.class)
+	public ResponseEntity<ErrorMessage> uniqueConstraintExceptionHandler(UniqueConstraintViolationException ex, WebRequest request) {
+		ErrorMessage message = new ErrorMessage(ex.getMessage());
+		message.getErrors().put(ex.getCauseField(), ex.getCauseMessage());
+		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 	}
-
+	
 	@ExceptionHandler(NoSuchElementException.class)
-	public ResponseEntity<ErrorMessage> resourceNotFoundException(NoSuchElementException ex, WebRequest request) {
+	public ResponseEntity<ErrorMessage> resourceNotFoundExceptionHandler(NoSuchElementException ex, WebRequest request) {
 		ErrorMessage message = new ErrorMessage(ex.getMessage());
 		return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
 	}

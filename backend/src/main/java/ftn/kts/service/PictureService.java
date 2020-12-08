@@ -33,8 +33,12 @@ public class PictureService {
     }
     
     public void add(MultipartFile file) throws IOException {
+    	Long id = pictureRepository.getNextSeriesId();
+    	
+    	System.out.println(id);
+    	
 		byte[] data = file.getBytes();
-		String fullPath = fileFolder + file.getOriginalFilename();
+		String fullPath = fileFolder + id + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
 		Path path = Paths.get(projectFolder + fullPath);
 		Files.write(path,  data);
 		

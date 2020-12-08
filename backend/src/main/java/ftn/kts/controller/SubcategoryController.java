@@ -1,6 +1,7 @@
 package ftn.kts.controller;
 
 import ftn.kts.dto.SubcategoryDTO;
+import ftn.kts.exceptions.UniqueConstraintViolationException;
 import ftn.kts.service.SubcategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,13 +34,13 @@ public class SubcategoryController {
     }
     
     @PostMapping
-    public ResponseEntity<String> addSubcategory(@Valid @RequestBody SubcategoryDTO dto) {
+    public ResponseEntity<String> addSubcategory(@Valid @RequestBody SubcategoryDTO dto) throws UniqueConstraintViolationException {
         service.create(dto);
         return new ResponseEntity<>("Successfully added subcategory!", HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SubcategoryDTO> updateSubcategory(@Valid @RequestBody SubcategoryDTO dto, @PathVariable long id) {
+    public ResponseEntity<SubcategoryDTO> updateSubcategory(@Valid @RequestBody SubcategoryDTO dto, @PathVariable long id) throws UniqueConstraintViolationException {
         SubcategoryDTO updated = service.update(dto, id);
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }

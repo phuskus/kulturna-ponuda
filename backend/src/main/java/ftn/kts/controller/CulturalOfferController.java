@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ftn.kts.dto.CulturalOfferDTO;
+import ftn.kts.exceptions.UniqueConstraintViolationException;
 import ftn.kts.service.CulturalOfferService;
 
 @RestController
@@ -44,13 +45,13 @@ public class CulturalOfferController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<String> addOffer(@Valid @RequestBody CulturalOfferDTO dto) {
+	public ResponseEntity<String> addOffer(@Valid @RequestBody CulturalOfferDTO dto) throws UniqueConstraintViolationException {
 		service.create(dto);
 		return new ResponseEntity<>("Successfully added cultural offer!", HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Object> updateOffer(@Valid @RequestBody CulturalOfferDTO dto, @PathVariable long id) {
+	public ResponseEntity<Object> updateOffer(@Valid @RequestBody CulturalOfferDTO dto, @PathVariable long id) throws UniqueConstraintViolationException {
 		CulturalOfferDTO updated = service.update(dto, id);
 		return new ResponseEntity<>(updated, HttpStatus.OK);
 	}

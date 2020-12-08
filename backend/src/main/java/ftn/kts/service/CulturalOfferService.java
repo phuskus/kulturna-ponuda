@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ftn.kts.dto.CulturalOfferDTO;
+import ftn.kts.exceptions.UniqueConstraintViolationException;
 import ftn.kts.model.Admin;
 import ftn.kts.model.CulturalOffer;
 import ftn.kts.model.Subcategory;
@@ -45,13 +46,16 @@ public class CulturalOfferService {
 		return dto;
 	}
 
-	public void create(CulturalOfferDTO dto) {
+	public void create(CulturalOfferDTO dto) throws UniqueConstraintViolationException {
+		checkUnique(dto);
 		CulturalOffer offer = toEntity(dto);
 		offerRepository.save(offer);
 	}
 
-	public CulturalOfferDTO update(CulturalOfferDTO dto, Long id) {
+	public CulturalOfferDTO update(CulturalOfferDTO dto, Long id) throws UniqueConstraintViolationException {
 		CulturalOffer offer = getOne(id);
+		dto.setId(id);
+		checkUnique(dto);
 		updateOffer(offer, dto);
 		offerRepository.save(offer);
 		return toDTO(offer);
@@ -69,6 +73,20 @@ public class CulturalOfferService {
 
 	public List<CulturalOffer> getAll(long id) {
 		return offerRepository.findAll();
+	}
+	
+	private void checkUnique(CulturalOfferDTO dto) throws UniqueConstraintViolationException {
+		CulturalOffer offer = offerRepository.findByNameIgnoringCase(dto.getName());
+		if (offer != null) {
+			if (dto.getId() == null) {
+				throw new UniqueConstraintViolationException("Unique key constraint violated!", "name",
+						"Cultural Offer with this field already exists!");
+			} else {
+				if (!offer.getId().equals(dto.getId()))
+					throw new UniqueConstraintViolationException("Unique key constraint violated!", "name",
+							"Cultural Offer with this field already exists!");							
+			}
+		}
 	}
 	
 	private CulturalOffer toEntity(CulturalOfferDTO dto) {
