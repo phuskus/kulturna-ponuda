@@ -34,47 +34,31 @@ public class CulturalOfferController {
 
 	@GetMapping
 	public ResponseEntity<List<CulturalOfferDTO>> getAllOffers() {
-		List<CulturalOfferDTO> offers = service.getAll();
+		List<CulturalOfferDTO> offers = service.getAllDTO();
 		return new ResponseEntity<>(offers, HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<CulturalOfferDTO> getOffer(@PathVariable("id") long id) {
-		try {
-			return new ResponseEntity<>(service.getOne(id), HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
+		return new ResponseEntity<>(service.getOneDTO(id), HttpStatus.OK);
 	}
 	
 	@PostMapping
-	public ResponseEntity<Object> addOffer(@Valid @RequestBody CulturalOfferDTO dto) {
-		try {
-			service.create(dto);
-			return new ResponseEntity<>(HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<CulturalOfferDTO> addOffer(@Valid @RequestBody CulturalOfferDTO dto) {
+		CulturalOfferDTO created = service.create(dto);
+		return new ResponseEntity<>(created, HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<Object> updateOffer(@Valid @RequestBody CulturalOfferDTO dto, @PathVariable long id) {
-		try {
-			CulturalOfferDTO updated = service.update(dto, id);
-			return new ResponseEntity<>(updated, HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
+		CulturalOfferDTO updated = service.update(dto, id);
+		return new ResponseEntity<>(updated, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<CulturalOfferDTO> deleteOffer(@PathVariable("id") long id) {
-		try {
-			service.delete(id);
-			return new ResponseEntity<>(HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
+		service.delete(id);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 }

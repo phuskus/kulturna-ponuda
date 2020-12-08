@@ -2,8 +2,8 @@ package ftn.kts.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
-import ftn.kts.repository.SubcategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +13,7 @@ import ftn.kts.model.CulturalOffer;
 import ftn.kts.model.Subcategory;
 import ftn.kts.repository.AdminRepository;
 import ftn.kts.repository.CulturalOfferRepository;
+import ftn.kts.repository.SubcategoryRepository;
 
 @Service
 public class CulturalOfferService {
@@ -22,13 +23,14 @@ public class CulturalOfferService {
 	private SubcategoryRepository subcategoryRepository;
 
 	@Autowired
-	public CulturalOfferService(CulturalOfferRepository offerRepository, AdminRepository adminRepository, SubcategoryRepository subcategoryRepository) {
+	public CulturalOfferService(CulturalOfferRepository offerRepository, AdminRepository adminRepository,
+			SubcategoryRepository subcategoryRepository) {
 		this.offerRepository = offerRepository;
 		this.adminRepository = adminRepository;
 		this.subcategoryRepository = subcategoryRepository;
 	}
 
-	public List<CulturalOfferDTO> getAll() {
+	public List<CulturalOfferDTO> getAllDTO() {
 		List<CulturalOffer> offers = offerRepository.findAll();
 		List<CulturalOfferDTO> dtoList = new ArrayList<>();
 		for (CulturalOffer o : offers) {
@@ -37,44 +39,54 @@ public class CulturalOfferService {
 		return dtoList;
 	}
 
-	public CulturalOfferDTO getOne(long id) {
-		CulturalOffer offer = offerRepository.findById(id).get();
+	public CulturalOfferDTO getOneDTO(long id) {
+		CulturalOffer offer = getOne(id);
 		CulturalOfferDTO dto = toDTO(offer);
 		return dto;
 	}
 
-	public void create(CulturalOfferDTO dto) {
+	public CulturalOfferDTO create(CulturalOfferDTO dto) {
 		CulturalOffer offer = toEntity(dto);
 		offerRepository.save(offer);
+		return dto;
 	}
-	
+
 	public CulturalOfferDTO update(CulturalOfferDTO dto, Long id) {
-		CulturalOffer offer = offerRepository.findById(id).get();
+		CulturalOffer offer = getOne(id);
 		updateOffer(offer, dto);
 		offerRepository.save(offer);
 		return toDTO(offer);
 	}
-	
+
 	public void delete(Long id) {
-		offerRepository.deleteById(id);
+		CulturalOffer offer = getOne(id);
+		offerRepository.delete(offer);
+	}
+
+	public CulturalOffer getOne(long id) {
+		return offerRepository.findById(id)
+				.orElseThrow(() -> new NoSuchElementException("Cultural offer with id " + id + " doesn't exist!"));
+	}
+
+	public List<CulturalOffer> getAll(long id) {
+		return offerRepository.findAll();
 	}
 	
 	private CulturalOffer toEntity(CulturalOfferDTO dto) {
 		Admin admin = adminRepository.findById(dto.getAdmin()).get();
 		Subcategory category = subcategoryRepository.findById(dto.getCategory()).get();
 		CulturalOffer offer = new CulturalOffer(dto.getName(), dto.getDescription(), dto.getLatitude(),
-				dto.getLongitude(), dto.getAddress(), dto.getCity(), dto.getRegion(), admin,
-				category);
+				dto.getLongitude(), dto.getAddress(), dto.getCity(), dto.getRegion(), admin, category);
 		return offer;
 	}
 
 	private CulturalOfferDTO toDTO(CulturalOffer entity) {
-		CulturalOfferDTO dto = new CulturalOfferDTO(entity.getId(), entity.getName(), entity.getDescription(), entity.getLatitude(),
-				entity.getLongitude(), entity.getAddress(), entity.getCity(), entity.getRegion(), entity.getAdmin(),
-				entity.getCategory());
+		CulturalOfferDTO dto = new CulturalOfferDTO(entity.getId(), entity.getName(), entity.getDescription(),
+				entity.getLatitude(), entity.getLongitude(), entity.getAddress(), entity.getCity(), entity.getRegion(),
+				entity.getAdmin(), entity.getCategory());
 		return dto;
 	}
-	
+
 	private void updateOffer(CulturalOffer offer, CulturalOfferDTO dto) {
 		offer.setAddress(dto.getAddress());
 		offer.setCity(dto.getCity());
