@@ -1,28 +1,29 @@
 package ftn.kts.service;
 
-import ftn.kts.dto.PostDTO;
-import ftn.kts.model.CulturalOffer;
-import ftn.kts.model.Post;
-import ftn.kts.repository.CulturalOfferRepository;
-import ftn.kts.repository.PostRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import ftn.kts.dto.PostDTO;
+import ftn.kts.model.CulturalOffer;
+import ftn.kts.model.Post;
+import ftn.kts.repository.PostRepository;
 
 @Service
 public class PostService {
 
     private PostRepository postRepository;
-    private CulturalOfferRepository cultRepository;
-    //private PictureRepository picRepository;
+    private CulturalOfferService cultService;
+    private PictureService picService;
 
     @Autowired
-    public PostService(PostRepository postRepository, CulturalOfferRepository cultRepository) {
+    public PostService(PostRepository postRepository, CulturalOfferService cultService, PictureService picService) {
         this.postRepository = postRepository;
-        this.cultRepository = cultRepository;
+        this.cultService = cultService;
+        this.picService = picService;
     }
 
     public List<PostDTO> getAllDTO() {
@@ -67,7 +68,7 @@ public class PostService {
 	}
 
     private void updatePost(Post post, PostDTO dto) {
-        CulturalOffer offer = cultRepository.getOne(dto.getCulturalOffer());
+        CulturalOffer offer = cultService.getOne(dto.getCulturalOffer());
         post.setContent(dto.getContent());
         post.setCulturalOffer(offer);
         //TODO: pictures later!
@@ -79,7 +80,7 @@ public class PostService {
     }
 
     private Post toEntity(PostDTO dto) {
-        CulturalOffer offer = cultRepository.getOne(dto.getCulturalOffer());
+        CulturalOffer offer = cultService.getOne(dto.getCulturalOffer());
         Post post = new Post(dto.getId(), dto.getContent(), offer);
         return post;
     }

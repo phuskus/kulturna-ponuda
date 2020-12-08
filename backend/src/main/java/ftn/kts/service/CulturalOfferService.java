@@ -12,23 +12,21 @@ import ftn.kts.exceptions.UniqueConstraintViolationException;
 import ftn.kts.model.Admin;
 import ftn.kts.model.CulturalOffer;
 import ftn.kts.model.Subcategory;
-import ftn.kts.repository.AdminRepository;
 import ftn.kts.repository.CulturalOfferRepository;
-import ftn.kts.repository.SubcategoryRepository;
 
 @Service
 public class CulturalOfferService {
 
 	private CulturalOfferRepository offerRepository;
-	private AdminRepository adminRepository;
-	private SubcategoryRepository subcategoryRepository;
+	private AdminService adminService;
+	private SubcategoryService subcategoryService;
 
 	@Autowired
-	public CulturalOfferService(CulturalOfferRepository offerRepository, AdminRepository adminRepository,
-			SubcategoryRepository subcategoryRepository) {
+	public CulturalOfferService(CulturalOfferRepository offerRepository, AdminService adminService,
+			SubcategoryService subcategoryService) {
 		this.offerRepository = offerRepository;
-		this.adminRepository = adminRepository;
-		this.subcategoryRepository = subcategoryRepository;
+		this.adminService = adminService;
+		this.subcategoryService = subcategoryService;
 	}
 
 	public List<CulturalOfferDTO> getAllDTO() {
@@ -90,8 +88,8 @@ public class CulturalOfferService {
 	}
 	
 	private CulturalOffer toEntity(CulturalOfferDTO dto) {
-		Admin admin = adminRepository.findById(dto.getAdmin()).get();
-		Subcategory category = subcategoryRepository.findById(dto.getCategory()).get();
+		Admin admin = adminService.getOne(dto.getAdmin());
+		Subcategory category = subcategoryService.getOne(dto.getCategory());
 		CulturalOffer offer = new CulturalOffer(dto.getName(), dto.getDescription(), dto.getLatitude(),
 				dto.getLongitude(), dto.getAddress(), dto.getCity(), dto.getRegion(), admin, category);
 		return offer;

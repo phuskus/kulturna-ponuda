@@ -4,8 +4,6 @@ import ftn.kts.dto.ReviewDTO;
 import ftn.kts.model.CulturalOffer;
 import ftn.kts.model.RegisteredUser;
 import ftn.kts.model.Review;
-import ftn.kts.repository.CulturalOfferRepository;
-import ftn.kts.repository.RegisteredUserRepository;
 import ftn.kts.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,15 +15,15 @@ import java.util.NoSuchElementException;
 @Service
 public class ReviewService {
 	private ReviewRepository reviewRepository;
-	private RegisteredUserRepository userRepository;
-	private CulturalOfferRepository offerRepository;
+	private RegisteredUserService userService;
+	private CulturalOfferService offerService;
 
 	@Autowired
-	public ReviewService(ReviewRepository reviewRepository, RegisteredUserRepository userRepository,
-			CulturalOfferRepository offerRepository) {
+	public ReviewService(ReviewRepository reviewRepository, RegisteredUserService userService,
+			CulturalOfferService offerService) {
 		this.reviewRepository = reviewRepository;
-		this.userRepository = userRepository;
-		this.offerRepository = offerRepository;
+		this.userService = userService;
+		this.offerService = offerService;
 	}
 
 	public List<ReviewDTO> getAllDTO() {
@@ -68,8 +66,8 @@ public class ReviewService {
 	}
 
 	private Review toEntity(ReviewDTO dto) {
-		RegisteredUser user = userRepository.findById(dto.getUser()).get();
-		CulturalOffer offer = offerRepository.findById(dto.getCulturalOffer()).get();
+		RegisteredUser user = userService.getOne(dto.getUser());
+		CulturalOffer offer = offerService.getOne(dto.getCulturalOffer());
 		return new Review(dto.getId(), dto.getRating(), dto.getContent(), user, offer);
 	}
 
@@ -81,8 +79,8 @@ public class ReviewService {
 	private Review updateCategory(Review review, ReviewDTO dto) {
 		review.setRating(dto.getRating());
 		review.setContent(dto.getContent());
-		review.setCulturalOffer(offerRepository.findById(dto.getCulturalOffer()).get());
-		review.setUser(userRepository.findById(dto.getUser()).get());
+		review.setCulturalOffer(offerService.getOne(dto.getCulturalOffer()));
+		review.setUser(userService.getOne(dto.getUser()));
 
 		return review;
 	}

@@ -5,9 +5,6 @@ import ftn.kts.model.CulturalOffer;
 import ftn.kts.model.RegisteredUser;
 import ftn.kts.model.Subscription;
 import ftn.kts.model.Subcategory;
-import ftn.kts.repository.CulturalOfferRepository;
-import ftn.kts.repository.RegisteredUserRepository;
-import ftn.kts.repository.SubcategoryRepository;
 import ftn.kts.repository.SubscriptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,18 +17,18 @@ import java.util.NoSuchElementException;
 public class SubscriptionService {
 
 	private SubscriptionRepository subscriptionRepository;
-	private CulturalOfferRepository culturalOfferRepository;
-	private SubcategoryRepository subcategoryRepository;
-	private RegisteredUserRepository registeredUserRepository;
+	private CulturalOfferService culturalOfferService;
+	private SubcategoryService subcategoryService;
+	private RegisteredUserService registeredUserService;
 
 	@Autowired
 	public SubscriptionService(SubscriptionRepository subscriptionRepository,
-			CulturalOfferRepository culturalOfferRepository, SubcategoryRepository subcategoryRepository,
-			RegisteredUserRepository registeredUserRepository) {
+			CulturalOfferService culturalOfferService, SubcategoryService subcategoryService,
+			RegisteredUserService registeredUserService) {
 		this.subscriptionRepository = subscriptionRepository;
-		this.culturalOfferRepository = culturalOfferRepository;
-		this.subcategoryRepository = subcategoryRepository;
-		this.registeredUserRepository = registeredUserRepository;
+		this.culturalOfferService = culturalOfferService;
+		this.subcategoryService = subcategoryService;
+		this.registeredUserService = registeredUserService;
 	}
 
 	public List<SubscriptionDTO> getAllDTO() {
@@ -74,9 +71,9 @@ public class SubscriptionService {
 	}
 	
 	private Subscription toEntity(SubscriptionDTO dto) {
-		Subcategory subCategory = subcategoryRepository.findById(dto.getSubcategoryId()).get();
-		CulturalOffer culturalOffer = culturalOfferRepository.findById(dto.getCulturalOfferId()).get();
-		RegisteredUser registeredUser = registeredUserRepository.findById(dto.getRegisteredUserId()).get();
+		Subcategory subCategory = subcategoryService.getOne(dto.getSubcategoryId());
+		CulturalOffer culturalOffer = culturalOfferService.getOne(dto.getCulturalOfferId());
+		RegisteredUser registeredUser = registeredUserService.getOne(dto.getRegisteredUserId());
 		return new Subscription(dto.getId(), dto.getDateOfSubscription(), subCategory, culturalOffer, registeredUser);
 	}
 
@@ -87,9 +84,9 @@ public class SubscriptionService {
 
 	private void updateSubscription(Subscription subscription, SubscriptionDTO dto) {
 		subscription.setDateOfSubscription(dto.getDateOfSubscription());
-		subscription.setUser(registeredUserRepository.findById(dto.getRegisteredUserId()).get());
+		subscription.setUser(registeredUserService.getOne(dto.getRegisteredUserId()));
 
-		subscription.setCulturalOffer(culturalOfferRepository.findById(dto.getCulturalOfferId()).get());
-		subscription.setSubcategory(subcategoryRepository.findById(dto.getCulturalOfferId()).get());
+		subscription.setCulturalOffer(culturalOfferService.getOne(dto.getCulturalOfferId()));
+		subscription.setSubcategory(subcategoryService.getOne(dto.getCulturalOfferId()));
 	}
 }

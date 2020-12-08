@@ -3,7 +3,6 @@ package ftn.kts.service;
 import ftn.kts.dto.SubcategoryDTO;
 import ftn.kts.exceptions.UniqueConstraintViolationException;
 import ftn.kts.model.*;
-import ftn.kts.repository.CategoryRepository;
 import ftn.kts.repository.SubcategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,12 +15,12 @@ import java.util.NoSuchElementException;
 public class SubcategoryService {
 
 	private SubcategoryRepository subcategoryRepository;
-	private CategoryRepository categoryRepository;
+	private CategoryService categoryService;
 
 	@Autowired
-	public SubcategoryService(SubcategoryRepository subcategoryRepository, CategoryRepository categoryRepository) {
+	public SubcategoryService(SubcategoryRepository subcategoryRepository, CategoryService categoryService) {
 		this.subcategoryRepository = subcategoryRepository;
-		this.categoryRepository = categoryRepository;
+		this.categoryService = categoryService;
 	}
 
 	public List<SubcategoryDTO> getAllDTO() {
@@ -80,7 +79,7 @@ public class SubcategoryService {
 	}
 
 	private Subcategory toEntity(SubcategoryDTO dto) {
-		Category category = categoryRepository.findById(dto.getCategory()).get();
+		Category category = categoryService.getOne(dto.getCategory());
 		return new Subcategory(dto.getId(), dto.getName(), category);
 	}
 
@@ -90,7 +89,7 @@ public class SubcategoryService {
 
 	private void updateSubcategory(Subcategory subcategory, SubcategoryDTO dto) {
 		subcategory.setName(dto.getName());
-		subcategory.setCategory(categoryRepository.findById(dto.getCategory()).get());
+		subcategory.setCategory(categoryService.getOne(dto.getCategory()));
 		// TODO: Add sets of subscriptions and cultural offers?
 	}
 }
