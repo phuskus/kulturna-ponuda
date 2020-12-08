@@ -6,4 +6,6 @@ import ftn.kts.model.Authority;
 
 public interface AuthorityRepository extends JpaRepository<Authority, Long> {
 
+    Authority findByName(String name);
+
 }
