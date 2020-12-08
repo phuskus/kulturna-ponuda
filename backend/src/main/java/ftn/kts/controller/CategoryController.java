@@ -23,46 +23,30 @@ public class CategoryController {
 
     @GetMapping
     public ResponseEntity<List<CategoryDTO>> getAllCategories() {
-        List<CategoryDTO> categories = service.getAll();
+        List<CategoryDTO> categories = service.getAllDTO();
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CategoryDTO> getCategory(@PathVariable("id") long id) {
-        try {
-            return new ResponseEntity<>(service.getOne(id), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(service.getOneDTO(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Object> addCategory(@Valid @RequestBody CategoryDTO dto) {
-        try {
-            service.create(dto);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<String> addCategory(@Valid @RequestBody CategoryDTO dto) {
+        service.create(dto);
+        return new ResponseEntity<>("Successfully added category!", HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateCategory(@Valid @RequestBody CategoryDTO dto, @PathVariable long id) {
-        try {
-            CategoryDTO updated = service.update(dto, id);
-            return new ResponseEntity<>(updated, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        CategoryDTO updated = service.update(dto, id);
+        return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<CategoryDTO> deleteCategory(@PathVariable("id") long id) {
-        try {
-            service.delete(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<String> deleteCategory(@PathVariable("id") long id) {
+        service.delete(id);
+        return new ResponseEntity<>("Successfully deleted category!", HttpStatus.OK);
     }
 }

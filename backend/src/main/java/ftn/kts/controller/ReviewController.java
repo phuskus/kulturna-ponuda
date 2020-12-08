@@ -23,46 +23,30 @@ public class ReviewController {
 
     @GetMapping
     public ResponseEntity<List<ReviewDTO>> getAllReviews() {
-        List<ReviewDTO> reviews = service.getAll();
+        List<ReviewDTO> reviews = service.getAllDTO();
         return new ResponseEntity<>(reviews, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ReviewDTO> getReview(@PathVariable("id") long id) {
-        try {
-            return new ResponseEntity<>(service.getOne(id), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(service.getOneDTO(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Object> addReview(@Valid @RequestBody ReviewDTO dto) {
-        try {
-            service.create(dto);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<String> addReview(@Valid @RequestBody ReviewDTO dto) {
+        service.create(dto);
+        return new ResponseEntity<>("Successfully added subcategory!", HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateReview(@Valid @RequestBody ReviewDTO dto, @PathVariable long id) {
-        try {
-            ReviewDTO updated = service.update(dto, id);
-            return new ResponseEntity<>(updated, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        ReviewDTO updated = service.update(dto, id);
+        return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ReviewDTO> deleteReview(@PathVariable("id") long id) {
-        try {
-            service.delete(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<String> deleteReview(@PathVariable("id") long id) {
+        service.delete(id);
+        return new ResponseEntity<>("Successfully deleted subcategory!", HttpStatus.OK);
     }
 }

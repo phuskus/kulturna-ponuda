@@ -45,10 +45,9 @@ public class CulturalOfferService {
 		return dto;
 	}
 
-	public CulturalOfferDTO create(CulturalOfferDTO dto) {
+	public void create(CulturalOfferDTO dto) {
 		CulturalOffer offer = toEntity(dto);
 		offerRepository.save(offer);
-		return dto;
 	}
 
 	public CulturalOfferDTO update(CulturalOfferDTO dto, Long id) {

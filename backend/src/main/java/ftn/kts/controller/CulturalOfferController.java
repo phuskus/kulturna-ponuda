@@ -44,9 +44,9 @@ public class CulturalOfferController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<CulturalOfferDTO> addOffer(@Valid @RequestBody CulturalOfferDTO dto) {
-		CulturalOfferDTO created = service.create(dto);
-		return new ResponseEntity<>(created, HttpStatus.CREATED);
+	public ResponseEntity<String> addOffer(@Valid @RequestBody CulturalOfferDTO dto) {
+		service.create(dto);
+		return new ResponseEntity<>("Successfully added cultural offer!", HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/{id}")
@@ -56,9 +56,9 @@ public class CulturalOfferController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<CulturalOfferDTO> deleteOffer(@PathVariable("id") long id) {
+	public ResponseEntity<String> deleteOffer(@PathVariable("id") long id) {
 		service.delete(id);
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>("Successfully deleted cultural offer!", HttpStatus.OK);
 	}
 
 }

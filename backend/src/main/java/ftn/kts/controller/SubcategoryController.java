@@ -23,46 +23,30 @@ public class SubcategoryController {
 
     @GetMapping
     public ResponseEntity<List<SubcategoryDTO>> getAllSubcategories() {
-        List<SubcategoryDTO> subcategories = service.getAll();
+        List<SubcategoryDTO> subcategories = service.getAllDTO();
         return new ResponseEntity<>(subcategories, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<SubcategoryDTO> getSubcategory(@PathVariable("id") long id) {
-        try {
-            return new ResponseEntity<>(service.getOne(id), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(service.getOneDTO(id), HttpStatus.OK);
     }
     
     @PostMapping
-    public ResponseEntity<Object> addSubcategory(@Valid @RequestBody SubcategoryDTO dto) {
-        try {
-            service.create(dto);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<String> addSubcategory(@Valid @RequestBody SubcategoryDTO dto) {
+        service.create(dto);
+        return new ResponseEntity<>("Successfully added subcategory!", HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateSubcategory(@Valid @RequestBody SubcategoryDTO dto, @PathVariable long id) {
-        try {
-            SubcategoryDTO updated = service.update(dto, id);
-            return new ResponseEntity<>(updated, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<SubcategoryDTO> updateSubcategory(@Valid @RequestBody SubcategoryDTO dto, @PathVariable long id) {
+        SubcategoryDTO updated = service.update(dto, id);
+        return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<SubcategoryDTO> deleteSubcategory(@PathVariable("id") long id) {
-        try {
-            service.delete(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<String> deleteSubcategory(@PathVariable("id") long id) {
+        service.delete(id);
+        return new ResponseEntity<>("Successfully deleted subcategory!", HttpStatus.OK);
     }
 }

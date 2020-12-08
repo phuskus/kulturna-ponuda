@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class CategoryService {
@@ -18,7 +19,7 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<CategoryDTO> getAll() {
+    public List<CategoryDTO> getAllDTO() {
         List<Category> categories = categoryRepository.findAll();
         List<CategoryDTO> dtoList = new ArrayList<CategoryDTO>();
         for (Category c : categories)
@@ -26,28 +27,38 @@ public class CategoryService {
         return dtoList;
     }
 
-    public CategoryDTO getOne(long id) {
-        Category category = categoryRepository.findById(id).get();
+    public CategoryDTO getOneDTO(long id) {
+        Category category = getOne(id);
         return toDTO(category);
     }
 
 
     public void create(CategoryDTO dto) {
-        Category cat = toEntity(dto);
-        categoryRepository.save(cat);
+        Category category = toEntity(dto);
+        categoryRepository.save(category);
     }
 
     public CategoryDTO update(CategoryDTO dto, Long id) {
-        Category cat = categoryRepository.findById(id).get();
-        updateCategory(cat, dto);
-        categoryRepository.save(cat);
-        return toDTO(updateCategory(cat, dto));
+        Category category = getOne(id);
+        updateCategory(category, dto);
+        categoryRepository.save(category);
+        return toDTO(updateCategory(category, dto));
     }
 
     public void delete(Long id) {
-        categoryRepository.deleteById(id);
+        Category category = getOne(id);
+        categoryRepository.delete(category);
     }
 
+	public Category getOne(long id) {
+		return categoryRepository.findById(id)
+				.orElseThrow(() -> new NoSuchElementException("Category with id " + id + " doesn't exist!"));
+	}
+
+	public List<Category> getAll(long id) {
+		return categoryRepository.findAll();
+	}
+    
     private Category toEntity(CategoryDTO dto) {
         return new Category(dto.getId(), dto.getName());
     }

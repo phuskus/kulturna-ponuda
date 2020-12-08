@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,13 +42,13 @@ public class PictureService {
 		pictureRepository.save(picture);
     }
 
-	public PictureDTO getOne(Long id) throws FileNotFoundException, IOException {
-		Picture picture = pictureRepository.findById(id).get();
+	public PictureDTO getOneDTO(Long id) throws FileNotFoundException, IOException {
+		Picture picture = getOne(id);
 		PictureDTO dto = toDTO(picture);
 		return dto;
 	}
 
-	public List<PictureDTO> getAll() throws FileNotFoundException, IOException {
+	public List<PictureDTO> getAllDTO() throws FileNotFoundException, IOException {
 		List<Picture> pictures = pictureRepository.findAll();
 		List<PictureDTO> dtos = new ArrayList<PictureDTO>();
 		for (Picture p : pictures) {
@@ -57,9 +58,18 @@ public class PictureService {
 	}
 	
 	public void delete(Long id) throws IOException {
-		Picture picture = pictureRepository.findById(id).get();
+		Picture picture = getOne(id);
 		Files.delete(Paths.get(projectFolder + picture.getPath()));
 		pictureRepository.delete(picture);
+	}
+	
+	public Picture getOne(long id) {
+		return pictureRepository.findById(id)
+				.orElseThrow(() -> new NoSuchElementException("Picture with id " + id + " doesn't exist!"));
+	}
+
+	public List<Picture> getAll(long id) {
+		return pictureRepository.findAll();
 	}
 	
 	private PictureDTO toDTO(Picture entity) throws FileNotFoundException, IOException {

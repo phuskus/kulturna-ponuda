@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class PostService {
@@ -24,7 +25,7 @@ public class PostService {
         this.cultRepository = cultRepository;
     }
 
-    public List<PostDTO> getAll() {
+    public List<PostDTO> getAllDTO() {
         List<Post> posts = postRepository.findAll();
         List<PostDTO> dtoList = new ArrayList<>();
         for (Post p : posts) {
@@ -33,8 +34,8 @@ public class PostService {
         return dtoList;
     }
 
-    public PostDTO getOne(long id) {
-        Post post = postRepository.findById(id).get();
+    public PostDTO getOneDTO(long id) {
+        Post post = getOne(id);
         PostDTO dto = toDTO(post);
         return dto;
     }
@@ -45,15 +46,25 @@ public class PostService {
     }
 
     public PostDTO update(PostDTO dto, Long id) {
-        Post post = postRepository.findById(id).get();
+        Post post = getOne(id);
         updatePost(post, dto);
         postRepository.save(post);
         return toDTO(post);
     }
 
     public void delete(Long id) {
-        postRepository.deleteById(id);
+        Post post = getOne(id);
+        postRepository.delete(post);
     }
+    
+	public Post getOne(long id) {
+		return postRepository.findById(id)
+				.orElseThrow(() -> new NoSuchElementException("Post with id " + id + " doesn't exist!"));
+	}
+
+	public List<Post> getAll(long id) {
+		return postRepository.findAll();
+	}
 
     private void updatePost(Post post, PostDTO dto) {
         CulturalOffer offer = cultRepository.getOne(dto.getCulturalOffer());
