@@ -7,14 +7,16 @@ insert into authorities (name) values ('ROLE_ADMIN');
     seljacki xd
  */
 insert into users (name, username, password, enabled, role) values ('admin1', 'admin1@gmail.com', '$2a$10$1vu6VWjP9ewmLkGzcSJ9T.dUJD1K4GBAYhiE5lHI3vFucbbffKtqS', true, 'ADMIN');
+insert into users (name, username, password, enabled, role, last_password_reset_date) values ('admin2', 'admin2@gmail.com', '$2a$10$1vu6VWjP9ewmLkGzcSJ9T.dUJD1K4GBAYhiE5lHI3vFucbbffKtqS', true, 'ADMIN', '2020-12-07 16:00:00.508-07');
 insert into users (name, username, password, enabled, role, last_password_reset_date) values ('user1', 'user1@gmail.com', '$2a$10$A4XnaPtO.2ljs1Vd5iA3EuNBi5HRBWBky2pziALH0/0rQO9A8li7y', true, 'USER', '2020-12-07 16:00:00.508-07');
 insert into users (name, username, password, enabled, role, last_password_reset_date) values ('user2', 'user2@gmail.com', '$2a$10$L4Aj951dZhgOUOmAVEf7q.C/ZB498dUOKCnWQvlsnQXtmewdAagaK', true, 'USER', '2020-12-07 16:00:00.508-07');
 insert into users (name, username, password, enabled, role, last_password_reset_date) values ('user3', 'user3@gmail.com', '$2a$10$L4Aj951dZhgOUOmAVEf7q.C/ZB498dUOKCnWQvlsnQXtmewdAagaK', false, 'USER', '2020-12-07 16:00:00.508-07');
 
 
 insert into user_authority (user_id, authority_id) values (1, 2);
-insert into user_authority (user_id, authority_id) values (2, 1);
+insert into user_authority (user_id, authority_id) values (2, 2);
 insert into user_authority (user_id, authority_id) values (3, 1);
+insert into user_authority (user_id, authority_id) values (4, 1);
 
 insert into categories (name) values ('Institucija');
 insert into categories (name) values ('Manifestacija');

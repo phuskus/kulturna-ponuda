@@ -19,7 +19,7 @@ public class ExceptionHandlers {
 
 	@ExceptionHandler(PasswordNotChangedException.class)
 	public ResponseEntity<ErrorMessage> passwordNotChangedExceptionHandler(PasswordNotChangedException ex, WebRequest request) {
-		ErrorMessage message = new ErrorMessage("You need to change your password first!");
+		ErrorMessage message = new ErrorMessage(ex.getMessage(), ex.getJwt());
 		return new ResponseEntity<>(message, HttpStatus.TEMPORARY_REDIRECT);
 	}
 

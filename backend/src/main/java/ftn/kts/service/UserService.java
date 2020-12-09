@@ -63,9 +63,6 @@ public class UserService {
         if (!existUser.isEnabled()) {
             throw new DisabledException("Your account hasn't been activated yet. Please check your email!");
         }
-        if (existUser.getLastPasswordResetDate() == null) {
-            throw new PasswordNotChangedException("Please change your password!");
-        }
         Authentication authentication =
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -73,6 +70,11 @@ public class UserService {
         User user = (User) authentication.getPrincipal();
         String jwt = tokenUtils.generateToken(user.getUsername());
         int expiresIn = tokenUtils.getExpiredIn();
+
+        if (existUser.getLastPasswordResetDate() == null) {
+            throw new PasswordNotChangedException("Please change your password!", jwt);
+        }
+
         return new UserTokenStateDTO(jwt, expiresIn, user.getRole());
     }
 

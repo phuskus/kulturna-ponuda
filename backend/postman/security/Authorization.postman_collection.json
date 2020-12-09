@@ -1,0 +1,87 @@
+{
+	"info": {
+		"_postman_id": "6adea5cf-2edc-4038-ba6d-f79e233bec36",
+		"name": "Authorization",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Unauthorized",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"admin1@gmail.com\",\r\n    \"password\": \"sifraadmin1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:9001/cultural_offers",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"cultural_offers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Role test",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"test\",\r\n    \"description\": \"test\",\r\n    \"latitude\": 19.25,\r\n    \"longitude\": 20.75,\r\n    \"address\": \"test\",\r\n    \"city\": \"test\",\r\n    \"region\": \"test\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:9001/cultural_offers",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"cultural_offers"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
