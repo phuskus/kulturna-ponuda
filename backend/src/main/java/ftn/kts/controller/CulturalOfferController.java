@@ -1,10 +1,13 @@
 package ftn.kts.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ftn.kts.dto.CulturalOfferDTO;
@@ -34,8 +38,15 @@ public class CulturalOfferController {
     }
 
 	@GetMapping
-	public ResponseEntity<List<CulturalOfferDTO>> getAllOffers() {
-		List<CulturalOfferDTO> offers = service.getAllDTO();
+	public ResponseEntity<Page<CulturalOfferDTO>> getAllOffers(@RequestParam(defaultValue = "0") Integer pageNo,
+			@RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
+			@RequestParam(defaultValue = "true") String descending) {
+		Pageable paging;
+		if (descending.equals("true"))
+			paging = PageRequest.of(pageNo, pageSize, Sort.by(Direction.DESC, sortBy));
+		else
+			paging = PageRequest.of(pageNo, pageSize, Sort.by(Direction.ASC, sortBy));		
+		Page<CulturalOfferDTO> offers = service.getAllDTO(paging);
 		return new ResponseEntity<>(offers, HttpStatus.OK);
 	}
 

@@ -1,10 +1,12 @@
 package ftn.kts.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import ftn.kts.dto.CulturalOfferDTO;
@@ -29,12 +31,14 @@ public class CulturalOfferService {
 		this.subcategoryService = subcategoryService;
 	}
 
-	public List<CulturalOfferDTO> getAllDTO() {
-		List<CulturalOffer> offers = offerRepository.findAll();
-		List<CulturalOfferDTO> dtoList = new ArrayList<>();
-		for (CulturalOffer o : offers) {
-			dtoList.add(toDTO(o));
-		}
+	public Page<CulturalOfferDTO> getAllDTO(Pageable paging) {
+		Page<CulturalOffer> offers = offerRepository.findAll(paging);
+		Page<CulturalOfferDTO> dtoList = offers.map(new Function<CulturalOffer, CulturalOfferDTO>() {
+			@Override
+			public CulturalOfferDTO apply(CulturalOffer o) {
+				return toDTO(o);
+			}
+		});
 		return dtoList;
 	}
 
