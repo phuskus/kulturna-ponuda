@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class ReviewService {
@@ -30,14 +31,7 @@ public class ReviewService {
 	}
 
 	public Page<ReviewDTO> getAllDTO(Pageable pageable) {
-		Page<Review> reviews = reviewRepository.findAll(pageable);
-		Page<ReviewDTO> dtoList = reviews.map(new Function<Review, ReviewDTO>() {
-			@Override
-			public ReviewDTO apply(Review s) {
-				return toDTO(s);
-			}
-		});
-		return dtoList;
+		return reviewRepository.findAll(pageable).map(this::toDTO);
 	}
 
 	public ReviewDTO getOneDTO(long id) {
