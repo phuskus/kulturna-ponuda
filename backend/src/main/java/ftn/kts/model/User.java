@@ -1,14 +1,13 @@
 package ftn.kts.model;
 
 import java.sql.Timestamp;
-import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.DiscriminatorOptions;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
@@ -41,9 +40,6 @@ public abstract class User implements UserDetails {
 
 	@Column(name = "last_password_reset_date")
 	private Timestamp lastPasswordResetDate;
-
-	@Version
-	private Long version;
 
 	public User() {}
 
@@ -82,6 +78,8 @@ public abstract class User implements UserDetails {
 	}
 
 	public void setPassword(String password) {
+		Timestamp now = new Timestamp(new Date().getTime());
+		this.setLastPasswordResetDate(now);
 		this.password = password;
 	}
 

@@ -2,6 +2,7 @@ package ftn.kts.security.auth;
 
 import ftn.kts.model.User;
 import ftn.kts.security.TokenUtils;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -42,7 +43,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 				UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 				User u = (User) userDetails;
 				// provera da li je admin promenio lozinku, ako nije treba da se redirektuje na change-password
-				if (u.getLastPasswordResetDate() == null || (u.getRole().equals("ADMIN") && u.getLastPasswordResetDate() == null
+				if (u.getLastPasswordResetDate() != null || (u.getRole().equals("ADMIN") && u.getLastPasswordResetDate() == null
 				&& request.getRequestURI().equals("/auth/change-password"))) {
 					// proveri da li je prosledjeni token validan
 					if (tokenUtils.validateToken(authToken, userDetails)) {

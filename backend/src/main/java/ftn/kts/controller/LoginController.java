@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -58,12 +59,35 @@ public class LoginController {
         }
         try {
             UserTokenStateDTO token = userService.getLoggedIn(username, password);
-            return new ResponseEntity<>(token, HttpStatus.OK);
+            // redirection to change-password on frontend
+            if (user.getLastPasswordResetDate() == null)
+                return new ResponseEntity<>(token, HttpStatus.TEMPORARY_REDIRECT);
+            else
+                return new ResponseEntity<>(token, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Oh no! Something bad happened!", HttpStatus.BAD_REQUEST);
         }
-
     }
 
+    @PostMapping("/change-password")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<Object> changePassword(@RequestBody PasswordChanger passwordChanger) {
+        if (passwordChanger.newPassword.length() < 5) {
+            return new ResponseEntity<>("New password must be at least 5 characters!", HttpStatus.BAD_REQUEST);
+        }
+        String user = userService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
+        if (user.equals("error")) {
+            return new ResponseEntity<>("Server error has occurred. Please try again later.", HttpStatus.BAD_REQUEST);
+        }
+        if (user.equals("pass")) {
+            return new ResponseEntity<>("Incorrect old password. Please try again.", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    static class PasswordChanger {
+        public String oldPassword;
+        public String newPassword;
+    }
 
 }

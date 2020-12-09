@@ -9,13 +9,13 @@ import ftn.kts.repository.UserRepository;
 import ftn.kts.security.CustomUserDetailsService;
 import ftn.kts.security.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 @Service
@@ -59,6 +59,11 @@ public class UserService {
         String jwt = tokenUtils.generateToken(user.getUsername());
         int expiresIn = tokenUtils.getExpiredIn();
         return new UserTokenStateDTO(jwt, expiresIn, user.getRole());
+    }
+
+    public String changePassword(String oldPassword, String newPassword) {
+        String user = userDetailsService.changePassword(oldPassword, newPassword);
+        return user;
     }
 
     private UserDTO toDTO(User entity) {
