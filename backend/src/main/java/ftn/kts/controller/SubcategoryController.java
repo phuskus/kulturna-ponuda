@@ -1,9 +1,14 @@
 package ftn.kts.controller;
 
+import ftn.kts.dto.CulturalOfferDTO;
 import ftn.kts.dto.SubcategoryDTO;
 import ftn.kts.exceptions.UniqueConstraintViolationException;
 import ftn.kts.service.SubcategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +28,15 @@ public class SubcategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<SubcategoryDTO>> getAllSubcategories() {
-        List<SubcategoryDTO> subcategories = service.getAllDTO();
+    public ResponseEntity<Page<SubcategoryDTO>> getAllSubcategories(@RequestParam(defaultValue = "0") Integer pageNo,
+                                                                    @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
+                                                                    @RequestParam(defaultValue = "true") String descending) {
+        Pageable paging;
+        if (descending.equals("true"))
+            paging = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.DESC, sortBy));
+        else
+            paging = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, sortBy));
+        Page<SubcategoryDTO> subcategories = service.getAllDTO(paging);
         return new ResponseEntity<>(subcategories, HttpStatus.OK);
     }
 
