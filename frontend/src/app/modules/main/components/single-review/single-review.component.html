@@ -1,0 +1,15 @@
+<div fxLayout="row" class="btn-row">
+    <div fxLayout="column">
+      <img src="../../assets/imgs/tr.jpg" width="50" height="50" alt="" />
+    </div>
+    <div fxLayout="column">
+      <p>{{ review.name }}</p>
+    </div>
+  </div>
+
+  <p style="margin-top: 8px;">
+    {{ review.text }}
+  </p>
+
+  <carousel [cellsToShow]="3" [images]="review.images" [borderRadius]="10">
+  </carousel>
