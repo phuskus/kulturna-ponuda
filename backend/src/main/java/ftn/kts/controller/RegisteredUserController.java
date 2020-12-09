@@ -25,14 +25,14 @@ public class RegisteredUserController {
 
     @GetMapping
     public ResponseEntity<List<RegisteredUserDTO>> getAllUsers() {
-        List<RegisteredUserDTO> users = service.getAll();
+        List<RegisteredUserDTO> users = service.getAllDTO();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<RegisteredUserDTO> getUser(@PathVariable("id") long id) {
         try {
-            return new ResponseEntity<>(service.getOne(id), HttpStatus.OK);
+            return new ResponseEntity<>(service.getOneDTO(id), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

@@ -16,58 +16,40 @@ import java.util.List;
 @RequestMapping("/posts")
 public class PostController {
 
-    private PostService service;
+	private PostService service;
 
-    @Autowired
-    public PostController(PostService service) {
-        this.service = service;
-    }
+	@Autowired
+	public PostController(PostService service) {
+		this.service = service;
+	}
 
-    @GetMapping
-    public ResponseEntity<List<PostDTO>> getAllPosts() {
-        List<PostDTO> posts = service.getAll();
-        return new ResponseEntity<>(posts, HttpStatus.OK);
-    }
+	@GetMapping
+	public ResponseEntity<List<PostDTO>> getAllPosts() {
+		List<PostDTO> posts = service.getAllDTO();
+		return new ResponseEntity<>(posts, HttpStatus.OK);
+	}
 
-    @GetMapping("/{id}")
-    public ResponseEntity<PostDTO> getPost(@PathVariable("id") long id) {
-        try {
-            return new ResponseEntity<>(service.getOne(id), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
+	@GetMapping("/{id}")
+	public ResponseEntity<PostDTO> getPost(@PathVariable("id") long id) {
+		return new ResponseEntity<>(service.getOneDTO(id), HttpStatus.OK);
+	}
 
-    @PostMapping
-    public ResponseEntity<Object> addPost(@Valid @RequestBody PostDTO dto) {
-        try {
-            service.create(dto);
-            return new ResponseEntity<>("Post successfully added", HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
+	@PostMapping
+	public ResponseEntity<String> addPost(@Valid @RequestBody PostDTO dto) {
+		service.create(dto);
+		return new ResponseEntity<>("Successfully added post!", HttpStatus.OK);
+	}
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> updatePost(@Valid @RequestBody PostDTO dto, @PathVariable("id") Long id) {
-        try {
-            PostDTO updated = service.update(dto, id);
-            return new ResponseEntity<>(updated, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
+	@PutMapping("/{id}")
+	public ResponseEntity<PostDTO> updatePost(@Valid @RequestBody PostDTO dto, @PathVariable("id") Long id) {
+		PostDTO updated = service.update(dto, id);
+		return new ResponseEntity<>(updated, HttpStatus.OK);
+	}
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deletePost(@PathVariable("id") long id) {
-        try {
-            service.delete(id);
-            return new ResponseEntity<>("Post successfully deleted", HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
-
+	@DeleteMapping("/{id}")
+	public ResponseEntity<String> deletePost(@PathVariable("id") long id) {
+		service.delete(id);
+		return new ResponseEntity<>("Successfully deleted post!", HttpStatus.OK);
+	}
 
 }

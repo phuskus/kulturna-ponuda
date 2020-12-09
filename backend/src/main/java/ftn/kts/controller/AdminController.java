@@ -25,14 +25,14 @@ public class AdminController {
 
     @GetMapping
     public ResponseEntity<List<AdminDTO>> getAllAdmins() {
-        List<AdminDTO> admins = service.getAll();
+        List<AdminDTO> admins = service.getAllDTO();
         return new ResponseEntity<>(admins, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<AdminDTO> getAdmin(@PathVariable("id") long id) {
         try {
-            return new ResponseEntity<>(service.getOne(id), HttpStatus.OK);
+            return new ResponseEntity<>(service.getOneDTO(id), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class RegisteredUserService {
@@ -20,7 +21,7 @@ public class RegisteredUserService {
         this.registeredUserRepository = registeredUserRepository;
     }
 
-    public List<RegisteredUserDTO> getAll() {
+    public List<RegisteredUserDTO> getAllDTO() {
         List<RegisteredUser> users = registeredUserRepository.findAll();
         List<RegisteredUserDTO> dtoList = new ArrayList<>();
         for (RegisteredUser user : users) {
@@ -29,7 +30,7 @@ public class RegisteredUserService {
         return dtoList;
     }
 
-    public RegisteredUserDTO getOne(long id) {
+    public RegisteredUserDTO getOneDTO(long id) {
         RegisteredUser user = registeredUserRepository.findById(id).get();
         RegisteredUserDTO dto = toDTO(user);
         return dto;
@@ -50,6 +51,15 @@ public class RegisteredUserService {
     public void delete(Long id) {
         registeredUserRepository.deleteById(id);
     }
+    
+	public RegisteredUser getOne(long id) {
+		return registeredUserRepository.findById(id)
+				.orElseThrow(() -> new NoSuchElementException("User with id " + id + " doesn't exist!"));
+	}
+
+	public List<RegisteredUser> getAll(long id) {
+		return registeredUserRepository.findAll();
+	}
 
     private void updateUser(User user, RegisteredUserDTO dto) {
         user.setName(dto.getName());
