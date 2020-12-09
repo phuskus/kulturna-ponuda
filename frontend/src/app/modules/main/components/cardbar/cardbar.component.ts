@@ -7,10 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CardbarComponent implements OnInit {
   public offers: any = [
-    { name: 'Festivals', img: '../../assets/imgs/fest.png' },
-    { name: 'Galleries', img: '../../assets/imgs/gal.jpg' },
-    { name: 'Museums', img: '../../assets/imgs/mus.png' },
-    { name: 'Monuments', img: '../../assets/imgs/mon.jpg' },
+    { name: 'Festivals', img: '../../assets/imgs/fest.png', path: 'festival' },
+    { name: 'Galleries', img: '../../assets/imgs/gal.jpg', path: 'gallery' },
+    { name: 'Museums', img: '../../assets/imgs/mus.png', path: 'museum' },
+    { name: 'Monuments', img: '../../assets/imgs/mon.jpg', path: 'monument' },
   ];
   
   constructor() {}

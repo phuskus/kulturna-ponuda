@@ -12,7 +12,11 @@
         class="content-column"
         *ngFor="let offer of offers"
       >
-        <button [routerLink]="'/offers/search/name'" mat-button disableRipple="true">
+        <button
+          [routerLink]="'offers/search/'+offer.path"
+          mat-button
+          disableRipple="true"
+        >
           <img [src]="offer.img" />
           <p>{{ offer.name }}</p>
         </button>
