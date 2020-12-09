@@ -9,6 +9,10 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { CardbarComponent } from './components/cardbar/cardbar.component';
 import { MainRoutingModule } from './main-routing.module';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import { ResultsComponent } from './components/results/results.component';
+import { SingleOfferComponent } from './components/single-offer/single-offer.component';
+
 
 @NgModule({
   declarations: [
@@ -16,12 +20,15 @@ import { LandingPageComponent } from './pages/landing-page/landing-page.componen
     SidebarComponent,
     CardbarComponent,
     LandingPageComponent,
+    ResultsComponent,
+    SingleOfferComponent,
   ],
   imports: [
     CommonModule,
     FlexLayoutModule,
     MatCardModule,
     MatButtonModule,
+    MatSidenavModule,
 
     MainRoutingModule,
 
@@ -30,6 +37,5 @@ import { LandingPageComponent } from './pages/landing-page/landing-page.componen
         'pk.eyJ1Ijoic3N0ZWYiLCJhIjoiY2thMDEzMXBpMGNpYjNmcG11Y2ozYTlucCJ9.GDzoIBfJMXOLfL1vxMuGnw',
     }),
   ],
-  // exports: [LandingComponent, CardbarComponent, SidebarComponent],
 })
 export class MainModule {}
