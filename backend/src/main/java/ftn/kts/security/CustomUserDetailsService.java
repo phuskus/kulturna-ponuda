@@ -20,14 +20,16 @@ public class CustomUserDetailsService implements UserDetailsService {
 	
 	protected final Log LOGGER = LogFactory.getLog(getClass());
 
-	@Autowired
 	private UserRepository userRepository;
+	private AuthenticationManager authenticationManager;
+	private PasswordEncoder passwordEncoder;
 
 	@Autowired
-	private AuthenticationManager authenticationManager;
-	
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+	public CustomUserDetailsService(UserRepository userRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder) {
+		this.userRepository = userRepository;
+		this.authenticationManager = authenticationManager;
+		this.passwordEncoder = passwordEncoder;
+	}
 
 	// Funkcija koja na osnovu username-a iz baze vraca objekat User-a
 	@Override
@@ -47,19 +49,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
 		String username = currentUser.getName();
 
-		try {
-			if (authenticationManager != null) {
-				LOGGER.debug("Re-authenticating user '" + username + "' for password change request.");
-				authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, oldPassword));
-			} else {
-				LOGGER.debug("No authentication manager set. Can't change Password!");
-				return "error";
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "pass";
-		}
-
+		LOGGER.debug("Re-authenticating user '" + username + "' for password change request.");
+		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, oldPassword));
 		LOGGER.debug("Changing password for user '" + username + "'");
 
 		User user = (User) loadUserByUsername(username);

@@ -6,6 +6,8 @@ import java.util.NoSuchElementException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,8 +17,24 @@ import org.springframework.web.context.request.WebRequest;
 @ControllerAdvice
 public class ExceptionHandlers {
 
-	
-	
+	@ExceptionHandler(PasswordNotChangedException.class)
+	public ResponseEntity<ErrorMessage> passwordNotChangedExceptionHandler(PasswordNotChangedException ex, WebRequest request) {
+		ErrorMessage message = new ErrorMessage("You need to change your password first!");
+		return new ResponseEntity<>(message, HttpStatus.TEMPORARY_REDIRECT);
+	}
+
+
+	@ExceptionHandler(BadCredentialsException.class)
+	public ResponseEntity<ErrorMessage> badCredentialsExceptionHandler(BadCredentialsException ex, WebRequest request) {
+		ErrorMessage message = new ErrorMessage("Incorrect old password!");
+		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(AuthenticationException.class)
+	public ResponseEntity<ErrorMessage> authenticationExceptionHandler(AuthenticationException ex, WebRequest request) {
+		ErrorMessage message = new ErrorMessage(ex.getMessage());
+		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+	}
 
 	@ExceptionHandler(UniqueConstraintViolationException.class)
 	public ResponseEntity<ErrorMessage> uniqueConstraintExceptionHandler(UniqueConstraintViolationException ex, WebRequest request) {
