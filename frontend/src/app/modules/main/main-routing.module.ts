@@ -13,7 +13,7 @@ const routes: Routes = [
     children: [
       { path: '', component: CardbarComponent },
       { path: 'offers', component: SidebarComponent, children: [
-        {path: 'search/:name', component: ResultsComponent},
+        {path: 'search/:query', component: ResultsComponent},
         {path: ':id', component: SingleOfferComponent}
       ] },
     ],

@@ -12,6 +12,7 @@ import { LandingPageComponent } from './pages/landing-page/landing-page.componen
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { ResultsComponent } from './components/results/results.component';
 import { SingleOfferComponent } from './components/single-offer/single-offer.component';
+import { IvyCarouselModule } from 'angular-responsive-carousel';
 
 
 @NgModule({
@@ -25,7 +26,10 @@ import { SingleOfferComponent } from './components/single-offer/single-offer.com
   ],
   imports: [
     CommonModule,
+
     FlexLayoutModule,
+    IvyCarouselModule,
+
     MatCardModule,
     MatButtonModule,
     MatSidenavModule,

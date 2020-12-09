@@ -1,4 +1,34 @@
-<p>This is the result page</p>
-<button [routerLink]="'offers/1'" mat-button disableRipple="true">
+<mat-card class="example-card" style="margin-bottom: 40px">
+  <mat-card-subtitle>Search</mat-card-subtitle>
+</mat-card>
+
+<mat-card class="result-card" *ngFor="let i of [1,2,3,4,5]" [routerLink]="'/offers/3'">
+  <div fxLayout="row">
+    <div fxLayout="column" class="img-col">
+      <img src="../../../../../assets/imgs/ill.jpg" />
+    </div>
+
+    <div fxLayout="column" class="content-col">
+      <div fxLayout="row" fxLayoutAlign="space-between">
+        <div fxLayout="column">Museum of Modern Art</div>
+        <div fxLayout="column">Dunavska 35, Novi Sad</div>
+      </div>
+
+      <div fxLayout="row" style="padding: 15px 0px">
+        <div>Museum of art & history</div>
+      </div>
+
+      <div fxLayout="row">
+          The museum is open, and many exhibits are available. Unfortunately,
+          the planetarium is closed. THe reainforest sphere and the shake house
+          require special reseratiaos and a 2-4 hour wait. Sadly, not worth
+          going during COVID, I would wait until restrictions are lifted to get
+          the ful experience.
+      </div>
+    </div>
+  </div>
+</mat-card>
+
+<!-- <button [routerLink]="'offers/1'" mat-button disableRipple="true">
   <p>Click to go to something</p>
-</button>
+</button> -->
