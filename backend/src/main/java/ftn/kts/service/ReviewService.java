@@ -6,11 +6,14 @@ import ftn.kts.model.RegisteredUser;
 import ftn.kts.model.Review;
 import ftn.kts.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Function;
 
 @Service
 public class ReviewService {
@@ -26,11 +29,14 @@ public class ReviewService {
 		this.offerService = offerService;
 	}
 
-	public List<ReviewDTO> getAllDTO() {
-		List<Review> reviews = reviewRepository.findAll();
-		List<ReviewDTO> dtoList = new ArrayList<>();
-		for (Review c : reviews)
-			dtoList.add(toDTO(c));
+	public Page<ReviewDTO> getAllDTO(Pageable pageable) {
+		Page<Review> reviews = reviewRepository.findAll(pageable);
+		Page<ReviewDTO> dtoList = reviews.map(new Function<Review, ReviewDTO>() {
+			@Override
+			public ReviewDTO apply(Review s) {
+				return toDTO(s);
+			}
+		});
 		return dtoList;
 	}
 
