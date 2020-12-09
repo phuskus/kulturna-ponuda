@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ftn.kts.dto.CulturalOfferDTO;
+import ftn.kts.exceptions.UniqueConstraintViolationException;
 import ftn.kts.service.CulturalOfferService;
 
 @RestController
@@ -34,47 +35,31 @@ public class CulturalOfferController {
 
 	@GetMapping
 	public ResponseEntity<List<CulturalOfferDTO>> getAllOffers() {
-		List<CulturalOfferDTO> offers = service.getAll();
+		List<CulturalOfferDTO> offers = service.getAllDTO();
 		return new ResponseEntity<>(offers, HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<CulturalOfferDTO> getOffer(@PathVariable("id") long id) {
-		try {
-			return new ResponseEntity<>(service.getOne(id), HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
+		return new ResponseEntity<>(service.getOneDTO(id), HttpStatus.OK);
 	}
 	
 	@PostMapping
-	public ResponseEntity<Object> addOffer(@Valid @RequestBody CulturalOfferDTO dto) {
-		try {
-			service.create(dto);
-			return new ResponseEntity<>(HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<String> addOffer(@Valid @RequestBody CulturalOfferDTO dto) throws UniqueConstraintViolationException {
+		service.create(dto);
+		return new ResponseEntity<>("Successfully added cultural offer!", HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Object> updateOffer(@Valid @RequestBody CulturalOfferDTO dto, @PathVariable long id) {
-		try {
-			CulturalOfferDTO updated = service.update(dto, id);
-			return new ResponseEntity<>(updated, HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<Object> updateOffer(@Valid @RequestBody CulturalOfferDTO dto, @PathVariable long id) throws UniqueConstraintViolationException {
+		CulturalOfferDTO updated = service.update(dto, id);
+		return new ResponseEntity<>(updated, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<CulturalOfferDTO> deleteOffer(@PathVariable("id") long id) {
-		try {
-			service.delete(id);
-			return new ResponseEntity<>(HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<String> deleteOffer(@PathVariable("id") long id) {
+		service.delete(id);
+		return new ResponseEntity<>("Successfully deleted cultural offer!", HttpStatus.OK);
 	}
 
 }

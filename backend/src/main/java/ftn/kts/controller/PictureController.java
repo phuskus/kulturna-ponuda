@@ -1,5 +1,7 @@
 package ftn.kts.controller;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,45 +30,26 @@ public class PictureController {
 	}
 
 	@GetMapping
-	public ResponseEntity<List<PictureDTO>> getAllPictures() {
-		try {
-			List<PictureDTO> offers = service.getAll();
-			return new ResponseEntity<>(offers, HttpStatus.OK);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<List<PictureDTO>> getAllPictures() throws FileNotFoundException, IOException {
+		List<PictureDTO> offers = service.getAllDTO();
+		return new ResponseEntity<>(offers, HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<PictureDTO> getPicture(@PathVariable("id") long id) {
-		try {
-			return new ResponseEntity<>(service.getOne(id), HttpStatus.OK);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<PictureDTO> getPicture(@PathVariable("id") long id) throws FileNotFoundException, IOException {
+		return new ResponseEntity<>(service.getOneDTO(id), HttpStatus.OK);
 	}
 
 	@PostMapping
-	public ResponseEntity<Object> addPicture(@RequestParam(name = "file") MultipartFile file) {
-		try {
-			service.add(file);
-			return new ResponseEntity<>(HttpStatus.OK);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<Object> addPicture(@RequestParam(name = "file") MultipartFile file) throws IOException {
+		service.add(file);
+		return new ResponseEntity<>("Successfully added picture!", HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Object> deletePicture(@PathVariable("id") long id) {
-		try {
-			service.delete(id);
-			return new ResponseEntity<>(HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<Object> deletePicture(@PathVariable("id") long id) throws IOException {
+		service.delete(id);
+		return new ResponseEntity<>("Successfully deleted picture!", HttpStatus.OK);
 	}
 
 }

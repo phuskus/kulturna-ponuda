@@ -25,46 +25,30 @@ public class SubscriptionController {
 
     @GetMapping
     public ResponseEntity<List<SubscriptionDTO>> getAllSubscriptions() {
-        List<SubscriptionDTO> subscriptions = service.getAll();
+        List<SubscriptionDTO> subscriptions = service.getAllDTO();
         return new ResponseEntity<>(subscriptions, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<SubscriptionDTO> getSubscription(@PathVariable("id") long id) {
-        try {
-            return new ResponseEntity<>(service.getOne(id), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(service.getOneDTO(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Object> addSubscription(@Valid @RequestBody SubscriptionDTO dto) {
-        try {
-            service.create(dto);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<String> addSubscription(@Valid @RequestBody SubscriptionDTO dto) {
+        service.create(dto);
+        return new ResponseEntity<>("Successfully added subscription!", HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateSubscription(@Valid @RequestBody SubscriptionDTO dto, @PathVariable long id) {
-        try {
-            SubscriptionDTO updated = service.update(dto, id);
-            return new ResponseEntity<>(updated, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<SubscriptionDTO> updateSubscription(@Valid @RequestBody SubscriptionDTO dto, @PathVariable long id) {
+        SubscriptionDTO updated = service.update(dto, id);
+        return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<SubscriptionDTO> deleteSubscription(@PathVariable("id") long id) {
-        try {
-            service.delete(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<String> deleteSubscription(@PathVariable("id") long id) {
+        service.delete(id);
+        return new ResponseEntity<>("Successfully deleted subscription!", HttpStatus.OK);
     }
 }
