@@ -7,9 +7,10 @@ import ftn.kts.model.Subscription;
 import ftn.kts.model.Subcategory;
 import ftn.kts.repository.SubscriptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -31,13 +32,8 @@ public class SubscriptionService {
 		this.registeredUserService = registeredUserService;
 	}
 
-	public List<SubscriptionDTO> getAllDTO() {
-		List<Subscription> subscriptions = subscriptionRepository.findAll();
-		List<SubscriptionDTO> dtos = new ArrayList<>();
-		for (Subscription s : subscriptions) {
-			dtos.add(toDTO(s));
-		}
-		return dtos;
+	public Page<SubscriptionDTO> getAllDTO(Pageable pageable) {
+		return subscriptionRepository.findAll(pageable).map(this::toDTO);
 	}
 
 	public SubscriptionDTO getOneDTO(long id) {

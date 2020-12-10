@@ -5,9 +5,10 @@ import ftn.kts.exceptions.UniqueConstraintViolationException;
 import ftn.kts.model.*;
 import ftn.kts.repository.SubcategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -23,13 +24,8 @@ public class SubcategoryService {
 		this.categoryService = categoryService;
 	}
 
-	public List<SubcategoryDTO> getAllDTO() {
-		List<Subcategory> subcategories = subcategoryRepository.findAll();
-		List<SubcategoryDTO> dtoList = new ArrayList<SubcategoryDTO>();
-		for (Subcategory o : subcategories) {
-			dtoList.add(toDTO(o));
-		}
-		return dtoList;
+	public Page<SubcategoryDTO> getAllDTO(Pageable pageable) {
+		return subcategoryRepository.findAll(pageable).map(this::toDTO);
 	}
 
 	public SubcategoryDTO getOneDTO(long id) {
