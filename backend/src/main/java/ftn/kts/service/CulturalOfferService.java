@@ -2,7 +2,6 @@ package ftn.kts.service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,14 +31,7 @@ public class CulturalOfferService {
 	}
 
 	public Page<CulturalOfferDTO> getAllDTO(Pageable paging) {
-		Page<CulturalOffer> offers = offerRepository.findAll(paging);
-		Page<CulturalOfferDTO> dtoList = offers.map(new Function<CulturalOffer, CulturalOfferDTO>() {
-			@Override
-			public CulturalOfferDTO apply(CulturalOffer o) {
-				return toDTO(o);
-			}
-		});
-		return dtoList;
+		return offerRepository.findAll(paging).map(this::toDTO);
 	}
 
 	public CulturalOfferDTO getOneDTO(long id) {

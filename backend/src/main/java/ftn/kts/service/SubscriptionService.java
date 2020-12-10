@@ -11,10 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.function.Function;
 
 @Service
 public class SubscriptionService {
@@ -35,14 +33,7 @@ public class SubscriptionService {
 	}
 
 	public Page<SubscriptionDTO> getAllDTO(Pageable pageable) {
-		Page<Subscription> subscriptions = subscriptionRepository.findAll(pageable);
-		Page<SubscriptionDTO> dtoList = subscriptions.map(new Function<Subscription, SubscriptionDTO>() {
-			@Override
-			public SubscriptionDTO apply(Subscription s) {
-				return toDTO(s);
-			}
-		});
-		return dtoList;
+		return subscriptionRepository.findAll(pageable).map(this::toDTO);
 	}
 
 	public SubscriptionDTO getOneDTO(long id) {

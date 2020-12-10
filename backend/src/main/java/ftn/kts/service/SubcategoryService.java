@@ -1,6 +1,5 @@
 package ftn.kts.service;
 
-import ftn.kts.dto.CulturalOfferDTO;
 import ftn.kts.dto.SubcategoryDTO;
 import ftn.kts.exceptions.UniqueConstraintViolationException;
 import ftn.kts.model.*;
@@ -10,10 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.function.Function;
 
 @Service
 public class SubcategoryService {
@@ -28,14 +25,7 @@ public class SubcategoryService {
 	}
 
 	public Page<SubcategoryDTO> getAllDTO(Pageable pageable) {
-		Page<Subcategory> subcategories = subcategoryRepository.findAll(pageable);
-		Page<SubcategoryDTO> dtoList = subcategories.map(new Function<Subcategory, SubcategoryDTO>() {
-			@Override
-			public SubcategoryDTO apply(Subcategory s) {
-				return toDTO(s);
-			}
-		});
-		return dtoList;
+		return subcategoryRepository.findAll(pageable).map(this::toDTO);
 	}
 
 	public SubcategoryDTO getOneDTO(long id) {
