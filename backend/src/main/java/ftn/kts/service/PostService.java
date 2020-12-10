@@ -1,10 +1,11 @@
 package ftn.kts.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import ftn.kts.dto.PostDTO;
@@ -26,13 +27,8 @@ public class PostService {
         this.picService = picService;
     }
 
-    public List<PostDTO> getAllDTO() {
-        List<Post> posts = postRepository.findAll();
-        List<PostDTO> dtoList = new ArrayList<>();
-        for (Post p : posts) {
-            dtoList.add(toDTO(p));
-        }
-        return dtoList;
+    public Page<PostDTO> getAllDTO(Pageable pageable) {
+        return postRepository.findAll(pageable).map(this::toDTO);
     }
 
     public PostDTO getOneDTO(long id) {
