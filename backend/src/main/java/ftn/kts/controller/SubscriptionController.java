@@ -9,57 +9,63 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @Validated
 @RequestMapping("/subscriptions")
 public class SubscriptionController {
 
-    private SubscriptionService service;
+	private SubscriptionService service;
 
-    @Autowired
-    public SubscriptionController(SubscriptionService subscriptionService) {
-        this.service = subscriptionService;
-    }
+	@Autowired
+	public SubscriptionController(SubscriptionService subscriptionService) {
+		this.service = subscriptionService;
+	}
 
-    @GetMapping
-    public ResponseEntity<Page<SubscriptionDTO>> getAllSubscriptions(@RequestParam(defaultValue = "0") Integer pageNo,
-                                                                     @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
-                                                                     @RequestParam(defaultValue = "true") String descending) {
-        Pageable paging;
-        if (descending.equals("true"))
-            paging = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.DESC, sortBy));
-        else
-            paging = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, sortBy));
-        Page<SubscriptionDTO> subscriptions = service.getAllDTO(paging);
-        return new ResponseEntity<>(subscriptions, HttpStatus.OK);
-    }
+	@GetMapping
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+	public ResponseEntity<Page<SubscriptionDTO>> getAllSubscriptions(@RequestParam(defaultValue = "0") Integer pageNo,
+			@RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
+			@RequestParam(defaultValue = "true") String descending) {
+		Pageable paging;
+		if (descending.equals("true"))
+			paging = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.DESC, sortBy));
+		else
+			paging = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, sortBy));
+		Page<SubscriptionDTO> subscriptions = service.getAllDTO(paging);
+		return new ResponseEntity<>(subscriptions, HttpStatus.OK);
+	}
 
-    @GetMapping("/{id}")
-    public ResponseEntity<SubscriptionDTO> getSubscription(@PathVariable("id") long id) {
-        return new ResponseEntity<>(service.getOneDTO(id), HttpStatus.OK);
-    }
+	@GetMapping("/{id}")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+	public ResponseEntity<SubscriptionDTO> getSubscription(@PathVariable("id") long id) {
+		return new ResponseEntity<>(service.getOneDTO(id), HttpStatus.OK);
+	}
 
-    @PostMapping
-    public ResponseEntity<String> addSubscription(@Valid @RequestBody SubscriptionDTO dto) {
-        service.create(dto);
-        return new ResponseEntity<>("Successfully added subscription!", HttpStatus.CREATED);
-    }
+	@PostMapping
+	@PreAuthorize("hasRole('USER')")
+	public ResponseEntity<String> addSubscription(@Valid @RequestBody SubscriptionDTO dto) {
+		service.create(dto);
+		return new ResponseEntity<>("Successfully added subscription!", HttpStatus.CREATED);
+	}
 
-    @PutMapping("/{id}")
-    public ResponseEntity<SubscriptionDTO> updateSubscription(@Valid @RequestBody SubscriptionDTO dto, @PathVariable long id) {
-        SubscriptionDTO updated = service.update(dto, id);
-        return new ResponseEntity<>(updated, HttpStatus.OK);
-    }
+	@PutMapping("/{id}")
+	@PreAuthorize("hasRole('USER')")
+	public ResponseEntity<SubscriptionDTO> updateSubscription(@Valid @RequestBody SubscriptionDTO dto,
+			@PathVariable long id) {
+		SubscriptionDTO updated = service.update(dto, id);
+		return new ResponseEntity<>(updated, HttpStatus.OK);
+	}
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteSubscription(@PathVariable("id") long id) {
-        service.delete(id);
-        return new ResponseEntity<>("Successfully deleted subscription!", HttpStatus.OK);
-    }
+	@DeleteMapping("/{id}")
+	@PreAuthorize("hasRole('USER')")
+	public ResponseEntity<String> deleteSubscription(@PathVariable("id") long id) {
+		service.delete(id);
+		return new ResponseEntity<>("Successfully deleted subscription!", HttpStatus.OK);
+	}
 }
