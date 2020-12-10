@@ -3,6 +3,10 @@ package ftn.kts.controller;
 import ftn.kts.dto.PostDTO;
 import ftn.kts.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,8 +30,15 @@ public class PostController {
 
 	@GetMapping
 	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-	public ResponseEntity<List<PostDTO>> getAllPosts() {
-		List<PostDTO> posts = service.getAllDTO();
+	public ResponseEntity<Page<PostDTO>> getAllPosts(@RequestParam(defaultValue = "0") Integer pageNo,
+													 @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
+													 @RequestParam(defaultValue = "true") String descending) {
+		Pageable paging;
+		if (descending.equals("true"))
+			paging = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.DESC, sortBy));
+		else
+			paging = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, sortBy));
+		Page<PostDTO> posts = service.getAllDTO(paging);
 		return new ResponseEntity<>(posts, HttpStatus.OK);
 	}
 
