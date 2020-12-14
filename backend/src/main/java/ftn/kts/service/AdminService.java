@@ -9,6 +9,7 @@ import ftn.kts.repository.AdminRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class AdminService {
@@ -19,7 +20,7 @@ public class AdminService {
         this.adminRepository = adminRepository;
     }
 
-    public List<AdminDTO> getAll() {
+    public List<AdminDTO> getAllDTO() {
         List<Admin> admins = adminRepository.findAll();
         List<AdminDTO> dtoList = new ArrayList<>();
         for (Admin o : admins) {
@@ -28,7 +29,7 @@ public class AdminService {
         return dtoList;
     }
 
-    public AdminDTO getOne(long id) {
+    public AdminDTO getOneDTO(long id) {
         Admin admin = adminRepository.findById(id).get();
         AdminDTO dto = toDTO(admin);
         return dto;
@@ -47,6 +48,15 @@ public class AdminService {
 
     public void delete(Long id) {
         adminRepository.deleteById(id);
+    }
+    
+    public Admin getOne(Long id) {
+		return adminRepository.findById(id)
+				.orElseThrow(() -> new NoSuchElementException("Admin with id " + id + " doesn't exist!"));
+    }
+    
+    public List<Admin> getAll() {
+    	return adminRepository.findAll();
     }
 
     protected Admin toEntity(AdminDTO dto) {

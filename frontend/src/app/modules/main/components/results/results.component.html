@@ -1,0 +1,30 @@
+<mat-card class="example-card" style="margin-bottom: 40px">
+  <mat-card-subtitle>Search</mat-card-subtitle>
+</mat-card>
+
+<mat-card
+  class="result-card"
+  *ngFor="let i of [1, 2, 3, 4, 5]"
+  [routerLink]="'/offers/' + result.id"
+>
+  <div fxLayout="row">
+    <div fxLayout="column" class="img-col">
+      <img [src]="result.image" />
+    </div>
+
+    <div fxLayout="column" class="content-col">
+      <div fxLayout="row" fxLayoutAlign="space-between">
+        <div fxLayout="column">{{ result.name }}</div>
+        <div fxLayout="column">{{ result.location }}</div>
+      </div>
+
+      <div fxLayout="row" style="padding: 15px 0px">
+        <div>{{ result.category }}</div>
+      </div>
+
+      <div fxLayout="row">
+        {{ result.description }}
+      </div>
+    </div>
+  </div>
+</mat-card>

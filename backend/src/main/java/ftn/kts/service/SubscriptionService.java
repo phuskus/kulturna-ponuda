@@ -5,78 +5,84 @@ import ftn.kts.model.CulturalOffer;
 import ftn.kts.model.RegisteredUser;
 import ftn.kts.model.Subscription;
 import ftn.kts.model.Subcategory;
-import ftn.kts.repository.CulturalOfferRepository;
-import ftn.kts.repository.RegisteredUserRepository;
-import ftn.kts.repository.SubcategoryRepository;
 import ftn.kts.repository.SubscriptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class SubscriptionService {
 
-    private SubscriptionRepository subscriptionRepository;
-    private CulturalOfferRepository culturalOfferRepository;
-    private SubcategoryRepository subcategoryRepository;
-    private RegisteredUserRepository registeredUserRepository;
+	private SubscriptionRepository subscriptionRepository;
+	private CulturalOfferService culturalOfferService;
+	private SubcategoryService subcategoryService;
+	private RegisteredUserService registeredUserService;
 
-    @Autowired
-    public SubscriptionService(SubscriptionRepository subscriptionRepository, CulturalOfferRepository culturalOfferRepository, SubcategoryRepository subcategoryRepository, RegisteredUserRepository registeredUserRepository) {
-        this.subscriptionRepository = subscriptionRepository;
-        this.culturalOfferRepository = culturalOfferRepository;
-        this.subcategoryRepository = subcategoryRepository;
-        this.registeredUserRepository = registeredUserRepository;
-    }
+	@Autowired
+	public SubscriptionService(SubscriptionRepository subscriptionRepository,
+			CulturalOfferService culturalOfferService, SubcategoryService subcategoryService,
+			RegisteredUserService registeredUserService) {
+		this.subscriptionRepository = subscriptionRepository;
+		this.culturalOfferService = culturalOfferService;
+		this.subcategoryService = subcategoryService;
+		this.registeredUserService = registeredUserService;
+	}
 
-    public List<SubscriptionDTO> getAll() {
-        List<Subscription> subscriptions = subscriptionRepository.findAll();
-        List<SubscriptionDTO> dtos = new ArrayList<>();
-        for (Subscription s : subscriptions)
-        {
-            dtos.add(toDTO(s));
-        }
-        return dtos;
-    }
+	public Page<SubscriptionDTO> getAllDTO(Pageable pageable) {
+		return subscriptionRepository.findAll(pageable).map(this::toDTO);
+	}
 
-    public SubscriptionDTO getOne(long id) {
-        Subscription subscription = subscriptionRepository.findById(id).get();
-        return toDTO(subscription);
-    }
+	public SubscriptionDTO getOneDTO(long id) {
+		Subscription subscription = getOne(id);
+		return toDTO(subscription);
+	}
 
-    public void create(SubscriptionDTO dto) {
-        Subscription subscription = toEntity(dto);
-        subscriptionRepository.save(subscription);
-    }
+	public void create(SubscriptionDTO dto) {
+		Subscription subscription = toEntity(dto);
+		subscriptionRepository.save(subscription);
+	}
 
-    public SubscriptionDTO update(SubscriptionDTO dto, Long id) {
-        Subscription subscription = subscriptionRepository.findById(id).get();
-        updateSubscription(subscription, dto);
-        return toDTO(subscription);
-    }
+	public SubscriptionDTO update(SubscriptionDTO dto, Long id) {
+		Subscription subscription = getOne(id);
+		updateSubscription(subscription, dto);
+		return toDTO(subscription);
+	}
 
-    public void delete(Long id) {
-        subscriptionRepository.deleteById(id);
-    }
+	public void delete(Long id) {
+		Subscription sub = getOne(id);
+		subscriptionRepository.delete(sub);
+	}
 
-    private Subscription toEntity(SubscriptionDTO dto) {
-        Subcategory subCategory = subcategoryRepository.findById(dto.getSubcategoryId()).get();
-        CulturalOffer culturalOffer = culturalOfferRepository.findById(dto.getCulturalOfferId()).get();
-        RegisteredUser registeredUser = registeredUserRepository.findById(dto.getRegisteredUserId()).get();
-        return new Subscription(dto.getId(), dto.getDateOfSubscription(), subCategory, culturalOffer, registeredUser);
-    }
+	public Subscription getOne(long id) {
+		return subscriptionRepository.findById(id)
+				.orElseThrow(() -> new NoSuchElementException("Subscription with id " + id + " doesn't exist!"));
+	}
 
-    private SubscriptionDTO toDTO(Subscription entity) {
-        return new SubscriptionDTO(entity.getId(), entity.getDateOfSubscription(), entity.getUser(), entity.getSubcategory(), entity.getCulturalOffer());
-    }
+	public List<Subscription> getAll() {
+		return subscriptionRepository.findAll();
+	}
+	
+	private Subscription toEntity(SubscriptionDTO dto) {
+		Subcategory subCategory = subcategoryService.getOne(dto.getSubcategoryId());
+		CulturalOffer culturalOffer = culturalOfferService.getOne(dto.getCulturalOfferId());
+		RegisteredUser registeredUser = registeredUserService.getOne(dto.getRegisteredUserId());
+		return new Subscription(dto.getId(), dto.getDateOfSubscription(), subCategory, culturalOffer, registeredUser);
+	}
 
-    private void updateSubscription(Subscription subscription, SubscriptionDTO dto) {
-        subscription.setDateOfSubscription(dto.getDateOfSubscription());
-        subscription.setUser(registeredUserRepository.findById(dto.getRegisteredUserId()).get());
+	private SubscriptionDTO toDTO(Subscription entity) {
+		return new SubscriptionDTO(entity.getId(), entity.getDateOfSubscription(), entity.getUser(),
+				entity.getSubcategory(), entity.getCulturalOffer());
+	}
 
-        subscription.setCulturalOffer(culturalOfferRepository.findById(dto.getCulturalOfferId()).get());
-        subscription.setSubcategory(subcategoryRepository.findById(dto.getCulturalOfferId()).get());
-    }
+	private void updateSubscription(Subscription subscription, SubscriptionDTO dto) {
+		subscription.setDateOfSubscription(dto.getDateOfSubscription());
+		subscription.setUser(registeredUserService.getOne(dto.getRegisteredUserId()));
+
+		subscription.setCulturalOffer(culturalOfferService.getOne(dto.getCulturalOfferId()));
+		subscription.setSubcategory(subcategoryService.getOne(dto.getCulturalOfferId()));
+	}
 }

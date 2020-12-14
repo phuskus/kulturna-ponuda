@@ -1,12 +1,11 @@
 package ftn.kts.controller;
 
 import ftn.kts.dto.AdminDTO;
-import ftn.kts.dto.CulturalOfferDTO;
-import ftn.kts.model.Admin;
 import ftn.kts.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,20 +24,22 @@ public class AdminController {
 
     @GetMapping
     public ResponseEntity<List<AdminDTO>> getAllAdmins() {
-        List<AdminDTO> admins = service.getAll();
+        List<AdminDTO> admins = service.getAllDTO();
         return new ResponseEntity<>(admins, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AdminDTO> getAdmin(@PathVariable("id") long id) {
         try {
-            return new ResponseEntity<>(service.getOne(id), HttpStatus.OK);
+            return new ResponseEntity<>(service.getOneDTO(id), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Object> addAdmin(@Valid @RequestBody AdminDTO dto) {
         try {
             service.create(dto);
@@ -49,6 +50,7 @@ public class AdminController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Object> updateAdmin(@Valid @RequestBody AdminDTO dto, @PathVariable long id) {
         try {
             AdminDTO updated = service.update(dto, id);
@@ -59,6 +61,7 @@ public class AdminController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AdminDTO> deleteAdmin(@PathVariable("id") long id) {
         try {
             service.delete(id);

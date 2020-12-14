@@ -1,40 +1,38 @@
 package ftn.kts.service;
 
+import java.util.List;
+import java.util.NoSuchElementException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import ftn.kts.dto.PostDTO;
 import ftn.kts.model.CulturalOffer;
 import ftn.kts.model.Post;
-import ftn.kts.repository.CulturalOfferRepository;
 import ftn.kts.repository.PostRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class PostService {
 
     private PostRepository postRepository;
-    private CulturalOfferRepository cultRepository;
-    //private PictureRepository picRepository;
+    private CulturalOfferService cultService;
+    private PictureService picService;
 
     @Autowired
-    public PostService(PostRepository postRepository, CulturalOfferRepository cultRepository) {
+    public PostService(PostRepository postRepository, CulturalOfferService cultService, PictureService picService) {
         this.postRepository = postRepository;
-        this.cultRepository = cultRepository;
+        this.cultService = cultService;
+        this.picService = picService;
     }
 
-    public List<PostDTO> getAll() {
-        List<Post> posts = postRepository.findAll();
-        List<PostDTO> dtoList = new ArrayList<>();
-        for (Post p : posts) {
-            dtoList.add(toDTO(p));
-        }
-        return dtoList;
+    public Page<PostDTO> getAllDTO(Pageable pageable) {
+        return postRepository.findAll(pageable).map(this::toDTO);
     }
 
-    public PostDTO getOne(long id) {
-        Post post = postRepository.findById(id).get();
+    public PostDTO getOneDTO(long id) {
+        Post post = getOne(id);
         PostDTO dto = toDTO(post);
         return dto;
     }
@@ -45,18 +43,28 @@ public class PostService {
     }
 
     public PostDTO update(PostDTO dto, Long id) {
-        Post post = postRepository.findById(id).get();
+        Post post = getOne(id);
         updatePost(post, dto);
         postRepository.save(post);
         return toDTO(post);
     }
 
     public void delete(Long id) {
-        postRepository.deleteById(id);
+        Post post = getOne(id);
+        postRepository.delete(post);
     }
+    
+	public Post getOne(long id) {
+		return postRepository.findById(id)
+				.orElseThrow(() -> new NoSuchElementException("Post with id " + id + " doesn't exist!"));
+	}
+
+	public List<Post> getAll(long id) {
+		return postRepository.findAll();
+	}
 
     private void updatePost(Post post, PostDTO dto) {
-        CulturalOffer offer = cultRepository.getOne(dto.getCulturalOffer());
+        CulturalOffer offer = cultService.getOne(dto.getCulturalOffer());
         post.setContent(dto.getContent());
         post.setCulturalOffer(offer);
         //TODO: pictures later!
@@ -68,7 +76,7 @@ public class PostService {
     }
 
     private Post toEntity(PostDTO dto) {
-        CulturalOffer offer = cultRepository.getOne(dto.getCulturalOffer());
+        CulturalOffer offer = cultService.getOne(dto.getCulturalOffer());
         Post post = new Post(dto.getId(), dto.getContent(), offer);
         return post;
     }

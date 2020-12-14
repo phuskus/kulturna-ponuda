@@ -10,14 +10,23 @@ public class SubcategoryDTO {
     @NotBlank(message = "Subcategory name is required!")
     private String name;
     @NotNull(message = "Subcategory needs to belong to a category!")
-    private Long categoryId;
+    private Long category;
 
     // TODO: Sets of cultural offers and subscriptions?
+    
+    public SubcategoryDTO() {
+    	
+    }
 
     public SubcategoryDTO(Long id, String name, Category category) {
         this.id = id;
         this.name = name;
-        this.categoryId = category.getId();
+        this.category = category.getId();
+    }
+    
+    public SubcategoryDTO(String name, Long category) {
+        this.name = name;
+        this.category = category;
     }
 
     public Long getId() {
@@ -36,11 +45,11 @@ public class SubcategoryDTO {
         this.name = name;
     }
 
-    public Long getCategoryId() {
-        return categoryId;
+    public Long getCategory() {
+        return category;
     }
 
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
+    public void setCategory(Long category) {
+        this.category = category;
     }
 }
