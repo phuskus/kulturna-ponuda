@@ -74,6 +74,11 @@ public class CulturalOfferService {
 		return offerRepository.findByCategory(category, paging).map(this::toDTO);
 	}
 	
+
+	public Page<CulturalOfferDTO> filterCity(String city, Pageable paging) {
+		return offerRepository.findByCityContainingIgnoreCase(city, paging).map(this::toDTO);
+	}
+	
 	private void checkUnique(CulturalOfferDTO dto) throws UniqueConstraintViolationException {
 		CulturalOffer offer = offerRepository.findByNameIgnoringCase(dto.getName());
 		if (offer != null) {
@@ -112,5 +117,6 @@ public class CulturalOfferService {
 		offer.setName(dto.getName());
 		offer.setRegion(dto.getRegion());
 	}
+
 
 }
