@@ -13,4 +13,6 @@ public interface CulturalOfferRepository extends JpaRepository<CulturalOffer, Lo
 	Page<CulturalOffer> findAll(Pageable pageable);
 	Page<CulturalOffer> findByCategory(Subcategory category, Pageable pageable);
 	Page<CulturalOffer> findByCityContainingIgnoreCase(String city, Pageable pageable);
+	Page<CulturalOffer> findByNameContainingIgnoreCase(String name, Pageable pageable);
+	Page<CulturalOffer> findByDescriptionContainingIgnoreCase(String description, Pageable pageable);
 }
