@@ -10,24 +10,25 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.function.Function;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class ReviewService {
+
 	private ReviewRepository reviewRepository;
 	private RegisteredUserService userService;
 	private CulturalOfferService offerService;
+	private PictureService pictureService;
 
 	@Autowired
-	public ReviewService(ReviewRepository reviewRepository, RegisteredUserService userService,
-			CulturalOfferService offerService) {
+	public ReviewService(ReviewRepository reviewRepository,
+			CulturalOfferService offerService, PictureService pictureService) {
 		this.reviewRepository = reviewRepository;
-		this.userService = userService;
 		this.offerService = offerService;
+		this.pictureService = pictureService;
 	}
 
 	public Page<ReviewDTO> getAllDTO(Pageable pageable) {
@@ -65,6 +66,10 @@ public class ReviewService {
 		return reviewRepository.findAll();
 	}
 
+	public Set<ReviewDTO> convertToDTO(Set<Review> reviews) {
+		return reviews.stream().map(this::toDTO).collect(Collectors.toSet());
+	}
+
 	private Review toEntity(ReviewDTO dto) {
 		RegisteredUser user = userService.getOne(dto.getUser());
 		CulturalOffer offer = offerService.getOne(dto.getCulturalOffer());
@@ -72,8 +77,10 @@ public class ReviewService {
 	}
 
 	private ReviewDTO toDTO(Review review) {
-		return new ReviewDTO(review.getId(), review.getRating(), review.getContent(), review.getUser(),
+		ReviewDTO dto = new ReviewDTO(review.getId(), review.getRating(), review.getContent(), review.getUser(),
 				review.getCulturalOffer());
+		dto.setPictures(pictureService.convertToDTO(review.getPictures()));
+		return dto;
 	}
 
 	private Review updateCategory(Review review, ReviewDTO dto) {
@@ -83,5 +90,10 @@ public class ReviewService {
 		review.setUser(userService.getOne(dto.getUser()));
 
 		return review;
+	}
+
+	@Autowired
+	public void setUserService(RegisteredUserService userService) {
+		this.userService = userService;
 	}
 }

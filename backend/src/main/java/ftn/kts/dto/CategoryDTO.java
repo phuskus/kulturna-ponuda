@@ -1,8 +1,7 @@
 package ftn.kts.dto;
 
-import ftn.kts.model.Subcategory;
-
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
 import java.util.Set;
 
 public class CategoryDTO {
@@ -11,11 +10,12 @@ public class CategoryDTO {
     @NotBlank(message = "Name is required!")
     private String name;
 
-//    private Set<SubCategoryDTO>
+    private Set<SubcategoryDTO> subcategories;
 
-    public CategoryDTO(Long id, String name, Set<Subcategory> subcategorySet){
+    public CategoryDTO(Long id, String name){
         this.id  = id;
         this.name = name;
+        this.subcategories = new HashSet<>();
     }
 
     public Long getId() {
@@ -32,5 +32,13 @@ public class CategoryDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<SubcategoryDTO> getSubcategories() {
+        return subcategories;
+    }
+
+    public void setSubcategories(Set<SubcategoryDTO> subcategories) {
+        this.subcategories = subcategories;
     }
 }

@@ -7,9 +7,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +59,7 @@ public class PictureService {
 		}		
 		return dtos;
 	}
-	
+
 	public void delete(Long id) throws IOException {
 		Picture picture = getOne(id);
 		Files.delete(Paths.get(projectFolder + picture.getPath()));
@@ -76,13 +75,25 @@ public class PictureService {
 		return pictureRepository.findAll();
 	}
 	
-	private PictureDTO toDTO(Picture entity) throws FileNotFoundException, IOException {
+	private PictureDTO toDTO(Picture entity) throws IOException {
 		String encodedData = getEncodedPicture(entity.getPath());
 		PictureDTO dto = new PictureDTO(entity.getId(), entity.getPlaceholder(), encodedData);
 		return dto;
 	}
+
+	public Set<PictureDTO> convertToDTO(Set<Picture> pictures) {
+		Set<PictureDTO> pics = new HashSet<>();
+		try {
+			for (Picture p : pictures)
+				pics.add(toDTO(p));
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			return pics;
+		}
+	}
 	
-	private String getEncodedPicture(String path) throws FileNotFoundException, IOException {
+	private String getEncodedPicture(String path) throws IOException {
 		String filePath = projectFolder + path;
 		File f = new File(filePath);
 		FileInputStream fis = new FileInputStream(f);
@@ -94,4 +105,5 @@ public class PictureService {
 		fis.close();
 		return imageString;
 	}
+
 }

@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class SubscriptionService {
@@ -65,6 +67,10 @@ public class SubscriptionService {
 	public List<Subscription> getAll() {
 		return subscriptionRepository.findAll();
 	}
+
+	public Set<SubscriptionDTO> convertToDTO(Set<Subscription> subscriptions) {
+		return subscriptions.stream().map(this::toDTO).collect(Collectors.toSet());
+	}
 	
 	private Subscription toEntity(SubscriptionDTO dto) {
 		Subcategory subCategory = subcategoryService.getOne(dto.getSubcategoryId());
@@ -85,4 +91,5 @@ public class SubscriptionService {
 		subscription.setCulturalOffer(culturalOfferService.getOne(dto.getCulturalOfferId()));
 		subscription.setSubcategory(subcategoryService.getOne(dto.getCulturalOfferId()));
 	}
+
 }

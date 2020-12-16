@@ -13,12 +13,9 @@ import java.util.NoSuchElementException;
 
 @Service
 public class CategoryService {
-	private CategoryRepository categoryRepository;
 
-	@Autowired
-	public CategoryService(CategoryRepository categoryRepository) {
-		this.categoryRepository = categoryRepository;
-	}
+	private CategoryRepository categoryRepository;
+	private SubcategoryService subcategoryService;
 
 	public List<CategoryDTO> getAllDTO() {
 		List<Category> categories = categoryRepository.findAll();
@@ -81,11 +78,23 @@ public class CategoryService {
 	}
 
 	private CategoryDTO toDTO(Category cat) {
-		return new CategoryDTO(cat.getId(), cat.getName(), cat.getSubcategories());
+		CategoryDTO dto = new CategoryDTO(cat.getId(), cat.getName());
+		dto.setSubcategories(subcategoryService.convertToDTO(cat.getSubcategories()));
+		return dto;
 	}
 
 	private Category updateCategory(Category category, CategoryDTO dto) {
 		category.setName(dto.getName());
 		return category;
+	}
+
+	@Autowired
+	public void setCategoryRepository(CategoryRepository categoryRepository) {
+		this.categoryRepository = categoryRepository;
+	}
+
+	@Autowired
+	public void setSubcategoryService(SubcategoryService subcategoryService) {
+		this.subcategoryService = subcategoryService;
 	}
 }
