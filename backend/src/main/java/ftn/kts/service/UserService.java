@@ -1,20 +1,17 @@
 package ftn.kts.service;
 
-import ftn.kts.dto.CulturalOfferDTO;
 import ftn.kts.dto.UserDTO;
 import ftn.kts.dto.UserTokenStateDTO;
 import ftn.kts.exceptions.PasswordNotChangedException;
 import ftn.kts.exceptions.UniqueConstraintViolationException;
 import ftn.kts.model.Authority;
-import ftn.kts.model.CulturalOffer;
 import ftn.kts.model.RegisteredUser;
 import ftn.kts.model.User;
 import ftn.kts.repository.UserRepository;
 import ftn.kts.security.CustomUserDetailsService;
 import ftn.kts.security.TokenUtils;
+import ftn.kts.utils.RandomUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,19 +30,26 @@ public class UserService {
     private AuthenticationManager authenticationManager;
     private CustomUserDetailsService userDetailsService;
     private AuthorityService authorityService;
+    private MailSenderService mailSenderService;
 
     @Autowired
     public UserService(UserRepository userRepository, TokenUtils tokenUtils, AuthenticationManager authenticationManager,
-                       CustomUserDetailsService userDetailsService, AuthorityService authorityService) {
+                       CustomUserDetailsService userDetailsService, AuthorityService authorityService,
+                       MailSenderService mailSenderService) {
         this.userRepository = userRepository;
         this.tokenUtils = tokenUtils;
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
         this.authorityService = authorityService;
+        this.mailSenderService = mailSenderService;
     }
 
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    public User findByKey(String key) {
+        return userRepository.findByKey(key);
     }
 
     public void create(UserDTO dto) throws UniqueConstraintViolationException {
@@ -55,7 +59,11 @@ public class UserService {
         ArrayList<Authority> auth = new ArrayList<>();
         auth.add(authorityService.findByName("REGISTERED_USER"));
         user.setAuthorities(auth);
+        String generatedKey = RandomUtil.buildAuthString();
+        user.setKey(generatedKey);
+        mailSenderService.confirmRegistration(user.getUsername(), generatedKey);
         userRepository.save(user);
+
     }
 
     public UserTokenStateDTO getLoggedIn(String username, String password) throws DisabledException, PasswordNotChangedException {
@@ -81,6 +89,16 @@ public class UserService {
     public String changePassword(String oldPassword, String newPassword) {
         String user = userDetailsService.changePassword(oldPassword, newPassword);
         return user;
+    }
+
+    public void confirmRegistration(String key) throws NoSuchElementException {
+        User user = userRepository.findByKey(key);
+        if (user == null) {
+            throw new NoSuchElementException("User already activated or doesn't exist!");
+        }
+        user.setEnabled(true);
+        user.setKey("");
+        userRepository.save(user);
     }
 
     public User getOne(String username) throws NoSuchElementException {
