@@ -88,9 +88,8 @@ public class PictureService {
 				pics.add(toDTO(p));
 		} catch (IOException e) {
 			e.printStackTrace();
-		} finally {
-			return pics;
 		}
+		return pics;
 	}
 	
 	private String getEncodedPicture(String path) throws IOException {

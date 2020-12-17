@@ -70,7 +70,7 @@ public class RegisteredUserService {
     }
 
     private RegisteredUserDTO toDTO (RegisteredUser entity) {
-        RegisteredUserDTO user = new RegisteredUserDTO(entity.getName(), entity.getUsername(), entity.getPassword());
+        RegisteredUserDTO user = new RegisteredUserDTO(entity.getName(), entity.getUsername(), "");
         user.setReviews(reviewService.convertToDTO(entity.getReviews()));
         user.setSubscriptions(subscriptionService.convertToDTO(entity.getSubscriptions()));
         return user;
