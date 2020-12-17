@@ -15,6 +15,8 @@ import java.util.NoSuchElementException;
 public class RegisteredUserService {
 
     private RegisteredUserRepository registeredUserRepository;
+    private ReviewService reviewService;
+    private SubscriptionService subscriptionService;
 
     @Autowired
     public RegisteredUserService(RegisteredUserRepository registeredUserRepository) {
@@ -68,12 +70,24 @@ public class RegisteredUserService {
     }
 
     private RegisteredUserDTO toDTO (RegisteredUser entity) {
-        RegisteredUserDTO user = new RegisteredUserDTO(entity.getName(), entity.getUsername(), entity.getPassword());
+        RegisteredUserDTO user = new RegisteredUserDTO(entity.getName(), entity.getUsername(), "");
+        user.setReviews(reviewService.convertToDTO(entity.getReviews()));
+        user.setSubscriptions(subscriptionService.convertToDTO(entity.getSubscriptions()));
         return user;
     }
 
     private RegisteredUser toEntity(RegisteredUserDTO dto) {
         RegisteredUser user = new RegisteredUser(dto.getName(), dto.getUsername(), dto.getPassword());
         return user;
+    }
+
+    @Autowired
+    public void setReviewService(ReviewService reviewService) {
+        this.reviewService = reviewService;
+    }
+
+    @Autowired
+    public void setSubscriptionService(SubscriptionService subscriptionService) {
+        this.subscriptionService = subscriptionService;
     }
 }

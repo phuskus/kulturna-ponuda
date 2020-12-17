@@ -2,16 +2,17 @@ package ftn.kts.dto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 public class PostDTO {
 
 	private Long id;
 	@NotBlank(message = "Content is required!")
 	private String content;
-	// TODO: consider changing this to CulturalOfferDTO
 	@NotNull(message = "Cultural offer is required")
 	private Long culturalOffer;
-	// private Set<Picture> pictures;
+	private Set<PictureDTO> pictures;
 
 	public PostDTO() {
 	}
@@ -20,6 +21,14 @@ public class PostDTO {
 		this.id = id;
 		this.content = content;
 		this.culturalOffer = culturalOffer;
+		this.pictures = new HashSet<>();
+	}
+
+	public PostDTO(Long id, String content, Long culturalOffer, Set<PictureDTO> pictures) {
+		this.id = id;
+		this.content = content;
+		this.culturalOffer = culturalOffer;
+		this.pictures = pictures;
 	}
 
 	public Long getId() {
@@ -44,5 +53,13 @@ public class PostDTO {
 
 	public void setCulturalOffer(Long culturalOffer) {
 		this.culturalOffer = culturalOffer;
+	}
+
+	public Set<PictureDTO> getPictures() {
+		return pictures;
+	}
+
+	public void setPictures(Set<PictureDTO> pictures) {
+		this.pictures = pictures;
 	}
 }

@@ -1,5 +1,7 @@
 package ftn.kts.service;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -21,6 +23,9 @@ public class CulturalOfferService {
 	private CulturalOfferRepository offerRepository;
 	private AdminService adminService;
 	private SubcategoryService subcategoryService;
+	private ReviewService reviewService;
+	private PictureService pictureService;
+	private PostService postService;
 
 	@Autowired
 	public CulturalOfferService(CulturalOfferRepository offerRepository, AdminService adminService,
@@ -95,6 +100,9 @@ public class CulturalOfferService {
 		CulturalOfferDTO dto = new CulturalOfferDTO(entity.getId(), entity.getName(), entity.getDescription(),
 				entity.getLatitude(), entity.getLongitude(), entity.getAddress(), entity.getCity(), entity.getRegion(),
 				entity.getAdmin(), entity.getCategory());
+		dto.setPictures(pictureService.convertToDTO(entity.getPictures()));
+		dto.setPosts(postService.convertToDTO(entity.getPosts()));
+		dto.setReviews(reviewService.convertToDTO(entity.getReviews()));
 		return dto;
 	}
 
@@ -106,5 +114,20 @@ public class CulturalOfferService {
 		offer.setLongitude(dto.getLongitude());
 		offer.setName(dto.getName());
 		offer.setRegion(dto.getRegion());
+	}
+
+	@Autowired
+	public void setReviewService(ReviewService reviewService) {
+		this.reviewService = reviewService;
+	}
+
+	@Autowired
+	public void setPictureService(PictureService pictureService) {
+		this.pictureService = pictureService;
+	}
+
+	@Autowired
+	public void setPostService(PostService postService) {
+		this.postService = postService;
 	}
 }

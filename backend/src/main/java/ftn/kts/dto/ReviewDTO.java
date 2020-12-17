@@ -5,6 +5,8 @@ import ftn.kts.model.User;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ReviewDTO {
     private Long id;
@@ -18,7 +20,7 @@ public class ReviewDTO {
     private Long user;
     private Long culturalOffer;
 
-//    private Set<PicturesDTO> pictures;
+    private Set<PictureDTO> pictures;
 
 
     public ReviewDTO() {
@@ -30,6 +32,7 @@ public class ReviewDTO {
         this.content = content;
         this.user = user.getId();
         this.culturalOffer = offer.getId();
+        this.pictures = new HashSet<>();
     }
 
     public Long getId() {
@@ -70,5 +73,13 @@ public class ReviewDTO {
 
     public void setCulturalOffer(Long culturalOffer) {
         this.culturalOffer = culturalOffer;
+    }
+
+    public Set<PictureDTO> getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(Set<PictureDTO> pictures) {
+        this.pictures = pictures;
     }
 }
