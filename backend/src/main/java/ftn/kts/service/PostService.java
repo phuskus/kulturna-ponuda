@@ -2,6 +2,8 @@ package ftn.kts.service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,13 +20,13 @@ public class PostService {
 
     private PostRepository postRepository;
     private CulturalOfferService cultService;
-    private PictureService picService;
+    private PictureService pictureService;
 
     @Autowired
     public PostService(PostRepository postRepository, CulturalOfferService cultService, PictureService picService) {
         this.postRepository = postRepository;
         this.cultService = cultService;
-        this.picService = picService;
+        this.pictureService = picService;
     }
 
     public Page<PostDTO> getAllDTO(Pageable pageable) {
@@ -72,7 +74,12 @@ public class PostService {
 
     private PostDTO toDTO(Post entity) {
         PostDTO dto = new PostDTO(entity.getId(), entity.getContent(), entity.getCulturalOffer().getId());
+        dto.setPictures(pictureService.convertToDTO(entity.getPictures()));
         return dto;
+    }
+
+    public Set<PostDTO> convertToDTO(Set<Post> posts) {
+        return posts.stream().map(this::toDTO).collect(Collectors.toSet());
     }
 
     private Post toEntity(PostDTO dto) {
@@ -80,6 +87,5 @@ public class PostService {
         Post post = new Post(dto.getId(), dto.getContent(), offer);
         return post;
     }
-
 
 }

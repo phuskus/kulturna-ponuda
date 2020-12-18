@@ -6,7 +6,11 @@ import javax.validation.constraints.NotNull;
 import ftn.kts.model.Admin;
 import ftn.kts.model.Subcategory;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class CulturalOfferDTO {
+
 	private Long id;
 	@NotBlank(message = "Name is required!")
 	private String name;
@@ -24,11 +28,9 @@ public class CulturalOfferDTO {
 	private Long admin;
 	@NotNull(message = "Category ID is required!")
 	private Long category;
-
-//	private Set<ReviewDTO> reviews;
-//	private Set<PostDTO> posts;
-//	private Set<SubscriptionDTO> subscriptions;
-//	private Set<PictureDTO> pictures;
+	private Set<ReviewDTO> reviews;
+	private Set<PostDTO> posts;
+	private Set<PictureDTO> pictures;
 
 	public CulturalOfferDTO() {
 	}
@@ -43,9 +45,11 @@ public class CulturalOfferDTO {
 		this.address = address;
 		this.city = city;
 		this.region = region;
-		
 		this.admin = admin.getId();
 		this.category = category.getId();
+		this.reviews = new HashSet<>();
+		this.posts = new HashSet<>();
+		this.pictures = new HashSet<>();
 	}
 
 	public Long getId() {
@@ -127,4 +131,29 @@ public class CulturalOfferDTO {
 	public void setCategory(Long category) {
 		this.category = category;
 	}
+
+	public Set<ReviewDTO> getReviews() {
+		return reviews;
+	}
+
+	public void setReviews(Set<ReviewDTO> reviews) {
+		this.reviews = reviews;
+	}
+
+	public Set<PostDTO> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(Set<PostDTO> posts) {
+		this.posts = posts;
+	}
+
+	public Set<PictureDTO> getPictures() {
+		return pictures;
+	}
+
+	public void setPictures(Set<PictureDTO> pictures) {
+		this.pictures = pictures;
+	}
+
 }

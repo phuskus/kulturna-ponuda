@@ -29,6 +29,9 @@ public abstract class User implements UserDetails {
 	@Column(name = "enabled")
 	private boolean enabled;
 
+	@Column(name = "key")
+	private String key;
+
 	@Column(name = "role", insertable = false, updatable = false)
 	private String role;
 
@@ -97,6 +100,14 @@ public abstract class User implements UserDetails {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
 	}
 
 	@Override

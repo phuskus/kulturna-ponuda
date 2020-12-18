@@ -1,14 +1,12 @@
 package ftn.kts.dto;
 
 public class PictureDTO {
+
 	private Long id;
-
 	private String placeholder;
-
 	private String image;
 
 	public PictureDTO() {
-
 	}
 
 	public PictureDTO(Long id, String placeholder, String image) {
