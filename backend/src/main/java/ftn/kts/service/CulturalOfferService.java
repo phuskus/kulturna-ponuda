@@ -1,7 +1,5 @@
 package ftn.kts.service;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -73,7 +71,24 @@ public class CulturalOfferService {
 	public List<CulturalOffer> getAll(long id) {
 		return offerRepository.findAll();
 	}
-	
+
+	public Page<CulturalOfferDTO> filterCategory(long id, Pageable paging) {
+		Subcategory category = subcategoryService.getOne(id);
+		return offerRepository.findByCategory(category, paging).map(this::toDTO);
+	}
+
+	public Page<CulturalOfferDTO> filterCity(String city, Pageable paging) {
+		return offerRepository.findByCityContainingIgnoreCase(city, paging).map(this::toDTO);
+	}
+
+	public Page<CulturalOfferDTO> filterName(String name, Pageable paging) {
+		return offerRepository.findByNameContainingIgnoreCase(name, paging).map(this::toDTO);
+	}
+
+	public Page<CulturalOfferDTO> filterDescription(String desc, Pageable paging) {
+		return offerRepository.findByDescriptionContainingIgnoreCase(desc, paging).map(this::toDTO);
+	}
+
 	private void checkUnique(CulturalOfferDTO dto) throws UniqueConstraintViolationException {
 		CulturalOffer offer = offerRepository.findByNameIgnoringCase(dto.getName());
 		if (offer != null) {
@@ -83,11 +98,11 @@ public class CulturalOfferService {
 			} else {
 				if (!offer.getId().equals(dto.getId()))
 					throw new UniqueConstraintViolationException("Unique key constraint violated!", "name",
-							"Cultural Offer with this field already exists!");							
+							"Cultural Offer with this field already exists!");
 			}
 		}
 	}
-	
+
 	private CulturalOffer toEntity(CulturalOfferDTO dto) {
 		Admin admin = adminService.getOne(dto.getAdmin());
 		Subcategory category = subcategoryService.getOne(dto.getCategory());
