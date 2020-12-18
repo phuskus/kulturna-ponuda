@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class SubcategoryService {
@@ -18,14 +20,12 @@ public class SubcategoryService {
 	private SubcategoryRepository subcategoryRepository;
 	private CategoryService categoryService;
 
-	@Autowired
-	public SubcategoryService(SubcategoryRepository subcategoryRepository, CategoryService categoryService) {
-		this.subcategoryRepository = subcategoryRepository;
-		this.categoryService = categoryService;
-	}
-
 	public Page<SubcategoryDTO> getAllDTO(Pageable pageable) {
 		return subcategoryRepository.findAll(pageable).map(this::toDTO);
+	}
+
+	public Set<SubcategoryDTO> convertToDTO(Set<Subcategory> subcategories) {
+		return subcategories.stream().map(this::toDTO).collect(Collectors.toSet());
 	}
 
 	public SubcategoryDTO getOneDTO(long id) {
@@ -87,5 +87,15 @@ public class SubcategoryService {
 		subcategory.setName(dto.getName());
 		subcategory.setCategory(categoryService.getOne(dto.getCategory()));
 		// TODO: Add sets of subscriptions and cultural offers?
+	}
+
+	@Autowired
+	public void setSubcategoryRepository(SubcategoryRepository subcategoryRepository) {
+		this.subcategoryRepository = subcategoryRepository;
+	}
+
+	@Autowired
+	public void setCategoryService(CategoryService categoryService) {
+		this.categoryService = categoryService;
 	}
 }

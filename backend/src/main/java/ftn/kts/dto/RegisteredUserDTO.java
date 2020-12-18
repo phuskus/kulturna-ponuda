@@ -1,6 +1,8 @@
 package ftn.kts.dto;
 
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 public class RegisteredUserDTO {
 
@@ -10,7 +12,9 @@ public class RegisteredUserDTO {
     private String username;
     @NotNull(message = "Password is required!")
     private String password;
-    //private List<ReviewDTO> reviews;
+
+    private Set<ReviewDTO> reviews;
+    private Set<SubscriptionDTO> subscriptions;
 
     public RegisteredUserDTO() {}
 
@@ -18,6 +22,8 @@ public class RegisteredUserDTO {
         this.name = name;
         this.username = username;
         this.password = password;
+        this.reviews = new HashSet<>();
+        this.subscriptions = new HashSet<>();
     }
 
     public String getName() {
@@ -42,5 +48,21 @@ public class RegisteredUserDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<ReviewDTO> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(Set<ReviewDTO> reviews) {
+        this.reviews = reviews;
+    }
+
+    public Set<SubscriptionDTO> getSubscriptions() {
+        return subscriptions;
+    }
+
+    public void setSubscriptions(Set<SubscriptionDTO> subscriptions) {
+        this.subscriptions = subscriptions;
     }
 }
