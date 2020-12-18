@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -33,12 +34,10 @@ public class PictureService {
     }
     
     public void add(MultipartFile file) throws IOException {
-    	Long id = pictureRepository.getNextSeriesId();
-    	
-    	System.out.println(id);
+    	String fileName = new Date().getTime() + "-" + pictureRepository.getNextSeriesId();
     	
 		byte[] data = file.getBytes();
-		String fullPath = fileFolder + id + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
+		String fullPath = fileFolder + fileName + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
 		Path path = Paths.get(projectFolder + fullPath);
 		Files.write(path,  data);
 		
