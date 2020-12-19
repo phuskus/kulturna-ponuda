@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ftn.kts.dto.PictureDTO;
 import ftn.kts.model.Picture;
 import ftn.kts.repository.PictureRepository;
+import ftn.kts.utils.RandomUtil;
 
 @Service
 public class PictureService {
@@ -35,8 +36,8 @@ public class PictureService {
         this.pictureRepository = pictureRepository;
     }
     
-    public void add(MultipartFile file) throws IOException {
-    	String fileName = new Date().getTime() + "-" + pictureRepository.getNextSeriesId();
+    public PictureDTO add(MultipartFile file) throws IOException {
+    	String fileName = new Date().getTime() + RandomUtil.buildAuthString(2);
     	
 		byte[] data = file.getBytes();
 		String fullPath = fileFolder + fileName + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
@@ -45,6 +46,8 @@ public class PictureService {
 		
 		Picture picture = new Picture(fullPath, file.getOriginalFilename());
 		pictureRepository.save(picture);
+		
+		return toDTO(picture);
     }
 
 	public PictureDTO getOneDTO(Long id) throws FileNotFoundException, IOException {
@@ -73,13 +76,13 @@ public class PictureService {
 				.orElseThrow(() -> new NoSuchElementException("Picture with id " + id + " doesn't exist!"));
 	}
 
-	public List<Picture> getAll(long id) {
+	public List<Picture> getAll() {
 		return pictureRepository.findAll();
 	}
 	
 	private PictureDTO toDTO(Picture entity) throws IOException {
 		String encodedData = getEncodedPicture(entity.getPath());
-		PictureDTO dto = new PictureDTO(entity.getId(), entity.getPlaceholder(), encodedData);
+		PictureDTO dto = new PictureDTO(entity.getId(), entity.getPlaceholder(), encodedData, entity.getPath());
 		return dto;
 	}
 

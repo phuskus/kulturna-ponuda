@@ -59,7 +59,7 @@ public class UserService {
         ArrayList<Authority> auth = new ArrayList<>();
         auth.add(authorityService.findByName("REGISTERED_USER"));
         user.setAuthorities(auth);
-        String generatedKey = RandomUtil.buildAuthString();
+        String generatedKey = RandomUtil.buildAuthString(30);
         user.setKey(generatedKey);
         mailSenderService.confirmRegistration(user.getUsername(), generatedKey);
         userRepository.save(user);
