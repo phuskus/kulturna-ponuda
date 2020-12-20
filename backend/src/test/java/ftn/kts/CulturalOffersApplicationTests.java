@@ -8,12 +8,16 @@ import org.springframework.test.context.TestPropertySource;
 import ftn.kts.repository.AuthorityRepositoryIntegrationTest;
 import ftn.kts.repository.CulturalOfferRepositoryIntegrationTest;
 import ftn.kts.repository.UserRepositoryIntegrationTest;
+import ftn.kts.service.AuthorityServiceIntegrationTest;
+import ftn.kts.service.PictureServiceIntegrationTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({
 	AuthorityRepositoryIntegrationTest.class, 
 	UserRepositoryIntegrationTest.class,
-	CulturalOfferRepositoryIntegrationTest.class
+	CulturalOfferRepositoryIntegrationTest.class,
+	PictureServiceIntegrationTest.class,
+	AuthorityServiceIntegrationTest.class
 })
 @TestPropertySource("classpath:application.properties")
 class CulturalOffersApplicationTests {
