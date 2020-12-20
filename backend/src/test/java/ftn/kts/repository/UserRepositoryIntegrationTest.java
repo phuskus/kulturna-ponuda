@@ -2,13 +2,10 @@ package ftn.kts.repository;
 
 import static ftn.kts.constants.UserConstants.DB_NO_REGISTRATION_KEY;
 import static ftn.kts.constants.UserConstants.DB_REGISTRATION_KEY;
-import static ftn.kts.constants.UserConstants.DB_USER_USERNAME;
 import static ftn.kts.constants.UserConstants.DB_USER_NO_SUCH_USERNAME;
-
+import static ftn.kts.constants.UserConstants.DB_USER_USERNAME;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-
-import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +25,6 @@ public class UserRepositoryIntegrationTest {
 	
 	@Test
 	public void testFindUserByUsername() {
-		List<User> users = userRepository.findAll();
 		User found = userRepository.findByUsername(DB_USER_USERNAME);
 		assertEquals(DB_USER_USERNAME, found.getUsername());
 	}
