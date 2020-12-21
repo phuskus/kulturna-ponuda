@@ -50,13 +50,13 @@ public class PictureService {
 		return toDTO(picture);
     }
 
-	public PictureDTO getOneDTO(Long id) throws FileNotFoundException, IOException {
+	public PictureDTO getOneDTO(Long id) throws IOException {
 		Picture picture = getOne(id);
 		PictureDTO dto = toDTO(picture);
 		return dto;
 	}
 
-	public List<PictureDTO> getAllDTO() throws FileNotFoundException, IOException {
+	public List<PictureDTO> getAllDTO() throws IOException {
 		List<Picture> pictures = pictureRepository.findAll();
 		List<PictureDTO> dtos = new ArrayList<PictureDTO>();
 		for (Picture p : pictures) {

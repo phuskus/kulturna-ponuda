@@ -69,6 +69,18 @@ public class PictureServiceIntegrationTest {
 		// should throw NoSuchElementException exception because it was just deleted
 		Picture deletedPicture = pictureService.getOne(picture.getId());
     }
+	
+    
+	@Test(expected = NullPointerException.class)
+    public void testCreateNullPicture() throws IOException {
+		MockMultipartFile file = null;
+        PictureDTO picture = pictureService.add(file);
+    }
+	
+	@Test(expected = NoSuchElementException.class)
+    public void testDeleteNotExistingPicture() throws IOException {
+        pictureService.delete(GET_NULL_ID);
+    }
     
     @Test
     public void testGetOne() {
