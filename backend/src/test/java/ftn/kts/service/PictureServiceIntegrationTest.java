@@ -3,6 +3,7 @@ package ftn.kts.service;
 import static ftn.kts.constants.PictureConstants.DB_ELEMENT_NUM;
 import static ftn.kts.constants.PictureConstants.DB_INSERT_FILE_CONTENT;
 import static ftn.kts.constants.PictureConstants.DB_INSERT_FILE_NAME;
+import static ftn.kts.constants.PictureConstants.DB_INSERT_FILE_PARAM_NAME;
 import static ftn.kts.constants.PictureConstants.GET_NULL_ID;
 import static ftn.kts.constants.PictureConstants.GET_ONE_ID;
 import static ftn.kts.constants.PictureConstants.PROJECT_FOLDER;
@@ -54,7 +55,7 @@ public class PictureServiceIntegrationTest {
     
 	@Test(expected = NoSuchElementException.class)
     public void testCreateAndDelete() throws IOException {
-		MockMultipartFile file = new MockMultipartFile(DB_INSERT_FILE_NAME, DB_INSERT_FILE_NAME, "image/jpeg", DB_INSERT_FILE_CONTENT.getBytes());
+		MockMultipartFile file = new MockMultipartFile(DB_INSERT_FILE_PARAM_NAME, DB_INSERT_FILE_NAME, "image/jpeg", DB_INSERT_FILE_CONTENT.getBytes());
 		
         PictureDTO picture = pictureService.add(file);
         
