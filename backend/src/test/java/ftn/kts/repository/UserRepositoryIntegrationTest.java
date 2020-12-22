@@ -28,7 +28,6 @@ public class UserRepositoryIntegrationTest {
 	
 	@Test
 	public void testFindUserByUsername() {
-		List<User> users = userRepository.findAll();
 		User found = userRepository.findByUsername(DB_USER_USERNAME);
 		assertEquals(DB_USER_USERNAME, found.getUsername());
 	}

@@ -1,8 +1,5 @@
 package ftn.kts.service;
 
-import static ftn.kts.constants.AuthorityConstants.DB_AUTHORITY_USER_ID;
-import static ftn.kts.constants.AuthorityConstants.DB_AUTHORITY_ADMIN_ID;
-import static ftn.kts.constants.AuthorityConstants.DB_AUTHORITY_NULL_ID;
 import static ftn.kts.constants.AuthorityConstants.DB_AUTHORITY_USER_NAME;
 import static ftn.kts.constants.AuthorityConstants.DB_AUTHORITY_ADMIN_NAME;
 import static ftn.kts.constants.AuthorityConstants.DB_AUTHORITY_NULL;

@@ -11,4 +11,5 @@ public class PictureConstants {
 	
 	public static final String PROJECT_FOLDER = System.getProperty("user.dir");
 	public static final String FILE_FOLDER = "\\pictures\\";
+	
 }

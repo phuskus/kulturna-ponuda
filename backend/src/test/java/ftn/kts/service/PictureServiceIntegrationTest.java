@@ -43,7 +43,7 @@ public class PictureServiceIntegrationTest {
     
     @Test(expected = NoSuchElementException.class)
     public void testGetOneDTONull() throws FileNotFoundException, IOException {
-    	PictureDTO found = pictureService.getOneDTO(GET_NULL_ID);
+    	pictureService.getOneDTO(GET_NULL_ID);
     }
     
     @Test
@@ -67,14 +67,14 @@ public class PictureServiceIntegrationTest {
 		pictureService.delete(picture.getId());
 		
 		// should throw NoSuchElementException exception because it was just deleted
-		Picture deletedPicture = pictureService.getOne(picture.getId());
+		pictureService.getOne(picture.getId());
     }
 	
     
 	@Test(expected = NullPointerException.class)
     public void testCreateNullPicture() throws IOException {
 		MockMultipartFile file = null;
-        PictureDTO picture = pictureService.add(file);
+        pictureService.add(file);
     }
 	
 	@Test(expected = NoSuchElementException.class)
@@ -90,7 +90,7 @@ public class PictureServiceIntegrationTest {
     
     @Test(expected = NoSuchElementException.class)
     public void testGetOneNull() {
-    	Picture picture = pictureService.getOne(GET_NULL_ID);
+		pictureService.getOne(GET_NULL_ID);
     }
     
     @Test
