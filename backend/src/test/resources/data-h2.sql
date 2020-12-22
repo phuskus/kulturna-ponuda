@@ -9,6 +9,7 @@ insert into users (name, username, password, enabled, role) values ('admin2', 'a
 
 
 insert into categories (name) values ('Manifestacija');
+insert into categories (name) values ('Nije manifestacija');
 
 insert into subcategories (name, category_id) values ('Festival', 1);
 
