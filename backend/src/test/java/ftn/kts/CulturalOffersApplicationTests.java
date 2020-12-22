@@ -10,6 +10,7 @@ import ftn.kts.repository.CulturalOfferRepositoryIntegrationTest;
 import ftn.kts.repository.UserRepositoryIntegrationTest;
 import ftn.kts.service.AuthorityServiceIntegrationTest;
 import ftn.kts.service.PictureServiceIntegrationTest;
+import ftn.kts.service.UserServiceIntegrationTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({
@@ -17,7 +18,8 @@ import ftn.kts.service.PictureServiceIntegrationTest;
 	UserRepositoryIntegrationTest.class,
 	CulturalOfferRepositoryIntegrationTest.class,
 	PictureServiceIntegrationTest.class,
-	AuthorityServiceIntegrationTest.class
+	AuthorityServiceIntegrationTest.class,
+	UserServiceIntegrationTest.class
 })
 @TestPropertySource("classpath:application.properties")
 class CulturalOffersApplicationTests {
