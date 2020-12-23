@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -45,7 +46,7 @@ public class CulturalOffer {
 	private Set<Post> posts;
 	@OneToMany(mappedBy = "culturalOffer", fetch = FetchType.LAZY)
 	private Set<Subscription> subscriptions;
-	@OneToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY)
 	private Set<Picture> pictures;
 	
 	public CulturalOffer() {
