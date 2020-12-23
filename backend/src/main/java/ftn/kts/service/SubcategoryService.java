@@ -76,7 +76,7 @@ public class SubcategoryService {
 
 	private Subcategory toEntity(SubcategoryDTO dto) {
 		Category category = categoryService.getOne(dto.getCategory());
-		return new Subcategory(dto.getId(), dto.getName(), category);
+		return new Subcategory(dto.getName(), category);
 	}
 
 	private SubcategoryDTO toDTO(Subcategory entity) {

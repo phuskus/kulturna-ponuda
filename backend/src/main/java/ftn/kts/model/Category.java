@@ -28,11 +28,10 @@ public class Category {
 		this.subcategories = new HashSet<>();
 	}
 
-	public Category(Long id, String name) {
-		this.id = id;
+	public Category(String name) {
 		this.name = name;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}

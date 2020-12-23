@@ -20,19 +20,19 @@ public class AuthorityRepositoryIntegrationTest {
 	private AuthorityRepository authorityRepository;
 
 	@Test
-	public void testFindUserByName() {
+	public void findByName_UserRoleExists_UserRoleReturned() {
 		Authority found = authorityRepository.findByName(DB_AUTHORITY_USER_NAME);
 		assertEquals(DB_AUTHORITY_USER_NAME, found.getName());
 	}
 
 	@Test
-	public void testFindAdminByName() {
+	public void findByName_AdminRoleExists_AdminRoleReturned() {
 		Authority found = authorityRepository.findByName(DB_AUTHORITY_ADMIN_NAME);
 		assertEquals(DB_AUTHORITY_ADMIN_NAME, found.getName());
 	}
 
 	@Test
-	public void testFindNullByName() {
+	public void findByName_RoleNull_NullReturned() {
 		Authority found = authorityRepository.findByName(DB_AUTHORITY_NULL);
 		assertNull(found);
 	}

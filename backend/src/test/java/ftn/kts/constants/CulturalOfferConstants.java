@@ -50,4 +50,14 @@ public class CulturalOfferConstants {
     public static final String UPDATE_NEW_DESCRIPTION = "new description!";
     public static final String UPDATE_NEW_CITY = "Beograd";
     
+    public static final String UNIT_TEST_NAME_FIRST = "First Unit Test Cultural Offer";
+    public static final String UNIT_TEST_NAME_SECOND = "Second Unit Test Cultural Offer";
+    public static final String UNIT_TEST_NAME_CHANGED = "Changed Name Passing Unique Check";
+    public static final String UNIT_TEST_DESCRIPTION = "Unit Test Description";
+    public static final String UNIT_TEST_ADDRESS = "Fruska gora 41";
+    public static final String UNIT_TEST_CITY = "Novi Sad";
+    public static final String UNIT_TEST_REGION = "Vojvodina";
+    public static final Long UNIT_TEST_ID_FIRST = 1L;
+    public static final Long UNIT_TEST_ID_SECOND = 2L;
+    
 }

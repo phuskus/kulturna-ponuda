@@ -24,6 +24,10 @@ public class Admin extends User {
 		this.culturalOffers = culturalOffers;
 	}
 	
+	public Admin(String name, String username, String password) {
+		super(name, username, password);
+	}
+
 	public Set<Category> getCategories() {
 		return categories;
 	}

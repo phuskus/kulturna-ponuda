@@ -58,8 +58,8 @@ public class CulturalOfferService {
 		dto.setId(id);
 		checkUnique(dto);
 		updateOffer(offer, dto);
-		offerRepository.save(offer);
-		return toDTO(offer);
+		CulturalOffer saved = offerRepository.save(offer);
+		return toDTO(saved);
 	}
 
 	public void delete(Long id) {

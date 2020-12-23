@@ -22,19 +22,19 @@ public class AuthorityServiceIntegrationTest {
 	private AuthorityService authService;
 		
 	@Test
-	public void testFindByNameUser() {
+	public void findByName_UserRoleExists_UserRoleReturned() {
 		Authority found = authService.findByName(DB_AUTHORITY_USER_NAME);
 		assertEquals(DB_AUTHORITY_USER_NAME, found.getName());
 	}
 	
 	@Test
-	public void testFindByNameAdmin() {
+	public void findByName_AdminRoleExists_AdminRoleReturned() {
 		Authority found = authService.findByName(DB_AUTHORITY_ADMIN_NAME);
 		assertEquals(DB_AUTHORITY_ADMIN_NAME, found.getName());
 	}
 	
 	@Test
-	public void testFindByNameNull() {
+	public void findByName_RoleNull_NullReturned() {
 		Authority found = authService.findByName(DB_AUTHORITY_NULL);
 		assertNull(found);
 	}
