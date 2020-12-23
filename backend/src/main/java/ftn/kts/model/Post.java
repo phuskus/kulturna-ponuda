@@ -25,18 +25,30 @@ public class Post {
 	@ManyToOne(fetch = FetchType.EAGER)
 	private CulturalOffer culturalOffer;
 
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.EAGER)
 	private Set<Picture> pictures;
+	
 
-	public Post() {
-		this.pictures = new HashSet<>();
-	}
+	public Post() {}
 
 	public Post(Long id, String content, CulturalOffer culturalOffer) {
-		this();
 		this.id = id;
 		this.content = content;
 		this.culturalOffer = culturalOffer;
+		this.pictures = new HashSet<>();
+	}
+	
+	public Post(Long id, String content, CulturalOffer culturalOffer, Set<Picture> pictures) {
+		this.id = id;
+		this.content = content;
+		this.culturalOffer = culturalOffer;
+		this.pictures = pictures;
+	}
+	
+	public Post(String content, CulturalOffer culturalOffer, Set<Picture> pictures) {
+		this.content = content;
+		this.culturalOffer = culturalOffer;
+		this.pictures = pictures;
 	}
 	
 	public Long getId() {

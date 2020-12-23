@@ -17,4 +17,17 @@ insert into cultural_offers (address, city, description, latitude, longitude, na
 insert into cultural_offers (address, city, description, latitude, longitude, name, region, admin_id, category_id) 
 			values ('Kalemegdanska tvrdjava', 'Beograd', 'Music festival', 45.2526, 19.8623, 'cultural_offer2', 'Vojvodina', 3, 1);
 
-insert into pictures (path, placeholder) values ('\pictures\exit.jpg', 'Exit festival picture placeholder');
+insert into pictures (path, placeholder) values ('\pictures\exit.jpg', 'picture placeholder');
+insert into pictures (path, placeholder) values ('\pictures\exit1.jpg', 'picture1 placeholder');
+
+/* insert into cultural_offers_pictures (cultural_offer_id, pictures_id) values (1, 1); */
+
+insert into posts (content, cultural_offer_id) values ('test1_offer1', 1);
+insert into posts (content, cultural_offer_id) values ('test2_offer1', 1);
+insert into posts (content, cultural_offer_id) values ('test3_offer2', 2);
+
+insert into post_pictures (post_id, pictures_id) values (1, 1);
+insert into post_pictures (post_id, pictures_id) values (2, 1);
+insert into post_pictures (post_id, pictures_id) values (3, 1);
+
+

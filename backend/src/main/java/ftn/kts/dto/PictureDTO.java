@@ -9,6 +9,10 @@ public class PictureDTO {
 
 	public PictureDTO() {
 	}
+	
+	public PictureDTO(Long id) {
+		this.id = id;
+	}
 
 	public PictureDTO(Long id, String placeholder, String image, String path) {
 		this.id = id;
@@ -16,6 +20,12 @@ public class PictureDTO {
 		this.image = image;
 		this.path = path;
 	}
+	
+	public PictureDTO(String placeholder, String path) {
+		this.placeholder = placeholder;
+		this.path = path;
+	}
+	
 
 	public Long getId() {
 		return id;
