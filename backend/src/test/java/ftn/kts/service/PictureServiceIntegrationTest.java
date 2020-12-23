@@ -6,6 +6,7 @@ import static ftn.kts.constants.PictureConstants.DB_INSERT_FILE_NAME;
 import static ftn.kts.constants.PictureConstants.DB_INSERT_FILE_PARAM_NAME;
 import static ftn.kts.constants.PictureConstants.GET_NULL_ID;
 import static ftn.kts.constants.PictureConstants.GET_ONE_ID;
+import static ftn.kts.constants.PictureConstants.GET_TWO_ID;
 import static ftn.kts.constants.PictureConstants.PROJECT_FOLDER;
 import static org.junit.Assert.assertEquals;
 
@@ -101,9 +102,10 @@ public class PictureServiceIntegrationTest {
     }
 
     @Test
-    public void converToDTO_OneObject_Success() {
+    public void convertToDTO_OneObject_Success() {
     	Set<Picture> pictures = new HashSet<>();
     	pictures.add(pictureService.getOne(GET_ONE_ID));
+    	pictures.add(pictureService.getOne(GET_TWO_ID));
     	Set<PictureDTO> found = pictureService.convertToDTO(pictures);
     	assertEquals(DB_ELEMENT_NUM, found.size());
     }
