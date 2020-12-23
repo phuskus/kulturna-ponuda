@@ -84,6 +84,13 @@
 		    <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
 		</dependency>
+		
+		<!-- magic dependancy for HttpRetryException -->
+		<dependency>
+	        <groupId>org.apache.httpcomponents</groupId>
+	        <artifactId>httpclient</artifactId>
+	        <scope>test</scope>
+	    </dependency>
 					
 		<dependency>
             <groupId>com.icegreen</groupId>

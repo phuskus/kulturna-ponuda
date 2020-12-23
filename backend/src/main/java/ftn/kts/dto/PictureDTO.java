@@ -17,6 +17,10 @@ public class PictureDTO {
 		this.path = path;
 	}
 
+	public PictureDTO(Long id) {
+		this.id = id;
+	}
+
 	public Long getId() {
 		return id;
 	}

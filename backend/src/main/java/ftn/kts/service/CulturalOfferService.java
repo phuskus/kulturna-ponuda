@@ -1,5 +1,6 @@
 package ftn.kts.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -9,9 +10,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import ftn.kts.dto.CulturalOfferDTO;
+import ftn.kts.dto.PictureDTO;
 import ftn.kts.exceptions.UniqueConstraintViolationException;
 import ftn.kts.model.Admin;
 import ftn.kts.model.CulturalOffer;
+import ftn.kts.model.Picture;
 import ftn.kts.model.Subcategory;
 import ftn.kts.repository.CulturalOfferRepository;
 
@@ -43,10 +46,11 @@ public class CulturalOfferService {
 		return dto;
 	}
 
-	public void create(CulturalOfferDTO dto) throws UniqueConstraintViolationException {
+	public CulturalOfferDTO create(CulturalOfferDTO dto) throws UniqueConstraintViolationException {
 		checkUnique(dto);
 		CulturalOffer offer = toEntity(dto);
-		offerRepository.save(offer);
+		CulturalOffer saved = offerRepository.save(offer);
+		return toDTO(saved);
 	}
 
 	public CulturalOfferDTO update(CulturalOfferDTO dto, Long id) throws UniqueConstraintViolationException {
@@ -68,7 +72,7 @@ public class CulturalOfferService {
 				.orElseThrow(() -> new NoSuchElementException("Cultural offer with id " + id + " doesn't exist!"));
 	}
 
-	public List<CulturalOffer> getAll(long id) {
+	public List<CulturalOffer> getAll() {
 		return offerRepository.findAll();
 	}
 
@@ -108,13 +112,18 @@ public class CulturalOfferService {
 		Subcategory category = subcategoryService.getOne(dto.getCategory());
 		CulturalOffer offer = new CulturalOffer(dto.getName(), dto.getDescription(), dto.getLatitude(),
 				dto.getLongitude(), dto.getAddress(), dto.getCity(), dto.getRegion(), admin, category);
+		HashSet<Picture> pictures = new HashSet<>();
+		for (PictureDTO picture : dto.getPictures()) {
+			pictures.add(pictureService.getOne(picture.getId()));
+		}
+		offer.setPictures(pictures);
 		return offer;
 	}
 
 	private CulturalOfferDTO toDTO(CulturalOffer entity) {
 		CulturalOfferDTO dto = new CulturalOfferDTO(entity.getId(), entity.getName(), entity.getDescription(),
 				entity.getLatitude(), entity.getLongitude(), entity.getAddress(), entity.getCity(), entity.getRegion(),
-				entity.getAdmin(), entity.getCategory());
+				entity.getAdmin().getId(), entity.getCategory().getId());
 		dto.setPictures(pictureService.convertToDTO(entity.getPictures()));
 		dto.setPosts(postService.convertToDTO(entity.getPosts()));
 		dto.setReviews(reviewService.convertToDTO(entity.getReviews()));
@@ -129,6 +138,11 @@ public class CulturalOfferService {
 		offer.setLongitude(dto.getLongitude());
 		offer.setName(dto.getName());
 		offer.setRegion(dto.getRegion());
+		HashSet<Picture> pictures = new HashSet<>();
+		for (PictureDTO picture : dto.getPictures()) {
+			pictures.add(pictureService.getOne(picture.getId()));
+		}
+		offer.setPictures(pictures);
 	}
 
 	@Autowired

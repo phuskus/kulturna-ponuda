@@ -12,6 +12,8 @@ insert into categories (name) values ('Manifestacija');
 
 insert into subcategories (name, category_id) values ('Festival', 1);
 
+insert into subcategories (name, category_id) values ('Okupljanje', 1);
+
 insert into cultural_offers (address, city, description, latitude, longitude, name, region, admin_id, category_id) 
 			values ('Petrovaradinska Tvrdjava', 'Novi Sad', 'Music festival', 45.2526, 19.8623, 'cultural_offer1', 'Vojvodina', 3, 1);
 insert into cultural_offers (address, city, description, latitude, longitude, name, region, admin_id, category_id) 
