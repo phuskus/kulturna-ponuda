@@ -5,6 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 import org.springframework.test.context.TestPropertySource;
 
+import ftn.kts.controller.PictureControllerIntegrationTest;
 import ftn.kts.repository.AuthorityRepositoryIntegrationTest;
 import ftn.kts.repository.CulturalOfferRepositoryIntegrationTest;
 import ftn.kts.repository.UserRepositoryIntegrationTest;
@@ -21,7 +22,8 @@ import ftn.kts.service.UserServiceIntegrationTest;
 	PictureServiceIntegrationTest.class,
 	AuthorityServiceIntegrationTest.class,
 	UserServiceIntegrationTest.class,
-	PostServiceIntegrationTest.class
+	PostServiceIntegrationTest.class,
+	PictureControllerIntegrationTest.class
 })
 @TestPropertySource("classpath:application.properties")
 class CulturalOffersApplicationTests {

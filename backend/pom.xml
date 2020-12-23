@@ -77,6 +77,14 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
+		<!-- security config for tests (multipart picture POST) -->
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+		</dependency>
+					
 		<dependency>
             <groupId>com.icegreen</groupId>
             <artifactId>greenmail</artifactId>

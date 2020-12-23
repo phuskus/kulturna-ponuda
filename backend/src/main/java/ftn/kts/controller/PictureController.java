@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,7 +22,7 @@ import ftn.kts.dto.PictureDTO;
 import ftn.kts.service.PictureService;
 
 @RestController
-@RequestMapping("/pictures")
+@RequestMapping(value = "/pictures", produces = MediaType.APPLICATION_JSON_VALUE)
 public class PictureController {
 	private PictureService service;
 
@@ -46,8 +47,8 @@ public class PictureController {
 	@PostMapping
 	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<Object> addPicture(@RequestParam(name = "file") MultipartFile file) throws IOException {
-		service.add(file);
-		return new ResponseEntity<>("Successfully added picture!", HttpStatus.OK);
+		PictureDTO dto = service.add(file);
+		return new ResponseEntity<>(dto, HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("/{id}")

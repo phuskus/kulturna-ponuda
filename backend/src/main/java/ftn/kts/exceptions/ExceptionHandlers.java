@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
@@ -30,10 +31,10 @@ public class ExceptionHandlers {
 		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 	}
 
-	@ExceptionHandler(AuthenticationException.class)
-	public ResponseEntity<ErrorMessage> authenticationExceptionHandler(AuthenticationException ex, WebRequest request) {
+	@ExceptionHandler({AuthenticationException.class, AccessDeniedException.class})
+	public ResponseEntity<ErrorMessage> authenticationExceptionHandler(Exception ex, WebRequest request) {
 		ErrorMessage message = new ErrorMessage(ex.getMessage());
-		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
 	}
 
 	@ExceptionHandler(UniqueConstraintViolationException.class)
