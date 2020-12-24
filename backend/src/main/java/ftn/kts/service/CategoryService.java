@@ -74,7 +74,7 @@ public class CategoryService {
 	}
 
 	private Category toEntity(CategoryDTO dto) {
-		return new Category(dto.getId(), dto.getName());
+		return new Category(dto.getName());
 	}
 
 	private CategoryDTO toDTO(Category cat) {

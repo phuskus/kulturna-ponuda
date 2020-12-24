@@ -48,7 +48,7 @@ public class PictureController {
 	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<Object> addPicture(@RequestParam(name = "file") MultipartFile file) throws IOException {
 		PictureDTO dto = service.add(file);
-		return new ResponseEntity<>(dto, HttpStatus.OK);
+		return new ResponseEntity<>(dto, HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("/{id}")

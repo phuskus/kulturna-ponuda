@@ -28,8 +28,6 @@ public class UserServiceIntegrationTest {
 	@Autowired
 	private UserService userService;
 	
-	//7. public User getOne(String username) throws NoSuchElementException
-	
 	@Test
 	public void testFindByUsername() {
 		User found = userService.findByUsername(DB_USER_USERNAME);

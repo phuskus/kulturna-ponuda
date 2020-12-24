@@ -27,7 +27,7 @@ public class ExceptionHandlers {
 
 	@ExceptionHandler(BadCredentialsException.class)
 	public ResponseEntity<ErrorMessage> badCredentialsExceptionHandler(BadCredentialsException ex, WebRequest request) {
-		ErrorMessage message = new ErrorMessage("Incorrect old password!");
+		ErrorMessage message = new ErrorMessage("Invalid password!");
 		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 	}
 

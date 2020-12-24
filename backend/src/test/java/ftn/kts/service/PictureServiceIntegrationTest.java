@@ -3,8 +3,10 @@ package ftn.kts.service;
 import static ftn.kts.constants.PictureConstants.DB_ELEMENT_NUM;
 import static ftn.kts.constants.PictureConstants.DB_INSERT_FILE_CONTENT;
 import static ftn.kts.constants.PictureConstants.DB_INSERT_FILE_NAME;
+import static ftn.kts.constants.PictureConstants.DB_INSERT_FILE_PARAM_NAME;
 import static ftn.kts.constants.PictureConstants.GET_NULL_ID;
 import static ftn.kts.constants.PictureConstants.GET_ONE_ID;
+import static ftn.kts.constants.PictureConstants.GET_TWO_ID;
 import static ftn.kts.constants.PictureConstants.PROJECT_FOLDER;
 import static org.junit.Assert.assertEquals;
 
@@ -36,25 +38,25 @@ public class PictureServiceIntegrationTest {
     private PictureService pictureService;
     
     @Test
-    public void testGetOneDTO() throws FileNotFoundException, IOException {
+    public void getPictureDTO_ExistsID_Success() throws FileNotFoundException, IOException {
     	PictureDTO found = pictureService.getOneDTO(GET_ONE_ID);
         assertEquals(GET_ONE_ID, found.getId());
     }
     
     @Test(expected = NoSuchElementException.class)
-    public void testGetOneDTONull() throws FileNotFoundException, IOException {
+    public void getPictureDTO_NotExistsID_ThrowsException() throws FileNotFoundException, IOException {
     	pictureService.getOneDTO(GET_NULL_ID);
     }
     
     @Test
-    public void testGetAllDTO() throws FileNotFoundException, IOException {
+    public void getPicturesDTO_NoParams_Success() throws FileNotFoundException, IOException {
         List<PictureDTO> found = pictureService.getAllDTO();
         assertEquals(DB_ELEMENT_NUM, found.size());
     }
     
 	@Test(expected = NoSuchElementException.class)
-    public void testCreateAndDelete() throws IOException {
-		MockMultipartFile file = new MockMultipartFile(DB_INSERT_FILE_NAME, DB_INSERT_FILE_NAME, "image/jpeg", DB_INSERT_FILE_CONTENT.getBytes());
+    public void addDeletePicture_MultipartData_Success() throws IOException {
+		MockMultipartFile file = new MockMultipartFile(DB_INSERT_FILE_PARAM_NAME, DB_INSERT_FILE_NAME, "image/jpeg", DB_INSERT_FILE_CONTENT.getBytes());
 		
         PictureDTO picture = pictureService.add(file);
         
@@ -72,37 +74,38 @@ public class PictureServiceIntegrationTest {
 	
     
 	@Test(expected = NullPointerException.class)
-    public void testCreateNullPicture() throws IOException {
+    public void addPicture_NullData_ThrowsException() throws IOException {
 		MockMultipartFile file = null;
         pictureService.add(file);
     }
 	
 	@Test(expected = NoSuchElementException.class)
-    public void testDeleteNotExistingPicture() throws IOException {
+    public void deletePicture_NullData_ThrowsException() throws IOException {
         pictureService.delete(GET_NULL_ID);
     }
     
     @Test
-    public void testGetOne() {
+    public void getPicture_ExistsID_Success() {
     	Picture picture = pictureService.getOne(GET_ONE_ID);
         assertEquals(GET_ONE_ID, picture.getId());
     }
     
     @Test(expected = NoSuchElementException.class)
-    public void testGetOneNull() {
+    public void getPicture_NotExistsID_ThrowsException() {
 		pictureService.getOne(GET_NULL_ID);
     }
     
     @Test
-    public void testGetAll() {
+    public void getPictures_NoParams_Success() {
         List<Picture> found = pictureService.getAll();
         assertEquals(DB_ELEMENT_NUM, found.size());
     }
 
     @Test
-    public void testConvertToDTO() {
+    public void convertToDTO_OneObject_Success() {
     	Set<Picture> pictures = new HashSet<>();
     	pictures.add(pictureService.getOne(GET_ONE_ID));
+    	pictures.add(pictureService.getOne(GET_TWO_ID));
     	Set<PictureDTO> found = pictureService.convertToDTO(pictures);
     	assertEquals(DB_ELEMENT_NUM, found.size());
     }

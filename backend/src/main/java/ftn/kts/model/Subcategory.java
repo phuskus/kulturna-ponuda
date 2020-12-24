@@ -33,8 +33,7 @@ public class Subcategory {
 		
 	}
 
-	public Subcategory(Long id, String name, Category category) {
-		this.id = id;
+	public Subcategory(String name, Category category) {
 		this.name = name;
 		this.category = category;
 	}

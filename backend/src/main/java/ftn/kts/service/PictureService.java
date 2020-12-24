@@ -97,6 +97,19 @@ public class PictureService {
 		return pics;
 	}
 	
+	public Set<Picture> convertToEntity(Set<PictureDTO> pictures) {
+		Set<Picture> pics = new HashSet<>();
+		try {
+			for (PictureDTO p : pictures) {
+				Picture picture = getOne(p.getId());
+				pics.add(picture);
+			}
+		} catch (NoSuchElementException ex) {
+			ex.printStackTrace();
+		}
+		return pics;
+	}
+	
 	private String getEncodedPicture(String path) throws IOException {
 		String filePath = projectFolder + path;
 		File f = new File(filePath);
@@ -109,5 +122,6 @@ public class PictureService {
 		fis.close();
 		return imageString;
 	}
+
 
 }
