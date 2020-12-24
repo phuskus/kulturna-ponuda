@@ -22,4 +22,7 @@ insert into cultural_offers (address, city, description, latitude, longitude, na
 insert into user_authority (user_id, authority_id) values (1, 1);
 insert into user_authority (user_id, authority_id) values (2, 1);
 
+insert into reviews (rating, content, cultural_offer_id, user_id) values (5, 'Otkazano zbog korone', 1, 2);
+insert into reviews (rating, content, cultural_offer_id, user_id) values (0, 'Ne valja nista', 1, 2);
+
 insert into pictures (path, placeholder) values ('\pictures\exit.jpg', 'Exit festival picture placeholder');

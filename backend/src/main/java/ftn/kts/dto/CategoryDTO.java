@@ -12,10 +12,25 @@ public class CategoryDTO {
 
     private Set<SubcategoryDTO> subcategories;
 
-    public CategoryDTO(Long id, String name){
-        this.id  = id;
+    public CategoryDTO(Long id, String name) {
+        this.id = id;
         this.name = name;
         this.subcategories = new HashSet<>();
+    }
+
+    public CategoryDTO(String name) {
+        this.name = name;
+        this.subcategories = new HashSet<>();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+
+        if (!(obj instanceof CategoryDTO)) return false;
+
+        CategoryDTO category = (CategoryDTO) obj;
+        return this.name.equals(category.getName());
     }
 
     public Long getId() {

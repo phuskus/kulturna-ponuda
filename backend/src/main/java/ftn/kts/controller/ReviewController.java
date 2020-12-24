@@ -50,7 +50,7 @@ public class ReviewController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<String> addReview(@Valid @RequestBody ReviewDTO dto) {
         service.create(dto);
-        return new ResponseEntity<>("Successfully added subcategory!", HttpStatus.CREATED);
+        return new ResponseEntity<>("Successfully added review!", HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -64,6 +64,6 @@ public class ReviewController {
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<String> deleteReview(@PathVariable("id") long id) {
         service.delete(id);
-        return new ResponseEntity<>("Successfully deleted subcategory!", HttpStatus.OK);
+        return new ResponseEntity<>("Successfully deleted review!", HttpStatus.OK);
     }
 }

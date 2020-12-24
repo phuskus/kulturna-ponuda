@@ -41,9 +41,9 @@ public class ReviewService {
 		return dto;
 	}
 
-	public void create(ReviewDTO dto) {
+	public ReviewDTO create(ReviewDTO dto) {
 		Review review = toEntity(dto);
-		reviewRepository.save(review);
+		return toDTO(reviewRepository.save(review));
 	}
 
 	public ReviewDTO update(ReviewDTO dto, Long id) {

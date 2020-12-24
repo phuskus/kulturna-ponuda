@@ -30,10 +30,10 @@ public class CategoryService {
 		return toDTO(category);
 	}
 
-	public void create(CategoryDTO dto) throws UniqueConstraintViolationException {
+	public CategoryDTO create(CategoryDTO dto) throws UniqueConstraintViolationException {
 		checkUnique(dto);
 		Category category = toEntity(dto);
-		categoryRepository.save(category);
+		return toDTO(categoryRepository.save(category));
 	}
 
 	public CategoryDTO update(CategoryDTO dto, Long id) throws UniqueConstraintViolationException {

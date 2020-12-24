@@ -6,11 +6,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
 
 import static ftn.kts.constants.CategoryConstants.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,18 +20,10 @@ public class CategoryRepositoryIntegrationTest {
     @Autowired
     private CategoryRepository categoryRepository;
 
-
     @Test
-    public void findAllPageable_ValidPageableObject_ReturnsAllCategories() {
-        Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
-        Page<Category> found = categoryRepository.findAll(pageable);
-        assertEquals(FIND_ALL_NUMBER_OF_ITEMS, found.getTotalElements());
-    }
-
-    @Test
-    public void findAllPageable_NullPageableObject_ThrowsNullPtrException() {
-        Pageable pageable = null;
-        assertThrows(NullPointerException.class, () -> categoryRepository.findAll(pageable));
+    public void findAll_ReturnsAllCategories() {
+        List<Category> categories = categoryRepository.findAll();
+        assertEquals(FIND_ALL_NUMBER_OF_ITEMS, categories.size());
     }
 
     @Test
@@ -55,13 +45,13 @@ public class CategoryRepositoryIntegrationTest {
     }
 
     @Test
-    public void findByName_NonexistentName_ReturnsNull(){
+    public void findByName_NonexistentName_ReturnsNull() {
         Category category = categoryRepository.findByNameIgnoringCase(DB_NONEXISTENT_CATEGORY_NAME);
         assertNull(category);
     }
 
     @Test
-    public void findByName_NullName_ReturnsNull(){
+    public void findByName_NullName_ReturnsNull() {
         Category category = categoryRepository.findByNameIgnoringCase(null);
         assertNull(category);
     }
