@@ -6,6 +6,7 @@ public class CulturalOfferConstants {
 	public static final String DB_CULTURAL_OFFER_NAME_UPPERCASE = "CuLTuRAL_OffER1";
 	public static final String DB_CULTURAL_OFFER_NO_SUCH_NAME = "no_cultural_offer";
 	public static final String DB_CULTURAL_OFFER_PART_NAME = "cultural";
+	public static final Long DB_CULTURAL_OFFER_ID = 1L;
 	
 
 	public static final String DB_CITY_NAME = "Novi Sad";
@@ -25,9 +26,11 @@ public class CulturalOfferConstants {
     public static final int PAGEABLE_PAGE = 0;
     public static final int PAGEABLE_SIZE = 2;
     public static final int PAGEABLE_TOTAL_ELEMENTS = 1;
+    public static final int PAGEABLE_FIRST_PAGE = 1;
 
     public static final int PAGEABLE_ONE_ELEMENTS = 1;
     public static final int PAGEABLE_TWO_ELEMENTS = 2;
+    public static final int PAGEABLE_NO_ELEMENTS = 0;
 
     public static final Long CATEGORY_ONE_ID = 1L;
     public static final Long CATEGORY_TWO_ID = 2L;
