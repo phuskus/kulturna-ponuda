@@ -96,20 +96,22 @@ public class UserService {
         return new UserTokenStateDTO(jwt, expiresIn, user.getRole());
     }
 
-    public String changePassword(String oldPassword, String newPassword) {
+    public UserDTO changePassword(String oldPassword, String newPassword) {
         String user = userDetailsService.changePassword(oldPassword, newPassword);
-        return user;
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUsername(user);
+        return userDTO;
     }
 
-    public User confirmRegistration(String key) throws NoSuchElementException {
+    public UserDTO confirmRegistration(String key) throws NoSuchElementException {
         User user = userRepository.findByKey(key);
         if (user == null) {
             throw new NoSuchElementException("User already activated or doesn't exist!");
         }
         user.setEnabled(true);
-        user.setKey("");
+        user.setKey(null);
         save(user);
-        return user;
+        return toDTO(user);
     }
 
     public User getOne(String username) throws NoSuchElementException {
@@ -123,6 +125,13 @@ public class UserService {
     private RegisteredUser toEntity(UserDTO dto) {
         RegisteredUser user = new RegisteredUser(dto.getName(), dto.getUsername(), dto.getPassword());
         return user;
+    }
+    
+    private UserDTO toDTO(User user) {
+    	UserDTO dto = new UserDTO();
+    	dto.setId(user.getId());
+    	dto.setUsername(user.getUsername());
+    	return dto;
     }
 
     private void checkUnique(UserDTO dto) throws UniqueConstraintViolationException {

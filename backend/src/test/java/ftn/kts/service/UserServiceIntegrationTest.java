@@ -99,9 +99,10 @@ public class UserServiceIntegrationTest {
 	
 	@Test
 	public void confirmRegistration_AccountExistsNotEnabled_AccountEnabled() {
-		User user = userService.confirmRegistration(DB_REGISTRATION_KEY);
+		UserDTO userDTO = userService.confirmRegistration(DB_REGISTRATION_KEY);
+		User user = userService.getOne(userDTO.getUsername());
 		assertEquals(user.isEnabled(), true);
-		assertEquals(user.getKey(), "");
+		assertNull(user.getKey());
 		//clean up
 		user.setKey(DB_REGISTRATION_KEY);
 		user.setEnabled(false);

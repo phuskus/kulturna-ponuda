@@ -15,5 +15,7 @@ public class UserConstants {
 	public static final Long DB_CREATED_USER_ID = 5L;
 	public static final String DB_REGISTRATION_KEY = "test-key";
 	public static final String DB_NO_REGISTRATION_KEY = "no-key";
+	public static final String DB_CREATE_USERNAME = "register_user@gmail.com";
+	public static final String INVALID_PASSWORD = "pass";
 
 }
