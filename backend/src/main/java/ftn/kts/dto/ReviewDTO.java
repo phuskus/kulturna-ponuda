@@ -44,6 +44,17 @@ public class ReviewDTO {
         this.culturalOffer = offerId;
         this.pictures = new HashSet<>();
     }
+    
+    public ReviewDTO(Long id, Long rating, String content, Long userId, Long offerId) {
+        this.id = id;
+    	this.rating = rating;
+        this.content = content;
+        this.user = userId;
+        this.culturalOffer = offerId;
+        this.pictures = new HashSet<>();
+    }
+    
+    
 
     @Override
     public boolean equals(Object obj) {

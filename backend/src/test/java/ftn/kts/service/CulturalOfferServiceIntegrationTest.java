@@ -91,6 +91,10 @@ public class CulturalOfferServiceIntegrationTest {
 	public void updateOffer_EntityUpdatedAndRevertedToPreviousState() throws UniqueConstraintViolationException {
 		CulturalOffer cultOffer = cultOfferService.getOne(DB_CULTURAL_OFFER_ID);
 		Set<ReviewDTO> reviewsDTO = new HashSet<>();
+		ReviewDTO review1 = new ReviewDTO(1L, 5L, "Otkazano zbog korone", 1L, 2L);
+		ReviewDTO review2 = new ReviewDTO(2L, 0L, "Ne valja nista", 1L, 2L);
+		reviewsDTO.add(review1);
+		reviewsDTO.add(review2);
 		Set<PostDTO> postsDTO = new HashSet<>();
 		PostDTO post1 = new PostDTO(FIRST_POST_ID, DB_CULTURAL_OFFER_ID);
 		PostDTO post2 = new PostDTO(FIRST_POST_ID, DB_CULTURAL_OFFER_ID);
