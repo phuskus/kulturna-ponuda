@@ -7,11 +7,13 @@ public class CulturalOfferConstants {
 	public static final String DB_CULTURAL_OFFER_NO_SUCH_NAME = "no_cultural_offer";
 	public static final String DB_CULTURAL_OFFER_PART_NAME = "cultural";
 	public static final Long DB_CULTURAL_OFFER_ID = 1L;
+	public static final Long DB_NO_CULTURAL_OFFER_ID = 55L;
 	
 
 	public static final String DB_CITY_NAME = "Novi Sad";
 	public static final String DB_CITY_NAME_LOWERCASE = "novi sad";
 	public static final String DB_CITY_PART_NAME = "novi";
+	public static final String DB_CITY_MIXED_NAME = "ad";
 	public static final String DB_NO_SUCH_CITY = "no-city";
 	
 	public static final String DB_PART_DESCRIPTION = "festival";
@@ -26,7 +28,7 @@ public class CulturalOfferConstants {
     public static final int PAGEABLE_PAGE = 0;
     public static final int PAGEABLE_SIZE = 2;
     public static final int PAGEABLE_TOTAL_ELEMENTS = 1;
-    public static final int PAGEABLE_FIRST_PAGE = 1;
+    public static final int PAGEABLE_SECOND_PAGE = 1;
 
     public static final int PAGEABLE_ONE_ELEMENTS = 1;
     public static final int PAGEABLE_TWO_ELEMENTS = 2;
@@ -50,8 +52,25 @@ public class CulturalOfferConstants {
     public static final String CREATE_NAME = "new cultural offer somewhere";
     public static final String CREATE_DESCRIPTION = "Testing description";
     public static final String CREATE_CITY = "Novi Sad";
+    public static final String CREATE_ADRESS = "Test address";
+    public static final String CREATE_REGION = "Vojvodina";
+    public static final float CREATE_LATITUDE = 10.51f;
+    public static final float CREATE_LONGITUDE = 22.51f;
+    public static final Long ID_CREATED_OFFER = 3L;
+   
+    public static final Long ADMIN_ID = 3L;
+    public static final Long CATEGORY_ID = 1L;
+    
+    public static final Long DB_PICTURE_ID = 1L;
+    public static final Long DB_NEW_PICTURE_ID = 2L;
+    public static final int NUMBER_OF_NEW_PICTURES = 2;
+    public static final int NUMBER_OF_OLD_PICTURES = 1;
+    public static final Long FIRST_POST_ID = 1L;
+    public static final Long SECOND_POST_ID = 2L;
+    
     public static final String UPDATE_NEW_DESCRIPTION = "new description!";
     public static final String UPDATE_NEW_CITY = "Beograd";
+    public static final String UPDATE_DUPLICATE_NAME = "cultural_offer2";
     
     public static final String UNIT_TEST_NAME_FIRST = "First Unit Test Cultural Offer";
     public static final String UNIT_TEST_NAME_SECOND = "Second Unit Test Cultural Offer";

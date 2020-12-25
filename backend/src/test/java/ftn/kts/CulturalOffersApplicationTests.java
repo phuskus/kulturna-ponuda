@@ -11,6 +11,7 @@ import ftn.kts.repository.AuthorityRepositoryIntegrationTest;
 import ftn.kts.repository.CulturalOfferRepositoryIntegrationTest;
 import ftn.kts.repository.UserRepositoryIntegrationTest;
 import ftn.kts.service.AuthorityServiceIntegrationTest;
+import ftn.kts.service.CulturalOfferServiceIntegrationTest;
 import ftn.kts.service.CulturalOfferServiceUnitTest;
 import ftn.kts.service.PictureServiceIntegrationTest;
 import ftn.kts.service.PostServiceIntegrationTest;
@@ -27,7 +28,8 @@ import ftn.kts.service.UserServiceIntegrationTest;
 	PostServiceIntegrationTest.class,
 	PictureControllerIntegrationTest.class,
 	CulturalOfferControllerIntegrationTest.class,
-	CulturalOfferServiceUnitTest.class
+	CulturalOfferServiceUnitTest.class,
+	CulturalOfferServiceIntegrationTest.class
 })
 @TestPropertySource("classpath:application.properties")
 class CulturalOffersApplicationTests {

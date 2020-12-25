@@ -58,7 +58,7 @@ public class CulturalOfferRepositoryIntegrationTest {
 	
 	@Test
 	public void findAll_SecondPageNoOffers_ReturnsEmptyPage() {
-		Pageable pageable = PageRequest.of(PAGEABLE_FIRST_PAGE, PAGEABLE_SIZE);
+		Pageable pageable = PageRequest.of(PAGEABLE_SECOND_PAGE, PAGEABLE_SIZE);
         Page<CulturalOffer> found = cultOfferRepository.findAll(pageable);
         assertEquals(PAGEABLE_NO_ELEMENTS, found.getNumberOfElements());
 	}

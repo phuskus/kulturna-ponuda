@@ -26,8 +26,9 @@ insert into cultural_offers (address, city, description, latitude, longitude, na
 insert into pictures (path, placeholder) values ('\pictures\exit.jpg', 'picture placeholder');
 insert into pictures (path, placeholder) values ('\pictures\exit1.jpg', 'picture1 placeholder');
 
-insert into cultural_offers_pictures (cultural_offer_id, pictures_id) values (1, 1); 
-
+insert into cultural_offers_pictures (cultural_offer_id, pictures_id) values (1, 1);
+insert into cultural_offers_pictures (cultural_offer_id, pictures_id) values (2, 2);
+ 
 insert into posts (content, cultural_offer_id) values ('test1_offer1', 1);
 insert into posts (content, cultural_offer_id) values ('test2_offer1', 1);
 insert into posts (content, cultural_offer_id) values ('test3_offer2', 2);
