@@ -30,6 +30,7 @@ public class Category {
 
 	public Category(String name) {
 		this.name = name;
+		this.subcategories = new HashSet<>();
 	}
 
 	public Long getId() {

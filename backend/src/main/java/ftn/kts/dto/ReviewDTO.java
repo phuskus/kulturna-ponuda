@@ -1,6 +1,7 @@
 package ftn.kts.dto;
 
 import ftn.kts.model.CulturalOffer;
+import ftn.kts.model.Review;
 import ftn.kts.model.User;
 
 import javax.validation.constraints.NotBlank;
@@ -24,6 +25,7 @@ public class ReviewDTO {
 
 
     public ReviewDTO() {
+        this.pictures = new HashSet<>();
     }
 
     public ReviewDTO(Long id, Long rating, String content, User user, CulturalOffer offer) {
@@ -33,6 +35,25 @@ public class ReviewDTO {
         this.user = user.getId();
         this.culturalOffer = offer.getId();
         this.pictures = new HashSet<>();
+    }
+
+    public ReviewDTO(Long rating, String content, Long userId, Long offerId) {
+        this.rating = rating;
+        this.content = content;
+        this.user = userId;
+        this.culturalOffer = offerId;
+        this.pictures = new HashSet<>();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+
+        if (!(obj instanceof ReviewDTO)) return false;
+
+        ReviewDTO review = (ReviewDTO) obj;
+        return this.getCulturalOffer().equals(review.getCulturalOffer()) && this.getContent().equals(review.getContent())
+                && this.getUser().equals(review.getUser());
     }
 
     public Long getId() {

@@ -1,5 +1,6 @@
 package ftn.kts.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -32,7 +33,7 @@ public class Review {
 	private Set<Picture> pictures;
 
 	public Review() {
-
+		this.pictures = new HashSet<>();
 	}
 
 	public Review(Long id, Long rating, String content, RegisteredUser user, CulturalOffer offer) {
@@ -41,6 +42,7 @@ public class Review {
 		this.content = content;
 		this.user = user;
 		this.culturalOffer = offer;
+		this.pictures = new HashSet<>();
 	}
 	
 	public Long getId() {

@@ -35,9 +35,9 @@ public class AdminService {
         return dto;
     }
 
-    public void create(AdminDTO dto) {
+    public AdminDTO create(AdminDTO dto) {
         Admin admin = toEntity(dto);
-        adminRepository.save(admin);
+        return toDTO(adminRepository.save(admin));
     }
 
     public AdminDTO update(AdminDTO dto, Long id) {
@@ -49,25 +49,25 @@ public class AdminService {
     public void delete(Long id) {
         adminRepository.deleteById(id);
     }
-    
+
     public Admin getOne(Long id) {
-		return adminRepository.findById(id)
-				.orElseThrow(() -> new NoSuchElementException("Admin with id " + id + " doesn't exist!"));
+        return adminRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Admin with id " + id + " doesn't exist!"));
     }
-    
+
     public List<Admin> getAll() {
-    	return adminRepository.findAll();
+        return adminRepository.findAll();
     }
 
     protected Admin toEntity(AdminDTO dto) {
-        return new Admin("", dto.getUsername(), dto.getPassword(), dto.getCategories(), dto.getCulturalOffers());
+        return new Admin(dto.getName(), dto.getUsername(), dto.getPassword(), dto.getCategories(), dto.getCulturalOffers());
     }
 
     private AdminDTO toDTO(Admin admin) {
-        return new AdminDTO(admin.getId(), admin.getUsername(), admin.getPassword(), admin.getCategories(), admin.getCulturalOffers());
+        return new AdminDTO(admin.getId(), admin.getName(), admin.getUsername(), admin.getPassword(), admin.getCategories(), admin.getCulturalOffers());
     }
 
-    private Admin updateAdmin(Admin admin, AdminDTO dto){
+    private Admin updateAdmin(Admin admin, AdminDTO dto) {
         admin.setUsername(dto.getUsername());
         admin.setPassword(dto.getPassword());
         admin.setCategories(dto.getCategories());
