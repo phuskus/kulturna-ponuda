@@ -1,9 +1,10 @@
 package ftn.kts.constants;
 
 public class SubcategoryConstants {
-    public static String DB_CATEGORY_NAME = "Festival";
-    public static String DB_CATEGORY_NAME2 = "Okupljanje";
-    public static String DB_NONEXISTENT_CATEGORY_NAME = "Onomatopeja";
+    public static Long DB_CATEGORY_ID = 1L;
+    public static String DB_SUBCATEGORY_NAME = "Festival";
+    public static String DB_SUBCATEGORY_NAME2 = "Okupljanje";
+    public static String DB_NONEXISTENT_SUBCATEGORY_NAME = "Onomatopeja";
     public static Long EXISTENT_ID = 1L;
     public static Long NONEXISTENT_ID = 117L;
 

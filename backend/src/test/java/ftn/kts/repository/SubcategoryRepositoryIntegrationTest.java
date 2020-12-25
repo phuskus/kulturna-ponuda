@@ -28,25 +28,25 @@ public class SubcategoryRepositoryIntegrationTest {
 
     @Test
     public void findByName_ExistingName_ReturnsSubcategory() {
-        Subcategory subcategory = subcategoryRepository.findByNameIgnoringCase(DB_CATEGORY_NAME);
-        assertEquals(subcategory.getName(), DB_CATEGORY_NAME);
+        Subcategory subcategory = subcategoryRepository.findByNameIgnoringCase(DB_SUBCATEGORY_NAME);
+        assertEquals(subcategory.getName(), DB_SUBCATEGORY_NAME);
     }
 
     @Test
     public void findByName_ExistingNameUpperCase_ReturnsSubcategory() {
-        Subcategory subcategory = subcategoryRepository.findByNameIgnoringCase(DB_CATEGORY_NAME.toUpperCase());
-        assertEquals(subcategory.getName(), DB_CATEGORY_NAME);
+        Subcategory subcategory = subcategoryRepository.findByNameIgnoringCase(DB_SUBCATEGORY_NAME.toUpperCase());
+        assertEquals(subcategory.getName(), DB_SUBCATEGORY_NAME);
     }
 
     @Test
     public void findByName_ExistingNameLowerCase_ReturnsSubcategory() {
-        Subcategory subcategory = subcategoryRepository.findByNameIgnoringCase(DB_CATEGORY_NAME.toLowerCase());
-        assertEquals(subcategory.getName(), DB_CATEGORY_NAME);
+        Subcategory subcategory = subcategoryRepository.findByNameIgnoringCase(DB_SUBCATEGORY_NAME.toLowerCase());
+        assertEquals(subcategory.getName(), DB_SUBCATEGORY_NAME);
     }
 
     @Test
     public void findByName_NonexistentName_ReturnsNull() {
-        Subcategory subcategory = subcategoryRepository.findByNameIgnoringCase(DB_NONEXISTENT_CATEGORY_NAME);
+        Subcategory subcategory = subcategoryRepository.findByNameIgnoringCase(DB_NONEXISTENT_SUBCATEGORY_NAME);
         assertNull(subcategory);
     }
 
