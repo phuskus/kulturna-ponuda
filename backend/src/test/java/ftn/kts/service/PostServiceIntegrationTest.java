@@ -31,44 +31,51 @@ public class PostServiceIntegrationTest {
 	private PostService postService;
 	
 	@Test
-	public void testGetAllDTOPageable() {
+	public void getAllDTO_FirstPageThreePosts_ThreeEntitiesReturned() {
 		Pageable pageable = PageRequest.of(PAGEABLE_PAGE,PAGEABLE_SIZE);
 		Page<PostDTO> found = postService.getAllDTO(pageable);
 		assertEquals(found.getNumberOfElements(), FIND_ALL_NUMBER_OF_ITEMS);
 	}
 	
 	@Test
-	public void testGetOneDTO() {
+	public void getAllDTO_SecondPageNoPosts_NoEntitiesReturned() {
+		Pageable pageable = PageRequest.of(PAGEABLE_FIRST_PAGE,PAGEABLE_SIZE);
+		Page<PostDTO> found = postService.getAllDTO(pageable);
+		assertEquals(found.getNumberOfElements(), NO_ITEMS);
+	}
+	
+	@Test
+	public void getOneDTO_PostExists_OneEntityReturned() {
 		PostDTO found = postService.getOneDTO(DB_POST_ID);
 		assertNotNull(found);
 		assertEquals(found.getContent(), DB_POST_CONTENT);
 	}
 	
 	@Test(expected = NoSuchElementException.class)
-	public void testGetOneDTONull() {
+	public void getOneDTO_PostNotExists_NoSuchElementExceptionThrown() {
 		postService.getOneDTO(DB_POST_NO_SUCH_ID);
 	}
 	
 	@Test
-	public void testGetOne() {
+	public void getOne_PostExists_OneEntityReturned() {
 		Post found = postService.getOne(DB_POST_ID);
 		assertNotNull(found);
 		assertEquals(found.getContent(), DB_POST_CONTENT);
 	}
 	
 	@Test(expected = NoSuchElementException.class)
-	public void testGetOneNull() {
+	public void getOne_PostNotExists_NoSuchElementExceptionThrown() {
 		postService.getOne(DB_POST_NO_SUCH_ID);
 	}
 	
 	@Test
-	public void testGetAll() {
+	public void getAll_PostsExist_ThreeEntitesReturned() {
 		List<Post> posts = postService.getAll();
 		assertEquals(posts.size(), FIND_ALL_NUMBER_OF_ITEMS);
 	}
 	
 	@Test
-	public void testConvertToDTO() {
+	public void convertToDTO_PostsExist_ThreeEntityDtosReturned() {
 		List<Post> posts = postService.getAll();
 		Set<Post> postsSet = new HashSet<>(posts);
 		Set<PostDTO> postsDTOSet = postService.convertToDTO(postsSet);
@@ -76,7 +83,7 @@ public class PostServiceIntegrationTest {
 	}
 	
 	@Test(expected = NoSuchElementException.class)
-	public void testCreateAndDeletePost() {
+	public void createAndDelete_EntitySavedAndDeleted() {
 		PictureDTO pictureDTO = new PictureDTO();
 		pictureDTO.setId(DB_PICTURE_ID);
 		Set<PictureDTO> pictures = new HashSet<>();
@@ -92,7 +99,7 @@ public class PostServiceIntegrationTest {
 	}
 	
 	@Test
-	public void testUpdatePost() {
+	public void updatePost_PostExists_EntityUpdatedAndReveretedToPreviousState() {
 		Post post = postService.getOne(DB_POST_ID);
 		Set<PictureDTO> picturesDTO = new HashSet<>();
 		PictureDTO newPicture = new PictureDTO(DB_NEW_PICTURE_ID);

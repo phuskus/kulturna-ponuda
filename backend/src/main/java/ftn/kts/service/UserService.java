@@ -68,7 +68,7 @@ public class UserService {
     }
     
     public User save(User user) {
-    	return userRepository.save(user);
+    	return userRepository.save(user);    		
     }
     
     public void delete(String username) {
@@ -118,11 +118,6 @@ public class UserService {
             throw new NoSuchElementException("User with username " + username + " doesn't exist!");
         }
         return user;
-    }
-
-    private UserDTO toDTO(User entity) {
-        UserDTO dto = new UserDTO(entity.getId(), entity.getName(), entity.getUsername(), entity.getPassword());
-        return dto;
     }
 
     private RegisteredUser toEntity(UserDTO dto) {

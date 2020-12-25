@@ -1,7 +1,5 @@
 package ftn.kts.dto;
 
-import org.aspectj.bridge.IMessage;
-
 import javax.validation.constraints.NotBlank;
 
 public class UserTokenStateDTO {

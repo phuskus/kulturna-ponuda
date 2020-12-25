@@ -101,5 +101,4 @@ public class SubcategoryServiceIntegrationTest {
         assertThrows(UniqueConstraintViolationException.class, () -> subcategoryService.update(subcategory, subcategory.getId()));
     }
 
-
 }

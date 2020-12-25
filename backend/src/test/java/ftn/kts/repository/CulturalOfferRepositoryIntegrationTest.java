@@ -25,41 +25,47 @@ public class CulturalOfferRepositoryIntegrationTest {
 	private CulturalOfferRepository cultOfferRepository;
 	
 	@Test
-	public void testFindCulturalOfferByName() {
+	public void findByNameIgnoringCase_ExistsName_ReturnsOneEntity() {
 		CulturalOffer found = cultOfferRepository.findByNameIgnoringCase(DB_CULTURAL_OFFER_NAME);
 		assertEquals(found.getName(), DB_CULTURAL_OFFER_NAME);
 	}
 	
 	@Test
-	public void testFindCulturalOfferByNamePageable() {
+	public void findByNameIgnoringCase_ExistsNameUppercase_ReturnsOneEntity() {
+		CulturalOffer found = cultOfferRepository.findByNameIgnoringCase(DB_CULTURAL_OFFER_NAME_UPPERCASE);
+		assertEquals(found.getName(), DB_CULTURAL_OFFER_NAME);
+	}
+	
+	@Test
+	public void findByNameIgnoringCase_NotExistsName_ReturnsNull() {
+		CulturalOffer notFound = cultOfferRepository.findByNameIgnoringCase(DB_CULTURAL_OFFER_NO_SUCH_NAME);
+		assertNull(notFound);
+	}
+	
+	@Test
+	public void findByNameContainingIgnoreCase_FirstPageTwoOffers_ReturnsTwoEntities() {
 		Pageable pageable = PageRequest.of(PAGEABLE_PAGE,PAGEABLE_SIZE);
 		Page<CulturalOffer> found = cultOfferRepository.findByNameContainingIgnoreCase(DB_CULTURAL_OFFER_PART_NAME, pageable);
 		assertEquals(FIND_ALL_NUMBER_OF_ITEMS, found.getNumberOfElements());
 	}
 	
 	@Test
-	public void testFindCulturalOfferByUppercaseName() {
-		CulturalOffer found = cultOfferRepository.findByNameIgnoringCase(DB_CULTURAL_OFFER_NAME_UPPERCASE);
-		assertEquals(found.getName(), DB_CULTURAL_OFFER_NAME);
-	}
-	
-	@Test
-	public void testFindNullByName() {
-		CulturalOffer notFound = cultOfferRepository.findByNameIgnoringCase(DB_CULTURAL_OFFER_NO_SUCH_NAME);
-		assertNull(notFound);
-	}
-	
-	
-	@Test
-	public void testFindAllPageable() {
+	public void findAll_FirstPageTwoOffers_ReturnsTwoEntites() {
 		Pageable pageable = PageRequest.of(PAGEABLE_PAGE,PAGEABLE_SIZE);
         Page<CulturalOffer> found = cultOfferRepository.findAll(pageable);
         assertEquals(FIND_ALL_NUMBER_OF_ITEMS, found.getNumberOfElements());
 	}
 	
 	@Test
-	public void testFindCulturalOfferBySubcategory() {
-		CulturalOffer offer = cultOfferRepository.findById(1L).get();
+	public void findAll_SecondPageNoOffers_ReturnsEmptyPage() {
+		Pageable pageable = PageRequest.of(PAGEABLE_SECOND_PAGE, PAGEABLE_SIZE);
+        Page<CulturalOffer> found = cultOfferRepository.findAll(pageable);
+        assertEquals(PAGEABLE_NO_ELEMENTS, found.getNumberOfElements());
+	}
+	
+	@Test
+	public void findByCategory_CulturalOfferExists_ReturnsTwoEntites() {
+		CulturalOffer offer = cultOfferRepository.findById(DB_CULTURAL_OFFER_ID).get();
 		Subcategory subcategory = offer.getCategory();
 		Pageable pageable = PageRequest.of(PAGEABLE_PAGE,PAGEABLE_SIZE);
 		Page<CulturalOffer> found = cultOfferRepository.findByCategory(subcategory, pageable);
@@ -67,49 +73,59 @@ public class CulturalOfferRepositoryIntegrationTest {
 	}
 	
 	@Test
-	public void testFindCulturalOfferByCity() {
+	public void findByCategory_CulturalOfferNotExists_ReturnsEmptyPage() {
+		CulturalOffer offer = cultOfferRepository.findById(DB_CULTURAL_OFFER_ID).get();
+		Subcategory subcategory = offer.getCategory();
+		subcategory.setId(CATEGORY_NULL_ID);
+		Pageable pageable = PageRequest.of(PAGEABLE_PAGE,PAGEABLE_SIZE);
+		Page<CulturalOffer> found = cultOfferRepository.findByCategory(subcategory, pageable);
+		assertEquals(PAGEABLE_NO_ELEMENTS, found.getNumberOfElements());
+	}
+	
+	@Test
+	public void findByCityContainingIgnoreCase_CityExists_ReturnsOneEntity() {
 		Pageable pageable = PageRequest.of(PAGEABLE_PAGE,PAGEABLE_SIZE);
 		Page<CulturalOffer> found = cultOfferRepository.findByCityContainingIgnoreCase(DB_CITY_NAME, pageable);
 		assertEquals(FIND_ALL_NUMBER_OF_ITEMS_BY_CITY, found.getNumberOfElements());
 	}
 	
 	@Test
-	public void testFindCulturalOfferByCitySubstring() {
+	public void findByCityContainingIgnoreCase_CitySubstringExists_ReturnsOneEntity() {
 		Pageable pageable = PageRequest.of(PAGEABLE_PAGE,PAGEABLE_SIZE);
 		Page<CulturalOffer> found = cultOfferRepository.findByCityContainingIgnoreCase(DB_CITY_PART_NAME, pageable);
 		assertEquals(FIND_ALL_NUMBER_OF_ITEMS_BY_CITY, found.getNumberOfElements());
 	}
 	
 	@Test
-	public void testFindCulturalOfferByCityLowercase() {
+	public void findByCityContainingIgnoreCase_CityLowercaseExists_ReturnsOneEntity() {
 		Pageable pageable = PageRequest.of(PAGEABLE_PAGE,PAGEABLE_SIZE);
 		Page<CulturalOffer> found = cultOfferRepository.findByCityContainingIgnoreCase(DB_CITY_NAME_LOWERCASE, pageable);
 		assertEquals(FIND_ALL_NUMBER_OF_ITEMS_BY_CITY, found.getNumberOfElements());
 	}
 	
 	@Test
-	public void testFindNullByCity() {
+	public void findByCityContainingIgnoreCase_CityNotExists_ReturnsEmptyPage() {
 		Pageable pageable = PageRequest.of(PAGEABLE_PAGE,PAGEABLE_SIZE);
 		Page<CulturalOffer> found = cultOfferRepository.findByCityContainingIgnoreCase(DB_NO_SUCH_CITY, pageable);
 		assertEquals(0, found.getNumberOfElements());
 	}
 	
 	@Test
-	public void testFindCulturalOfferByDescription() {
+	public void findByDescriptionContainingIgnoreCase_DescriptionSubstringExists_ReturnsTwoEntites() {
 		Pageable pageable = PageRequest.of(PAGEABLE_PAGE,PAGEABLE_SIZE);
 		Page<CulturalOffer> found = cultOfferRepository.findByDescriptionContainingIgnoreCase(DB_PART_DESCRIPTION, pageable);
 		assertEquals(FIND_ALL_NUMBER_OF_ITEMS_BY_DESCRIPTION, found.getNumberOfElements());
 	}
 	
 	@Test
-	public void testFindCulturalOfferByDescriptionUppercase() {
+	public void findByDescriptionContainingIgnoreCase_DescriptionSubstringUppercaseExists_ReturnsTwoEntites() {
 		Pageable pageable = PageRequest.of(PAGEABLE_PAGE,PAGEABLE_SIZE);
 		Page<CulturalOffer> found = cultOfferRepository.findByDescriptionContainingIgnoreCase(DB_PART_DESCRIPTION_UPPERCASE, pageable);
 		assertEquals(FIND_ALL_NUMBER_OF_ITEMS_BY_DESCRIPTION, found.getNumberOfElements());
 	}
 	
 	@Test
-	public void testFindNoCulturalOfferByDescription() {
+	public void findByDescriptionContainingIgnoreCase_DescriptionNotExists_ReturnsEmptyPage() {
 		Pageable pageable = PageRequest.of(PAGEABLE_PAGE,PAGEABLE_SIZE);
 		Page<CulturalOffer> found = cultOfferRepository.findByDescriptionContainingIgnoreCase(DB_NO_SUCH_DESCRIPTION, pageable);
 		assertEquals(0, found.getNumberOfElements());
