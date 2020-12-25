@@ -14,9 +14,9 @@ public class Subscription {
 	private Date dateOfSubscription;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	private Subcategory subcategory;
-	@ManyToOne(fetch = FetchType.EAGER)
 	private CulturalOffer culturalOffer;
+	@ManyToOne(fetch = FetchType.EAGER)
+	private Subcategory subcategory;
 	@ManyToOne(fetch = FetchType.LAZY)
 	private RegisteredUser user;
 
