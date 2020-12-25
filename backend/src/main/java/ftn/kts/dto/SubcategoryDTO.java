@@ -10,7 +10,7 @@ public class SubcategoryDTO {
     @NotBlank(message = "Subcategory name is required!")
     private String name;
     @NotNull(message = "Subcategory needs to belong to a category!")
-    private Long category;
+    private Long categoryId;
 
     // TODO: Sets of cultural offers and subscriptions?
     
@@ -21,12 +21,12 @@ public class SubcategoryDTO {
     public SubcategoryDTO(Long id, String name, Category category) {
         this.id = id;
         this.name = name;
-        this.category = category.getId();
+        this.categoryId = category.getId();
     }
     
-    public SubcategoryDTO(String name, Long category) {
+    public SubcategoryDTO(String name, Long categoryId) {
         this.name = name;
-        this.category = category;
+        this.categoryId = categoryId;
     }
 
     public Long getId() {
@@ -45,11 +45,21 @@ public class SubcategoryDTO {
         this.name = name;
     }
 
-    public Long getCategory() {
-        return category;
+    public Long getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(Long category) {
-        this.category = category;
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+
+        if (!(obj instanceof SubcategoryDTO)) return false;
+
+        SubcategoryDTO subcategory = (SubcategoryDTO) obj;
+        return this.name.equals(subcategory.getName());
     }
 }

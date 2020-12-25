@@ -41,3 +41,13 @@ insert into posts_pictures (post_id, pictures_id) values (3, 1);
 
 insert into reviews (rating, content, cultural_offer_id, user_id) values (5, 'Otkazano zbog korone', 1, 2);
 insert into reviews (rating, content, cultural_offer_id, user_id) values (0, 'Ne valja nista', 1, 2);
+
+
+-- Subscribe to cultural offer 1 as user 1
+insert into subscriptions (date_of_subscription, cultural_offer_id, user_id) values ('2020-12-15 13:27:00.508-07', 1, 1);
+
+-- Subscribe to subcategory 2 as user 1
+insert into subscriptions (date_of_subscription, subcategory_id, user_id) values ('2020-12-22 17:12:30.508-07', 2, 1);
+
+-- Subscribe to cultural offer 2 as user 2
+insert into subscriptions (date_of_subscription, cultural_offer_id, user_id) values ('2020-12-09 14:42:13.508-07', 2, 2);
