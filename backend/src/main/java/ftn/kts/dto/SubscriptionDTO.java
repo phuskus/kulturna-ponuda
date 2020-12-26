@@ -22,8 +22,33 @@ public class SubscriptionDTO {
         this.id = id;
         this.dateOfSubscription = dateOfSubscription;
         this.registeredUserId = registeredUser.getId();
-        this.subcategoryId = subcategory.getId();
-        this.culturalOfferId = culturalOffer.getId();
+        if (subcategory == null) {
+            this.subcategoryId = null;
+        } else {
+            this.subcategoryId = subcategory.getId();
+        }
+
+        if (culturalOffer == null) {
+            this.culturalOfferId = null;
+        } else {
+            this.culturalOfferId = culturalOffer.getId();
+        }
+    }
+
+    public SubscriptionDTO(Date dateOfSubscription, RegisteredUser registeredUser, Subcategory subcategory, CulturalOffer culturalOffer) {
+        this.dateOfSubscription = dateOfSubscription;
+        this.registeredUserId = registeredUser.getId();
+        if (subcategory == null) {
+            this.subcategoryId = null;
+        } else {
+            this.subcategoryId = subcategory.getId();
+        }
+
+        if (culturalOffer == null) {
+            this.culturalOfferId = null;
+        } else {
+            this.culturalOfferId = culturalOffer.getId();
+        }
     }
 
     public Long getId() {
@@ -73,9 +98,29 @@ public class SubscriptionDTO {
         if (!(obj instanceof SubscriptionDTO)) return false;
 
         SubscriptionDTO subscription = (SubscriptionDTO) obj;
+
+        boolean subcategorySame;
+        if (this.subcategoryId == null && subscription.subcategoryId == null)
+        {
+            subcategorySame = true;
+        } else if (this.subcategoryId != null && subscription.subcategoryId != null) {
+            subcategorySame = this.subcategoryId.equals(subscription.getSubcategoryId());
+        } else {
+            subcategorySame = false;
+        }
+
+        boolean culturalOfferSame;
+        if (this.culturalOfferId == null && subscription.culturalOfferId == null) {
+            culturalOfferSame = true;
+        } else if (this.culturalOfferId != null && subscription.culturalOfferId != null) {
+            culturalOfferSame = this.culturalOfferId.equals(subscription.getCulturalOfferId());
+        } else {
+            culturalOfferSame = false;
+        }
+
         return this.dateOfSubscription.equals(subscription.getDateOfSubscription())
-                && this.subcategoryId.equals(subscription.getSubcategoryId())
-                && this.culturalOfferId.equals(subscription.getCulturalOfferId())
+                && subcategorySame
+                && culturalOfferSame
                 && this.registeredUserId.equals(subscription.getRegisteredUserId());
     }
 }
