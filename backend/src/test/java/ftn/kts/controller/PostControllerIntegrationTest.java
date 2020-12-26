@@ -152,10 +152,10 @@ public class PostControllerIntegrationTest {
 		PostDTO created = responseEntity.getBody();
 		
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertEquals(DB_ID_CREATED_POST, created.getId());
+		assertNotNull(created.getId());
 		
 		//clean up
-		postService.delete(DB_ID_CREATED_POST);
+		postService.delete(created.getId());
 	}
 	
 	@Test

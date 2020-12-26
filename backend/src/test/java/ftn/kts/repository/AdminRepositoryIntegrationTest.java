@@ -22,6 +22,6 @@ public class AdminRepositoryIntegrationTest {
     @Test
     public void findAll_ReturnsAllAdmins() {
         List<Admin> admins = adminRepository.findAll();
-        assertEquals(FIND_ALL_NUMBER_OF_ITEMS, admins.size());
+        assertEquals(NUM_ITEMS, admins.size());
     }
 }

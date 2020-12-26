@@ -1,5 +1,7 @@
 package ftn.kts;
 
+import ftn.kts.controller.*;
+import ftn.kts.service.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -29,27 +31,31 @@ import ftn.kts.service.UserServiceIntegrationTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-	AuthorityRepositoryIntegrationTest.class, 
-	CulturalOfferRepositoryIntegrationTest.class,
-	UserRepositoryIntegrationTest.class,
-	PictureServiceIntegrationTest.class,
-	AuthorityServiceIntegrationTest.class,
-	UserServiceIntegrationTest.class,
-	PostServiceIntegrationTest.class,
-	PictureControllerIntegrationTest.class,
-	CulturalOfferControllerIntegrationTest.class,
-	CulturalOfferServiceUnitTest.class,
-	CulturalOfferServiceIntegrationTest.class,
-	AdminRepositoryIntegrationTest.class,
-	CategoryRepositoryIntegrationTest.class,
-	ReviewRepositoryIntegrationTest.class,
-	AdminServiceIntegrationTest.class,
-	CategoryServiceIntegrationTest.class,
-	ReviewServiceIntegrationTest.class,
-	PostControllerIntegrationTest.class,
-	SubcategoryRepositoryIntegrationTest.class,
-	SubcategoryServiceIntegrationTest.class,
-	LoginControllerIntegrationTest.class,
+        AuthorityRepositoryIntegrationTest.class,
+        AuthorityServiceIntegrationTest.class,
+        UserRepositoryIntegrationTest.class,
+        UserServiceIntegrationTest.class,
+        PictureServiceIntegrationTest.class,
+        PictureControllerIntegrationTest.class,
+        CulturalOfferRepositoryIntegrationTest.class,
+        CulturalOfferServiceIntegrationTest.class,
+        CulturalOfferControllerIntegrationTest.class,
+        CulturalOfferServiceUnitTest.class,
+        AdminRepositoryIntegrationTest.class,
+        AdminServiceIntegrationTest.class,
+        AdminControllerIntegrationTest.class,
+        CategoryRepositoryIntegrationTest.class,
+        CategoryServiceIntegrationTest.class,
+        CategoryControllerIntegrationTest.class,
+        CategoryServiceUnitTest.class,
+        ReviewRepositoryIntegrationTest.class,
+        ReviewServiceIntegrationTest.class,
+        ReviewControllerIntegrationTest.class,
+        LoginControllerIntegrationTest.class,
+        SubcategoryRepositoryIntegrationTest.class,
+        SubcategoryServiceIntegrationTest.class,
+        PostServiceIntegrationTest.class,
+        PostControllerIntegrationTest.class
 })
 @TestPropertySource("classpath:application.properties")
 class CulturalOffersApplicationTests {

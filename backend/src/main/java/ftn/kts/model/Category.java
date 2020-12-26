@@ -15,46 +15,52 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "categories")
 public class Category {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	@Column(name = "name", unique = true, nullable = false)
-	private String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "name", unique = true, nullable = false)
+    private String name;
 
-	@OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-	private Set<Subcategory> subcategories;
+    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
+    private Set<Subcategory> subcategories;
 
-	public Category() {
-		this.subcategories = new HashSet<>();
-	}
+    public Category() {
+        this.subcategories = new HashSet<>();
+    }
 
-	public Category(String name) {
-		this.name = name;
-		this.subcategories = new HashSet<>();
-	}
+    public Category(Long id, String name) {
+        this.id = id;
+        this.name = name;
+        this.subcategories = new HashSet<>();
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public Category(String name) {
+        this.name = name;
+        this.subcategories = new HashSet<>();
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public Set<Subcategory> getSubcategories() {
-		return subcategories;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setSubcategories(Set<Subcategory> subcategories) {
-		this.subcategories = subcategories;
-	}
+    public Set<Subcategory> getSubcategories() {
+        return subcategories;
+    }
+
+    public void setSubcategories(Set<Subcategory> subcategories) {
+        this.subcategories = subcategories;
+    }
 
 }

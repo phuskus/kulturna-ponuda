@@ -1,16 +1,11 @@
 package ftn.kts.service;
 
-import ftn.kts.constants.CategoryConstants;
-import ftn.kts.constants.CulturalOfferConstants;
-import ftn.kts.constants.UserConstants;
 import ftn.kts.dto.AdminDTO;
-import ftn.kts.dto.ReviewDTO;
-import ftn.kts.model.Review;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.authentication.DisabledException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +27,7 @@ public class AdminServiceIntegrationTest {
     public void getAll_ReturnsAllAdmins() {
         List<AdminDTO> list = adminService.getAllDTO();
         assertNotNull(list);
+        assertEquals(NUM_ITEMS, list.size());
     }
 
     @Test
@@ -60,7 +56,7 @@ public class AdminServiceIntegrationTest {
 
     @Test
     public void delete_NonexistentId_ThrowsNoSuchElementException() {
-        assertThrows(NoSuchElementException.class, () -> adminService.delete(NONEXISTENT_ID));
+        assertThrows(EmptyResultDataAccessException.class, () -> adminService.delete(NONEXISTENT_ID));
     }
 
     @Test

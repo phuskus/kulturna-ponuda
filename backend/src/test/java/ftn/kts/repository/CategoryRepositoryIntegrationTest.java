@@ -23,30 +23,30 @@ public class CategoryRepositoryIntegrationTest {
     @Test
     public void findAll_ReturnsAllCategories() {
         List<Category> categories = categoryRepository.findAll();
-        assertEquals(FIND_ALL_NUMBER_OF_ITEMS, categories.size());
+        assertEquals(NUM_ITEMS, categories.size());
     }
 
     @Test
     public void findByName_ExistingName_ReturnsCategory() {
-        Category category = categoryRepository.findByNameIgnoringCase(DB_CATEGORY_NAME);
-        assertEquals(category.getName(), DB_CATEGORY_NAME);
+        Category category = categoryRepository.findByNameIgnoringCase(CATEGORY_NAME);
+        assertEquals(category.getName(), CATEGORY_NAME);
     }
 
     @Test
     public void findByName_ExistingNameUpperCase_ReturnsCategory() {
-        Category category = categoryRepository.findByNameIgnoringCase(DB_CATEGORY_NAME.toUpperCase());
-        assertEquals(category.getName(), DB_CATEGORY_NAME);
+        Category category = categoryRepository.findByNameIgnoringCase(CATEGORY_NAME.toUpperCase());
+        assertEquals(category.getName(), CATEGORY_NAME);
     }
 
     @Test
     public void findByName_ExistingNameLowerCase_ReturnsCategory() {
-        Category category = categoryRepository.findByNameIgnoringCase(DB_CATEGORY_NAME.toLowerCase());
-        assertEquals(category.getName(), DB_CATEGORY_NAME);
+        Category category = categoryRepository.findByNameIgnoringCase(CATEGORY_NAME.toLowerCase());
+        assertEquals(category.getName(), CATEGORY_NAME);
     }
 
     @Test
     public void findByName_NonexistentName_ReturnsNull() {
-        Category category = categoryRepository.findByNameIgnoringCase(DB_NONEXISTENT_CATEGORY_NAME);
+        Category category = categoryRepository.findByNameIgnoringCase(NONEXISTENT_CATEGORY_NAME);
         assertNull(category);
     }
 

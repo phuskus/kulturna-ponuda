@@ -66,12 +66,11 @@ public class CulturalOfferServiceIntegrationTest {
 				CREATE_LATITUDE, CREATE_LONGITUDE, CREATE_ADRESS, CREATE_CITY, CREATE_REGION,
 				ADMIN_ID, CATEGORY_ID);
 		CulturalOfferDTO createdOffer = cultOfferService.create(newOfferDTO);
-		assertNotNull(createdOffer);
-		assertEquals(createdOffer.getId(), ID_CREATED_OFFER);
+		assertNotNull(createdOffer.getId());
 		
 		//clean up
-		cultOfferService.delete(ID_CREATED_OFFER);
-		cultOfferService.getOne(ID_CREATED_OFFER);
+		cultOfferService.delete(createdOffer.getId());
+		cultOfferService.getOne(createdOffer.getId());
 	}
 	
 	@Test(expected = UniqueConstraintViolationException.class)

@@ -4,6 +4,8 @@ import ftn.kts.dto.CategoryDTO;
 import ftn.kts.exceptions.UniqueConstraintViolationException;
 import ftn.kts.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,7 +21,7 @@ public class CategoryController {
     private CategoryService service;
 
     @Autowired
-    public CategoryController(CategoryService service){
+    public CategoryController(CategoryService service) {
         this.service = service;
     }
 
@@ -38,9 +40,12 @@ public class CategoryController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<String> addCategory(@Valid @RequestBody CategoryDTO dto) throws UniqueConstraintViolationException {
-        service.create(dto);
-        return new ResponseEntity<>("Successfully added category!", HttpStatus.OK);
+    public ResponseEntity<Object> addCategory(@Valid @RequestBody CategoryDTO dto) throws UniqueConstraintViolationException {
+        try {
+            return new ResponseEntity<>(service.create(dto), HttpStatus.CREATED);
+        } catch (EmptyResultDataAccessException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PutMapping("/{id}")
@@ -52,8 +57,14 @@ public class CategoryController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<String> deleteCategory(@PathVariable("id") long id) {
-        service.delete(id);
-        return new ResponseEntity<>("Successfully deleted category!", HttpStatus.OK);
+    public ResponseEntity<Object> deleteCategory(@PathVariable("id") long id) {
+        try {
+            service.delete(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (EmptyResultDataAccessException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }
