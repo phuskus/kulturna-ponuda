@@ -43,12 +43,13 @@ public class SubscriptionService {
 		return toDTO(subscription);
 	}
 
-	public void create(SubscriptionDTO dto) {
+	public SubscriptionDTO create(SubscriptionDTO dto) {
 		Subscription subscription = toEntity(dto);
-		subscriptionRepository.save(subscription);
+		subscription = subscriptionRepository.save(subscription);
+		return toDTO(subscription);
 	}
 
-	public SubscriptionDTO update(SubscriptionDTO dto, Long id) {
+	public SubscriptionDTO update(SubscriptionDTO dto, Long id) throws Exception {
 		Subscription subscription = getOne(id);
 		updateSubscription(subscription, dto);
 		return toDTO(subscription);
@@ -73,8 +74,14 @@ public class SubscriptionService {
 	}
 	
 	private Subscription toEntity(SubscriptionDTO dto) {
-		Subcategory subCategory = subcategoryService.getOne(dto.getSubcategoryId());
-		CulturalOffer culturalOffer = culturalOfferService.getOne(dto.getCulturalOfferId());
+		Subcategory subCategory = null;
+		if (dto.getSubcategoryId() != null) {
+			subCategory = subcategoryService.getOne(dto.getSubcategoryId());
+		}
+		CulturalOffer culturalOffer = null;
+		if (dto.getCulturalOfferId() != null) {
+			culturalOffer = culturalOfferService.getOne(dto.getCulturalOfferId());
+		}
 		RegisteredUser registeredUser = registeredUserService.getOne(dto.getRegisteredUserId());
 		return new Subscription(dto.getId(), dto.getDateOfSubscription(), subCategory, culturalOffer, registeredUser);
 	}
@@ -84,10 +91,17 @@ public class SubscriptionService {
 				entity.getSubcategory(), entity.getCulturalOffer());
 	}
 
-	private void updateSubscription(Subscription subscription, SubscriptionDTO dto) {
+	private void updateSubscription(Subscription subscription, SubscriptionDTO dto) throws Exception{
 		subscription.setDateOfSubscription(dto.getDateOfSubscription());
 		subscription.setUser(registeredUserService.getOne(dto.getRegisteredUserId()));
 
+		if (dto.getCulturalOfferId() != null) {
+
+		} else if (dto.getSubcategoryId() != null) {
+
+		} else {
+			throw new Exception("A subscription must be tied to a subcategory or a cultural offer.");
+		}
 		subscription.setCulturalOffer(culturalOfferService.getOne(dto.getCulturalOfferId()));
 		subscription.setSubcategory(subcategoryService.getOne(dto.getCulturalOfferId()));
 	}
