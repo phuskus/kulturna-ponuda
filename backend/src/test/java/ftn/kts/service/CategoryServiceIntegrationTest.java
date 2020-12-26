@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +34,7 @@ public class CategoryServiceIntegrationTest {
     public void getOne_ExistentId_ReturnsCategory() {
         CategoryDTO category = categoryService.getOneDTO(EXISTENT_ID);
         assertNotNull(category);
-        assertEquals(DB_CATEGORY_NAME, category.getName());
+        assertEquals(CATEGORY_NAME, category.getName());
     }
 
     @Test
@@ -43,7 +44,7 @@ public class CategoryServiceIntegrationTest {
 
     @Test
     public void createDelete_ValidNewObject_CreatesAndDeletesSuccessfully() {
-        CategoryDTO category = new CategoryDTO(DB_NONEXISTENT_CATEGORY_NAME);
+        CategoryDTO category = new CategoryDTO(NONEXISTENT_CATEGORY_NAME);
 
         try {
             CategoryDTO createdCategory = categoryService.create(category);
@@ -60,30 +61,30 @@ public class CategoryServiceIntegrationTest {
 
     @Test
     public void create_ExistentName_ThrowsUniqueConstraintValidation() {
-        CategoryDTO category = new CategoryDTO(DB_CATEGORY_NAME);
+        CategoryDTO category = new CategoryDTO(CATEGORY_NAME);
         assertThrows(UniqueConstraintViolationException.class, () -> categoryService.create(category));
     }
 
     @Test
     public void delete_NonexistentId_ThrowsNoSuchElementException() {
-        assertThrows(NoSuchElementException.class, () -> categoryService.delete(NONEXISTENT_ID));
+        assertThrows(EmptyResultDataAccessException.class, () -> categoryService.delete(NONEXISTENT_ID));
     }
 
     @Test
     public void update_SetNewContent_ContentChanged() {
         CategoryDTO oldCategory = categoryService.getOneDTO(EXISTENT_ID);
-        assertEquals(DB_CATEGORY_NAME, oldCategory.getName());
+        assertEquals(CATEGORY_NAME, oldCategory.getName());
 
-        oldCategory.setName(DB_NONEXISTENT_CATEGORY_NAME);
+        oldCategory.setName(NONEXISTENT_CATEGORY_NAME);
         try {
             categoryService.update(oldCategory, oldCategory.getId());
             CategoryDTO newCategory = categoryService.getOneDTO(EXISTENT_ID);
-            assertEquals(DB_NONEXISTENT_CATEGORY_NAME, newCategory.getName());
+            assertEquals(NONEXISTENT_CATEGORY_NAME, newCategory.getName());
 
             // return to old value
-            newCategory.setName(DB_CATEGORY_NAME);
+            newCategory.setName(CATEGORY_NAME);
             categoryService.update(newCategory, newCategory.getId());
-            assertEquals(DB_CATEGORY_NAME, categoryService.getOneDTO(EXISTENT_ID).getName());
+            assertEquals(CATEGORY_NAME, categoryService.getOneDTO(EXISTENT_ID).getName());
         } catch (UniqueConstraintViolationException e) {
             e.printStackTrace();
             fail("Category name not unique");
@@ -93,7 +94,7 @@ public class CategoryServiceIntegrationTest {
     @Test
     public void update_SetExistentName_ThrowsUniqueConstraintValidation() {
         CategoryDTO category = categoryService.getOneDTO(EXISTENT_ID);
-        category.setName(DB_CATEGORY_NAME2);
+        category.setName(CATEGORY_NAME2);
         assertThrows(UniqueConstraintViolationException.class, () -> categoryService.update(category, category.getId()));
     }
 

@@ -34,7 +34,7 @@ public class AdminController {
         try {
             return new ResponseEntity<>(service.getOneDTO(id), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -42,8 +42,7 @@ public class AdminController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Object> addAdmin(@Valid @RequestBody AdminDTO dto) {
         try {
-            service.create(dto);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(service.create(dto), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

@@ -46,8 +46,7 @@ public class CategoryService {
 	}
 
 	public void delete(Long id) {
-		Category category = getOne(id);
-		categoryRepository.delete(category);
+		categoryRepository.deleteById(id);
 	}
 
 	public Category getOne(long id) {
@@ -78,7 +77,7 @@ public class CategoryService {
 	}
 
 	private CategoryDTO toDTO(Category cat) {
-		CategoryDTO dto = new CategoryDTO(cat.getId(), cat.getName());
+		CategoryDTO dto = new CategoryDTO(cat.getId(),cat.getName());
 		dto.setSubcategories(subcategoryService.convertToDTO(cat.getSubcategories()));
 		return dto;
 	}

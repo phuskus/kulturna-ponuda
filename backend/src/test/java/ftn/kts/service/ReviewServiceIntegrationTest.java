@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +30,7 @@ public class ReviewServiceIntegrationTest {
     public void getAll_ValidPageObject_ReturnsReviews() {
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
         Page<ReviewDTO> found = reviewService.getAllDTO(pageable);
-        assertEquals(FIND_ALL_NUMBER_OF_ITEMS, found.getTotalElements());
+        assertEquals(NUM_ITEMS, found.getTotalElements());
     }
 
     @Test
@@ -63,7 +64,7 @@ public class ReviewServiceIntegrationTest {
 
     @Test
     public void delete_Nonexistent_Id_ThrowsNoSuchElementException(){
-        assertThrows(NoSuchElementException.class, () -> reviewService.delete(NONEXISTENT_ID));
+        assertThrows(EmptyResultDataAccessException.class, () -> reviewService.delete(NONEXISTENT_ID));
     }
 
     @Test

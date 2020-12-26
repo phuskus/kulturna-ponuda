@@ -14,6 +14,7 @@ insert into user_authority (user_id, authority_id) values (4, 2);
 
 insert into categories (name) values ('Manifestacija');
 insert into categories (name) values ('Nije manifestacija');
+insert into categories (name) values ('Treca kat');
 
 insert into subcategories (name, category_id) values ('Festival', 1);
 
