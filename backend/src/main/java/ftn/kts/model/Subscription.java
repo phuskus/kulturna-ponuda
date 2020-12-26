@@ -20,6 +20,11 @@ public class Subscription {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private RegisteredUser user;
 
+	public Subscription()
+	{
+
+	}
+
 	public Subscription(Long id, Date dateOfSubscription, Subcategory subcategory, CulturalOffer culturalOffer, RegisteredUser registeredUser) {
 		this.id = id;
 		this.dateOfSubscription = dateOfSubscription;

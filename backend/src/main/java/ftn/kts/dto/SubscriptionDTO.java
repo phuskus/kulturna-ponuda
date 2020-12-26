@@ -65,4 +65,17 @@ public class SubscriptionDTO {
     public void setCulturalOfferId(Long culturalOfferId) {
         this.culturalOfferId = culturalOfferId;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+
+        if (!(obj instanceof SubscriptionDTO)) return false;
+
+        SubscriptionDTO subscription = (SubscriptionDTO) obj;
+        return this.dateOfSubscription.equals(subscription.getDateOfSubscription())
+                && this.subcategoryId.equals(subscription.getSubcategoryId())
+                && this.culturalOfferId.equals(subscription.getCulturalOfferId())
+                && this.registeredUserId.equals(subscription.getRegisteredUserId());
+    }
 }
