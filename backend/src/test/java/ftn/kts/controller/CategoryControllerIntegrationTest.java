@@ -1,6 +1,7 @@
 package ftn.kts.controller;
 
 import ftn.kts.dto.CategoryDTO;
+import ftn.kts.exceptions.UniqueConstraintViolationException;
 import ftn.kts.service.CategoryService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Transactional
+//@Transactional
 public class CategoryControllerIntegrationTest {
 
     @Autowired
@@ -116,10 +117,15 @@ public class CategoryControllerIntegrationTest {
 
         // update to old name
         newCategory.setName(CATEGORY_NAME);
+        try {
+            categoryService.update(newCategory, newCategory.getId());
+        } catch (UniqueConstraintViolationException e) {
+            e.printStackTrace();
+        }
 
-        httpEntity = new HttpEntity<>(newCategory, getAuthHeadersAdmin(restTemplate));
-        restTemplate
-                .exchange("/categories/" + EXISTENT_ID, HttpMethod.PUT, httpEntity, CategoryDTO.class);
+//        httpEntity = new HttpEntity<>(newCategory, getAuthHeadersAdmin(restTemplate));
+//        restTemplate
+//                .exchange("/categories/" + EXISTENT_ID, HttpMethod.PUT, httpEntity, CategoryDTO.class);
     }
 
     @Test
@@ -145,8 +151,13 @@ public class CategoryControllerIntegrationTest {
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 
         // add back to db
-        httpEntity = new HttpEntity<>(cat, getAuthHeadersAdmin(restTemplate));
-        restTemplate.exchange("/categories", HttpMethod.POST, httpEntity, CategoryDTO.class);
+        try {
+            categoryService.create(cat);
+        } catch (UniqueConstraintViolationException e) {
+            e.printStackTrace();
+        }
+//        httpEntity = new HttpEntity<>(cat, getAuthHeadersAdmin(restTemplate));
+//        restTemplate.exchange("/categories", HttpMethod.POST, httpEntity, CategoryDTO.class);
     }
 
     @Test

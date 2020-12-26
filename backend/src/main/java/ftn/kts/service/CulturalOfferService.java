@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import ftn.kts.dto.CulturalOfferDTO;
 import ftn.kts.dto.PictureDTO;
@@ -19,6 +20,7 @@ import ftn.kts.model.Subcategory;
 import ftn.kts.repository.CulturalOfferRepository;
 
 @Service
+@Transactional
 public class CulturalOfferService {
 
 	private CulturalOfferRepository offerRepository;
@@ -39,7 +41,7 @@ public class CulturalOfferService {
 	public Page<CulturalOfferDTO> getAllDTO(Pageable paging) {
 		return offerRepository.findAll(paging).map(this::toDTO);
 	}
-
+	
 	public CulturalOfferDTO getOneDTO(long id) {
 		CulturalOffer offer = getOne(id);
 		CulturalOfferDTO dto = toDTO(offer);
@@ -71,9 +73,9 @@ public class CulturalOfferService {
 		return offerRepository.findById(id)
 				.orElseThrow(() -> new NoSuchElementException("Cultural offer with id " + id + " doesn't exist!"));
 	}
-
+	
 	public List<CulturalOffer> getAll() {
-		return offerRepository.findAll();
+		return offerRepository.findAll();			
 	}
 
 	public Page<CulturalOfferDTO> filterCategory(long id, Pageable paging) {
@@ -119,7 +121,7 @@ public class CulturalOfferService {
 		offer.setPictures(pictures);
 		return offer;
 	}
-
+	
 	private CulturalOfferDTO toDTO(CulturalOffer entity) {
 		CulturalOfferDTO dto = new CulturalOfferDTO(entity.getId(), entity.getName(), entity.getDescription(),
 				entity.getLatitude(), entity.getLongitude(), entity.getAddress(), entity.getCity(), entity.getRegion(),

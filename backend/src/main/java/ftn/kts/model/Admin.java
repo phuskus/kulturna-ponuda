@@ -11,9 +11,9 @@ import javax.persistence.OneToMany;
 @Entity
 @DiscriminatorValue("ADMIN")
 public class Admin extends User {
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<Category> categories;
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<CulturalOffer> culturalOffers;
 
     public Admin() {

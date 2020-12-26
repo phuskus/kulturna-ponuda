@@ -26,7 +26,7 @@ import static ftn.kts.util.ControllerUtil.getAuthHeadersUser;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Transactional
+//@Transactional
 public class AdminControllerIntegrationTest {
 
     @Autowired
@@ -69,7 +69,7 @@ public class AdminControllerIntegrationTest {
     @Test
     public void add_ValidAdmin_ReturnsCreatedAndAdmin() {
         int size = adminService.getAllDTO().size();
-        AdminDTO dto = new AdminDTO("name", "user", "pass");
+        AdminDTO dto = new AdminDTO("nametest", "testusername", "pass");
         HttpEntity<Object> httpEntity = new HttpEntity<>(dto, getAuthHeadersAdmin(restTemplate));
         ResponseEntity<AdminDTO> responseEntity = restTemplate
                 .exchange("/admins", HttpMethod.POST, httpEntity, AdminDTO.class);
@@ -89,26 +89,25 @@ public class AdminControllerIntegrationTest {
         ResponseEntity<AdminDTO> responseEntity = restTemplate
                 .exchange("/admins", HttpMethod.POST, httpEntity, AdminDTO.class);
 
-        AdminDTO admin = responseEntity.getBody();
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(size, adminService.getAllDTO().size());
     }
 
     @Test
     public void update_ExistentId_ReturnsOk() {
-        AdminDTO oldAdmin = adminService.getOneDTO(EXISTENT_ID);
-        assertEquals(EXISTENT_NAME, oldAdmin.getName());
+        AdminDTO oldAdmin = adminService.getOneDTO(EXISTENT_ID_2);
+        assertEquals(EXISTENT_NAME_2, oldAdmin.getName());
         oldAdmin.setName(NEW_NAME);
         HttpEntity<Object> httpEntity = new HttpEntity<>(oldAdmin, getAuthHeadersAdmin(restTemplate));
         ResponseEntity<AdminDTO> responseEntity = restTemplate
-                .exchange("/admins/" + EXISTENT_ID, HttpMethod.PUT, httpEntity, AdminDTO.class);
+                .exchange("/admins/" + EXISTENT_ID_2, HttpMethod.PUT, httpEntity, AdminDTO.class);
 
         AdminDTO newAdmin = responseEntity.getBody();
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(NEW_NAME, newAdmin.getName());
 
         // update to old name
-        newAdmin.setName(EXISTENT_NAME);
+        newAdmin.setName(EXISTENT_NAME_2);
         adminService.update(newAdmin, newAdmin.getId());
     }
 }

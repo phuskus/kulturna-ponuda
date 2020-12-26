@@ -21,7 +21,7 @@ public class Category {
     @Column(name = "name", unique = true, nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
     private Set<Subcategory> subcategories;
 
     public Category() {

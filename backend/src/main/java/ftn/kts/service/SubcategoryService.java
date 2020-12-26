@@ -32,10 +32,11 @@ public class SubcategoryService {
 		return toDTO(getOne(id));
 	}
 
-	public void create(SubcategoryDTO dto) throws UniqueConstraintViolationException {
+	public SubcategoryDTO create(SubcategoryDTO dto) throws UniqueConstraintViolationException {
 		checkUnique(dto);
 		Subcategory subcategory = toEntity(dto);
 		subcategoryRepository.save(subcategory);
+		return toDTO(subcategoryRepository.findById(subcategory.getId()).get());
 	}
 
 	public SubcategoryDTO update(SubcategoryDTO dto, Long id) throws UniqueConstraintViolationException {
@@ -75,7 +76,7 @@ public class SubcategoryService {
 	}
 
 	private Subcategory toEntity(SubcategoryDTO dto) {
-		Category category = categoryService.getOne(dto.getCategory());
+		Category category = categoryService.getOne(dto.getCategoryId());
 		return new Subcategory(dto.getName(), category);
 	}
 
@@ -85,7 +86,7 @@ public class SubcategoryService {
 
 	private void updateSubcategory(Subcategory subcategory, SubcategoryDTO dto) {
 		subcategory.setName(dto.getName());
-		subcategory.setCategory(categoryService.getOne(dto.getCategory()));
+		subcategory.setCategory(categoryService.getOne(dto.getCategoryId()));
 		// TODO: Add sets of subscriptions and cultural offers?
 	}
 

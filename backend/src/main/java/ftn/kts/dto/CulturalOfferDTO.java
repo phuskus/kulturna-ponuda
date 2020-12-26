@@ -67,6 +67,23 @@ public class CulturalOfferDTO {
 		this.posts = new HashSet<>();
 		this.pictures = new HashSet<>();
 	}
+	
+	public CulturalOfferDTO(Long id, String name, String description, float latitude, float longitude, String address,
+			String city, String region, Long admin, Long category, Set<ReviewDTO> reviews, Set<PostDTO> posts, Set<PictureDTO> pictures) {
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.address = address;
+		this.city = city;
+		this.region = region;
+		this.admin = admin;
+		this.category = category;
+		this.reviews = reviews;
+		this.posts = posts;
+		this.pictures = pictures;
+	}
 
 	public Long getId() {
 		return id;

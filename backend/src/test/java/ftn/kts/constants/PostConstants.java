@@ -3,8 +3,10 @@ package ftn.kts.constants;
 public class PostConstants {
 	
 	public static final Integer PAGEABLE_PAGE = 0;
+	public static final Integer PAGEABLE_FIRST_PAGE = 1;
     public static final Integer PAGEABLE_SIZE = 3;
     public static final long FIND_ALL_NUMBER_OF_ITEMS = 3;
+    public static final long NO_ITEMS = 0;
     public static final Long DB_POST_ID = 1L;
     public static final Long DB_POST_NO_SUCH_ID = 55L;
     public static final String DB_POST_CONTENT = "test1_offer1";
