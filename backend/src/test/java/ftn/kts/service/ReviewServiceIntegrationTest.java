@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -63,7 +64,7 @@ public class ReviewServiceIntegrationTest {
 
     @Test
     public void delete_Nonexistent_Id_ThrowsNoSuchElementException(){
-        assertThrows(NoSuchElementException.class, () -> reviewService.delete(NONEXISTENT_ID));
+        assertThrows(EmptyResultDataAccessException.class, () -> reviewService.delete(NONEXISTENT_ID));
     }
 
     @Test

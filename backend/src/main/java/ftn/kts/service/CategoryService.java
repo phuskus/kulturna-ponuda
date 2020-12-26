@@ -46,8 +46,7 @@ public class CategoryService {
 	}
 
 	public void delete(Long id) {
-		Category category = getOne(id);
-		categoryRepository.delete(category);
+		categoryRepository.deleteById(id);
 	}
 
 	public Category getOne(long id) {

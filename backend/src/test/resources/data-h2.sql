@@ -14,6 +14,7 @@ insert into user_authority (user_id, authority_id) values (4, 2);
 
 insert into categories (name) values ('Manifestacija');
 insert into categories (name) values ('Nije manifestacija');
+insert into categories (name) values ('Treca kat');
 
 insert into subcategories (name, category_id) values ('Festival', 1);
 
@@ -40,5 +41,3 @@ insert into posts_pictures (post_id, pictures_id) values (3, 1);
 
 insert into reviews (rating, content, cultural_offer_id, user_id) values (5, 'Otkazano zbog korone', 1, 2);
 insert into reviews (rating, content, cultural_offer_id, user_id) values (0, 'Ne valja nista', 1, 2);
-
-insert into pictures (path, placeholder) values ('\pictures\exit.jpg', 'Exit festival picture placeholder');
