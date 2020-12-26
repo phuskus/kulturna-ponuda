@@ -208,6 +208,7 @@ public class LoginControllerIntegrationTest {
 		
 		assertEquals(HttpStatus.TEMPORARY_REDIRECT, responseEntity.getStatusCode());
 		assertNotNull(token);
+		
 	}
 	
 	@Test
@@ -220,6 +221,7 @@ public class LoginControllerIntegrationTest {
 		
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertNotNull(token);
+		
 	}
 	
 	@Test
@@ -237,7 +239,7 @@ public class LoginControllerIntegrationTest {
 		
 		//clean up
 		User user = userService.getOne(DB_USER_USERNAME);
-		user.setPassword("test1");
+		user.setPassword("$2a$10$5JOhdCnEYE5pMO0mXMjRGeYP35rE5nF3wA2q5qnGSEhnowJ7AWUFe");
 		userService.save(user);
 	}
 	

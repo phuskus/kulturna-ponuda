@@ -8,11 +8,13 @@ import org.springframework.test.context.TestPropertySource;
 import ftn.kts.controller.CulturalOfferControllerIntegrationTest;
 import ftn.kts.controller.LoginControllerIntegrationTest;
 import ftn.kts.controller.PictureControllerIntegrationTest;
+import ftn.kts.controller.PostControllerIntegrationTest;
 import ftn.kts.repository.AdminRepositoryIntegrationTest;
 import ftn.kts.repository.AuthorityRepositoryIntegrationTest;
 import ftn.kts.repository.CategoryRepositoryIntegrationTest;
 import ftn.kts.repository.CulturalOfferRepositoryIntegrationTest;
 import ftn.kts.repository.ReviewRepositoryIntegrationTest;
+import ftn.kts.repository.SubcategoryRepositoryIntegrationTest;
 import ftn.kts.repository.UserRepositoryIntegrationTest;
 import ftn.kts.service.AdminServiceIntegrationTest;
 import ftn.kts.service.AuthorityServiceIntegrationTest;
@@ -22,6 +24,7 @@ import ftn.kts.service.CulturalOfferServiceUnitTest;
 import ftn.kts.service.PictureServiceIntegrationTest;
 import ftn.kts.service.PostServiceIntegrationTest;
 import ftn.kts.service.ReviewServiceIntegrationTest;
+import ftn.kts.service.SubcategoryServiceIntegrationTest;
 import ftn.kts.service.UserServiceIntegrationTest;
 
 @RunWith(Suite.class)
@@ -43,7 +46,10 @@ import ftn.kts.service.UserServiceIntegrationTest;
 	AdminServiceIntegrationTest.class,
 	CategoryServiceIntegrationTest.class,
 	ReviewServiceIntegrationTest.class,
-	LoginControllerIntegrationTest.class
+	PostControllerIntegrationTest.class,
+	SubcategoryRepositoryIntegrationTest.class,
+	SubcategoryServiceIntegrationTest.class,
+	LoginControllerIntegrationTest.class,
 })
 @TestPropertySource("classpath:application.properties")
 class CulturalOffersApplicationTests {

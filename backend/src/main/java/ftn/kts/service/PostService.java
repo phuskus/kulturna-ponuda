@@ -40,14 +40,19 @@ public class PostService {
         return dto;
     }
 
-    public Post create(PostDTO dto) {
+    public PostDTO create(PostDTO dto) {
         Post post = toEntity(dto);
         try {
-        	post = postRepository.save(post);        	        	        	
+        	dto = save(post);        	        	        	
         } catch (Exception e) {
         	e.printStackTrace();
         }
-        return post;
+        return dto;
+    }
+    
+    public PostDTO save(Post post) {
+    	Post newPost = postRepository.save(post);
+    	return toDTO(newPost);
     }
 
     public PostDTO update(PostDTO dto, Long id) {

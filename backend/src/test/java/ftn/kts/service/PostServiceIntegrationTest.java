@@ -89,13 +89,14 @@ public class PostServiceIntegrationTest {
 		Set<PictureDTO> pictures = new HashSet<>();
 		pictures.add(pictureDTO);
 		PostDTO newPostDTO = new PostDTO(DB_NEW_POST_CONTENT, DB_CULTURAL_OFFER_ID, pictures);
-		Post createdPost = postService.create(newPostDTO);
-		assertNotNull(createdPost);
-		assertEquals(createdPost.getId(), DB_ID_CREATED_POST);
+		PostDTO createdPost = postService.create(newPostDTO);
+		//assertNotNull(createdPost);
+		assertNotNull(createdPost.getId());
 		
 		//clean up
 		postService.delete(DB_ID_CREATED_POST);
-		postService.getOne(DB_ID_CREATED_POST);
+		postService.getOne(createdPost.getId());			
+		
 	}
 	
 	@Test
