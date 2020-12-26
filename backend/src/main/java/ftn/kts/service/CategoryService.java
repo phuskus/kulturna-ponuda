@@ -77,7 +77,7 @@ public class CategoryService {
 	}
 
 	private CategoryDTO toDTO(Category cat) {
-		CategoryDTO dto = new CategoryDTO(cat.getId(), cat.getName());
+		CategoryDTO dto = new CategoryDTO(cat.getId(),cat.getName());
 		dto.setSubcategories(subcategoryService.convertToDTO(cat.getSubcategories()));
 		return dto;
 	}

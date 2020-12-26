@@ -12,6 +12,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,7 +43,7 @@ public class AdminControllerIntegrationTest {
         AdminDTO[] admins = responseEntity.getBody();
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(FIND_ALL_NUMBER_OF_ITEMS, admins.length);
+        assertEquals(NUM_ITEMS, admins.length);
     }
 
     @Test

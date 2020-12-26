@@ -6,9 +6,7 @@ public class AdminConstants {
     public static Long NONEXISTENT_ID = 127L;
 
     public static String EXISTENT_NAME = "admin1";
-    public static String NEW_NAME = "admin1";
+    public static String NEW_NAME = "new admin";
 
-    public static final long FIND_ALL_NUMBER_OF_ITEMS = 2;
-    public static final int PAGEABLE_PAGE = 0;
-    public static final int PAGEABLE_SIZE = 2;
+    public static final long NUM_ITEMS = 2;
 }

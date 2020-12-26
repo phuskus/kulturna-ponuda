@@ -27,6 +27,7 @@ public class AdminServiceIntegrationTest {
     public void getAll_ReturnsAllAdmins() {
         List<AdminDTO> list = adminService.getAllDTO();
         assertNotNull(list);
+        assertEquals(NUM_ITEMS, list.size());
     }
 
     @Test

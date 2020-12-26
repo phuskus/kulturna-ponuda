@@ -68,6 +68,7 @@ public class AdminService {
     }
 
     private Admin updateAdmin(Admin admin, AdminDTO dto) {
+        admin.setName(dto.getName());
         admin.setUsername(dto.getUsername());
         admin.setPassword(dto.getPassword());
         admin.setCategories(dto.getCategories());

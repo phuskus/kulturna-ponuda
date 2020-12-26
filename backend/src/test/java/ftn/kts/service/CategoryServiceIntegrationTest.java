@@ -94,7 +94,7 @@ public class CategoryServiceIntegrationTest {
     @Test
     public void update_SetExistentName_ThrowsUniqueConstraintValidation() {
         CategoryDTO category = categoryService.getOneDTO(EXISTENT_ID);
-        category.setName(CATEGORY_NAME);
+        category.setName(CATEGORY_NAME2);
         assertThrows(UniqueConstraintViolationException.class, () -> categoryService.update(category, category.getId()));
     }
 

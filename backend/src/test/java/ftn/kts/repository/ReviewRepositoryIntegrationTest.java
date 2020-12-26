@@ -26,7 +26,7 @@ public class ReviewRepositoryIntegrationTest {
     public void findAllPageable_ValidPageableObject_ReturnsReviews() {
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
         Page<Review> found = reviewRepository.findAll(pageable);
-        assertEquals(FIND_ALL_NUMBER_OF_ITEMS, found.getTotalElements());
+        assertEquals(NUM_ITEMS, found.getTotalElements());
     }
 
     @Test

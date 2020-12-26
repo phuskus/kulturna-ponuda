@@ -11,7 +11,7 @@ public class ReviewConstants {
     public static String NEW_CONTENT = "Super";
     public static Long NEW_RATING = 4L;
 
-    public static final long FIND_ALL_NUMBER_OF_ITEMS = 2;
+    public static final long NUM_ITEMS = 2;
     public static final int PAGEABLE_PAGE = 0;
     public static final int PAGEABLE_SIZE = 2;
 }

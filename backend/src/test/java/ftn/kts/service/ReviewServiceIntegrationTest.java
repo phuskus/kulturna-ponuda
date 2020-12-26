@@ -30,7 +30,7 @@ public class ReviewServiceIntegrationTest {
     public void getAll_ValidPageObject_ReturnsReviews() {
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
         Page<ReviewDTO> found = reviewService.getAllDTO(pageable);
-        assertEquals(FIND_ALL_NUMBER_OF_ITEMS, found.getTotalElements());
+        assertEquals(NUM_ITEMS, found.getTotalElements());
     }
 
     @Test

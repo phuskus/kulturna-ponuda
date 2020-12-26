@@ -2,7 +2,10 @@ package ftn.kts.service;
 
 import static ftn.kts.constants.CategoryConstants.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import ftn.kts.dto.CategoryDTO;
 import ftn.kts.exceptions.UniqueConstraintViolationException;
@@ -16,6 +19,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Optional;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -28,45 +33,66 @@ public class CategoryServiceUnitTest {
     private CategoryRepository categoryRepository;
 
 
-    @Before
-    public void setup() {
 
-        Category cat1 = new Category(CATEGORY_NAME);
+    @Test
+    public void add_NonexistentName_ReturnsNewCategory() {
+        CategoryDTO dto = new CategoryDTO(NONEXISTENT_CATEGORY_NAME);
 
-        Category newCat = new Category(NONEXISTENT_CATEGORY_NAME);
+        given(categoryRepository.findByNameIgnoringCase(NONEXISTENT_CATEGORY_NAME)).willReturn(null);
+        given(categoryRepository.save(any())).willReturn(new Category(NONEXISTENT_ID, NONEXISTENT_CATEGORY_NAME));
 
-        given(categoryRepository.findById(EXISTENT_ID)).willReturn(java.util.Optional.of(cat1));
-        given(categoryRepository.save(newCat)).willReturn(newCat);
-
-
+        try {
+            CategoryDTO created = categoryService.create(dto);
+            verify(categoryRepository, times(1)).findByNameIgnoringCase(NONEXISTENT_CATEGORY_NAME);
+            verify(categoryRepository, times(1)).save(any());
+            assertEquals(created, dto);
+        } catch (UniqueConstraintViolationException e) {
+            fail();
+        }
     }
 
     @Test
-    public void add_NonexistentName_ReturnsNewCategory(){
+    public void add_ExistentName_ThrowsUniqueConstraintViolationException() {
+        CategoryDTO dto = new CategoryDTO(EXISTENT_ID, CATEGORY_NAME2);
+        Category existingCategory = new Category(EXISTENT_ID_2, CATEGORY_NAME2);
 
-    }
+        given(categoryRepository.findByNameIgnoringCase(CATEGORY_NAME2)).willReturn(existingCategory);
 
-    @Test
-    public void add_ExistentName_ThrowsUniqueConstraintViolationException(){
-
+        assertThrows(UniqueConstraintViolationException.class, () -> categoryService.create(dto));
+        verify(categoryRepository, times(1)).findByNameIgnoringCase(CATEGORY_NAME2);
     }
 
     @Test
     public void update_NonexistentName_ReturnsChangedCategory() {
-        CategoryDTO cat = new CategoryDTO(NONEXISTENT_CATEGORY_NAME);
+        CategoryDTO dto = new CategoryDTO(NONEXISTENT_CATEGORY_NAME);
+        Category existingCategory = new Category(EXISTENT_ID, CATEGORY_NAME);
+
+        given(categoryRepository.findById(any())).willReturn(Optional.of(existingCategory));
+        given(categoryRepository.findByNameIgnoringCase(NONEXISTENT_CATEGORY_NAME)).willReturn(existingCategory);
+        given(categoryRepository.save(any())).willReturn(existingCategory);
 
         try {
-            CategoryDTO changed = categoryService.update(cat, EXISTENT_ID);
-            assertEquals(cat, changed);
+            CategoryDTO created = categoryService.update(dto, EXISTENT_ID);
+            verify(categoryRepository, times(1)).findById(any());
+            verify(categoryRepository, times(1)).findByNameIgnoringCase(NONEXISTENT_CATEGORY_NAME);
+            verify(categoryRepository, times(1)).save(any());
+            assertEquals(created, dto);
         } catch (UniqueConstraintViolationException e) {
-            fail("Category name not unique");
+            fail();
         }
 
     }
 
     @Test
     public void update_ExistentName_ThrowsUniqueConstraintViolationException() {
-        CategoryDTO cat = new CategoryDTO(CATEGORY_NAME);
-        assertThrows(UniqueConstraintViolationException.class, () -> categoryService.update(cat, EXISTENT_ID));
+        CategoryDTO dto = new CategoryDTO(CATEGORY_NAME2);
+        Category existingCategory = new Category(EXISTENT_ID_2, CATEGORY_NAME2);
+
+        given(categoryRepository.findById(any())).willReturn(Optional.of(existingCategory));
+        given(categoryRepository.findByNameIgnoringCase(CATEGORY_NAME2)).willReturn(existingCategory);
+
+        assertThrows(UniqueConstraintViolationException.class, () -> categoryService.update(dto, EXISTENT_ID));
+        verify(categoryRepository, times(1)).findById(any());
+        verify(categoryRepository, times(1)).findByNameIgnoringCase(CATEGORY_NAME2);
     }
 }

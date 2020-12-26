@@ -36,11 +36,11 @@ public class ReviewControllerIntegrationTest {
     public void getAll_ReturnsAllReviews() {
         HttpEntity<Object> httpEntity = new HttpEntity<>(getAuthHeadersUser(restTemplate));
         ResponseEntity<ReviewDTO[]> responseEntity = restTemplate
-                .exchange("/reviews?pageNo=0&pageSize=" + FIND_ALL_NUMBER_OF_ITEMS, HttpMethod.GET, httpEntity, ReviewDTO[].class);
+                .exchange("/reviews?pageNo=0&pageSize=" + NUM_ITEMS, HttpMethod.GET, httpEntity, ReviewDTO[].class);
         ReviewDTO[] reviews = responseEntity.getBody();
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(FIND_ALL_NUMBER_OF_ITEMS, reviews.length);
+        assertEquals(NUM_ITEMS, reviews.length);
     }
 
     @Test
