@@ -67,7 +67,7 @@ public class UserServiceIntegrationTest {
 	@Test(expected = NoSuchElementException.class)
 	public void createAndDelete_UsernameNotExists_EntitySavedAndDeleted() throws UniqueConstraintViolationException {
 		UserDTO newUser = new UserDTO(DB_NEW_USER_NAME, DB_USER_NO_SUCH_USERNAME, DB_NEW_USER_PASSWORD);
-		User user = userService.create(newUser);
+		UserDTO user = userService.create(newUser);
 		assertEquals(user.getId(), DB_CREATED_USER_ID);
 		
 		//cleanup

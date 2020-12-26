@@ -34,7 +34,7 @@ public class LoginController {
 
     @PostMapping("/register")
     public ResponseEntity<Object> register(@Valid  @RequestBody UserDTO user) throws UniqueConstraintViolationException {
-        User created = userService.create(user);
+        UserDTO created = userService.create(user);
         return new ResponseEntity<>(created, HttpStatus.OK);
     }
 

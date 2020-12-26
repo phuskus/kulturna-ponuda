@@ -52,7 +52,7 @@ public class UserService {
         return userRepository.findByKey(key);
     }
 
-    public User create(UserDTO dto) throws UniqueConstraintViolationException {
+    public UserDTO create(UserDTO dto) throws UniqueConstraintViolationException {
         checkUnique(dto);
         RegisteredUser user = toEntity(dto);
         user.setPassword(userDetailsService.encodePassword(dto.getPassword()));
@@ -63,7 +63,7 @@ public class UserService {
         user.setKey(generatedKey);
         mailSenderService.confirmRegistration(user.getUsername(), generatedKey);
         save(user);
-        return user;
+        return toDTO(user);
 
     }
     
@@ -131,6 +131,7 @@ public class UserService {
     	UserDTO dto = new UserDTO();
     	dto.setId(user.getId());
     	dto.setUsername(user.getUsername());
+    	dto.setName(user.getName());
     	return dto;
     }
 

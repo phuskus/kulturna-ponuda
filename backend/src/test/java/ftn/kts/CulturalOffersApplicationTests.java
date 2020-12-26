@@ -32,6 +32,7 @@ import ftn.kts.service.ReviewServiceIntegrationTest;
 import ftn.kts.service.SubcategoryServiceIntegrationTest;
 import ftn.kts.service.SubscriptionServiceIntegrationTest;
 import ftn.kts.service.UserServiceIntegrationTest;
+import ftn.kts.service.UserServiceUnitTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({
@@ -39,6 +40,7 @@ import ftn.kts.service.UserServiceIntegrationTest;
         AuthorityServiceIntegrationTest.class,
         UserRepositoryIntegrationTest.class,
         UserServiceIntegrationTest.class,
+        UserServiceUnitTest.class,
         PictureServiceIntegrationTest.class,
         PictureControllerIntegrationTest.class,
         CulturalOfferRepositoryIntegrationTest.class,
