@@ -56,10 +56,14 @@ public class SubscriptionController {
 
 	@PutMapping("/{id}")
 	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<SubscriptionDTO> updateSubscription(@Valid @RequestBody SubscriptionDTO dto,
+	public ResponseEntity<? extends Object> updateSubscription(@Valid @RequestBody SubscriptionDTO dto,
 			@PathVariable long id) {
-		SubscriptionDTO updated = service.update(dto, id);
-		return new ResponseEntity<>(updated, HttpStatus.OK);
+		try {
+			SubscriptionDTO updated = service.update(dto, id);
+			return new ResponseEntity<>(updated, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	@DeleteMapping("/{id}")

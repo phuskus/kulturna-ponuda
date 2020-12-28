@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import ftn.kts.dto.PostDTO;
 import ftn.kts.model.CulturalOffer;
+import ftn.kts.model.Picture;
 import ftn.kts.model.Post;
 import ftn.kts.repository.PostRepository;
 
@@ -39,9 +40,19 @@ public class PostService {
         return dto;
     }
 
-    public void create(PostDTO dto) {
+    public PostDTO create(PostDTO dto) {
         Post post = toEntity(dto);
-        postRepository.save(post);
+        try {
+        	dto = save(post);        	        	        	
+        } catch (Exception e) {
+        	e.printStackTrace();
+        }
+        return dto;
+    }
+    
+    public PostDTO save(Post post) {
+    	Post newPost = postRepository.save(post);
+    	return toDTO(newPost);
     }
 
     public PostDTO update(PostDTO dto, Long id) {
@@ -61,15 +72,20 @@ public class PostService {
 				.orElseThrow(() -> new NoSuchElementException("Post with id " + id + " doesn't exist!"));
 	}
 
-	public List<Post> getAll(long id) {
+	public List<Post> getAll() {
 		return postRepository.findAll();
 	}
 
+	public Set<PostDTO> convertToDTO(Set<Post> posts) {
+		return posts.stream().map(this::toDTO).collect(Collectors.toSet());
+	}
+	
     private void updatePost(Post post, PostDTO dto) {
         CulturalOffer offer = cultService.getOne(dto.getCulturalOffer());
         post.setContent(dto.getContent());
         post.setCulturalOffer(offer);
-        //TODO: pictures later!
+        Set<Picture> pictures = pictureService.convertToEntity(dto.getPictures());
+        post.setPictures(pictures);
     }
 
     private PostDTO toDTO(Post entity) {
@@ -78,13 +94,10 @@ public class PostService {
         return dto;
     }
 
-    public Set<PostDTO> convertToDTO(Set<Post> posts) {
-        return posts.stream().map(this::toDTO).collect(Collectors.toSet());
-    }
-
     private Post toEntity(PostDTO dto) {
         CulturalOffer offer = cultService.getOne(dto.getCulturalOffer());
-        Post post = new Post(dto.getId(), dto.getContent(), offer);
+        Set<Picture> pictures = pictureService.convertToEntity(dto.getPictures());
+        Post post = new Post(dto.getId(), dto.getContent(), offer, pictures);
         return post;
     }
 

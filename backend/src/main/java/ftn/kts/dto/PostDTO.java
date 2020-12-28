@@ -30,6 +30,17 @@ public class PostDTO {
 		this.culturalOffer = culturalOffer;
 		this.pictures = pictures;
 	}
+	
+	public PostDTO(String content, Long culturalOffer, Set<PictureDTO> pictures) {
+		this.content = content;
+		this.culturalOffer = culturalOffer;
+		this.pictures = pictures;
+	}
+	
+	public PostDTO(Long id, Long culturalOffer) {
+		this.id = id;
+		this.culturalOffer = culturalOffer;
+	}
 
 	public Long getId() {
 		return id;

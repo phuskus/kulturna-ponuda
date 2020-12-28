@@ -34,18 +34,18 @@ public class LoginController {
 
     @PostMapping("/register")
     public ResponseEntity<Object> register(@Valid  @RequestBody UserDTO user) throws UniqueConstraintViolationException {
-        userService.create(user);
-        return new ResponseEntity<>("User successfully registered!", HttpStatus.OK);
+        UserDTO created = userService.create(user);
+        return new ResponseEntity<>(created, HttpStatus.OK);
     }
 
     @GetMapping("/register/{key}")
-    public ResponseEntity<String> confirmRegistration(@PathVariable("key") String key) {
-        userService.confirmRegistration(key);
-        return new ResponseEntity<>("You have successfully activated your account!", HttpStatus.OK);
+    public ResponseEntity<UserDTO> confirmRegistration(@PathVariable("key") String key) {
+        UserDTO userDTO = userService.confirmRegistration(key);
+        return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest,
+    public ResponseEntity<UserTokenStateDTO> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest,
                                                                        HttpServletResponse response) throws PasswordNotChangedException {
         String username = authenticationRequest.getUsername();
         String password = authenticationRequest.getPassword();
@@ -56,8 +56,8 @@ public class LoginController {
 
     @PostMapping("/change-password")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<Object> changePassword(@Valid @RequestBody PasswordChanger passwordChanger) {
-        String user = userService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
+    public ResponseEntity<UserDTO> changePassword(@Valid @RequestBody PasswordChanger passwordChanger) {
+        UserDTO user = userService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 

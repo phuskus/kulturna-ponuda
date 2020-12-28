@@ -1,5 +1,6 @@
 package ftn.kts.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.DiscriminatorValue;
@@ -10,34 +11,42 @@ import javax.persistence.OneToMany;
 @Entity
 @DiscriminatorValue("ADMIN")
 public class Admin extends User {
-	@OneToMany(fetch = FetchType.LAZY)
-	private Set<Category> categories;
-	@OneToMany(fetch = FetchType.LAZY)
-	private Set<CulturalOffer> culturalOffers;
+    @OneToMany(fetch = FetchType.EAGER)
+    private Set<Category> categories;
+    @OneToMany(fetch = FetchType.EAGER)
+    private Set<CulturalOffer> culturalOffers;
 
-	public Admin() {
-	}
+    public Admin() {
+        this.categories = new HashSet<>();
+        this.categories = new HashSet<>();
+    }
 
-	public Admin(String name, String username, String password, Set<Category> categories, Set<CulturalOffer> culturalOffers) {
-		super(name, username, password);
-		this.categories = categories;
-		this.culturalOffers = culturalOffers;
-	}
-	
-	public Set<Category> getCategories() {
-		return categories;
-	}
+    public Admin(String name, String username, String password) {
+        super(name, username, password);
+        this.categories = new HashSet<>();
+        this.categories = new HashSet<>();
+    }
 
-	public void setCategories(Set<Category> categories) {
-		this.categories = categories;
-	}
+    public Admin(String name, String username, String password, Set<Category> categories, Set<CulturalOffer> culturalOffers) {
+        super(name, username, password);
+        this.categories = categories;
+        this.culturalOffers = culturalOffers;
+    }
 
-	public Set<CulturalOffer> getCulturalOffers() {
-		return culturalOffers;
-	}
+    public Set<Category> getCategories() {
+        return categories;
+    }
 
-	public void setCulturalOffers(Set<CulturalOffer> culturalOffers) {
-		this.culturalOffers = culturalOffers;
-	}
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
+    }
+
+    public Set<CulturalOffer> getCulturalOffers() {
+        return culturalOffers;
+    }
+
+    public void setCulturalOffers(Set<CulturalOffer> culturalOffers) {
+        this.culturalOffers = culturalOffers;
+    }
 
 }

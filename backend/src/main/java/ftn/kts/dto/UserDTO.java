@@ -22,6 +22,12 @@ public class UserDTO {
         this.username = username;
         this.password = password;
     }
+    
+    public UserDTO(String name, String username, String password) {
+    	this.name = name;
+        this.username = username;
+        this.password = password;
+    }
 
     public Long getId() {
         return id;

@@ -52,19 +52,29 @@ public class UserService {
         return userRepository.findByKey(key);
     }
 
-    public void create(UserDTO dto) throws UniqueConstraintViolationException {
+    public UserDTO create(UserDTO dto) throws UniqueConstraintViolationException {
         checkUnique(dto);
         RegisteredUser user = toEntity(dto);
         user.setPassword(userDetailsService.encodePassword(dto.getPassword()));
         ArrayList<Authority> auth = new ArrayList<>();
         auth.add(authorityService.findByName("REGISTERED_USER"));
         user.setAuthorities(auth);
-        String generatedKey = RandomUtil.buildAuthString();
+        String generatedKey = RandomUtil.buildAuthString(30);
         user.setKey(generatedKey);
         mailSenderService.confirmRegistration(user.getUsername(), generatedKey);
-        userRepository.save(user);
+        save(user);
+        return toDTO(user);
 
     }
+    
+    public User save(User user) {
+    	return userRepository.save(user);    		
+    }
+    
+    public void delete(String username) {
+		User user = getOne(username);
+		userRepository.delete(user);
+	}
 
     public UserTokenStateDTO getLoggedIn(String username, String password) throws DisabledException, PasswordNotChangedException {
         User existUser = getOne(username);
@@ -86,19 +96,22 @@ public class UserService {
         return new UserTokenStateDTO(jwt, expiresIn, user.getRole());
     }
 
-    public String changePassword(String oldPassword, String newPassword) {
+    public UserDTO changePassword(String oldPassword, String newPassword) {
         String user = userDetailsService.changePassword(oldPassword, newPassword);
-        return user;
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUsername(user);
+        return userDTO;
     }
 
-    public void confirmRegistration(String key) throws NoSuchElementException {
+    public UserDTO confirmRegistration(String key) throws NoSuchElementException {
         User user = userRepository.findByKey(key);
         if (user == null) {
             throw new NoSuchElementException("User already activated or doesn't exist!");
         }
         user.setEnabled(true);
-        user.setKey("");
-        userRepository.save(user);
+        user.setKey(null);
+        save(user);
+        return toDTO(user);
     }
 
     public User getOne(String username) throws NoSuchElementException {
@@ -109,14 +122,17 @@ public class UserService {
         return user;
     }
 
-    private UserDTO toDTO(User entity) {
-        UserDTO dto = new UserDTO(entity.getId(), entity.getName(), entity.getUsername(), entity.getPassword());
-        return dto;
-    }
-
     private RegisteredUser toEntity(UserDTO dto) {
         RegisteredUser user = new RegisteredUser(dto.getName(), dto.getUsername(), dto.getPassword());
         return user;
+    }
+    
+    private UserDTO toDTO(User user) {
+    	UserDTO dto = new UserDTO();
+    	dto.setId(user.getId());
+    	dto.setUsername(user.getUsername());
+    	dto.setName(user.getName());
+    	return dto;
     }
 
     private void checkUnique(UserDTO dto) throws UniqueConstraintViolationException {

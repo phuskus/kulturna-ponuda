@@ -1,5 +1,7 @@
 package ftn.kts.model;
 
+import ftn.kts.model.uniqueClasses.UniqueSubscription;
+
 import java.util.Date;
 
 import javax.persistence.*;
@@ -13,12 +15,19 @@ public class Subscription {
 	@Column(name = "date_of_subscription", unique = false, nullable = false)
 	private Date dateOfSubscription;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	private Subcategory subcategory;
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, optional = true)
 	private CulturalOffer culturalOffer;
-	@ManyToOne(fetch = FetchType.LAZY)
+
+	@ManyToOne(fetch = FetchType.EAGER, optional = true)
+	private Subcategory subcategory;
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	private RegisteredUser user;
+
+	public Subscription()
+	{
+
+	}
 
 	public Subscription(Long id, Date dateOfSubscription, Subcategory subcategory, CulturalOffer culturalOffer, RegisteredUser registeredUser) {
 		this.id = id;

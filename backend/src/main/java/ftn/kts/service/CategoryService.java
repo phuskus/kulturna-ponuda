@@ -30,10 +30,10 @@ public class CategoryService {
 		return toDTO(category);
 	}
 
-	public void create(CategoryDTO dto) throws UniqueConstraintViolationException {
+	public CategoryDTO create(CategoryDTO dto) throws UniqueConstraintViolationException {
 		checkUnique(dto);
 		Category category = toEntity(dto);
-		categoryRepository.save(category);
+		return toDTO(categoryRepository.save(category));
 	}
 
 	public CategoryDTO update(CategoryDTO dto, Long id) throws UniqueConstraintViolationException {
@@ -46,8 +46,7 @@ public class CategoryService {
 	}
 
 	public void delete(Long id) {
-		Category category = getOne(id);
-		categoryRepository.delete(category);
+		categoryRepository.deleteById(id);
 	}
 
 	public Category getOne(long id) {
@@ -74,11 +73,11 @@ public class CategoryService {
 	}
 
 	private Category toEntity(CategoryDTO dto) {
-		return new Category(dto.getId(), dto.getName());
+		return new Category(dto.getName());
 	}
 
 	private CategoryDTO toDTO(Category cat) {
-		CategoryDTO dto = new CategoryDTO(cat.getId(), cat.getName());
+		CategoryDTO dto = new CategoryDTO(cat.getId(),cat.getName());
 		dto.setSubcategories(subcategoryService.convertToDTO(cat.getSubcategories()));
 		return dto;
 	}

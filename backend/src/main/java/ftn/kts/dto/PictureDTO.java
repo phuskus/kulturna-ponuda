@@ -5,16 +5,27 @@ public class PictureDTO {
 	private Long id;
 	private String placeholder;
 	private String image;
+	private String path;
 
 	public PictureDTO() {
 	}
+	
+	public PictureDTO(Long id) {
+		this.id = id;
+	}
 
-	public PictureDTO(Long id, String placeholder, String image) {
+	public PictureDTO(Long id, String placeholder, String image, String path) {
 		this.id = id;
 		this.placeholder = placeholder;
 		this.image = image;
+		this.path = path;
 	}
-
+	
+	public PictureDTO(String placeholder, String path) {
+		this.placeholder = placeholder;
+		this.path = path;
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -37,6 +48,14 @@ public class PictureDTO {
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 }

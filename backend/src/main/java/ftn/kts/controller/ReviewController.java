@@ -3,6 +3,7 @@ package ftn.kts.controller;
 import ftn.kts.dto.ReviewDTO;
 import ftn.kts.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +29,7 @@ public class ReviewController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<Page<ReviewDTO>> getAllReviews(@RequestParam(defaultValue = "0") Integer pageNo,
+    public ResponseEntity<List<ReviewDTO>> getAllReviews(@RequestParam(defaultValue = "0") Integer pageNo,
                                                          @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
                                                          @RequestParam(defaultValue = "true") String descending) {
         Pageable paging;
@@ -37,7 +38,7 @@ public class ReviewController {
         else
             paging = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, sortBy));
         Page<ReviewDTO> reviews = service.getAllDTO(paging);
-        return new ResponseEntity<>(reviews, HttpStatus.OK);
+        return new ResponseEntity<>(reviews.getContent(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -47,14 +48,13 @@ public class ReviewController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<String> addReview(@Valid @RequestBody ReviewDTO dto) {
-        service.create(dto);
-        return new ResponseEntity<>("Successfully added subcategory!", HttpStatus.CREATED);
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<Object> addReview(@Valid @RequestBody ReviewDTO dto) {
+        return new ResponseEntity<>(service.create(dto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<Object> updateReview(@Valid @RequestBody ReviewDTO dto, @PathVariable long id) {
         ReviewDTO updated = service.update(dto, id);
         return new ResponseEntity<>(updated, HttpStatus.OK);
@@ -62,8 +62,14 @@ public class ReviewController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<String> deleteReview(@PathVariable("id") long id) {
-        service.delete(id);
-        return new ResponseEntity<>("Successfully deleted subcategory!", HttpStatus.OK);
+    public ResponseEntity<Object> deleteReview(@PathVariable("id") long id) {
+        try {
+            service.delete(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (EmptyResultDataAccessException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }

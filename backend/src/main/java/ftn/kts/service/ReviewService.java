@@ -41,9 +41,9 @@ public class ReviewService {
 		return dto;
 	}
 
-	public void create(ReviewDTO dto) {
+	public ReviewDTO create(ReviewDTO dto) {
 		Review review = toEntity(dto);
-		reviewRepository.save(review);
+		return toDTO(reviewRepository.save(review));
 	}
 
 	public ReviewDTO update(ReviewDTO dto, Long id) {
@@ -53,8 +53,7 @@ public class ReviewService {
 	}
 
 	public void delete(Long id) {
-		Review review = getOne(id);
-		reviewRepository.delete(review);
+		reviewRepository.deleteById(id);
 	}
 
 	public Review getOne(long id) {
@@ -62,7 +61,7 @@ public class ReviewService {
 				.orElseThrow(() -> new NoSuchElementException("Review with id " + id + " doesn't exist!"));
 	}
 
-	public List<Review> getAll(long id) {
+	public List<Review> getAll() {
 		return reviewRepository.findAll();
 	}
 

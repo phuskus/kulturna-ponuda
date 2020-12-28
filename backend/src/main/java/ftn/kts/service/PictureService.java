@@ -7,8 +7,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Set;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ftn.kts.dto.PictureDTO;
 import ftn.kts.model.Picture;
 import ftn.kts.repository.PictureRepository;
+import ftn.kts.utils.RandomUtil;
 
 @Service
 public class PictureService {
@@ -31,27 +36,27 @@ public class PictureService {
         this.pictureRepository = pictureRepository;
     }
     
-    public void add(MultipartFile file) throws IOException {
-    	Long id = pictureRepository.getNextSeriesId();
-    	
-    	System.out.println(id);
+    public PictureDTO add(MultipartFile file) throws IOException {
+    	String fileName = new Date().getTime() + RandomUtil.buildAuthString(2);
     	
 		byte[] data = file.getBytes();
-		String fullPath = fileFolder + id + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
+		String fullPath = fileFolder + fileName + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
 		Path path = Paths.get(projectFolder + fullPath);
 		Files.write(path,  data);
 		
 		Picture picture = new Picture(fullPath, file.getOriginalFilename());
 		pictureRepository.save(picture);
+		
+		return toDTO(picture);
     }
 
-	public PictureDTO getOneDTO(Long id) throws FileNotFoundException, IOException {
+	public PictureDTO getOneDTO(Long id) throws IOException {
 		Picture picture = getOne(id);
 		PictureDTO dto = toDTO(picture);
 		return dto;
 	}
 
-	public List<PictureDTO> getAllDTO() throws FileNotFoundException, IOException {
+	public List<PictureDTO> getAllDTO() throws IOException {
 		List<Picture> pictures = pictureRepository.findAll();
 		List<PictureDTO> dtos = new ArrayList<PictureDTO>();
 		for (Picture p : pictures) {
@@ -71,13 +76,13 @@ public class PictureService {
 				.orElseThrow(() -> new NoSuchElementException("Picture with id " + id + " doesn't exist!"));
 	}
 
-	public List<Picture> getAll(long id) {
+	public List<Picture> getAll() {
 		return pictureRepository.findAll();
 	}
 	
 	private PictureDTO toDTO(Picture entity) throws IOException {
 		String encodedData = getEncodedPicture(entity.getPath());
-		PictureDTO dto = new PictureDTO(entity.getId(), entity.getPlaceholder(), encodedData);
+		PictureDTO dto = new PictureDTO(entity.getId(), entity.getPlaceholder(), encodedData, entity.getPath());
 		return dto;
 	}
 
@@ -88,6 +93,19 @@ public class PictureService {
 				pics.add(toDTO(p));
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+		return pics;
+	}
+	
+	public Set<Picture> convertToEntity(Set<PictureDTO> pictures) {
+		Set<Picture> pics = new HashSet<>();
+		try {
+			for (PictureDTO p : pictures) {
+				Picture picture = getOne(p.getId());
+				pics.add(picture);
+			}
+		} catch (NoSuchElementException ex) {
+			ex.printStackTrace();
 		}
 		return pics;
 	}
@@ -104,5 +122,6 @@ public class PictureService {
 		fis.close();
 		return imageString;
 	}
+
 
 }

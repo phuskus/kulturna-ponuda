@@ -22,6 +22,12 @@ public class Picture {
 		
 	}
 	
+	public Picture(Long id, String path, String placeholder) {
+		this.id = id;
+		this.path = path;
+		this.placeholder = placeholder;
+	}
+	
 	public Picture(String path, String placeholder) {
 		this.path = path;
 		this.placeholder = placeholder;

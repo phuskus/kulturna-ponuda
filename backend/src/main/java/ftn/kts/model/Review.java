@@ -1,5 +1,6 @@
 package ftn.kts.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -8,8 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -28,11 +29,11 @@ public class Review {
 	@ManyToOne(fetch = FetchType.EAGER)
 	private CulturalOffer culturalOffer;
 
-	@OneToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY)
 	private Set<Picture> pictures;
 
 	public Review() {
-
+		this.pictures = new HashSet<>();
 	}
 
 	public Review(Long id, Long rating, String content, RegisteredUser user, CulturalOffer offer) {
@@ -41,6 +42,7 @@ public class Review {
 		this.content = content;
 		this.user = user;
 		this.culturalOffer = offer;
+		this.pictures = new HashSet<>();
 	}
 	
 	public Long getId() {
