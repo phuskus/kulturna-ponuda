@@ -9,12 +9,16 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { CardbarComponent } from './components/cardbar/cardbar.component';
 import { MainRoutingModule } from './main-routing.module';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
-import {MatSidenavModule} from '@angular/material/sidenav';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatInputModule } from '@angular/material/input';
 import { ResultsComponent } from './components/results/results.component';
 import { SingleOfferComponent } from './components/single-offer/single-offer.component';
 import { IvyCarouselModule } from 'angular-responsive-carousel';
 import { RatingModule } from 'ng-starrating';
 import { SingleReviewComponent } from './components/single-review/single-review.component';
+import { SearchComponent } from './components/search/search.component';
+
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -26,10 +30,12 @@ import { SingleReviewComponent } from './components/single-review/single-review.
     ResultsComponent,
     SingleOfferComponent,
     SingleReviewComponent,
+    SearchComponent,
   ],
   imports: [
     CommonModule,
 
+    FormsModule,
     FlexLayoutModule,
     IvyCarouselModule,
     RatingModule,
@@ -37,6 +43,7 @@ import { SingleReviewComponent } from './components/single-review/single-review.
     MatCardModule,
     MatButtonModule,
     MatSidenavModule,
+    MatInputModule,
 
     MainRoutingModule,
 

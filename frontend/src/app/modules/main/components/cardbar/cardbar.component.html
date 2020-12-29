@@ -1,5 +1,10 @@
-<mat-card class="example-card mgl-map-overlay-top" tabindex="0">
+<!-- <mat-card class="example-card mgl-map-overlay-top" tabindex="0">
   <mat-card-subtitle>Search</mat-card-subtitle>
+</mat-card> -->
+
+
+<mat-card class="example-card mgl-map-overlay-top" tabindex="0">
+  <app-search></app-search>
 </mat-card>
 
 <mat-card class="example-card mgl-map-overlay-bottom" tabindex="1">
@@ -13,7 +18,7 @@
         *ngFor="let offer of offers"
       >
         <button
-          [routerLink]="'offers/search/'+offer.path"
+          [routerLink]="'offers/search/' + offer.path"
           mat-button
           disableRipple="true"
         >

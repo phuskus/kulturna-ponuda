@@ -1,5 +1,9 @@
-<mat-card class="example-card" style="margin-bottom: 40px">
+<!-- <mat-card class="example-card" style="margin-bottom: 40px">
   <mat-card-subtitle>Search</mat-card-subtitle>
+</mat-card> -->
+
+<mat-card class="search-comp" style="margin-bottom: 40px">
+  <app-search></app-search>
 </mat-card>
 
 <mat-card
@@ -12,7 +16,7 @@
       <img [src]="result.image" />
     </div>
 
-    <div fxLayout="column" class="content-col">
+    <div fxLayout="column" fxLayoutAlign="space-between" class="content-col">
       <div fxLayout="row" fxLayoutAlign="space-between">
         <div fxLayout="column">{{ result.name }}</div>
         <div fxLayout="column">{{ result.location }}</div>

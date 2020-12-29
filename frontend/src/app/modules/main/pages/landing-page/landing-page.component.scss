@@ -43,10 +43,22 @@ $left-margin: 20px;
   }
 }
 
-.example-card {
-  width: 400px !important;
+%base-card {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   border-bottom: 1px solid #e8eaed;
   border-top: 1px solid #e8eaed;
 }
+
+.example-card {
+  @extend %base-card;
+  width: 400px !important;
+}
+
+// .example-card {
+//   width: 400px !important;
+//   border-radius: 8px;
+//   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+//   border-bottom: 1px solid #e8eaed;
+//   border-top: 1px solid #e8eaed;
+// }
