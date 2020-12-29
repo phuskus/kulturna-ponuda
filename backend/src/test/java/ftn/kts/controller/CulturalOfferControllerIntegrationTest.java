@@ -54,6 +54,7 @@ import ftn.kts.dto.PictureDTO;
 import ftn.kts.exceptions.ErrorMessage;
 import ftn.kts.model.CulturalOffer;
 import ftn.kts.model.Subcategory;
+import ftn.kts.pages.PageCulturalOffers;
 import ftn.kts.service.CulturalOfferService;
 
 @RunWith(SpringRunner.class)
@@ -68,110 +69,128 @@ public class CulturalOfferControllerIntegrationTest {
 	@Test
 	public void getOffersPage_FirstPageOneOffer_ReturnsOneEntity() {
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
-		ResponseEntity<CulturalOfferDTO[]> responseEntity = restTemplate
-				.exchange("/cultural_offers?pageNo=0&pageSize=1", HttpMethod.GET, httpEntity, CulturalOfferDTO[].class);
-		CulturalOfferDTO[] offers = responseEntity.getBody();
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate
+				.exchange("/cultural_offers?pageNo=0&pageSize=1", HttpMethod.GET, httpEntity, PageCulturalOffers.class);
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertEquals(PAGEABLE_ONE_ELEMENTS, offers.length);
+		assertEquals(PAGEABLE_ONE_ELEMENTS, offersList.size());
 	}
 
 	@Test
 	public void getOffersPage_SecondPageOneOffer_ReturnsOneEntity() {
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
-		ResponseEntity<CulturalOfferDTO[]> responseEntity = restTemplate
-				.exchange("/cultural_offers?pageNo=1&pageSize=1", HttpMethod.GET, httpEntity, CulturalOfferDTO[].class);
-		CulturalOfferDTO[] offers = responseEntity.getBody();
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate
+				.exchange("/cultural_offers?pageNo=1&pageSize=1", HttpMethod.GET, httpEntity, PageCulturalOffers.class);
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertEquals(PAGEABLE_ONE_ELEMENTS, offers.length);
+		assertEquals(PAGEABLE_ONE_ELEMENTS, offersList.size());
 	}
 
 	@Test
 	public void getOffersPage_ThirdPageOneOffer_ReturnsNoEntities() {
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
-		ResponseEntity<CulturalOfferDTO[]> responseEntity = restTemplate
-				.exchange("/cultural_offers?pageNo=2&pageSize=1", HttpMethod.GET, httpEntity, CulturalOfferDTO[].class);
-		CulturalOfferDTO[] offers = responseEntity.getBody();
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate
+				.exchange("/cultural_offers?pageNo=2&pageSize=1", HttpMethod.GET, httpEntity, PageCulturalOffers.class);
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertEquals(0, offers.length);
+		assertEquals(0, offersList.size());
 	}
 
 	@Test
 	public void getOffersPage_FirstPageTwoOffers_ReturnsTwoEntities() {
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
-		ResponseEntity<CulturalOfferDTO[]> responseEntity = restTemplate
-				.exchange("/cultural_offers?pageNo=0&pageSize=2", HttpMethod.GET, httpEntity, CulturalOfferDTO[].class);
-		CulturalOfferDTO[] offers = responseEntity.getBody();
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate
+				.exchange("/cultural_offers?pageNo=0&pageSize=2", HttpMethod.GET, httpEntity, PageCulturalOffers.class);
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertEquals(PAGEABLE_TWO_ELEMENTS, offers.length);
+		assertEquals(PAGEABLE_TWO_ELEMENTS, offersList.size());
 	}
 
 	@Test
 	public void getOffersPage_SecondPageTwoOffers_ReturnsNoEntities() {
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
-		ResponseEntity<CulturalOfferDTO[]> responseEntity = restTemplate
-				.exchange("/cultural_offers?pageNo=1&pageSize=2", HttpMethod.GET, httpEntity, CulturalOfferDTO[].class);
-		CulturalOfferDTO[] offers = responseEntity.getBody();
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate
+				.exchange("/cultural_offers?pageNo=1&pageSize=2", HttpMethod.GET, httpEntity, PageCulturalOffers.class);
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertEquals(0, offers.length);
+		assertEquals(0, offersList.size());
 	}
 
 	@Test
 	public void getOffersPage_SortByIdAscending_ReturnsSortedList() {
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
-		ResponseEntity<CulturalOfferDTO[]> responseEntity = restTemplate.exchange(
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
 				"/cultural_offers?pageNo=0&pageSize=2&descending=false", HttpMethod.GET, httpEntity,
-				CulturalOfferDTO[].class);
-		CulturalOfferDTO[] offers = responseEntity.getBody();
+				PageCulturalOffers.class);
+		PageCulturalOffers offers = responseEntity.getBody();
 
+		List<CulturalOfferDTO> offersList = offers.getContent();
+		
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertEquals(2, offers.length);
-		assertEquals(PAGEABLE_SORTBYID_ASC_FIRST, offers[0].getId());
-		assertEquals(PAGEABLE_SORTBYID_ASC_SECOND, offers[1].getId());
+		assertEquals(2, offersList.size());
+		assertEquals(PAGEABLE_SORTBYID_ASC_FIRST, offersList.get(0).getId());
+		assertEquals(PAGEABLE_SORTBYID_ASC_SECOND, offersList.get(1).getId());
 	}
 
 	@Test
 	public void getOffersPage_SortByIdDescending_ReturnsSortedList() {
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
-		ResponseEntity<CulturalOfferDTO[]> responseEntity = restTemplate.exchange(
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
 				"/cultural_offers?pageNo=0&pageSize=2&descending=true", HttpMethod.GET, httpEntity,
-				CulturalOfferDTO[].class);
-		CulturalOfferDTO[] offers = responseEntity.getBody();
+				PageCulturalOffers.class);
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertEquals(2, offers.length);
-		assertEquals(PAGEABLE_SORTBYID_DESC_FIRST, offers[0].getId());
-		assertEquals(PAGEABLE_SORTBYID_DESC_SECOND, offers[1].getId());
+		assertEquals(2, offersList.size());
+		assertEquals(PAGEABLE_SORTBYID_DESC_FIRST, offersList.get(0).getId());
+		assertEquals(PAGEABLE_SORTBYID_DESC_SECOND, offersList.get(1).getId());
 	}
 
 	@Test
 	public void getOffersPage_SortByNameAscending_ReturnsSortedList() {
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
-		ResponseEntity<CulturalOfferDTO[]> responseEntity = restTemplate.exchange(
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
 				"/cultural_offers?pageNo=0&pageSize=2&sortBy=name&descending=false", HttpMethod.GET, httpEntity,
-				CulturalOfferDTO[].class);
-		CulturalOfferDTO[] offers = responseEntity.getBody();
+				PageCulturalOffers.class);
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertEquals(2, offers.length);
-		assertThat(offers[0].getName()).isLessThan(offers[1].getName());
+		assertEquals(2, offersList.size());
+		assertThat(offersList.get(0).getName()).isLessThan(offersList.get(1).getName());
 	}
 
 	@Test
 	public void getOffersPage_SortByNameDescending_ReturnsSortedList() {
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
-		ResponseEntity<CulturalOfferDTO[]> responseEntity = restTemplate.exchange(
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
 				"/cultural_offers?pageNo=0&pageSize=2&sortBy=name&descending=true", HttpMethod.GET, httpEntity,
-				CulturalOfferDTO[].class);
-		CulturalOfferDTO[] offers = responseEntity.getBody();
+				PageCulturalOffers.class);
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertEquals(2, offers.length);
-		assertThat(offers[0].getName()).isGreaterThan(offers[1].getName());
+		assertEquals(2, offersList.size());
+		assertThat(offersList.get(0).getName()).isGreaterThan(offersList.get(1).getName());
 	}
 
 	@Test
@@ -201,13 +220,16 @@ public class CulturalOfferControllerIntegrationTest {
 	@Test
 	public void filterOffersName_ExactName_ReturnsOneEntity() {
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
-		ResponseEntity<CulturalOfferDTO[]> responseEntity = restTemplate.exchange(
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
 				"/cultural_offers/name/" + DB_CULTURAL_OFFER_NAME, HttpMethod.GET, httpEntity,
-				CulturalOfferDTO[].class);
+				PageCulturalOffers.class);
 
-		CulturalOfferDTO[] offers = responseEntity.getBody();
-		assertEquals(1, offers.length);
-		CulturalOfferDTO offer = offers[0];
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
+		
+		assertEquals(1, offersList.size());
+		CulturalOfferDTO offer = offersList.get(0);
 		assertNotNull(offer.getId());
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertEquals(DB_CULTURAL_OFFER_NAME, offer.getName());
@@ -216,13 +238,16 @@ public class CulturalOfferControllerIntegrationTest {
 	@Test
 	public void filterOffersName_MixedCaseName_ReturnsOneEntity() {
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
-		ResponseEntity<CulturalOfferDTO[]> responseEntity = restTemplate.exchange(
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
 				"/cultural_offers/name/" + DB_CULTURAL_OFFER_NAME_UPPERCASE, HttpMethod.GET, httpEntity,
-				CulturalOfferDTO[].class);
+				PageCulturalOffers.class);
 
-		CulturalOfferDTO[] offers = responseEntity.getBody();
-		assertEquals(1, offers.length);
-		CulturalOfferDTO offer = offers[0];
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
+		
+		assertEquals(1, offersList.size());
+		CulturalOfferDTO offer = offersList.get(0);
 		assertNotNull(offer.getId());
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertEquals(DB_CULTURAL_OFFER_NAME, offer.getName());
@@ -231,41 +256,49 @@ public class CulturalOfferControllerIntegrationTest {
 	@Test
 	public void filterOffersName_NoMatch_ReturnsNoEntities() {
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
-		ResponseEntity<CulturalOfferDTO[]> responseEntity = restTemplate.exchange(
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
 				"/cultural_offers/name/" + DB_CULTURAL_OFFER_NO_SUCH_NAME, HttpMethod.GET, httpEntity,
-				CulturalOfferDTO[].class);
-		CulturalOfferDTO[] offers = responseEntity.getBody();
+				PageCulturalOffers.class);
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertEquals(0, offers.length);
+		assertEquals(0, offersList.size());
 	}
 
 	@Test
 	public void filterOffersName_PartName_ReturnsTwoEntities() {
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
-		ResponseEntity<CulturalOfferDTO[]> responseEntity = restTemplate.exchange(
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
 				"/cultural_offers/name/" + DB_CULTURAL_OFFER_PART_NAME + "?sortBy=id&descending=false", HttpMethod.GET,
-				httpEntity, CulturalOfferDTO[].class);
+				httpEntity, PageCulturalOffers.class);
 
-		CulturalOfferDTO[] offers = responseEntity.getBody();
-		assertEquals(2, offers.length);
-		CulturalOfferDTO offer = offers[0];
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
+		
+		assertEquals(2, offersList.size());
+		CulturalOfferDTO offer =offersList.get(0);
 		assertNotNull(offer.getId());
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertEquals(DB_CULTURAL_OFFER_NAME, offer.getName());
-		assertNotNull(offers[1].getId());
-		assertEquals(new Long(2), offers[1].getId());
+		assertNotNull(offersList.get(1).getId());
+		assertEquals(new Long(2), offersList.get(1).getId());
 	}
 
 	@Test
 	public void filterOffersCity_ExactCity_ReturnsOneEntity() {
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
-		ResponseEntity<CulturalOfferDTO[]> responseEntity = restTemplate.exchange(
-				"/cultural_offers/city/" + DB_CITY_NAME, HttpMethod.GET, httpEntity, CulturalOfferDTO[].class);
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
+				"/cultural_offers/city/" + DB_CITY_NAME, HttpMethod.GET, httpEntity, PageCulturalOffers.class);
 
-		CulturalOfferDTO[] offers = responseEntity.getBody();
-		assertEquals(1, offers.length);
-		CulturalOfferDTO offer = offers[0];
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
+		
+		assertEquals(1, offersList.size());
+		CulturalOfferDTO offer = offersList.get(0);
 		assertNotNull(offer.getId());
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertEquals(DB_CULTURAL_OFFER_NAME, offer.getName());
@@ -274,13 +307,16 @@ public class CulturalOfferControllerIntegrationTest {
 	@Test
 	public void filterOffersCity_MixedCaseCity_ReturnsOneEntity() {
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
-		ResponseEntity<CulturalOfferDTO[]> responseEntity = restTemplate.exchange(
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
 				"/cultural_offers/city/" + DB_CITY_NAME_LOWERCASE, HttpMethod.GET, httpEntity,
-				CulturalOfferDTO[].class);
+				PageCulturalOffers.class);
 
-		CulturalOfferDTO[] offers = responseEntity.getBody();
-		assertEquals(1, offers.length);
-		CulturalOfferDTO offer = offers[0];
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
+		
+		assertEquals(1, offersList.size());
+		CulturalOfferDTO offer = offersList.get(0);
 		assertNotNull(offer.getId());
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertEquals(DB_CULTURAL_OFFER_NAME, offer.getName());
@@ -289,42 +325,50 @@ public class CulturalOfferControllerIntegrationTest {
 	@Test
 	public void filterOffersCity_NoMatch_ReturnsNoEntities() {
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
-		ResponseEntity<CulturalOfferDTO[]> responseEntity = restTemplate.exchange(
-				"/cultural_offers/city/" + DB_NO_SUCH_CITY, HttpMethod.GET, httpEntity, CulturalOfferDTO[].class);
-		CulturalOfferDTO[] offers = responseEntity.getBody();
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
+				"/cultural_offers/city/" + DB_NO_SUCH_CITY, HttpMethod.GET, httpEntity, PageCulturalOffers.class);
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertEquals(0, offers.length);
+		assertEquals(0, offersList.size());
 	}
 
 	@Test
 	public void filterOffersCity_PartName_ReturnsOneEntity() {
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
-		ResponseEntity<CulturalOfferDTO[]> responseEntity = restTemplate.exchange(
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
 				"/cultural_offers/city/" + DB_CITY_PART_NAME + "?sortBy=id&descending=false", HttpMethod.GET,
-				httpEntity, CulturalOfferDTO[].class);
+				httpEntity, PageCulturalOffers.class);
 
-		CulturalOfferDTO[] offers = responseEntity.getBody();
-		assertEquals(1, offers.length);
-		CulturalOfferDTO offer = offers[0];
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
+		
+		assertEquals(1, offersList.size());
+		CulturalOfferDTO offer = offersList.get(0);
 		assertNotNull(offer.getId());
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertEquals(DB_CULTURAL_OFFER_NAME, offer.getName());
-		assertEquals(DB_CITY_NAME, offers[0].getCity());
+		assertEquals(DB_CITY_NAME, offersList.get(0).getCity());
 	}
 
 	@Test
 	public void filterOffersDescription_PartDescription_ReturnsTwoEntities() {
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
-		ResponseEntity<CulturalOfferDTO[]> responseEntity = restTemplate.exchange(
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
 				"/cultural_offers/description/" + DB_PART_DESCRIPTION + "?sortBy=id&descending=false", HttpMethod.GET,
-				httpEntity, CulturalOfferDTO[].class);
+				httpEntity, PageCulturalOffers.class);
 
-		CulturalOfferDTO[] offers = responseEntity.getBody();
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
+		
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertEquals(2, offers.length);
-		CulturalOfferDTO offer1 = offers[0];
-		CulturalOfferDTO offer2 = offers[1];
+		assertEquals(2, offersList.size());
+		CulturalOfferDTO offer1 = offersList.get(0);
+		CulturalOfferDTO offer2 = offersList.get(1);
 		assertNotNull(offer1.getId());
 		assertNotNull(offer2.getId());
 		assertEquals(PAGEABLE_SORTBYID_ASC_FIRST, offer1.getId());
@@ -334,15 +378,18 @@ public class CulturalOfferControllerIntegrationTest {
 	@Test
 	public void filterOffersDescription_PartDescriptionMixedCase_ReturnsTwoEntities() {
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
-		ResponseEntity<CulturalOfferDTO[]> responseEntity = restTemplate.exchange(
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
 				"/cultural_offers/description/" + DB_PART_DESCRIPTION_UPPERCASE, HttpMethod.GET, httpEntity,
-				CulturalOfferDTO[].class);
+				PageCulturalOffers.class);
 
-		CulturalOfferDTO[] offers = responseEntity.getBody();
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
+		
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertEquals(2, offers.length);
-		CulturalOfferDTO offer1 = offers[0];
-		CulturalOfferDTO offer2 = offers[1];
+		assertEquals(2, offersList.size());
+		CulturalOfferDTO offer1 = offersList.get(0);
+		CulturalOfferDTO offer2 = offersList.get(1);
 		assertNotNull(offer1.getId());
 		assertNotNull(offer2.getId());
 		assertEquals(PAGEABLE_SORTBYID_ASC_FIRST, offer1.getId());
@@ -352,44 +399,50 @@ public class CulturalOfferControllerIntegrationTest {
 	@Test
 	public void filterOffersDescription_NoMatch_ReturnsNoEntities() {
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
-		ResponseEntity<CulturalOfferDTO[]> responseEntity = restTemplate.exchange(
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
 				"/cultural_offers/description/" + DB_NO_SUCH_DESCRIPTION, HttpMethod.GET, httpEntity,
-				CulturalOfferDTO[].class);
-		CulturalOfferDTO[] offers = responseEntity.getBody();
+				PageCulturalOffers.class);
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertEquals(0, offers.length);
+		assertEquals(0, offersList.size());
 	}
 
 	// filter category
-	
+
 	@Test
 	public void filterOffersCategory_ExistsCategoryOne_ReturnsTwoEntities() {
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
-		ResponseEntity<CulturalOfferDTO[]> responseEntity = restTemplate.exchange(
-				"/cultural_offers/category/" + CATEGORY_ONE_ID, HttpMethod.GET, httpEntity,
-				CulturalOfferDTO[].class);
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
+				"/cultural_offers/category/" + CATEGORY_ONE_ID, HttpMethod.GET, httpEntity, PageCulturalOffers.class);
 
-		CulturalOfferDTO[] offers = responseEntity.getBody();
-		assertEquals(CATEGORY_ONE_RESULTS, offers.length);
-		CulturalOfferDTO offer = offers[0];
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
+		
+		assertEquals(CATEGORY_ONE_RESULTS, offersList.size());
+		CulturalOfferDTO offer = offersList.get(0);
 		assertNotNull(offer.getId());
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		
+
 		Subcategory category = offerService.getOne(offer.getId()).getCategory();
-		
+
 		assertEquals(CATEGORY_ONE_ID, category.getId());
 	}
-	
+
 	@Test
 	public void filterOffersCategory_ExistsCategoryTwo_ReturnsNoEntities() {
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
-		ResponseEntity<CulturalOfferDTO[]> responseEntity = restTemplate.exchange(
-				"/cultural_offers/category/" + CATEGORY_TWO_ID, HttpMethod.GET, httpEntity,
-				CulturalOfferDTO[].class);
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
+				"/cultural_offers/category/" + CATEGORY_TWO_ID, HttpMethod.GET, httpEntity, PageCulturalOffers.class);
 
-		CulturalOfferDTO[] offers = responseEntity.getBody();
-		assertEquals(CATEGORY_TWO_RESULTS, offers.length);
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
+		
+		assertEquals(CATEGORY_TWO_RESULTS, offersList.size());
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 	}
 
@@ -397,8 +450,7 @@ public class CulturalOfferControllerIntegrationTest {
 	public void filterOffersCategory_ExistsCategoryTwo_ReturnsNotFound() {
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
 		ResponseEntity<ErrorMessage> responseEntity = restTemplate.exchange(
-				"/cultural_offers/category/" + CATEGORY_NULL_ID, HttpMethod.GET, httpEntity,
-				ErrorMessage.class);
+				"/cultural_offers/category/" + CATEGORY_NULL_ID, HttpMethod.GET, httpEntity, ErrorMessage.class);
 
 		ErrorMessage message = responseEntity.getBody();
 		assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
@@ -512,80 +564,80 @@ public class CulturalOfferControllerIntegrationTest {
 				3L, 1L);
 
 		CulturalOfferDTO added = offerService.create(dto);
-		
+
 		dto.setDescription(UPDATE_NEW_DESCRIPTION);
 
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(dto, getAuthHeadersAdmin(restTemplate));
 
-		ResponseEntity<CulturalOfferDTO> responseEntity = restTemplate.exchange("/cultural_offers/" + added.getId(), HttpMethod.PUT,
-				httpEntity, CulturalOfferDTO.class);
+		ResponseEntity<CulturalOfferDTO> responseEntity = restTemplate.exchange("/cultural_offers/" + added.getId(),
+				HttpMethod.PUT, httpEntity, CulturalOfferDTO.class);
 
 		CulturalOfferDTO changed = responseEntity.getBody();
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertNotNull(changed.getId());
 		assertEquals(added.getId(), changed.getId());
-		
+
 		assertEquals(UPDATE_NEW_DESCRIPTION, changed.getDescription());
 
 		offerService.delete(added.getId());
 	}
-	
+
 	@Test
 	public void updateOffer_ChangeDescriptionAndCityAsAdmin_ReturnsObject() throws Exception {
 		CulturalOfferDTO dto = new CulturalOfferDTO(CREATE_NAME, CREATE_DESCRIPTION, 0F, 0F, "adr", CREATE_CITY, "reg",
 				3L, 1L);
 
 		CulturalOfferDTO added = offerService.create(dto);
-		
+
 		dto.setDescription(UPDATE_NEW_DESCRIPTION);
 		dto.setCity(UPDATE_NEW_CITY);
 
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(dto, getAuthHeadersAdmin(restTemplate));
 
-		ResponseEntity<CulturalOfferDTO> responseEntity = restTemplate.exchange("/cultural_offers/" + added.getId(), HttpMethod.PUT,
-				httpEntity, CulturalOfferDTO.class);
+		ResponseEntity<CulturalOfferDTO> responseEntity = restTemplate.exchange("/cultural_offers/" + added.getId(),
+				HttpMethod.PUT, httpEntity, CulturalOfferDTO.class);
 
 		CulturalOfferDTO changed = responseEntity.getBody();
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertNotNull(changed.getId());
 		assertEquals(added.getId(), changed.getId());
-		
+
 		assertEquals(UPDATE_NEW_DESCRIPTION, changed.getDescription());
 		assertEquals(UPDATE_NEW_CITY, changed.getCity());
 
 		offerService.delete(added.getId());
 	}
-	
+
 	@Test
 	public void updateOffer_AddPicturesAsAdmin_ReturnsObject() throws Exception {
 		CulturalOfferDTO dto = new CulturalOfferDTO(CREATE_NAME, CREATE_DESCRIPTION, 0F, 0F, "adr", CREATE_CITY, "reg",
 				3L, 1L);
 
 		CulturalOfferDTO added = offerService.create(dto);
-		
+
 		HashSet<PictureDTO> pictures = new HashSet<>();
 		pictures.add(new PictureDTO(1L));
 		dto.setPictures(pictures);
 
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(dto, getAuthHeadersAdmin(restTemplate));
 
-		ResponseEntity<CulturalOfferDTO> responseEntity = restTemplate.exchange("/cultural_offers/" + added.getId(), HttpMethod.PUT,
-				httpEntity, CulturalOfferDTO.class);
+		ResponseEntity<CulturalOfferDTO> responseEntity = restTemplate.exchange("/cultural_offers/" + added.getId(),
+				HttpMethod.PUT, httpEntity, CulturalOfferDTO.class);
 
 		CulturalOfferDTO changed = responseEntity.getBody();
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertNotNull(changed.getId());
 		assertEquals(added.getId(), changed.getId());
-		
+
 		assertEquals(1, changed.getPictures().size());
 		assertEquals(new Long(1L), ((PictureDTO) changed.getPictures().toArray()[0]).getId());
 
 		offerService.delete(added.getId());
 	}
-	
+
 	@Test
 	public void updateOffer_RemovePicturesAsAdmin_ReturnsObject() throws Exception {
 		CulturalOfferDTO dto = new CulturalOfferDTO(CREATE_NAME, CREATE_DESCRIPTION, 0F, 0F, "adr", CREATE_CITY, "reg",
@@ -595,38 +647,38 @@ public class CulturalOfferControllerIntegrationTest {
 		dto.setPictures(pictures);
 
 		CulturalOfferDTO added = offerService.create(dto);
-		
+
 		dto.setPictures(new HashSet<>());
-	
+
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(dto, getAuthHeadersAdmin(restTemplate));
 
-		ResponseEntity<CulturalOfferDTO> responseEntity = restTemplate.exchange("/cultural_offers/" + added.getId(), HttpMethod.PUT,
-				httpEntity, CulturalOfferDTO.class);
+		ResponseEntity<CulturalOfferDTO> responseEntity = restTemplate.exchange("/cultural_offers/" + added.getId(),
+				HttpMethod.PUT, httpEntity, CulturalOfferDTO.class);
 
 		CulturalOfferDTO changed = responseEntity.getBody();
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertNotNull(changed.getId());
 		assertEquals(added.getId(), changed.getId());
-		
+
 		assertEquals(0, changed.getPictures().size());
 
 		offerService.delete(added.getId());
 	}
-	
+
 	@Test
 	public void updateOffer_UpdateAsUser_ReturnsUnauthorized() throws Exception {
 		CulturalOfferDTO dto = new CulturalOfferDTO(CREATE_NAME, CREATE_DESCRIPTION, 0F, 0F, "adr", CREATE_CITY, "reg",
 				3L, 1L);
 
 		CulturalOfferDTO added = offerService.create(dto);
-		
+
 		dto.setDescription(UPDATE_NEW_DESCRIPTION);
-	
+
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(dto, getAuthHeadersUser(restTemplate));
 
-		ResponseEntity<ErrorMessage> responseEntity = restTemplate.exchange("/cultural_offers/" + added.getId(), HttpMethod.PUT,
-				httpEntity, ErrorMessage.class);
+		ResponseEntity<ErrorMessage> responseEntity = restTemplate.exchange("/cultural_offers/" + added.getId(),
+				HttpMethod.PUT, httpEntity, ErrorMessage.class);
 
 		assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
 		assertEquals(CREATE_DESCRIPTION, added.getDescription());

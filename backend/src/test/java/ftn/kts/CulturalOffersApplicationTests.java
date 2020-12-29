@@ -26,6 +26,7 @@ import ftn.kts.service.CategoryServiceIntegrationTest;
 import ftn.kts.service.CategoryServiceUnitTest;
 import ftn.kts.service.CulturalOfferServiceIntegrationTest;
 import ftn.kts.service.CulturalOfferServiceUnitTest;
+import ftn.kts.service.MailSenderServiceIntegrationTest;
 import ftn.kts.service.PictureServiceIntegrationTest;
 import ftn.kts.service.PostServiceIntegrationTest;
 import ftn.kts.service.ReviewServiceIntegrationTest;
@@ -63,7 +64,8 @@ import ftn.kts.service.UserServiceUnitTest;
         PostServiceIntegrationTest.class,
         PostControllerIntegrationTest.class,
         SubscriptionRepositoryIntegrationTest.class,
-        SubscriptionServiceIntegrationTest.class
+        SubscriptionServiceIntegrationTest.class,
+        MailSenderServiceIntegrationTest.class
 })
 @TestPropertySource("classpath:application.properties")
 class CulturalOffersApplicationTests {
