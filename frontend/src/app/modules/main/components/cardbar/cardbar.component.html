@@ -2,30 +2,11 @@
   <mat-card-subtitle>Search</mat-card-subtitle>
 </mat-card> -->
 
-
-<mat-card class="example-card mgl-map-overlay-top" tabindex="0">
-  <app-search></app-search>
-</mat-card>
-
-<mat-card class="example-card mgl-map-overlay-bottom" tabindex="1">
-  <p class="mat-title" style="margin-bottom: 4px">Cultural Content</p>
-  <mat-card-subtitle>Search this area</mat-card-subtitle>
-  <mat-card-content>
-    <div fxLayout="row" fxLayoutAlign="space-between">
-      <div
-        fxLayout="column"
-        class="content-column"
-        *ngFor="let offer of offers"
-      >
-        <button
-          [routerLink]="'offers/search/' + offer.path"
-          mat-button
-          disableRipple="true"
-        >
-          <img [src]="offer.img" />
-          <p>{{ offer.name }}</p>
-        </button>
-      </div>
-    </div>
-  </mat-card-content>
-</mat-card>
+<div class="landing-page-container">
+    <mat-card class="example-card mgl-map-overlay-stack" tabindex="0">
+      <app-search></app-search>
+    </mat-card>
+    <app-category-card *ngFor="let category of categories" 
+    [category]="category">
+  </app-category-card>
+</div>

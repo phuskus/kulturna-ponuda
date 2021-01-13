@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MapComponent } from './components/map/map.component';
 import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
@@ -17,6 +17,7 @@ import { IvyCarouselModule } from 'angular-responsive-carousel';
 import { RatingModule } from 'ng-starrating';
 import { SingleReviewComponent } from './components/single-review/single-review.component';
 import { SearchComponent } from './components/search/search.component';
+import { CategoryCardComponent } from './components/category-card/category-card.component';
 
 import { FormsModule } from '@angular/forms';
 
@@ -31,6 +32,7 @@ import { FormsModule } from '@angular/forms';
     SingleOfferComponent,
     SingleReviewComponent,
     SearchComponent,
+    CategoryCardComponent
   ],
   imports: [
     CommonModule,
