@@ -54,7 +54,7 @@ public class CategoryService {
 				.orElseThrow(() -> new NoSuchElementException("Category with id " + id + " doesn't exist!"));
 	}
 
-	public List<Category> getAll(long id) {
+	public List<Category> getAll() {
 		return categoryRepository.findAll();
 	}
 

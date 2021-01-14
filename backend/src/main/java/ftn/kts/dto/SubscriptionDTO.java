@@ -51,6 +51,13 @@ public class SubscriptionDTO {
         }
     }
 
+    public SubscriptionDTO(@NotNull(message = "Date of subscription is required!") Date dateOfSubscription, @NotNull(message = "Subscription must belong to a registered user!") Long registeredUserId, Long subcategoryId, Long culturalOfferId) {
+        this.dateOfSubscription = dateOfSubscription;
+        this.registeredUserId = registeredUserId;
+        this.subcategoryId = subcategoryId;
+        this.culturalOfferId = culturalOfferId;
+    }
+
     public Long getId() {
         return id;
     }
