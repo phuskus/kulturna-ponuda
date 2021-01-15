@@ -19,13 +19,16 @@ import {MatIconModule} from '@angular/material/icon';
 import { ResultsComponent } from './components/results/results.component';
 import { SingleOfferComponent } from './components/single-offer/single-offer.component';
 import { IvyCarouselModule } from 'angular-responsive-carousel';
-import { RatingModule } from 'ng-starrating';
 import { SingleReviewComponent } from './components/single-review/single-review.component';
 import { SearchComponent } from './components/search/search.component';
+import { ImageSelectorComponent } from 'src/app/shared/components/image-selector/image-selector.component';
+
 
 import { FormsModule } from '@angular/forms';
 import { ReviewDialogComponent } from './components/single-offer/review-dialog/review-dialog.component';
-
+import { SafeUrlPipe } from 'src/app/shared/pipes/safe-url.pipe';
+import { AvatarModule } from 'ngx-avatar';
+import { StarRatingComponent } from 'src/app/shared/components/star-rating/star-rating.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +41,9 @@ import { ReviewDialogComponent } from './components/single-offer/review-dialog/r
     SingleReviewComponent,
     SearchComponent,
     ReviewDialogComponent,
+    ImageSelectorComponent,
+    SafeUrlPipe,
+    StarRatingComponent,
   ],
   imports: [
     CommonModule,
@@ -45,7 +51,7 @@ import { ReviewDialogComponent } from './components/single-offer/review-dialog/r
     FormsModule,
     FlexLayoutModule,
     IvyCarouselModule,
-    RatingModule,
+    AvatarModule,
 
     MatCardModule,
     MatButtonModule,

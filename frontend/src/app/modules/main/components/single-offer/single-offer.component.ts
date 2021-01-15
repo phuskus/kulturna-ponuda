@@ -12,6 +12,7 @@ export class SingleOfferComponent implements OnInit {
 
   openDialog(): void {
     this.dialog.open(ReviewDialogComponent, {
+      autoFocus: false,
       data: { offerName: 'Museum of Modern Art' },
     });
   }

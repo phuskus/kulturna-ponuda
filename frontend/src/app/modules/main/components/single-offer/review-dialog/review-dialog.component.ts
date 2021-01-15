@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { ReviewDialogData } from 'src/app/shared/models/ReviewDialogData';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
@@ -9,17 +9,27 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class ReviewDialogComponent {
   username: string = 'sstefann';
-
+  rating: number = 0;
   comment: string;
-  rating: number;
-  pictures: Array<any>;
+  filesSelected: FileList;
+
+  picturePaths: Array<string>;
 
   constructor(
     public dialogRef: MatDialogRef<ReviewDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ReviewDialogData
   ) {}
 
-  addPictures() {
-    alert('ojoj')
+  onRatingChanged(newValue: number): void {
+    this.rating = newValue;
+  }
+
+  onFilesSelected(event: FileList): void {
+    this.filesSelected = event;
+  }
+
+  onReviewSubmit(): void {
+    alert('Your review has been submitted');
+    this.dialogRef.close();
   }
 }
