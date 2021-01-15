@@ -28,6 +28,7 @@
     "ng-starrating": "^1.0.20",
     "ngx-mapbox-gl": "^4.8.1",
     "rxjs": "~6.6.0",
+    "rxjs-compat": "^6.6.3",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
   },

@@ -1,5 +1,7 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, Validators, FormControl, FormBuilder } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-page',
@@ -8,16 +10,28 @@ import { NgForm } from '@angular/forms';
 })
 export class LoginPageComponent implements OnInit {
   
-  @ViewChild('form') loginForm: NgForm;
+  loginForm: FormGroup;
   hide : boolean = true;
+  data: {};
 
-  constructor() { }
+  constructor(private readonly fb: FormBuilder, private router: Router, public authService: AuthService) {
+    this.loginForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required]
+    })
+   }
 
   ngOnInit(): void {
   }
 
   onSubmit() {
-    console.log(this.loginForm);
+    this.authService.login(this.loginForm.value['username'], this.loginForm.value['password']).subscribe((loggedIn:boolean) => {
+      if(loggedIn) {
+        this.router.navigate(['/']);
+        //console.log(localStorage['currentUser']);
+      }
+      //todo validation
+    });
   }
 
 }

@@ -3,6 +3,7 @@
   <router-outlet></router-outlet>
 
   <button
+    *ngIf="currentUser === undefined"
     mat-raised-button
     color="primary"
     class="mgl-map-overlay-right"
@@ -11,4 +12,5 @@
   >
     Log In
   </button>
+  
 </div>
