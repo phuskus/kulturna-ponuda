@@ -1,1 +1,37 @@
-<p>login-page works!</p>
+<div class="flex-parent">
+    <div class="flex-container">
+        <div class="item">
+            <p class="title font" style="font-size:2.5vw;">Sign in to CultYourself</p>
+            <p class="font" style="font-size:1vw;">To keep connected with us please login with your personal info</p>
+        </div>
+        <form (ngSubmit)="onSubmit()" #form="ngForm">
+            <div class="item">
+                <mat-form-field [style.width.%]="100" appearance="outline">
+                    <input matInput 
+                    placeholder="Email"
+                    ngModel
+                    name="email"/>
+                    <!--mat-hint>Hint</mat-hint-->
+                </mat-form-field>
+                <mat-form-field [style.width.%]="100" appearance="outline">
+                    <input 
+                        matInput 
+                        placeholder="Password" 
+                        [type]="hide ? 'password' : 'text'" 
+                        ngModel
+                        name="password"/>
+                    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                </mat-form-field>
+                <p class="link"><a href="localhost:4200/login">Forgot your password?</a></p>
+            </div>
+            <div class="item">
+                <button class="button" type="submit">SIGN IN</button>
+                <p class="link"><a href="localhost:4200/register">Don't have an account? Register now</a></p>
+            </div>
+        </form>
+    </div>
+</div>
+
+

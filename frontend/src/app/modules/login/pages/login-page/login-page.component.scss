@@ -1,0 +1,84 @@
+.flex-parent {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: row; 
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(240, 240, 240, 0.863);
+}
+
+.flex-container {
+  margin: 20%;
+  margin-bottom: 20%;
+  flex-direction: row; 
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #13bac0;
+  border-radius: 15px;
+  background-color: white;
+}
+
+.item {
+  flex: 1 0;
+  margin: 4vw;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.title {
+  margin-top: 10%;
+}
+
+.font {
+  font-family: Arial, Helvetica, sans-serif;
+  color:lightseagreen;
+  flex-shrink: 3;
+  align-self: center;
+}
+
+p ~ p {
+  margin: 20px;
+}
+
+.button ~ p {
+  margin: 20px;
+}
+
+.button {
+  background-color: lightseagreen;
+  border: none;
+  color: white;
+  padding: 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  width: 100%;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 12px;
+  align-self: center;
+  
+}
+
+.link {
+  align-self: center;
+}
+
+a {
+  color:lightseagreen;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+a:active {
+  color: black;
+}
+
+a:visited {
+  color: purple;
+}
+
+
+
