@@ -1,0 +1,34 @@
+<div class="review-dialog">
+  <h1 mat-dialog-title class="text-centre">{{ data.offerName }}</h1>
+  <div mat-dialog-content>
+    <div fxLayout="row">
+      <div fxLayout="column" class="avatar">AVATAR</div>
+      <div fxLayout="column">sstefann</div>
+    </div>
+
+    <div class="row-indent">
+      <div class="rating-row">STARS</div>
+
+      <div class="comment-row">
+        <mat-form-field class="text-area">
+          <textarea matInput placeholder="Type something..." cdkTextareaAutosize="false"></textarea>
+        </mat-form-field>
+      </div>
+      
+      <div class="img-row" fxLayout="row">
+          <button (click)="addPictures()">
+            <div fxLayout="row" fxLayoutAlign="center" class="img-icon-container">
+              <div fxLayout="column" fxLayoutAlign="center">
+                <mat-icon class="icon" color="primary">camera_alt</mat-icon>
+              </div>
+            </div>
+          </button>
+      </div>
+
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="end" fx mat-dialog-actions>
+    <button mat-button mat-dialog-close class="button-option-alt">Cancel</button>
+    <button mat-button mat-dialog-close class="button-option-main" disabled>Post</button>
+  </div>
+</div>

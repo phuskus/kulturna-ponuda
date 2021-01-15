@@ -1,0 +1,55 @@
+$left-margin-width: 60px;
+
+%base-row {
+    margin: 15px 10px 15px 0px;
+}
+
+.review-dialog {
+    min-width: 600px;
+}
+
+.row-indent {
+    margin-left: $left-margin-width;
+}
+
+.avatar {
+    width: $left-margin-width;
+}
+
+.rating-row {
+    @extend %base-row;
+}
+
+.comment-row {
+    @extend %base-row;
+    .text-area{
+        width: 100%;
+        padding: 4px;
+        background-color: #f8f8f8;
+        border-radius: 3%;
+    }
+    textarea, input {
+        height: 80px;
+    }
+}
+
+.img-row {
+    @extend %base-row;
+    margin-bottom: 65px;
+    button {
+        background-color: white !important;
+        border: none;
+        cursor: pointer;
+    }
+}
+
+.img-icon-container {
+    width: 114px;
+    height: 95px;
+    border: 2px solid #efefef;
+    margin-right: 10px;
+
+    .icon {
+        color: #1a73e8;
+    }
+}
