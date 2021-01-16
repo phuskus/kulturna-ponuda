@@ -87,12 +87,13 @@ export class AuthService {
   }
 
   getCurrentUserRole() {
-    let currentUser = localStorage.currentUser;
-    if (currentUser) {
-      return currentUser.userRole;
+    let user = localStorage.currentUser;
+    if (user) {
+      user = JSON.parse(user);
+      return user.role;
     }
     else {
-      return undefined;
+      return "NO_AUTH";
     }
   }
 

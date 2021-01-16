@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators, FormControl, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Router } from '@angular/router';
 
@@ -12,7 +12,6 @@ export class LoginPageComponent implements OnInit {
   
   loginForm: FormGroup;
   hide : boolean = true;
-  data: {};
 
   constructor(private readonly fb: FormBuilder, private router: Router, public authService: AuthService) {
     this.loginForm = this.fb.group({
@@ -28,8 +27,8 @@ export class LoginPageComponent implements OnInit {
     this.authService.login(this.loginForm.value['username'], this.loginForm.value['password']).subscribe((loggedIn:boolean) => {
       if(loggedIn) {
         this.router.navigate(['/']);
-        //console.log(localStorage['currentUser']);
       }
+      //alert(localStorage['currentUser']);
       //todo validation
     });
   }
