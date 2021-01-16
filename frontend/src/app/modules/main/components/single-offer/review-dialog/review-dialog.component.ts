@@ -13,8 +13,6 @@ export class ReviewDialogComponent {
   comment: string;
   filesSelected: FileList;
 
-  picturePaths: Array<string>;
-
   constructor(
     public dialogRef: MatDialogRef<ReviewDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ReviewDialogData
@@ -24,8 +22,8 @@ export class ReviewDialogComponent {
     this.rating = newValue;
   }
 
-  onFilesSelected(event: FileList): void {
-    this.filesSelected = event;
+  onFilesSelected(files: FileList): void {
+    this.filesSelected = files;
   }
 
   onReviewSubmit(): void {

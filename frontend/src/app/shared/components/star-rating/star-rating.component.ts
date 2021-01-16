@@ -15,8 +15,15 @@ export class StarRatingComponent {
   @Output() newRatingEvent = new EventEmitter<number>();
 
   rangeArray: Array<number> = [];
+  
   constructor() {
-    for (let i = 1; i <= this.maxRating; i++) this.rangeArray.push(i);
+    this.rangeArray = this.createArrayFromOneToMaxRating();
+  }
+
+  createArrayFromOneToMaxRating() {
+    let rangeArray: Array<number> = [];
+    for (let i = 1; i <= this.maxRating; i++) rangeArray.push(i);
+    return rangeArray;
   }
 
   onStarClick(value: number): void {

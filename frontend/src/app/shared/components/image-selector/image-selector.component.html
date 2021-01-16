@@ -2,7 +2,7 @@
     <input
     hidden
     type="file"
-    multiple
+    [multiple]="multiple"
     accept="image/*"
     #uploader
     (change)="onFilesSelected($event)"
