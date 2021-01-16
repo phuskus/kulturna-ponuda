@@ -39,24 +39,57 @@ export class AuthService {
       }) // error?
   }
 
+  logout(): void {
+    localStorage.removeItem('currentUser');
+  }
+
   getToken(): String {
     var currentUser = JSON.parse(localStorage.getItem('currentUser'));
     var token = currentUser && currentUser.token;
     return token ? token : "";
   }
 
-  logout(): void {
-    localStorage.removeItem('currentUser');
+  getExpirationDate(): String {
+    var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    var expDate = currentUser && currentUser.expiresIn;
+    return expDate ? expDate: "";
+    
   }
 
   isLoggedIn(): boolean {
-    if (this.getToken() != '') return true;
-    else return false;
+    if (this.getToken() != '') {
+      return true;
+    } else if (!this.isTokenExpired()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  isTokenExpired(): boolean {
+    let exp = this.getExpirationDate();
+    if (exp != '') {
+      if (Date.now() >= +exp * 1000) {
+        return false;
+      }
+    } else {
+      return true;
+    }
   }
 
   getCurrentUser() {
     if (localStorage.currentUser) {
       return JSON.parse(localStorage.currentUser);
+    }
+    else {
+      return undefined;
+    }
+  }
+
+  getCurrentUserRole() {
+    let currentUser = localStorage.currentUser;
+    if (currentUser) {
+      return currentUser.userRole;
     }
     else {
       return undefined;

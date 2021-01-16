@@ -1,16 +1,12 @@
 insert into authorities (name) values ('ROLE_USER');
 insert into authorities (name) values ('ROLE_ADMIN');
 
-/*
-    password = "sifra+name"
-    (user3 - password - sifrauser2)
-    seljacki xd
- */
-insert into users (name, username, password, enabled, role) values ('admin1', 'admin1@gmail.com', '$2a$10$1vu6VWjP9ewmLkGzcSJ9T.dUJD1K4GBAYhiE5lHI3vFucbbffKtqS', true, 'ADMIN');
-insert into users (name, username, password, enabled, role, last_password_reset_date) values ('admin2', 'admin2@gmail.com', '$2y$10$.tAHuLZ2Rrr4SuZu0GN/iuldYmAik/fp3TgIpbzLoAfMr10KBTBBu', true, 'ADMIN', '2020-12-07 16:00:00.508-07');
-insert into users (name, username, password, enabled, role, last_password_reset_date) values ('user1', 'user1@gmail.com', '$2a$10$A4XnaPtO.2ljs1Vd5iA3EuNBi5HRBWBky2pziALH0/0rQO9A8li7y', true, 'USER', '2020-12-07 16:00:00.508-07');
-insert into users (name, username, password, enabled, role, last_password_reset_date) values ('user2', 'user2@gmail.com', '$2a$10$L4Aj951dZhgOUOmAVEf7q.C/ZB498dUOKCnWQvlsnQXtmewdAagaK', true, 'USER', '2020-12-07 16:00:00.508-07');
-insert into users (name, username, password, enabled, role, last_password_reset_date) values ('user3', 'user3@gmail.com', '$2a$10$L4Aj951dZhgOUOmAVEf7q.C/ZB498dUOKCnWQvlsnQXtmewdAagaK', false, 'USER', '2020-12-07 16:00:00.508-07');
+-- password == name
+insert into users (name, username, password, enabled, role) values ('admin1', 'admin1@gmail.com', '$2y$12$LdA5w1xM5qBwt1l.Srv62etWXUpyfCbU/usi3EprOEdZ3ZbCiDx/K', true, 'ADMIN');
+insert into users (name, username, password, enabled, role, last_password_reset_date) values ('admin2', 'admin2@gmail.com', '$2y$12$fcgxX0RiMeL1jbEI/wKt/uD3b1nCrCY22O6Y5ecR28btz4miOnI5q', true, 'ADMIN', '2020-12-07 16:00:00.508-07');
+insert into users (name, username, password, enabled, role, last_password_reset_date) values ('user1', 'user1@gmail.com', '$2y$12$VgRjaYjlVozA1Kmnrzmc8.tH0GP8fdsPEzoXYC9rz.JBvNzqZnEU6', true, 'USER', '2020-12-07 16:00:00.508-07');
+insert into users (name, username, password, enabled, role, last_password_reset_date) values ('user2', 'user2@gmail.com', '$2y$12$Su12Y/TWAR4WvcwRaNB/0eslOtipMsJ88Xt.U7nGADdC6vNXubZXS', true, 'USER', '2020-12-07 16:00:00.508-07');
+insert into users (name, username, password, enabled, role, last_password_reset_date) values ('user3', 'user3@gmail.com', '$2y$12$6qk4EUIYkjj40YZ6DOiZYeHj4va9Vj5z/2s23vXPuhYnZwX65lpwi', false, 'USER', '2020-12-07 16:00:00.508-07');
 
 
 insert into user_authority (user_id, authority_id) values (1, 2);

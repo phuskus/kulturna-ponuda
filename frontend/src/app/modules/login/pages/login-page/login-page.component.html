@@ -11,7 +11,7 @@
                     matInput 
                     placeholder="Email"
                     [formControlName]="'username'"/>
-                    <mat-hint>Hint</mat-hint>
+                    <mat-hint>TODO error msg</mat-hint>
                 </mat-form-field>
                 <mat-form-field [style.width.%]="100" appearance="outline">
                     <input 
@@ -22,7 +22,7 @@
                     <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                         <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>
-                    <mat-hint>Hint</mat-hint>
+                    <mat-hint>TODO error msg</mat-hint>
                 </mat-form-field>
                 <p class="link"><a href="localhost:4200/login">Forgot your password?</a></p>
             </div>
