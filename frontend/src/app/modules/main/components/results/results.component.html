@@ -8,26 +8,26 @@
 
 <mat-card
   class="result-card"
-  *ngFor="let i of [1, 2, 3, 4, 5]"
-  [routerLink]="'/offers/' + result.id"
+  *ngFor="let offer of offers"
+  [routerLink]="'/category/' + subcatId + '/offer/' + offer.id"
 >
   <div fxLayout="row">
     <div fxLayout="column" class="img-col">
-      <img [src]="result.image" />
+      <img [src]="offer.pictures[0].image" />
     </div>
 
     <div fxLayout="column" fxLayoutAlign="space-between" class="content-col">
       <div fxLayout="row" fxLayoutAlign="space-between">
-        <div fxLayout="column">{{ result.name }}</div>
-        <div fxLayout="column">{{ result.location }}</div>
+        <div fxLayout="column">{{ offer.name }}</div>
+        <div fxLayout="column">{{ offer.address }}, {{offer.city}}</div>
       </div>
 
       <div fxLayout="row" style="padding: 15px 0px">
-        <div>{{ result.category }}</div>
+        <div>{{ offer.category }}</div>
       </div>
 
       <div fxLayout="row">
-        {{ result.description }}
+        {{ offer.description }}
       </div>
     </div>
   </div>

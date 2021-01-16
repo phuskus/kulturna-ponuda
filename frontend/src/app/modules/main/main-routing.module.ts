@@ -12,9 +12,10 @@ const routes: Routes = [
     component: LandingPageComponent,
     children: [
       { path: '', component: CardbarComponent },
-      { path: 'offers', component: SidebarComponent, children: [
-        {path: 'search/:query', component: ResultsComponent},
-        {path: ':id', component: SingleOfferComponent}
+      { path: 'category', component: SidebarComponent, children: [
+        {path: ':categoryId', component: ResultsComponent, children: [
+          { path: 'offer/:offerId', component: SingleOfferComponent }
+        ]},
       ] },
     ],
   },

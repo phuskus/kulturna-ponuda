@@ -1,6 +1,6 @@
-import { Category, CategoryService } from './../../../../services/category/category.service';
+import { CategoryService } from './../../../../services/category/category.service';
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Category } from 'src/app/model/Category';
 
 @Component({
   selector: 'app-cardbar',
@@ -13,10 +13,10 @@ export class CardbarComponent implements OnInit {
   constructor(private categoryService : CategoryService) {}
 
   ngOnInit(): void {
-    this.fetchCategories();
+    this.fetchOffers();
   }
 
-  fetchCategories() {
+  fetchOffers() {
     return this.categoryService.getCategories().subscribe((res: Category[]) => {
       this.categories = res;
     })
