@@ -1,25 +1,26 @@
 import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, Subject } from 'rxjs'; //npm install --save rxjs-compat
+import { Observable, Subject, throwError } from 'rxjs'; //npm install --save rxjs-compat
 import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
+import { catchError } from 'rxjs/operators';
+import 'rxjs/Rx';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  
+
   private readonly endpoint = "http://localhost:9001/auth/login";
-  
+
   constructor(private http: HttpClient) { }
 
-  login(username: string, password: string): Observable<boolean> {
+  login(username: string, password: string): Observable<any> {
     var headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post(
       this.endpoint,
-      JSON.stringify({username, password}),
+      JSON.stringify({ username, password }),
       { headers }).map((res: any) => {
         let token = res && res['accessToken'];
         let expiresIn = res && res['expiresIn'];
@@ -33,10 +34,11 @@ export class AuthService {
           }));
           return true;
         }
-        else {
-          return false;
-        }
-      }) // error?
+      }).pipe(
+        catchError(error => {
+          return throwError(error.error);
+        })
+      );
   }
 
   logout(): void {
@@ -52,8 +54,8 @@ export class AuthService {
   getExpirationDate(): String {
     var currentUser = JSON.parse(localStorage.getItem('currentUser'));
     var expDate = currentUser && currentUser.expiresIn;
-    return expDate ? expDate: "";
-    
+    return expDate ? expDate : "";
+
   }
 
   isLoggedIn(): boolean {
@@ -96,5 +98,6 @@ export class AuthService {
       return "NO_AUTH";
     }
   }
+
 
 }

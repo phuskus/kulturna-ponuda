@@ -38,6 +38,11 @@
   align-self: center;
 }
 
+.error {
+  color: red;
+  font-size: small;
+}
+
 p ~ p {
   margin: 20px;
 }

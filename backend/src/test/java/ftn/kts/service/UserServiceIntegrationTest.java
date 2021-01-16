@@ -25,11 +25,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import ftn.kts.dto.UserDTO;
 import ftn.kts.dto.UserTokenStateDTO;
 import ftn.kts.exceptions.PasswordNotChangedException;
 import ftn.kts.exceptions.UniqueConstraintViolationException;
+import ftn.kts.exceptions.UserException;
 import ftn.kts.model.RegisteredUser;
 import ftn.kts.model.User;
 
@@ -82,18 +84,18 @@ public class UserServiceIntegrationTest {
 	}
 	
 	@Test
-	public void getLoggedIn_AccountExists_JWTTokenReturned() throws DisabledException, PasswordNotChangedException {
+	public void getLoggedIn_AccountExists_JWTTokenReturned() throws DisabledException, PasswordNotChangedException, MethodArgumentNotValidException, UserException {
 		UserTokenStateDTO tokenDTO = userService.getLoggedIn(DB_USER_USERNAME, DB_USER_PASSWORD);
 		assertNotNull(tokenDTO);
 	}
 	
 	@Test(expected = DisabledException.class)
-	public void getLoggedIn_AccountDisabled_DisabledExceptionThrown() throws DisabledException, PasswordNotChangedException {
+	public void getLoggedIn_AccountDisabled_DisabledExceptionThrown() throws DisabledException, PasswordNotChangedException, MethodArgumentNotValidException, UserException {
 		userService.getLoggedIn(DB_USER_USERNAME_DISABLED, DB_USER_PASSWORD_DISABLED);
 	}
 	
 	@Test(expected = PasswordNotChangedException.class)
-	public void getLoggedIn_AdminAccountPasswordNotChanged_PasswordNotChangedExceptionThrown() throws DisabledException, PasswordNotChangedException {
+	public void getLoggedIn_AdminAccountPasswordNotChanged_PasswordNotChangedExceptionThrown() throws DisabledException, PasswordNotChangedException, MethodArgumentNotValidException, UserException {
 		userService.getLoggedIn(DB_ADMIN_USERNAME_FAILED, DB_ADMIN_PASSWORD_FAILED);
 	}
 	
