@@ -6,11 +6,11 @@ import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core
   styleUrls: ['./image-selector.component.scss'],
 })
 export class ImageSelectorComponent implements OnDestroy {
-  @Input() multiple: boolean = false;
+  @Input() public multiple: boolean = false;
 
-  @Output() newFilesEvent = new EventEmitter<FileList>();
-  
-  picturePaths: Array<string> = [];
+  @Output() private newFilesEvent = new EventEmitter<FileList>();
+
+  public picturePaths: Array<string> = [];
 
   constructor() {}
 

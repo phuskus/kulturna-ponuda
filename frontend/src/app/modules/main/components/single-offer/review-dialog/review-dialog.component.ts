@@ -8,10 +8,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./review-dialog.component.scss'],
 })
 export class ReviewDialogComponent {
-  username: string = 'sstefann';
-  rating: number = 0;
-  comment: string;
-  filesSelected: FileList;
+  public username: string = 'sstefann';
+  public rating: number = 0;
+  public comment: string;
+  private filesSelected: FileList;
 
   constructor(
     public dialogRef: MatDialogRef<ReviewDialogComponent>,
