@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
+const goldColor : string = "#FABB05";
+
 @Component({
   selector: 'app-star-rating',
   templateUrl: './star-rating.component.html',
@@ -8,14 +10,14 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class StarRatingComponent {
   @Input() maxRating: number = 5;
   @Input() rating: number = 0;
-  @Input() color: string = '#FABB05';
+  @Input() color: string = goldColor;
   @Input() size: number = 40;
   @Input() readonly: boolean = false;
 
   @Output() newRatingEvent = new EventEmitter<number>();
 
   rangeArray: Array<number> = [];
-  
+
   constructor() {
     this.rangeArray = this.createArrayFromOneToMaxRating();
   }
