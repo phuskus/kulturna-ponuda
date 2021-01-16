@@ -1,5 +1,36 @@
 @import '../../pages/landing-page/landing-page.component.scss';
 
+.result-component {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.result-content {
+  height: 100%;
+}
+
+.pagination-control ::ng-deep ul {
+  padding-inline-start: 0px !important;
+}
+
+.pagination-control ::ng-deep .ng-star-inserted {
+  font-size: 20px;
+}
+
+.pagination-control .current,
+.btn-info {
+  background: #17a2b8 !important;
+  border: transparent !important;
+  border-radius: 20px !important;
+}
+
+.pagination-control .current:hover {
+  background: #17a2b8 !important;
+  border-radius: 20px !important; 
+  border: transparent !important;
+}
+
 .result-card {
   margin-bottom: 15px;
   padding-bottom: 0px;

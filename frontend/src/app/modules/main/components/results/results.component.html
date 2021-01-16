@@ -1,34 +1,36 @@
-<!-- <mat-card class="example-card" style="margin-bottom: 40px">
-  <mat-card-subtitle>Search</mat-card-subtitle>
-</mat-card> -->
-
-<mat-card class="search-comp" style="margin-bottom: 40px">
-  <app-search></app-search>
-</mat-card>
-
-<mat-card
-  class="result-card"
-  *ngFor="let offer of offers"
-  [routerLink]="'/category/' + subcatId + '/offer/' + offer.id"
->
-  <div fxLayout="row">
-    <div fxLayout="column" class="img-col">
-      <img [src]="offer.pictures[0].image" />
-    </div>
-
-    <div fxLayout="column" fxLayoutAlign="space-between" class="content-col">
-      <div fxLayout="row" fxLayoutAlign="space-between">
-        <div fxLayout="column">{{ offer.name }}</div>
-        <div fxLayout="column">{{ offer.address }}, {{offer.city}}</div>
+<div class="result-component">
+  <mat-card class="search-comp" style="margin-bottom: 40px">
+    <app-search></app-search>
+  </mat-card>
+  <mat-card class="result-card" *ngFor="let offer of offers | paginate: {
+      itemsPerPage: pageSize,
+          currentPage: page,
+          totalItems: count
+    };" [routerLink]="'/category/' + subcatId + '/offer/' + offer.id">
+    <div fxLayout="row">
+      <div fxLayout="column" class="img-col">
+        <img [src]="offer.pictures[0].image" />
       </div>
 
-      <div fxLayout="row" style="padding: 15px 0px">
-        <div>{{ offer.category }}</div>
-      </div>
+      <div fxLayout="column" fxLayoutAlign="space-between" class="content-col">
+        <div fxLayout="row" fxLayoutAlign="space-between">
+          <div fxLayout="column">{{ offer.name }}</div>
+          <div fxLayout="column">{{ offer.address }}, {{offer.city}}</div>
+        </div>
 
-      <div fxLayout="row">
-        {{ offer.description }}
+        <div fxLayout="row" style="padding: 15px 0px">
+          <div>{{ offer.category }}</div>
+        </div>
+
+        <div fxLayout="row">
+          {{ offer.description }}
+        </div>
       </div>
     </div>
+  </mat-card>
+  <div class="pagination-control-div" fxLayout="row" fxFlexAlign="center">
+    <pagination-controls class="pagination-control" previousLabel="Prev" nextLabel="Next" responsive="true"
+      (pageChange)="handlePageChange($event)">
+    </pagination-controls>
   </div>
-</mat-card>
+</div>

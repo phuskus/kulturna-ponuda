@@ -1,3 +1,4 @@
+import { NgxPaginationModule } from 'ngx-pagination';
 import { NgModule, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MapComponent } from './components/map/map.component';
@@ -46,6 +47,7 @@ import { FormsModule } from '@angular/forms';
     MatButtonModule,
     MatSidenavModule,
     MatInputModule,
+    NgxPaginationModule,
 
     MainRoutingModule,
 

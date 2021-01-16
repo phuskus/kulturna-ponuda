@@ -43,11 +43,38 @@ insert into subcategories (name, category_id, icon_id) values ('Landmark', 3, 6)
 
 insert into cultural_offers (address, city, description, latitude, longitude, name, region, admin_id, category_id) 
 			values ('Petrovaradinska Tvrdjava', 'Novi Sad', 'Music festival', 45.2526, 19.8623, 'EXIT festival', 'Vojvodina', 1, 3);
+insert into cultural_offers (address, city, description, latitude, longitude, name, region, admin_id, category_id) 
+			values ('Petrovaradinska Tvrdjava', 'Novi Sad', 'Music festival', 45.2526, 19.8623, 'EXIT festival2', 'Vojvodina', 1, 3);
+insert into cultural_offers (address, city, description, latitude, longitude, name, region, admin_id, category_id) 
+			values ('Petrovaradinska Tvrdjava', 'Novi Sad', 'Music festival', 45.2526, 19.8623, 'EXIT festival3', 'Vojvodina', 1, 3);
+insert into cultural_offers (address, city, description, latitude, longitude, name, region, admin_id, category_id) 
+			values ('Petrovaradinska Tvrdjava', 'Novi Sad', 'Music festival', 45.2526, 19.8623, 'EXIT festival4', 'Vojvodina', 1, 3);
+insert into cultural_offers (address, city, description, latitude, longitude, name, region, admin_id, category_id) 
+			values ('Petrovaradinska Tvrdjava', 'Novi Sad', 'Music festival', 45.2526, 19.8623, 'EXIT festival5', 'Vojvodina', 1, 3);
+insert into cultural_offers (address, city, description, latitude, longitude, name, region, admin_id, category_id) 
+			values ('Petrovaradinska Tvrdjava', 'Novi Sad', 'Music festival', 45.2526, 19.8623, 'EXIT festival6', 'Vojvodina', 1, 3);
+insert into cultural_offers (address, city, description, latitude, longitude, name, region, admin_id, category_id) 
+			values ('Petrovaradinska Tvrdjava', 'Novi Sad', 'Music festival', 45.2526, 19.8623, 'EXIT festival7', 'Vojvodina', 1, 3);
+insert into cultural_offers (address, city, description, latitude, longitude, name, region, admin_id, category_id) 
+			values ('Petrovaradinska Tvrdjava', 'Novi Sad', 'Music festival', 45.2526, 19.8623, 'EXIT festival8', 'Vojvodina', 1, 3);
+insert into cultural_offers (address, city, description, latitude, longitude, name, region, admin_id, category_id) 
+			values ('Petrovaradinska Tvrdjava', 'Novi Sad', 'Music festival', 45.2526, 19.8623, 'EXIT festival9', 'Vojvodina', 1, 3);
+insert into cultural_offers (address, city, description, latitude, longitude, name, region, admin_id, category_id) 
+			values ('Petrovaradinska Tvrdjava', 'Novi Sad', 'Music festival', 45.2526, 19.8623, 'EXIT festival10', 'Vojvodina', 1, 3);
 
 insert into posts (content, cultural_offer_id) values ('Jako vrlo veoma kul', 1);
 insert into posts (content, cultural_offer_id) values ('Otkazano zbog korone', 1);
 
 insert into cultural_offers_pictures (cultural_offer_id, pictures_id) values (1, 7);
+insert into cultural_offers_pictures (cultural_offer_id, pictures_id) values (2, 7);
+insert into cultural_offers_pictures (cultural_offer_id, pictures_id) values (3, 7);
+insert into cultural_offers_pictures (cultural_offer_id, pictures_id) values (4, 7);
+insert into cultural_offers_pictures (cultural_offer_id, pictures_id) values (5, 7);
+insert into cultural_offers_pictures (cultural_offer_id, pictures_id) values (6, 7);
+insert into cultural_offers_pictures (cultural_offer_id, pictures_id) values (7, 7);
+insert into cultural_offers_pictures (cultural_offer_id, pictures_id) values (8, 7);
+insert into cultural_offers_pictures (cultural_offer_id, pictures_id) values (9, 7);
+insert into cultural_offers_pictures (cultural_offer_id, pictures_id) values (10, 7);
 
 insert into reviews (rating, content, cultural_offer_id, user_id) values (5, 'Otkazano zbog korone', 1, 3);
 insert into reviews (rating, content, cultural_offer_id, user_id) values (0, 'Ne valja nista', 1, 3);
