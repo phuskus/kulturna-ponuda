@@ -1,0 +1,20 @@
+<div class="img-row" fxLayout="row wrap" fxLayoutGap="6px">
+    <input
+    hidden
+    type="file"
+    [multiple]="multiple"
+    accept="image/*"
+    #uploader
+    (change)="onFilesSelected($event)"
+  />
+  <button (click)="uploader.click()" class="upload-btn">
+    <div fxLayout="row" fxLayoutAlign="center" class="img-icon-container">
+      <div fxLayout="column" fxLayoutAlign="center">
+        <mat-icon class="icon" color="primary">camera_alt</mat-icon>
+      </div>
+    </div>
+  </button>
+  <div *ngFor="let path of picturePaths">
+    <img [src]="path | safeUrlPipe" class="image-preview" />
+  </div>
+</div>

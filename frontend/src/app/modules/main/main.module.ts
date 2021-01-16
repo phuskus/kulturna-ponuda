@@ -3,7 +3,9 @@ import { CommonModule } from '@angular/common';
 import { MapComponent } from './components/map/map.component';
 import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 import { FlexLayoutModule } from '@angular/flex-layout';
+
 import { MatCardModule } from '@angular/material/card';
+import {MatDialogModule} from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { CardbarComponent } from './components/cardbar/cardbar.component';
@@ -11,15 +13,22 @@ import { MainRoutingModule } from './main-routing.module';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatInputModule } from '@angular/material/input';
+import {MatIconModule} from '@angular/material/icon';
+
+
 import { ResultsComponent } from './components/results/results.component';
 import { SingleOfferComponent } from './components/single-offer/single-offer.component';
 import { IvyCarouselModule } from 'angular-responsive-carousel';
-import { RatingModule } from 'ng-starrating';
 import { SingleReviewComponent } from './components/single-review/single-review.component';
 import { SearchComponent } from './components/search/search.component';
+import { ImageSelectorComponent } from 'src/app/shared/components/image-selector/image-selector.component';
+
 
 import { FormsModule } from '@angular/forms';
-
+import { ReviewDialogComponent } from './components/single-offer/review-dialog/review-dialog.component';
+import { SafeUrlPipe } from 'src/app/shared/pipes/safe-url.pipe';
+import { AvatarModule } from 'ngx-avatar';
+import { StarRatingComponent } from 'src/app/shared/components/star-rating/star-rating.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +40,10 @@ import { FormsModule } from '@angular/forms';
     SingleOfferComponent,
     SingleReviewComponent,
     SearchComponent,
+    ReviewDialogComponent,
+    ImageSelectorComponent,
+    SafeUrlPipe,
+    StarRatingComponent,
   ],
   imports: [
     CommonModule,
@@ -38,12 +51,14 @@ import { FormsModule } from '@angular/forms';
     FormsModule,
     FlexLayoutModule,
     IvyCarouselModule,
-    RatingModule,
+    AvatarModule,
 
     MatCardModule,
     MatButtonModule,
     MatSidenavModule,
     MatInputModule,
+    MatDialogModule,
+    MatIconModule,
 
     MainRoutingModule,
 

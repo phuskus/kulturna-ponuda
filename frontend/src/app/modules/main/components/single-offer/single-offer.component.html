@@ -1,11 +1,23 @@
 <carousel [cellsToShow]="3" [images]="images" [borderRadius]="10"> </carousel>
 
-<div class="mat-title" style="margin-top: 16px;">Museum of Modern Art</div>
+<div class="mat-title" style="margin-top: 16px">Museum of Modern Art</div>
+
+<app-star-rating
+  [maxRating]="5"
+  [rating]="4"
+  [size]="35"
+  [readonly]="true"
+></app-star-rating>
 
 <div class="mat-subheading-2">Museum of art & history</div>
 
 <div flexLayout="row">
-  <button mat-raised-button class="review-btn" disableRipple="true">
+  <button
+    mat-raised-button
+    (click)="openDialog()"
+    class="review-btn"
+    disableRipple="true"
+  >
     Write a review
   </button>
   <button mat-raised-button class="sub-btn" disableRipple="true">
