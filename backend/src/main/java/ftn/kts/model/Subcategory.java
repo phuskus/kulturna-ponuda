@@ -23,6 +23,9 @@ public class Subcategory {
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Category category;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	private Picture icon;
 
 	@OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
 	private Set<CulturalOffer> culturalOffers;
@@ -33,9 +36,10 @@ public class Subcategory {
 		
 	}
 
-	public Subcategory(String name, Category category) {
+	public Subcategory(String name, Category category, Picture icon) {
 		this.name = name;
 		this.category = category;
+		this.icon = icon;
 	}
 
 	public Long getId() {
@@ -60,6 +64,14 @@ public class Subcategory {
 
 	public void setCategory(Category category) {
 		this.category = category;
+	}
+
+	public Picture getIcon() {
+		return icon;
+	}
+
+	public void setIcon(Picture icon) {
+		this.icon = icon;
 	}
 
 	public Set<CulturalOffer> getCulturalOffers() {

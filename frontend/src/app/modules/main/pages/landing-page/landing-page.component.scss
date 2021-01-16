@@ -38,7 +38,7 @@ $left-margin: 20px;
 }
 
 .content-column {
-  flex: 0 0 25%;
+  flex: 0 0 33%;
   box-sizing: border-box;
   img {
     height: 50px;
@@ -46,7 +46,7 @@ $left-margin: 20px;
     border-radius: 50%;
   }
   button {
-    width: 100px;
+    width: 100%;
     padding-top: 8px;
   }
   p {
@@ -69,12 +69,12 @@ $left-margin: 20px;
 
 .example-card {
   @extend %base-card;
-  width: 400px !important;
+  width: 350px !important;
 }
 
 .category-card {
   @extend %base-card;
-  width: 400px;
+  width: 350px;
   display: flex;
   flex-direction: column;
 }

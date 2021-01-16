@@ -2,20 +2,25 @@
   <p class="mat-title" style="margin-bottom: 4px">{{category.name}}</p>
   <!--mat-card-subtitle>Search this area</mat-card-subtitle-->
   <mat-card-content>
-      <div class="category-container">
-        <div
-            class="content-column"
-            *ngFor="let subcat of category.subcats"
-        >
-            <button
-                [routerLink]="'offers/search/' + subcat.path"
+        <div *ngIf="category.subcategories.length != 0; else elseBlock">
+            <div class="category-container">
+                <div
+                class="content-column"
+                *ngFor="let subcat of category.subcategories"
+                >
+                <button
+                [routerLink]="'offers/search/' + subcat.name.toLowerCase()"
                 mat-button
                 disableRipple="true"
-            >
-                <img [src]="subcat.img" />
-                <p>{{ subcat.name }}</p>
-            </button>
-      </div>
-  </div>
-</mat-card-content>
+                >
+                <img [src]="subcat.icon.image" />
+                    <p>{{ subcat.name }}</p>
+                </button>
+                </div>
+            </div>
+        </div>
+        <ng-template #elseBlock>
+            No {{category.name.toLowerCase()}} currently available!
+        </ng-template>
+    </mat-card-content>
 </mat-card>

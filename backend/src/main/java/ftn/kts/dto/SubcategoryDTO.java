@@ -11,17 +11,21 @@ public class SubcategoryDTO {
     private String name;
     @NotNull(message = "Subcategory needs to belong to a category!")
     private Long categoryId;
-
+    @NotNull(message = "Icon must be selected!")
+    private PictureDTO icon;
+    
+    
     // TODO: Sets of cultural offers and subscriptions?
     
     public SubcategoryDTO() {
     	
     }
 
-    public SubcategoryDTO(Long id, String name, Category category) {
+    public SubcategoryDTO(Long id, String name, Category category, PictureDTO icon) {
         this.id = id;
         this.name = name;
         this.categoryId = category.getId();
+        this.icon = icon;
     }
     
     public SubcategoryDTO(String name, Long categoryId) {
@@ -53,7 +57,15 @@ public class SubcategoryDTO {
         this.categoryId = categoryId;
     }
 
-    @Override
+    public PictureDTO getIcon() {
+		return icon;
+	}
+
+	public void setIcon(PictureDTO icon) {
+		this.icon = icon;
+	}
+
+	@Override
     public boolean equals(Object obj) {
         if (obj == this) return true;
 
