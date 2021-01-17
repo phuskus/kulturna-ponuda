@@ -6,9 +6,9 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MainModule } from './modules/main/main.module';
+//import { MainModule } from './modules/main/main.module';
 // import { AdminModule } from './modules/admin/admin.module';
-import { LoginModule } from './modules/login/login.module';
+//import { LoginModule } from './modules/login/login.module';
 import { TokenInterceptorService } from './services/auth/interceptors/token-interceptor.service';
 // import { RegisterModule } from './modules/register/register.module';
 

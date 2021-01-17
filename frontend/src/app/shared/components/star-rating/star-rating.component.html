@@ -1,0 +1,15 @@
+<div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="10px">
+  <div *ngFor="let i of rangeArray">
+    <mat-icon
+      aria-hidden="false"
+      [inline]="false"
+      [style.font-size] = "size + 'px'"
+      [style.height] = "size + 'px'"
+      [style.width] = "size + 'px'"
+      [style.color] = "i > rating ? 'grey' : color"
+      class="star"
+      (click)="onStarClick(i)"
+      >{{ i > rating ? "star_border" : "star" }}
+    </mat-icon>
+  </div>
+</div>
