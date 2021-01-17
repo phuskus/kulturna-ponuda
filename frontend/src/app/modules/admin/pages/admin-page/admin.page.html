@@ -1,7 +1,7 @@
 <div class="root">
   <mat-drawer-container class="drawer-container" autosize>
     <!-- TOOLBAR -->
-    <mat-toolbar color="primary">
+    <mat-toolbar class="toolbar">
       <button
         mat-icon-button
         (click)="drawer.toggle()"
@@ -43,20 +43,37 @@
         <mat-nav-list class="nav-list">
           <mat-list-item
             *ngFor="let link of links"
-            [class]="getLastUrlPath() == link.route ? 'disabled-link' : ''"
+            [class]="getLastUrlPath() === link.route ? 'disabled-link' : ''"
           >
             <mat-icon mat-list-icon>{{link.icon}}</mat-icon>
             <a matLine [href]="link.route">{{ link.text }}</a>
           </mat-list-item>
         </mat-nav-list>
 
-        <button mat-raised-button color="primary" class="child">LOGOUT</button>
+        <button mat-raised-button class="child">LOGOUT</button>
       </div>
     </mat-drawer>
 
-    <div class="main">
-      <app-admin-table></app-admin-table>
-      <app-review-table style="margin-top: 50px;"></app-review-table>
+    <div class="main" fxLayout.lt-lg="column" fxLayout="row wrap" fxFlex="100%" fxLayoutAlign="start start">
+      <div class="flex-table" fxFlex="0 1 50%" fxFlex.lt-lg="100%" >
+        <app-admin-table></app-admin-table>
+      </div>
+
+      <div class="flex-table" fxFlex="0 1 50%" fxFlex.lt-lg="100%" >
+        <app-review-table></app-review-table>
+      </div>
+
+      <div class="flex-table" fxFlex="0 1 50%" fxFlex.lt-lg="100%" >
+        <app-review-table></app-review-table>
+      </div>
+
+      <div class="flex-table" fxFlex="0 1 50%" fxFlex.lt-lg="100%" >
+        <app-review-table></app-review-table>
+      </div>
+
+      <div class="flex-table" fxFlex="0 1 50%" fxFlex.lt-lg="100%" >
+        <app-review-table></app-review-table>
+      </div>
     </div>
   </mat-drawer-container>
 </div>

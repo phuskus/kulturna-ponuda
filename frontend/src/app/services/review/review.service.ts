@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 import { Review } from '../../shared/models/Review';
 import PagingReturnValue, {
   BaseDynamicPagingService,
@@ -14,12 +15,15 @@ export class ReviewService extends BaseDynamicPagingService<Review> {
   }
 
   getPage(
-    pageIndex: number,
+    pageNumber: number,
+    pageSize: number,
     sortBy: string,
     descending: boolean
   ): Observable<PagingReturnValue<Review>> {
-    const psize = 30;
-    const reviews = REVIEWS.slice(psize * pageIndex, psize * pageIndex + psize);
+    const reviews = REVIEWS.slice(
+      pageSize * pageNumber,
+      pageSize * pageNumber + pageSize
+    );
     return of({ items: reviews, total_count: REVIEWS.length });
   }
 

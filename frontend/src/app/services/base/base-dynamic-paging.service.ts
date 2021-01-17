@@ -11,7 +11,8 @@ export abstract class BaseDynamicPagingService<T> extends BaseService<T> {
   }
 
   abstract getPage(
-    pageIndex: number,
+    pageNumber: number,
+    pageSize: number,
     sortBy: string,
     descending: boolean
   ): Observable<PagingReturnValue<T>>;
