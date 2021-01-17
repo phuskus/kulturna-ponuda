@@ -6,7 +6,7 @@ import { BaseService } from '../base/base.service';
 @Injectable({
   providedIn: 'root',
 })
-export class AdminService extends BaseService<Admin> {
+export class AdminService extends BaseService {
   constructor() {
     super();
   }
@@ -14,14 +14,20 @@ export class AdminService extends BaseService<Admin> {
   getAll(): Observable<Admin[]> {
     return of(ADMINS);
   }
+
   add(admin: Admin): Observable<Admin[]> {
-    throw new Error('Method not implemented.');
+    alert('admin added');
+    return null;
   }
+
   update(id: number, admin: Admin): Observable<Admin[]> {
-    throw new Error('Method not implemented.');
+    alert(`admin ${id} updated`);
+    return null;
   }
+
   delete(id: number): Observable<Admin[]> {
-    throw new Error('Method not implemented.');
+    alert(`admin ${id} deleted`);
+    return null;
   }
 }
 

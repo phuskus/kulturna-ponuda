@@ -54,26 +54,17 @@
       </div>
     </mat-drawer>
 
-    <div class="main" fxLayout.lt-lg="column" fxLayout="row wrap" fxFlex="100%" fxLayoutAlign="start start">
-      <div class="flex-table" fxFlex="0 1 50%" fxFlex.lt-lg="100%" >
-        <app-admin-table></app-admin-table>
-      </div>
-
-      <div class="flex-table" fxFlex="0 1 50%" fxFlex.lt-lg="100%" >
-        <app-review-table></app-review-table>
-      </div>
-
-      <div class="flex-table" fxFlex="0 1 50%" fxFlex.lt-lg="100%" >
-        <app-review-table></app-review-table>
-      </div>
-
-      <div class="flex-table" fxFlex="0 1 50%" fxFlex.lt-lg="100%" >
-        <app-review-table></app-review-table>
-      </div>
-
-      <div class="flex-table" fxFlex="0 1 50%" fxFlex.lt-lg="100%" >
-        <app-review-table></app-review-table>
-      </div>
+    <div
+      class="main"
+      fxLayout="row wrap"
+      fxLayout.lt-lg="column"
+      fxLayoutAlign="start start"
+    >
+      <app-admin-table class="flex-table"></app-admin-table>
+      <app-review-table class="flex-table"></app-review-table>
+      <app-review-table class="flex-table"></app-review-table>
+      <app-review-table class="flex-table"></app-review-table>
+      <app-review-table class="flex-table"></app-review-table>
     </div>
   </mat-drawer-container>
 </div>

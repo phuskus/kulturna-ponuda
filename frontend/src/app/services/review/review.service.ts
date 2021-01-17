@@ -9,7 +9,7 @@ import PagingReturnValue, {
 @Injectable({
   providedIn: 'root',
 })
-export class ReviewService extends BaseDynamicPagingService<Review> {
+export class ReviewService extends BaseDynamicPagingService {
   constructor() {
     super();
   }
@@ -28,15 +28,18 @@ export class ReviewService extends BaseDynamicPagingService<Review> {
   }
 
   add(object: Review): Observable<Review[]> {
-    throw new Error('Method not implemented.');
+    alert("REVIEW ADDED");
+    return null;
   }
 
   update(id: number, object: Review): Observable<Review[]> {
-    throw new Error('Method not implemented.');
+    alert("REVIEW UPDATED");
+    return null;
   }
 
   delete(id: number): Observable<Review[]> {
-    throw new Error('Method not implemented.');
+    alert("REVIEW DELETED");
+    return null;
   }
 }
 

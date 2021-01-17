@@ -1,7 +1,7 @@
-export interface User {
-    id: number;
-    name: string;
-    username: string;
-    password: string;
-  }
-  
+import Model from './Model';
+
+export interface User extends Model {
+  name: string;
+  username: string;
+  password: string;
+}

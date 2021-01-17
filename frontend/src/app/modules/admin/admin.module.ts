@@ -21,11 +21,14 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { AdminPage } from './pages/admin-page/admin.page';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReviewTableComponent } from './components/reviews/review-table/review-table.component';
-import { ReviewDialogComponent } from './components/reviews/review-dialog/review-dialog.component';
 import { AdminTableComponent } from './components/admins/admin-table/admin-table.component';
+import { DeleteReviewDialogComponent } from './components/reviews/dialogs/delete-review-dialog/delete-review-dialog.component';
+import { AddAdminDialogComponent } from './components/admins/dialogs/add-admin-dialog/add-admin-dialog.component';
+import { DeleteAdminDialogComponent } from './components/admins/dialogs/delete-admin-dialog/delete-admin-dialog.component';
+
 
 @NgModule({
-  declarations: [AdminPage, ReviewTableComponent, ReviewDialogComponent, AdminTableComponent],
+  declarations: [AdminPage, ReviewTableComponent, AdminTableComponent, DeleteReviewDialogComponent, AddAdminDialogComponent, DeleteAdminDialogComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,

@@ -1,7 +1,7 @@
+import Model from "./Model";
 import { User } from "./User";
 
-export interface Review {
-  id: number;
+export interface Review extends Model {
   rating: number;
   content: string;
   user: User;

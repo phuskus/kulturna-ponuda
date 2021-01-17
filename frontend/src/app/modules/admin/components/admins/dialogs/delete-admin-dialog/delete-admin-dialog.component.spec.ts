@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ReviewDialogComponent } from './review-dialog.component';
+import { DeleteAdminDialogComponent } from './delete-admin-dialog.component';
 
-describe('ReviewDialogComponent', () => {
-  let component: ReviewDialogComponent;
-  let fixture: ComponentFixture<ReviewDialogComponent>;
+describe('DeleteAdminDialogComponent', () => {
+  let component: DeleteAdminDialogComponent;
+  let fixture: ComponentFixture<DeleteAdminDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ReviewDialogComponent ]
+      declarations: [ DeleteAdminDialogComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ReviewDialogComponent);
+    fixture = TestBed.createComponent(DeleteAdminDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import Model from 'src/app/shared/models/Model';
 
 @Injectable({
   providedIn: 'root',
 })
-export abstract class BaseService<T> {
+export abstract class BaseService {
   constructor() {}
 
-  abstract getAll(): Observable<T[]>;
+  abstract getAll(): Observable<Model[]>;
 
-  abstract add(object: T): Observable<T[]>;
+  abstract add(object: Model): Observable<Model[]>;
 
-  abstract update(id: number, object: T): Observable<T[]>;
+  abstract update(id: number, object: Model): Observable<Model[]>;
 
-  abstract delete(id: number): Observable<T[]>;
+  abstract delete(id: number): Observable<Model[]>;
 }

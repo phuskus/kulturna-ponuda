@@ -5,17 +5,19 @@ import { catchError, delay, map, startWith, switchMap } from 'rxjs/operators';
 import PagingReturnValue, {
   BaseDynamicPagingService,
 } from 'src/app/services/base/base-dynamic-paging.service';
+import Model from 'src/app/shared/models/Model';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   template: '',
 })
-export abstract class AbstractDynamicPagingTable<T> extends AbstractTable<T> {
+export abstract class AbstractDynamicPagingTable extends AbstractTable {
   isLoadingResults: boolean = false;
   resultsLength = 0;
-  service: BaseDynamicPagingService<T>;
+  service: BaseDynamicPagingService;
 
-  constructor(service: BaseDynamicPagingService<T>) {
-    super(service);
+  constructor(service: BaseDynamicPagingService, dialog: MatDialog) {
+    super(service, dialog);
   }
 
   subscribe(): void {
@@ -34,13 +36,13 @@ export abstract class AbstractDynamicPagingTable<T> extends AbstractTable<T> {
       });
   }
 
-  fetchData(): Observable<PagingReturnValue<T>> {
+  fetchData(): Observable<PagingReturnValue<Model>> {
     this.isLoadingResults = true;
     let isDescending: boolean = this.sort.direction === 'desc'; 
     return this.service.getPage(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, isDescending);
   }
 
-  collectFetchedData(data: PagingReturnValue<T>): T[] {
+  collectFetchedData(data: PagingReturnValue<Model>): Model[] {
     this.isLoadingResults = false;
     this.resultsLength = data.total_count;
     return data.items;
