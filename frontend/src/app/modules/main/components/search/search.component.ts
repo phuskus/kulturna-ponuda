@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { NavigationExtras, Router } from '@angular/router';
 
 @Component({
   selector: 'app-search',
@@ -7,12 +8,17 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class SearchComponent implements OnInit {
   searchQuery: string = '';
-  constructor() {}
-
-  ngOnInit(): void {}
+  constructor(private router: Router) { }
+  
+  ngOnInit(): void { }
 
   onSubmit() {
-    alert(`form submitted with query ${this.searchQuery}`);
+    const navigationExtras: NavigationExtras = {
+      queryParams: { query: this.searchQuery },
+      // in case we want to do filtering by category & query
+      //queryParamsHandling: 'merge'
+    };
     this.searchQuery = '';
+    this.router.navigate(['/offers/search'], navigationExtras);
   }
 }

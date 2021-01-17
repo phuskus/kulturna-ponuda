@@ -9,7 +9,8 @@
                 *ngFor="let subcat of category.subcategories"
                 >
                 <button
-                [routerLink]="'category/' + subcat.id"
+                [routerLink]="'offers/search'"
+                [queryParams]="{ category: subcat.id }"
                 mat-button
                 disableRipple="true"
                 >

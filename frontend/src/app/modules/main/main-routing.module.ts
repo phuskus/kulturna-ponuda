@@ -12,11 +12,12 @@ const routes: Routes = [
     component: LandingPageComponent,
     children: [
       { path: '', component: CardbarComponent },
-      { path: 'category', component: SidebarComponent, children: [
-        {path: ':categoryId', component: ResultsComponent, children: [
-          { path: 'offer/:offerId', component: SingleOfferComponent }
-        ]},
-      ] },
+      {
+        path: 'offers', component: SidebarComponent, children: [
+          { path: 'search', component: ResultsComponent },
+          { path: ':offerId', component: SingleOfferComponent }
+        ]
+      },
     ],
   },
 ];
@@ -25,4 +26,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class MainRoutingModule {}
+export class MainRoutingModule { }

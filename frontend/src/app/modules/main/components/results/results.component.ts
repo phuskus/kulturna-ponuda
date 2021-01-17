@@ -11,12 +11,10 @@ import { CulturalOfferPage } from 'src/app/model/CulturalOfferPage';
   styleUrls: ['./results.component.scss'],
 })
 export class ResultsComponent implements OnInit {
-  public categoryId: string = this.route.snapshot.paramMap.get('categoryId');
-
   public loading: boolean = true;
 
   public page: number = 1;
-  public pageSize: number = 4;
+  public pageSize: number = 10;
   public sortBy: string = "id";
   public descending: boolean = false;
 
@@ -41,11 +39,24 @@ export class ResultsComponent implements OnInit {
   }
 
   fetchOffers() {
-    return this.offerService.getCulturalOffersByCategory(this.categoryId, this.getRequestParams()).subscribe((res: CulturalOfferPage) => {
-      this.loading = false;
-      this.offers = res.content;
-      this.count = res.totalElements;
-    })
+    this.route.queryParamMap.subscribe((paramMap) => {
+      const params = paramMap['params'];
+      if (params['category']) {
+        const categoryId: string = params['category'];
+        return this.offerService.getCulturalOffersByCategory(categoryId, this.getRequestParams()).subscribe((res: CulturalOfferPage) => {
+          this.loading = false;
+          this.offers = res.content;
+          this.count = res.totalElements;
+        })
+      } else if (params['query']) {
+        const query: string = params['query'];
+        return this.offerService.getCulturalOffersByQuery(query, this.getRequestParams()).subscribe((res: CulturalOfferPage) => {
+          this.loading = false;
+          this.offers = res.content;
+          this.count = res.totalElements;
+        })
+      }
+    });
   }
   
   handlePageChange(event): void {
