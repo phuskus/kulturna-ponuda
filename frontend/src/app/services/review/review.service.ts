@@ -17,10 +17,10 @@ export class ReviewService extends BaseDynamicPagingService<Review> {
     pageIndex: number,
     sortBy: string,
     descending: boolean
-  ): PagingReturnValue<Review> {
-    const psize = 10;
+  ): Observable<PagingReturnValue<Review>> {
+    const psize = 30;
     const reviews = REVIEWS.slice(psize * pageIndex, psize * pageIndex + psize);
-    return { items: of(reviews), total_count: REVIEWS.length };
+    return of({ items: reviews, total_count: REVIEWS.length });
   }
 
   add(object: Review): Observable<Review[]> {

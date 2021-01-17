@@ -14,7 +14,7 @@ export abstract class BaseDynamicPagingService<T> extends BaseService<T> {
     pageIndex: number,
     sortBy: string,
     descending: boolean
-  ): PagingReturnValue<T>;
+  ): Observable<PagingReturnValue<T>>;
 
   getAll(): Observable<T[]> {
     throw new Error('Dyanmic Paging does not implement method getAll');
@@ -22,6 +22,6 @@ export abstract class BaseDynamicPagingService<T> extends BaseService<T> {
 }
 
 export default interface PagingReturnValue<T> {
-  items: Observable<T[]>;
+  items: T[];
   total_count: number;
 }

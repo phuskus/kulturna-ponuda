@@ -24,9 +24,7 @@ export abstract class AbstractTable<T> implements AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(public service: BaseService<T>) {
-    
-  }
+  constructor(public service: BaseService<T>) {}
 
   ngAfterViewInit(): void {
     this.subscribe();
