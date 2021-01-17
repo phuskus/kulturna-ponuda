@@ -3,8 +3,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { AdminService } from 'src/app/services/admin/admin.service';
 import { Admin } from 'src/app/shared/models/Admin';
 import { AbstractTable } from '../../table/AbstractTable';
-import { AddAdminDialogComponent } from '../dialogs/add-admin-dialog/add-admin-dialog.component';
-import { DeleteAdminDialogComponent } from '../dialogs/delete-admin-dialog/delete-admin-dialog.component';
+import { AddAdminDialogComponent } from '../admin-dialogs/add-admin-dialog/add-admin-dialog.component';
+import { DeleteAdminDialogComponent } from '../admin-dialogs/delete-admin-dialog/delete-admin-dialog.component';
 
 @Component({
   selector: 'app-admin-table',

@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ReviewService } from 'src/app/services/review/review.service';
-import Model from 'src/app/shared/models/Model';
 import { Review } from 'src/app/shared/models/Review';
-import DialogData from '../../dialog/DialogData';
 import { AbstractDynamicPagingTable } from '../../table/AbstractDynamicPagingTable';
 import { DeleteReviewDialogComponent } from '../dialogs/delete-review-dialog/delete-review-dialog.component';
 

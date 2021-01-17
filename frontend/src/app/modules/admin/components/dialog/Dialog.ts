@@ -10,5 +10,7 @@ export default abstract class Dialog<T> {
 
   abstract onSubmit(): void;
 
-  abstract onAbort(): void;
+  onAbort(): void {
+    this.dialogRef.close();
+  }
 }

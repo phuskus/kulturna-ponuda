@@ -1,7 +1,9 @@
 <div class="example-container mat-elevation-z8">
   <div class="card-header">Admins</div>
 
-  <button class="new-item-btn" mat-button (click) = "openAddDialog()">NEW ADMIN</button>
+  <button class="new-item-btn" mat-button (click)="openAddDialog()">
+    NEW ADMIN
+  </button>
   <div class="example-table-container">
     <table mat-table [dataSource]="dataSource" class="example-table" matSort>
       <ng-container matColumnDef="name">
@@ -17,7 +19,11 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>Actions</th>
         <td mat-cell *matCellDef="let row">
-          <button mat-icon-button (click) = "openDeleteDialog(row)">
+          <button
+            mat-icon-button
+            (click)="openDeleteDialog(row)"
+            disableRipple="true"
+          >
             <mat-icon>delete</mat-icon>
           </button>
         </td>

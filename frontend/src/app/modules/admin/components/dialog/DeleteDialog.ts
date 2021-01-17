@@ -3,7 +3,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BaseService } from 'src/app/services/base/base.service';
 import Model from 'src/app/shared/models/Model';
 import Dialog from './Dialog';
-import DialogData from './DialogData';
 
 @Component({
   template: '',
@@ -19,10 +18,6 @@ export default abstract class DeleteDialog<T> extends Dialog<T> {
 
   onSubmit() {
     this.service.delete(this.data.id);
-    this.dialogRef.close();
-  }
-
-  onAbort() {
     this.dialogRef.close();
   }
 }

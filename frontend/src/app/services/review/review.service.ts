@@ -38,7 +38,7 @@ export class ReviewService extends BaseDynamicPagingService {
   }
 
   delete(id: number): Observable<Review[]> {
-    alert("REVIEW DELETED");
+    alert(`REVIEW WITH ID ${id} DELETED`);
     return null;
   }
 }

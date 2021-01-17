@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { ReviewDialogData } from 'src/app/shared/models/ReviewDialogData';
+// import { ReviewDialogData } from 'src/app/shared/models/ReviewDialogData';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
@@ -30,4 +30,9 @@ export class ReviewDialogComponent {
     alert('Your review has been submitted');
     this.dialogRef.close();
   }
+}
+
+
+interface ReviewDialogData {
+  offerName: string;
 }
