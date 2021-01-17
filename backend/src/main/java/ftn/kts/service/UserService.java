@@ -141,7 +141,7 @@ public class UserService {
     }
 
     private RegisteredUser toEntity(UserDTO dto) {
-        RegisteredUser user = new RegisteredUser(dto.getName(), dto.getUsername(), dto.getPassword());
+        RegisteredUser user = new RegisteredUser(dto.getName(), dto.getSurname(), dto.getUsername(), dto.getPassword());
         return user;
     }
     
@@ -150,6 +150,7 @@ public class UserService {
     	dto.setId(user.getId());
     	dto.setUsername(user.getUsername());
     	dto.setName(user.getName());
+    	dto.setSurname(user.getSurname());
     	return dto;
     }
 

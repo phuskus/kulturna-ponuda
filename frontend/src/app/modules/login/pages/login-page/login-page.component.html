@@ -55,7 +55,8 @@
                     </mat-hint>
                     <mat-hint 
                         *ngIf="passwordErr"
-                        class="error"   
+                        class="error"
+                        (ngModelChange)="onChangeUsername()"   
                     >
                         {{errMsg}}
                     </mat-hint>

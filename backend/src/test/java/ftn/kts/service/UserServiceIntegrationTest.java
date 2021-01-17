@@ -12,6 +12,7 @@ import static ftn.kts.constants.UserConstants.DB_USER_PASSWORD;
 import static ftn.kts.constants.UserConstants.DB_USER_PASSWORD_DISABLED;
 import static ftn.kts.constants.UserConstants.DB_USER_USERNAME;
 import static ftn.kts.constants.UserConstants.DB_USER_USERNAME_DISABLED;
+import static ftn.kts.constants.UserConstants.DB_USER_SURNAME;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -68,7 +69,7 @@ public class UserServiceIntegrationTest {
 	
 	@Test(expected = NoSuchElementException.class)
 	public void createAndDelete_UsernameNotExists_EntitySavedAndDeleted() throws UniqueConstraintViolationException {
-		UserDTO newUser = new UserDTO(DB_NEW_USER_NAME, DB_USER_NO_SUCH_USERNAME, DB_NEW_USER_PASSWORD);
+		UserDTO newUser = new UserDTO(DB_NEW_USER_NAME, DB_USER_SURNAME, DB_USER_NO_SUCH_USERNAME, DB_NEW_USER_PASSWORD);
 		UserDTO user = userService.create(newUser);
 		assertEquals(user.getId(), DB_CREATED_USER_ID);
 		
@@ -79,7 +80,7 @@ public class UserServiceIntegrationTest {
 	
 	@Test(expected = UniqueConstraintViolationException.class)
 	public void create_UsernameExists_UniqueConstraintViolationExceptionTrown() throws UniqueConstraintViolationException {
-		UserDTO newUser = new UserDTO(DB_NEW_USER_NAME, DB_USER_USERNAME, DB_NEW_USER_PASSWORD);
+		UserDTO newUser = new UserDTO(DB_NEW_USER_NAME, DB_USER_SURNAME, DB_USER_USERNAME, DB_NEW_USER_PASSWORD);
 		userService.create(newUser);
 	}
 	
@@ -118,7 +119,7 @@ public class UserServiceIntegrationTest {
 	
 	@Test
 	public void save_UsernameNotExists_OneEntityReturned() {
-		RegisteredUser newUser = new RegisteredUser(DB_NEW_USER_NAME, DB_USER_NO_SUCH_USERNAME, DB_NEW_USER_PASSWORD);
+		RegisteredUser newUser = new RegisteredUser(DB_NEW_USER_NAME, DB_USER_SURNAME, DB_USER_NO_SUCH_USERNAME, DB_NEW_USER_PASSWORD);
 		User user = userService.save(newUser);
 		assertNotNull(user);
 		assertEquals(user.getName(), DB_NEW_USER_NAME);
@@ -128,7 +129,7 @@ public class UserServiceIntegrationTest {
 	
 	@Test(expected = DataIntegrityViolationException.class)
 	public void save_UsernameExists_DataIntegrityViolationExceptionThrown() {
-		RegisteredUser newUser = new RegisteredUser(DB_USER_USERNAME, DB_USER_USERNAME, DB_NEW_USER_PASSWORD);
+		RegisteredUser newUser = new RegisteredUser(DB_USER_USERNAME, DB_USER_SURNAME, DB_USER_USERNAME, DB_NEW_USER_PASSWORD);
 		userService.save(newUser);
 	}
 	
