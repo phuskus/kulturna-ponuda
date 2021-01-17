@@ -1,31 +1,38 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Review } from '../../shared/models/Review';
-import { BaseService } from '../base/base.service';
+import PagingReturnValue, {
+  BaseDynamicPagingService,
+} from '../base/base-dynamic-paging.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ReviewService extends BaseService<Review> {
+export class ReviewService extends BaseDynamicPagingService<Review> {
   constructor() {
     super();
   }
 
-  getAll(): Observable<Review[]> {
-    return of(REVIEWS);
+  getPage(
+    pageIndex: number,
+    sortBy: string,
+    descending: boolean
+  ): PagingReturnValue<Review> {
+    const psize = 10;
+    const reviews = REVIEWS.slice(psize * pageIndex, psize * pageIndex + psize);
+    return { items: of(reviews), total_count: REVIEWS.length };
   }
-  add(review: Review): Observable<Review[]> {
-    throw new Error('Method not implemented.');
-  }
-  update(id: number, review: Review): Observable<Review[]> {
-    throw new Error('Method not implemented.');
-  }
-  delete(id: number): Observable<Review[]> {
+
+  add(object: Review): Observable<Review[]> {
     throw new Error('Method not implemented.');
   }
 
-  getReviews(): Observable<Review[]> {
-    return of(REVIEWS);
+  update(id: number, object: Review): Observable<Review[]> {
+    throw new Error('Method not implemented.');
+  }
+
+  delete(id: number): Observable<Review[]> {
+    throw new Error('Method not implemented.');
   }
 }
 

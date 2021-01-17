@@ -10,14 +10,13 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { BaseService } from 'src/app/services/base/base.service';
 
-
 @Component({
   template: '',
 })
-export abstract class AbstractTable<T>
-  implements AfterViewInit {
+export abstract class AbstractTable<T> implements AfterViewInit {
   dataSource: MatTableDataSource<T> = new MatTableDataSource();
-  displayedColumns: string[];
+
+  tableColumns: string[] = [];
 
   resultsLength = 0;
   shouldSubscibe: boolean;
@@ -25,7 +24,9 @@ export abstract class AbstractTable<T>
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(public service: BaseService<T>) {}
+  constructor(public service: BaseService<T>) {
+    
+  }
 
   ngAfterViewInit(): void {
     this.subscribe();

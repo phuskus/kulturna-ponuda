@@ -9,7 +9,7 @@ import { MatSort } from '@angular/material/sort';
 @Component({
   template: '',
 })
-export abstract class AbstractPagingTable<T> extends AbstractTable<T> {
+export abstract class AbstractDynamicPagingTable<T> extends AbstractTable<T> {
   isLoadingResults: boolean = false;
 
   constructor(service: BaseService<T>) {
@@ -26,7 +26,6 @@ export abstract class AbstractPagingTable<T> extends AbstractTable<T> {
           return this.service.getAll();
         }),
         map((data) => {
-          // Flip flag to show that loading has finished.
           this.isLoadingResults = false;
           this.resultsLength = data.length;
 
