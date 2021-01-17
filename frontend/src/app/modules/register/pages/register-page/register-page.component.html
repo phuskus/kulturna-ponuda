@@ -1,1 +1,116 @@
-<p>register-page works!</p>
+<div class="flex-parent">
+    <div class="flex-container">
+        <div class="item">
+            <p class="title font" style="font-size:2.5vw;">Welcome to CultYourself</p>
+            <p class="font" style="font-size:1vw;">To keep connected with us please create a new account</p>
+        </div>
+        <form (ngSubmit)="onSubmit()" [formGroup]="registerForm" >
+            <div class="item">
+                <div class="flex-subcontainer">
+                    <mat-form-field appearance="outline" style="padding-right: 5px;" >
+                        <input 
+                            matInput
+                            placeholder="Name"
+                            [formControlName]="'name'"
+                        />
+                        <mat-hint 
+                            *ngIf="f.name.touched && f.name.errors.required"
+                            class="error"
+                        >
+                            Name is required.
+                        </mat-hint>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" style="padding-left: 5px;">
+                        <input 
+                            matInput 
+                            placeholder="Surname"
+                            [formControlName]="'surname'"
+                        />
+                        <mat-hint 
+                            *ngIf="f.surname.touched && f.surname.errors.required"
+                            class="error"
+                        >
+                            Surname is required.
+                        </mat-hint>
+                    </mat-form-field>
+                </div>
+                <mat-form-field [style.width.%]="100" appearance="outline">
+                    <input 
+                        matInput 
+                        placeholder="Email"
+                        [formControlName]="'username'"
+                    />
+                    <mat-hint 
+                        *ngIf="f.username.touched && f.username.invalid && f.username.errors.required"
+                        class="error"
+                    >
+                        Email is required.
+                    </mat-hint>
+                    <mat-hint 
+                        *ngIf="f.username.touched && f.username.invalid && f.username.errors.email"
+                        class="error"
+                    >
+                        Please enter a valid email address.
+                    </mat-hint>
+                </mat-form-field>
+                <mat-form-field [style.width.%]="100" appearance="outline">
+                    <input 
+                        matInput 
+                        placeholder="Password" 
+                        [type]="hide ? 'password' : 'text'" 
+                        [formControlName]="'password'"
+                        />
+                    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                    <mat-hint 
+                        *ngIf="f.password.touched && f.password.invalid && f.password.errors.required"
+                        class="error"
+                    >
+                        Password is required.
+                    </mat-hint>
+                    <mat-hint 
+                        *ngIf="f.password.touched && f.password.invalid && f.password.errors.minlength"
+                        class="error"
+                    >
+                        Password should be at least 5 characters long.
+                    </mat-hint>
+                </mat-form-field>
+                <mat-form-field [style.width.%]="100" appearance="outline">
+                    <input 
+                        matInput 
+                        placeholder="Confirm password" 
+                        [type]="hide ? 'password' : 'text'" 
+                        [formControlName]="'confirmPassword'"
+                        />
+                    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                    <mat-hint 
+                        *ngIf="f.confirmPassword.touched && f.confirmPassword.invalid && f.confirmPassword.errors.required"
+                        class="error"
+                    >
+                        Password is required.
+                    </mat-hint>
+                    <mat-hint 
+                        *ngIf="f.confirmPassword.touched && f.confirmPassword.invalid && f.confirmPassword.errors.minlength"
+                        class="error"
+                    >
+                        Password should be at least 5 characters long.
+                    </mat-hint>
+                </mat-form-field>
+            </div>
+            <div class="item">
+                <button 
+                    class="button" 
+                    mat-flat-button
+                    type="submit"
+                    >REGISTER</button>
+                <p class="link"><a [routerLink]="['/login']">Already have an account? Sign in now</a></p>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
