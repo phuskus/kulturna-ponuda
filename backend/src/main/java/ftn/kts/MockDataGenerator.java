@@ -2,6 +2,7 @@ package ftn.kts;
 
 import com.github.javafaker.Faker;
 import ftn.kts.dto.*;
+import ftn.kts.exceptions.UniqueConstraintViolationException;
 import ftn.kts.model.Category;
 import ftn.kts.model.Subcategory;
 import ftn.kts.repository.*;
@@ -17,10 +18,18 @@ public abstract class MockDataGenerator {
     private static final int ADMIN_COUNT = 5;
     private static final int REGISTERED_USER_COUNT = 100;
 
-    private static final int CATEGORY_COUNT = 3;
+    private static final String[] CATEGORIES = {
+            "Institucija",
+            "Manifestacija",
+            "Kulturno dobro"
+    };
 
-    private static final int SUBCATEGORIES_PER_CATEGORY_MIN = 1;
-    private static final int SUBCATEGORIES_PER_CATEGORY_MAX = 5;
+
+    private static final String[][] SUBCATEGORIES = {
+            { "Muzej", "Galerija" },
+            { "Festival", "Sajam" },
+            { "Spomenik", "Znamenitost" }
+    };
 
     private static final int CULTURAL_OFFERS_PER_SUBCATEGORY_MIN = 1;
     private static final int CULTURAL_OFFERS_PER_SUBCATEGORY_MAX = 30;
@@ -31,7 +40,8 @@ public abstract class MockDataGenerator {
 
     private static final int POSTS_PER_CULTURAL_OFFER_MIN = 0;
     private static final int POSTS_PER_CULTURAL_OFFER_MAX = 30;
-    // TODO: Implement random picture generation
+
+    // TODO: Maybe implement random picture generation?
     private static final int PICTURES_PER_POST_MIN = 0;
     private static final int PICTURES_PER_POST_MAX = 5;
 
@@ -47,7 +57,7 @@ public abstract class MockDataGenerator {
     private static Faker faker;
     private static Random random;
 
-    public static void GenerateMockData(ApplicationContext applicationContext) {
+    public static void GenerateMockData(ApplicationContext applicationContext) throws UniqueConstraintViolationException {
         System.out.println("-!!!- Mock data generation initiated. This will DELETE ALL DATA FROM THE DATABASE! Proceeed? ('n' to abort, anything else to proceed) -!!!-");
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
@@ -57,13 +67,16 @@ public abstract class MockDataGenerator {
         }
         System.out.println("Proceeding with mock data generation");
 
+
         System.out.println("Purging database...");
         PurgeDatabase(applicationContext);
 
-        System.out.println("Database purged, creating mock data for each service...");
+        System.out.println("Database purged, creating mock data via each service...");
+
 
         faker = new Faker();
         random = new Random();
+
 
         System.out.println("Creating admins...");
         ArrayList<AdminDTO> adminList = GenerateAdmins(applicationContext);
@@ -71,11 +84,17 @@ public abstract class MockDataGenerator {
         System.out.println("Creating users...");
         ArrayList<UserDTO> userList = GenerateUsers(applicationContext);
 
+
+        if (CATEGORIES.length != SUBCATEGORIES.length)
+        {
+            throw new IllegalArgumentException("There must be an array of subcategories for each category");
+        }
+
         System.out.println("Creating categories...");
-        ArrayList<CategoryDTO> categoryList = GenerateCategories(applicationContext);
+        ArrayList<CategoryDTO> categoryList = GenerateCategories(applicationContext, CATEGORIES);
 
         System.out.println("Creating subcategories...");
-        ArrayList<SubcategoryDTO> subcategoryList = GenerateSubcategories(applicationContext, categoryList);
+        ArrayList<SubcategoryDTO> subcategoryList = GenerateSubcategories(applicationContext, categoryList, SUBCATEGORIES);
 
         System.out.println("Creating cultural offers...");
         ArrayList<CulturalOfferDTO> culturalOfferList = GenerateCulturalOffers(applicationContext, subcategoryList, adminList);
@@ -125,7 +144,8 @@ public abstract class MockDataGenerator {
         {
             while (true) {
                 try {
-                    AdminDTO dto = new AdminDTO(faker.name().fullName(), faker.internet().emailAddress(), faker.internet().password(8, 16));
+                    String name = faker.name().fullName();
+                    AdminDTO dto = new AdminDTO(name, faker.internet().emailAddress(), "sifra" + name);
                     adminList.add(adminService.create(dto));
                     break;
                 } catch (Exception e) {
@@ -143,7 +163,8 @@ public abstract class MockDataGenerator {
         {
             while (true) {
                 try {
-                    UserDTO dto = new UserDTO(faker.rickAndMorty().character(), faker.internet().emailAddress(), faker.internet().password());
+                    String name = faker.rickAndMorty().character();
+                    UserDTO dto = new UserDTO(name, faker.internet().emailAddress(), "sifra"+name);
                     userList.add(userService.create(dto));
                     break;
                 } catch (Exception e) {
@@ -154,44 +175,30 @@ public abstract class MockDataGenerator {
         return userList;
     }
 
-    private static ArrayList<CategoryDTO> GenerateCategories(ApplicationContext applicationContext) {
+    private static ArrayList<CategoryDTO> GenerateCategories(ApplicationContext applicationContext, String[] categories) throws UniqueConstraintViolationException {
         CategoryService categoryService = applicationContext.getBean(CategoryService.class);
-        String[] categoryNames = { "Institucija", "Festival", "Kulturno dobro" };
         ArrayList<CategoryDTO> categoryList = new ArrayList<CategoryDTO>();
-        for (int i = 0; i < CATEGORY_COUNT; i++)
+
+        for (int i = 0; i < categories.length; i++)
         {
-            while (true) {
-                try {
-                    CategoryDTO dto = new CategoryDTO(categoryNames[i]);
-                    categoryList.add(categoryService.create(dto));
-                    break;
-                } catch (Exception e) {
-                    System.out.println("Faker category create failed, probably duplicate, trying again...");
-                }
-            }
+            CategoryDTO dto = new CategoryDTO(categories[i]);
+            categoryList.add(categoryService.create(dto));
         }
         return categoryList;
     }
 
-    private static ArrayList<SubcategoryDTO> GenerateSubcategories(ApplicationContext applicationContext, List<CategoryDTO> categoryList) {
+    private static ArrayList<SubcategoryDTO> GenerateSubcategories(ApplicationContext applicationContext, List<CategoryDTO> categoryList, String[][] subcategories) throws UniqueConstraintViolationException {
         SubcategoryService subcategoryService = applicationContext.getBean(SubcategoryService.class);
         ArrayList<SubcategoryDTO> subcategoryList = new ArrayList<>();
-        for (CategoryDTO category : categoryList)
-        {
-            int randomCount = random.nextInt(SUBCATEGORIES_PER_CATEGORY_MAX - SUBCATEGORIES_PER_CATEGORY_MIN);
-            int subcategoryRandomCount = SUBCATEGORIES_PER_CATEGORY_MIN + randomCount;
 
-            for (int i = 0; i < subcategoryRandomCount; i++)
+        for (int i = 0; i < categoryList.size(); i++)
+        {
+            CategoryDTO category = categoryList.get(i);
+
+            for (int j = 0; j < subcategories[i].length; j++)
             {
-                while (true) {
-                    try {
-                        SubcategoryDTO dto = new SubcategoryDTO(category.getName() + "_" + i, category.getId());
-                        subcategoryList.add(subcategoryService.create(dto));
-                        break;
-                    } catch (Exception e) {
-                        System.out.println("Faker subcategory create failed, probably duplicate, trying again...");
-                    }
-                }
+                SubcategoryDTO dto = new SubcategoryDTO(subcategories[i][j], category.getId());
+                subcategoryList.add(subcategoryService.create(dto));
             }
         }
         return subcategoryList;
