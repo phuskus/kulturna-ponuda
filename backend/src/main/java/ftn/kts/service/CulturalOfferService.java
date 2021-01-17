@@ -7,6 +7,7 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ import ftn.kts.model.CulturalOffer;
 import ftn.kts.model.Picture;
 import ftn.kts.model.Subcategory;
 import ftn.kts.repository.CulturalOfferRepository;
+import ftn.kts.repository.specifications.CulturalOfferSpecification;
 
 @Service
 @Transactional
@@ -83,6 +85,11 @@ public class CulturalOfferService {
 		return offerRepository.findByCategory(category, paging).map(this::toDTO);
 	}
 
+	public Page<CulturalOfferDTO> filterAny(String query, Pageable paging) {
+		Specification<CulturalOffer> spec = new CulturalOfferSpecification(query);
+		return offerRepository.findAll(spec, paging).map(this::toDTO);
+	}
+	
 	public Page<CulturalOfferDTO> filterCity(String city, Pageable paging) {
 		return offerRepository.findByCityContainingIgnoreCase(city, paging).map(this::toDTO);
 	}
@@ -161,4 +168,5 @@ public class CulturalOfferService {
 	public void setPostService(PostService postService) {
 		this.postService = postService;
 	}
+
 }

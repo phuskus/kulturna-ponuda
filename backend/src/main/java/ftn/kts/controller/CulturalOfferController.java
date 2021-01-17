@@ -72,6 +72,21 @@ public class CulturalOfferController {
 		return new ResponseEntity<>(page, HttpStatus.OK);
 	}
 	
+	@GetMapping("/query/{query}")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+	public ResponseEntity<Page<CulturalOfferDTO>> filterOffersAny(@PathVariable("query") String query,
+			@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer pageSize,
+			@RequestParam(defaultValue = "id") String sortBy, @RequestParam(defaultValue = "false") String descending) {
+		Pageable paging;
+		if (descending.equals("true"))
+			paging = PageRequest.of(pageNo, pageSize, Sort.by(Direction.DESC, sortBy));
+		else
+			paging = PageRequest.of(pageNo, pageSize, Sort.by(Direction.ASC, sortBy));
+		Page<CulturalOfferDTO> page = service.filterAny(query, paging);
+		return new ResponseEntity<>(page, HttpStatus.OK);
+	}
+	
+	
 	@GetMapping("/city/{city}")
 	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<Page<CulturalOfferDTO>> filterOffersCity(@PathVariable("city") String city,
