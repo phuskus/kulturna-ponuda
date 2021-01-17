@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -19,6 +20,7 @@ import { MainModule } from './modules/main/main.module';
     NoopAnimationsModule,
     HttpClientModule,
     NgxPaginationModule,
+    BrowserAnimationsModule,
 
     // MainModule,
     // AdminModule,

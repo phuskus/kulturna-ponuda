@@ -5,4 +5,5 @@ export class Subcategory {
     name: string;
     categoryId: number;
     icon: Picture;
+    containsOffers: boolean;
   }

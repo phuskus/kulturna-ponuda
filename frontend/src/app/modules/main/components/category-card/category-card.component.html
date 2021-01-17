@@ -1,22 +1,17 @@
 <mat-card class="category-card mgl-map-overlay-stack" tabindex="1">
-  <p class="mat-title" style="margin-bottom: 4px">{{category.name}}</p>
-  <!--mat-card-subtitle>Search this area</mat-card-subtitle-->
-  <mat-card-content>
-        <div *ngIf="category.subcategories.length != 0; else elseBlock">
+    <p class="mat-title" style="margin-bottom: 4px">{{category.name}}</p>
+    <!--mat-card-subtitle>Search this area</mat-card-subtitle-->
+    <mat-card-content>
+        <div *ngIf="containsOffers; else elseBlock">
             <div class="category-container">
-                <div
-                class="content-column"
-                *ngFor="let subcat of category.subcategories"
-                >
-                <button
-                [routerLink]="'offers/search'"
-                [queryParams]="{ category: subcat.id }"
-                mat-button
-                disableRipple="true"
-                >
-                <img [src]="subcat.icon.image" />
-                    <p>{{ subcat.name }}</p>
-                </button>
+                <div *ngFor="let subcat of subcategories" class="content-column">
+                    <div  *ngIf="subcat.containsOffers">
+                        <button [routerLink]="'offers/search'" [queryParams]="{ category: subcat.id }" mat-button
+                            disableRipple="true">
+                            <img [src]="subcat.icon.image" />
+                            <p>{{ subcat.name }}</p>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

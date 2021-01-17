@@ -6,6 +6,7 @@ import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { CardbarComponent } from './components/cardbar/cardbar.component';
 import { MainRoutingModule } from './main-routing.module';
@@ -47,6 +48,7 @@ import { FormsModule } from '@angular/forms';
     MatButtonModule,
     MatSidenavModule,
     MatInputModule,
+    MatProgressSpinnerModule,
     NgxPaginationModule,
 
     MainRoutingModule,
@@ -57,4 +59,4 @@ import { FormsModule } from '@angular/forms';
     }),
   ],
 })
-export class MainModule {}
+export class MainModule { }

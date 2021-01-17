@@ -14,7 +14,7 @@ export class CategoryService {
   
   constructor(private httpClient: HttpClient) { }
 
-  token = "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImFkbWluMkBnbWFpbC5jb20iLCJhdWQiOiJ3ZWIiLCJpYXQiOjE2MTA4MTIxODYsImV4cCI6MTYxMDg1NTM4Nn0.1xA3YlaAc_xSCcEGBhF6fKWQhGRWTQpP6nC6xqYzPqxDlyDKB_uUOgJKs2AV9UeLT3lNOZBoijutZix0D5x7tQ";
+  token = "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImFkbWluMkBnbWFpbC5jb20iLCJhdWQiOiJ3ZWIiLCJpYXQiOjE2MTA4OTUwNTUsImV4cCI6MTYxMDkzODI1NX0.C7pHXMr_YODv5ED6Z0RzOkebPWakBvsT0fRQS0bDguYpN_TTZRNAvSfyWo-62EwiQYvL4vrGsucELs4bQzCytQ";
 
   httpHeaders = {
     headers: new HttpHeaders({

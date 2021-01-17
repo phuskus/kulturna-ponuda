@@ -85,7 +85,8 @@ public class SubcategoryService {
 
 	private SubcategoryDTO toDTO(Subcategory entity) {
 		PictureDTO icon = this.pictureService.convertToDTO(entity.getIcon());
-		return new SubcategoryDTO(entity.getId(), entity.getName(), entity.getCategory(), icon);
+		boolean containsOffers = entity.getCulturalOffers().size() != 0; 
+		return new SubcategoryDTO(entity.getId(), entity.getName(), entity.getCategory(), icon, containsOffers);
 	}
 
 	private void updateSubcategory(Subcategory subcategory, SubcategoryDTO dto) {

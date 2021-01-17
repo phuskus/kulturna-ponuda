@@ -1,4 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Category } from 'src/app/model/Category';
+import { Subcategory } from 'src/app/model/Subcategory';
 
 @Component({
   selector: 'app-category-card',
@@ -7,11 +9,27 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class CategoryCardComponent implements OnInit {
 
-  @Input() category: any;
+  @Input() category: Category;
+
+  public containsOffers: boolean = true;
+
+  public subcategories: Subcategory[];
 
   constructor() { }
 
   ngOnInit(): void {
+    if (this.category.subcategories.length === 0) {
+      this.containsOffers = false;
+    } else {
+      let allSubcatsEmpty = true; 
+      this.category.subcategories.forEach(subcat => {
+        if (subcat.containsOffers) {
+          allSubcatsEmpty = false;
+        }
+      });
+      this.containsOffers = !allSubcatsEmpty;
+    }
+    this.subcategories = this.category.subcategories.filter(sc => sc.containsOffers)
   }
 
 }

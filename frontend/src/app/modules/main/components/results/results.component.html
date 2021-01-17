@@ -2,6 +2,15 @@
   <mat-card class="search-comp" style="margin-bottom: 40px">
     <app-search></app-search>
   </mat-card>
+  <div fxLayout="row" fxLayoutAlign="center" *ngIf="loading">
+    <mat-progress-spinner mode="indeterminate" diameter="100"></mat-progress-spinner>
+  </div>
+
+  <div *ngIf="count === 0 && !loading">
+    <div class="no-results">
+      No results available for your query!
+    </div>
+  </div>
   <mat-card class="result-card" *ngFor="let offer of offers | paginate: {
       itemsPerPage: pageSize,
           currentPage: page,
@@ -28,7 +37,7 @@
       </div>
     </div>
   </mat-card>
-  <div class="pagination-control-div" fxLayout="row" fxFlexAlign="center">
+  <div *ngIf="count != 0 && !loading" class="pagination-control-div" fxLayout="row" fxFlexAlign="center">
     <pagination-controls class="pagination-control" previousLabel="Prev" nextLabel="Next" responsive="true"
       (pageChange)="handlePageChange($event)">
     </pagination-controls>
