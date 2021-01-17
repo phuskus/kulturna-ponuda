@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import ftn.kts.dto.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import ftn.kts.dto.CulturalOfferDTO;
-import ftn.kts.dto.PictureDTO;
-import ftn.kts.dto.PostDTO;
-import ftn.kts.dto.ReviewDTO;
 import ftn.kts.exceptions.UniqueConstraintViolationException;
 import ftn.kts.model.CulturalOffer;
 
@@ -90,8 +87,9 @@ public class CulturalOfferServiceIntegrationTest {
 	public void updateOffer_EntityUpdatedAndRevertedToPreviousState() throws UniqueConstraintViolationException {
 		CulturalOffer cultOffer = cultOfferService.getOne(DB_CULTURAL_OFFER_ID);
 		Set<ReviewDTO> reviewsDTO = new HashSet<>();
-		ReviewDTO review1 = new ReviewDTO(1L, 5L, "Otkazano zbog korone", 1L, 2L);
-		ReviewDTO review2 = new ReviewDTO(2L, 0L, "Ne valja nista", 1L, 2L);
+		UserDTO user = new UserDTO(1L, "name", "user", "pass");
+		ReviewDTO review1 = new ReviewDTO(1L, 5L, "Otkazano zbog korone", user, 2L);
+		ReviewDTO review2 = new ReviewDTO(2L, 0L, "Ne valja nista", user, 2L);
 		reviewsDTO.add(review1);
 		reviewsDTO.add(review2);
 		Set<PostDTO> postsDTO = new HashSet<>();

@@ -10,13 +10,22 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
+import {MatTableModule} from '@angular/material/table';
+import {MatSortModule} from '@angular/material/sort';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatPaginatorModule} from '@angular/material/paginator';
+
+
 
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminPage } from './pages/admin-page/admin.page';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { ReviewTableComponent } from './components/reviews/review-table/review-table.component';
+import { ReviewDialogComponent } from './components/reviews/review-dialog/review-dialog.component';
+import { AdminTableComponent } from './components/admins/admin-table/admin-table.component';
 
 @NgModule({
-  declarations: [AdminPage],
+  declarations: [AdminPage, ReviewTableComponent, ReviewDialogComponent, AdminTableComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,
@@ -32,6 +41,10 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatToolbarModule,
     MatListModule,
     MatDividerModule,
+    MatTableModule,
+    MatSortModule,
+    MatProgressSpinnerModule,
+    MatPaginatorModule,
   ],
 })
 export class AdminModule {}

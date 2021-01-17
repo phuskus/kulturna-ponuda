@@ -18,8 +18,8 @@ public class ReviewDTO {
     @NotBlank(message = "Content is required!")
     private String content;
 
-    private Long user;
-    private Long culturalOffer;
+    private UserDTO user;
+    private Long culturalOfferId;
 
     private Set<PictureDTO> pictures;
 
@@ -32,25 +32,42 @@ public class ReviewDTO {
         this.id = id;
         this.rating = rating;
         this.content = content;
-        this.user = user.getId();
-        this.culturalOffer = offer.getId();
+        this.user = new UserDTO(user.getId(), user.getName(),user.getUsername(), user.getPassword());
+        this.culturalOfferId = offer.getId();
         this.pictures = new HashSet<>();
     }
 
-    public ReviewDTO(Long rating, String content, Long userId, Long offerId) {
+    public ReviewDTO(Long rating, String content, User user, Long offerId) {
         this.rating = rating;
         this.content = content;
-        this.user = userId;
-        this.culturalOffer = offerId;
+        this.user = new UserDTO(user.getId(), user.getName(),user.getUsername(), user.getPassword());
+        this.culturalOfferId = offerId;
+        this.pictures = new HashSet<>();
+    }
+
+    public ReviewDTO(Long rating, String content, UserDTO user, Long offerId) {
+        this.rating = rating;
+        this.content = content;
+        this.user = user;
+        this.culturalOfferId = offerId;
         this.pictures = new HashSet<>();
     }
     
-    public ReviewDTO(Long id, Long rating, String content, Long userId, Long offerId) {
+    public ReviewDTO(Long id, Long rating, String content, User user, Long offerId) {
         this.id = id;
     	this.rating = rating;
         this.content = content;
-        this.user = userId;
-        this.culturalOffer = offerId;
+        this.user = new UserDTO(user.getId(), user.getName(),user.getUsername(), user.getPassword());
+        this.culturalOfferId = offerId;
+        this.pictures = new HashSet<>();
+    }
+
+    public ReviewDTO(Long id, Long rating, String content, UserDTO user, Long offerId) {
+        this.id = id;
+        this.rating = rating;
+        this.content = content;
+        this.user = user;
+        this.culturalOfferId = offerId;
         this.pictures = new HashSet<>();
     }
     
@@ -63,7 +80,7 @@ public class ReviewDTO {
         if (!(obj instanceof ReviewDTO)) return false;
 
         ReviewDTO review = (ReviewDTO) obj;
-        return this.getCulturalOffer().equals(review.getCulturalOffer()) && this.getContent().equals(review.getContent())
+        return this.getCulturalOfferId().equals(review.getCulturalOfferId()) && this.getContent().equals(review.getContent())
                 && this.getUser().equals(review.getUser());
     }
 
@@ -91,20 +108,20 @@ public class ReviewDTO {
         this.content = content;
     }
 
-    public Long getUser() {
+    public UserDTO getUser() {
         return user;
     }
 
-    public void setUser(Long user) {
+    public void setUser(UserDTO user) {
         this.user = user;
     }
 
-    public Long getCulturalOffer() {
-        return culturalOffer;
+    public Long getCulturalOfferId() {
+        return culturalOfferId;
     }
 
-    public void setCulturalOffer(Long culturalOffer) {
-        this.culturalOffer = culturalOffer;
+    public void setCulturalOfferId(Long culturalOffer) {
+        this.culturalOfferId = culturalOffer;
     }
 
     public Set<PictureDTO> getPictures() {

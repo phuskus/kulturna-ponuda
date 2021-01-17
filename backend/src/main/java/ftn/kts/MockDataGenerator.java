@@ -121,8 +121,7 @@ public abstract class MockDataGenerator {
     private static ArrayList<AdminDTO> GenerateAdmins(ApplicationContext applicationContext) {
         AdminService adminService = applicationContext.getBean(AdminService.class);
         ArrayList<AdminDTO> adminList = new ArrayList<>();
-        for (int i = 0; i < ADMIN_COUNT; i++)
-        {
+        for (int i = 0; i < ADMIN_COUNT; i++) {
             while (true) {
                 try {
                     AdminDTO dto = new AdminDTO(faker.name().fullName(), faker.internet().emailAddress(), faker.internet().password(8, 16));
@@ -139,8 +138,7 @@ public abstract class MockDataGenerator {
     private static ArrayList<UserDTO> GenerateUsers(ApplicationContext applicationContext) {
         UserService userService = applicationContext.getBean(UserService.class);
         ArrayList<UserDTO> userList = new ArrayList<>();
-        for (int i = 0; i < REGISTERED_USER_COUNT; i++)
-        {
+        for (int i = 0; i < REGISTERED_USER_COUNT; i++) {
             while (true) {
                 try {
                     UserDTO dto = new UserDTO(faker.rickAndMorty().character(), faker.internet().emailAddress(), faker.internet().password());
@@ -156,10 +154,9 @@ public abstract class MockDataGenerator {
 
     private static ArrayList<CategoryDTO> GenerateCategories(ApplicationContext applicationContext) {
         CategoryService categoryService = applicationContext.getBean(CategoryService.class);
-        String[] categoryNames = { "Institucija", "Festival", "Kulturno dobro" };
+        String[] categoryNames = {"Institucija", "Festival", "Kulturno dobro"};
         ArrayList<CategoryDTO> categoryList = new ArrayList<CategoryDTO>();
-        for (int i = 0; i < CATEGORY_COUNT; i++)
-        {
+        for (int i = 0; i < CATEGORY_COUNT; i++) {
             while (true) {
                 try {
                     CategoryDTO dto = new CategoryDTO(categoryNames[i]);
@@ -176,13 +173,11 @@ public abstract class MockDataGenerator {
     private static ArrayList<SubcategoryDTO> GenerateSubcategories(ApplicationContext applicationContext, List<CategoryDTO> categoryList) {
         SubcategoryService subcategoryService = applicationContext.getBean(SubcategoryService.class);
         ArrayList<SubcategoryDTO> subcategoryList = new ArrayList<>();
-        for (CategoryDTO category : categoryList)
-        {
+        for (CategoryDTO category : categoryList) {
             int randomCount = random.nextInt(SUBCATEGORIES_PER_CATEGORY_MAX - SUBCATEGORIES_PER_CATEGORY_MIN);
             int subcategoryRandomCount = SUBCATEGORIES_PER_CATEGORY_MIN + randomCount;
 
-            for (int i = 0; i < subcategoryRandomCount; i++)
-            {
+            for (int i = 0; i < subcategoryRandomCount; i++) {
                 while (true) {
                     try {
                         SubcategoryDTO dto = new SubcategoryDTO(category.getName() + "_" + i, category.getId());
@@ -200,13 +195,11 @@ public abstract class MockDataGenerator {
     private static ArrayList<CulturalOfferDTO> GenerateCulturalOffers(ApplicationContext applicationContext, List<SubcategoryDTO> subcategoryList, List<AdminDTO> adminList) {
         CulturalOfferService culturalOfferService = applicationContext.getBean(CulturalOfferService.class);
         ArrayList<CulturalOfferDTO> culturalOfferList = new ArrayList<>();
-        for (SubcategoryDTO subcategory : subcategoryList)
-        {
+        for (SubcategoryDTO subcategory : subcategoryList) {
             int randomCount = random.nextInt(CULTURAL_OFFERS_PER_SUBCATEGORY_MAX - CULTURAL_OFFERS_PER_SUBCATEGORY_MIN);
             int culturalOfferRandomCount = CULTURAL_OFFERS_PER_SUBCATEGORY_MIN + randomCount;
 
-            for (int i = 0; i < culturalOfferRandomCount; i++)
-            {
+            for (int i = 0; i < culturalOfferRandomCount; i++) {
                 while (true) {
                     try {
                         float longitude = LONGITUDE_MIN + random.nextFloat() * (LONGITUDE_MAX - LONGITUDE_MIN);
@@ -237,8 +230,7 @@ public abstract class MockDataGenerator {
             int randomCount = random.nextInt(SUBSCRIPTIONS_PER_USER_MAX - SUBSCRIPTIONS_PER_USER_MIN);
             int subscriptionsRandomCount = SUBSCRIPTIONS_PER_USER_MIN + randomCount;
 
-            for (int i = 0; i < subscriptionsRandomCount; i++)
-            {
+            for (int i = 0; i < subscriptionsRandomCount; i++) {
                 while (true) {
                     try {
                         SubscriptionDTO dto;
@@ -269,8 +261,7 @@ public abstract class MockDataGenerator {
             int randomCount = random.nextInt(POSTS_PER_CULTURAL_OFFER_MAX - POSTS_PER_CULTURAL_OFFER_MIN);
             int postsRandomCount = POSTS_PER_CULTURAL_OFFER_MIN + randomCount;
 
-            for (int i = 0; i < postsRandomCount; i++)
-            {
+            for (int i = 0; i < postsRandomCount; i++) {
                 while (true) {
                     try {
                         Set<PictureDTO> pictureSet = new HashSet<>();
@@ -305,13 +296,12 @@ public abstract class MockDataGenerator {
             int randomCount = random.nextInt(REVIEWS_PER_USER_MAX - REVIEWS_PER_USER_MIN);
             int reviewsRandomCount = REVIEWS_PER_USER_MIN + randomCount;
 
-            for (int i = 0; i < reviewsRandomCount; i++)
-            {
+            for (int i = 0; i < reviewsRandomCount; i++) {
                 while (true) {
                     try {
                         ReviewDTO dto = new ReviewDTO((long) (random.nextInt(5) + 1),
                                 faker.rickAndMorty().quote(),
-                                user.getId(),
+                                user,
                                 culturalOfferList.get(random.nextInt(culturalOfferList.size())).getId());
                         reviewService.create(dto);
                         break;

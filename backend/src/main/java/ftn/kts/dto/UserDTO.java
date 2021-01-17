@@ -1,5 +1,7 @@
 package ftn.kts.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
@@ -12,6 +14,7 @@ public class UserDTO {
     @Email(message = "Username should be your email address!")
     private String username;
     @NotBlank(message = "Password is required!")
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     public UserDTO() {}
@@ -27,6 +30,17 @@ public class UserDTO {
     	this.name = name;
         this.username = username;
         this.password = password;
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+
+        if (!(obj instanceof UserDTO)) return false;
+
+        UserDTO user = (UserDTO) obj;
+        return user.getId().equals(this.id) && user.getUsername().equals(this.getUsername());
     }
 
     public Long getId() {

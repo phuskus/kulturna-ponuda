@@ -1,5 +1,5 @@
 <div class="root">
-  <mat-drawer-container class="drawer-container" autosize style="height: 100%">
+  <mat-drawer-container class="drawer-container" autosize>
     <!-- TOOLBAR -->
     <mat-toolbar color="primary">
       <button
@@ -16,7 +16,7 @@
         mat-icon-button
         class="example-icon favorite-icon"
         aria-label="Example icon-button with heart icon"
-        (click) = "openLink()"
+        (click)="openLink()"
       >
         <mat-icon>favorite</mat-icon>
       </button>
@@ -24,7 +24,7 @@
         mat-icon-button
         class="example-icon"
         aria-label="Example icon-button with share icon"
-        (click) = "openLink()"
+        (click)="openLink()"
       >
         <mat-icon>share</mat-icon>
       </button>
@@ -41,7 +41,10 @@
 
         <!-- ICON LIST -->
         <mat-nav-list class="nav-list">
-          <mat-list-item *ngFor="let link of links" [class]="getLastUrlPath() == link.route ? 'disabled-link' : ''">
+          <mat-list-item
+            *ngFor="let link of links"
+            [class]="getLastUrlPath() == link.route ? 'disabled-link' : ''"
+          >
             <mat-icon mat-list-icon>{{link.icon}}</mat-icon>
             <a matLine [href]="link.route">{{ link.text }}</a>
           </mat-list-item>
@@ -50,5 +53,10 @@
         <button mat-raised-button color="primary" class="child">LOGOUT</button>
       </div>
     </mat-drawer>
+
+    <div class="main">
+      <app-admin-table></app-admin-table>
+      <!-- <app-review-table></app-review-table> -->
+    </div>
   </mat-drawer-container>
 </div>

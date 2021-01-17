@@ -70,8 +70,8 @@ public class ReviewService {
 	}
 
 	private Review toEntity(ReviewDTO dto) {
-		RegisteredUser user = userService.getOne(dto.getUser());
-		CulturalOffer offer = offerService.getOne(dto.getCulturalOffer());
+		RegisteredUser user = userService.getOne(dto.getUser().getId());
+		CulturalOffer offer = offerService.getOne(dto.getCulturalOfferId());
 		return new Review(dto.getId(), dto.getRating(), dto.getContent(), user, offer);
 	}
 
@@ -85,8 +85,8 @@ public class ReviewService {
 	private Review updateCategory(Review review, ReviewDTO dto) {
 		review.setRating(dto.getRating());
 		review.setContent(dto.getContent());
-		review.setCulturalOffer(offerService.getOne(dto.getCulturalOffer()));
-		review.setUser(userService.getOne(dto.getUser()));
+		review.setCulturalOffer(offerService.getOne(dto.getCulturalOfferId()));
+		review.setUser(userService.getOne(dto.getUser().getId()));
 
 		return review;
 	}
