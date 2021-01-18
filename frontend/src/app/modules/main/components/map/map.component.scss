@@ -1,13 +1,14 @@
-mgl-map {
+#map {
     /* height : calc(100% - 1px); */
     height: 100%;
     width: 100%;
     margin: 0px;
     padding: 0px;
+    z-index: 0;
   }
-  .mapboxgl-canvas {
+  /*.mapboxgl-canvas {
     margin: 0px;
     padding: 0px;
     background-color: gray;
     width: 100% !important;
-  }
+  }*/

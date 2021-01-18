@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MapComponent } from './components/map/map.component';
-import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MatCardModule } from '@angular/material/card';
@@ -61,11 +60,6 @@ import { StarRatingComponent } from 'src/app/shared/components/star-rating/star-
     MatIconModule,
 
     MainRoutingModule,
-
-    NgxMapboxGLModule.withConfig({
-      accessToken:
-        'pk.eyJ1Ijoic3N0ZWYiLCJhIjoiY2thMDEzMXBpMGNpYjNmcG11Y2ozYTlucCJ9.GDzoIBfJMXOLfL1vxMuGnw',
-    }),
   ],
 })
 export class MainModule {}
