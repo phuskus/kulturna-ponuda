@@ -10,12 +10,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
-import {MatTableModule} from '@angular/material/table';
-import {MatSortModule} from '@angular/material/sort';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatPaginatorModule} from '@angular/material/paginator';
-
-
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminPage } from './pages/admin-page/admin.page';
@@ -26,11 +24,17 @@ import { DeleteReviewDialogComponent } from './components/reviews/dialogs/delete
 import { AddAdminDialogComponent } from './components/admins/admin-dialogs/add-admin-dialog/add-admin-dialog.component';
 import { DeleteAdminDialogComponent } from './components/admins/admin-dialogs/delete-admin-dialog/delete-admin-dialog.component';
 import { FormsModule } from '@angular/forms';
-import { UpdateAdminDialogComponent } from './components/admins/admin-dialogs/update-admin-dialog/update-admin-dialog.component';
-
 
 @NgModule({
-  declarations: [AdminPage, ReviewTableComponent, AdminTableComponent, DeleteReviewDialogComponent, AddAdminDialogComponent, DeleteReviewDialogComponent, DeleteAdminDialogComponent, UpdateAdminDialogComponent],
+  declarations: [
+    AdminPage,
+    ReviewTableComponent,
+    AdminTableComponent,
+    DeleteReviewDialogComponent,
+    AddAdminDialogComponent,
+    DeleteReviewDialogComponent,
+    DeleteAdminDialogComponent,
+  ],
   imports: [
     CommonModule,
     AdminRoutingModule,
