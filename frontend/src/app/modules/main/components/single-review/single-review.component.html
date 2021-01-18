@@ -3,14 +3,14 @@
       <ngx-avatar value="S" size="45"></ngx-avatar>
     </div>
     <div fxLayout="column" fxLayoutAlign="center start">
-      {{ review.name }}
+      {{ review.user.name }}
       <app-star-rating [maxRating]=5 [rating]="review.rating" [size]="25" [readonly]="true"></app-star-rating>
     </div>
   </div>
 
   <p style="margin-top: 8px;">
-    {{ review.text }}
+    {{ review.content }}
   </p>
 
-  <carousel [cellsToShow]="3" [images]="review.images" [borderRadius]="10">
+  <carousel [cellsToShow]="3" [images]="review.pictures" [borderRadius]="10">
   </carousel>

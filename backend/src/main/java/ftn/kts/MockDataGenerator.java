@@ -3,6 +3,7 @@ package ftn.kts;
 import com.github.javafaker.Faker;
 import ftn.kts.dto.*;
 import ftn.kts.model.Category;
+import ftn.kts.model.CulturalOffer;
 import ftn.kts.model.Subcategory;
 import ftn.kts.repository.*;
 import ftn.kts.service.*;
@@ -299,10 +300,11 @@ public abstract class MockDataGenerator {
             for (int i = 0; i < reviewsRandomCount; i++) {
                 while (true) {
                     try {
+                        CulturalOfferDTO offer = culturalOfferList.get(random.nextInt(culturalOfferList.size()));
                         ReviewDTO dto = new ReviewDTO((long) (random.nextInt(5) + 1),
                                 faker.rickAndMorty().quote(),
                                 user,
-                                culturalOfferList.get(random.nextInt(culturalOfferList.size())).getId());
+                                offer.getId(), offer.getName());
                         reviewService.create(dto);
                         break;
                     } catch (Exception e) {

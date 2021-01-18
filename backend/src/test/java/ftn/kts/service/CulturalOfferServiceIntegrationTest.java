@@ -88,8 +88,8 @@ public class CulturalOfferServiceIntegrationTest {
 		CulturalOffer cultOffer = cultOfferService.getOne(DB_CULTURAL_OFFER_ID);
 		Set<ReviewDTO> reviewsDTO = new HashSet<>();
 		UserDTO user = new UserDTO(1L, "name", "user", "pass");
-		ReviewDTO review1 = new ReviewDTO(1L, 5L, "Otkazano zbog korone", user, 2L);
-		ReviewDTO review2 = new ReviewDTO(2L, 0L, "Ne valja nista", user, 2L);
+		ReviewDTO review1 = new ReviewDTO(1L, 5L, "Otkazano zbog korone", user, 2L, "name");
+		ReviewDTO review2 = new ReviewDTO(2L, 0L, "Ne valja nista", user, 2L, "name");
 		reviewsDTO.add(review1);
 		reviewsDTO.add(review2);
 		Set<PostDTO> postsDTO = new HashSet<>();

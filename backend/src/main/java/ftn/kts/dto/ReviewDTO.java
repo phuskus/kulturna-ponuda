@@ -20,6 +20,7 @@ public class ReviewDTO {
 
     private UserDTO user;
     private Long culturalOfferId;
+    private String culturalOfferName;
 
     private Set<PictureDTO> pictures;
 
@@ -34,40 +35,45 @@ public class ReviewDTO {
         this.content = content;
         this.user = new UserDTO(user.getId(), user.getName(),user.getUsername(), user.getPassword());
         this.culturalOfferId = offer.getId();
+        this.culturalOfferName = offer.getName();
         this.pictures = new HashSet<>();
     }
 
-    public ReviewDTO(Long rating, String content, User user, Long offerId) {
+    public ReviewDTO(Long rating, String content, User user, Long offerId, String culturalOfferName) {
         this.rating = rating;
         this.content = content;
         this.user = new UserDTO(user.getId(), user.getName(),user.getUsername(), user.getPassword());
         this.culturalOfferId = offerId;
+        this.culturalOfferName = culturalOfferName;
         this.pictures = new HashSet<>();
     }
 
-    public ReviewDTO(Long rating, String content, UserDTO user, Long offerId) {
+    public ReviewDTO(Long rating, String content, UserDTO user, Long offerId, String culturalOfferName) {
         this.rating = rating;
         this.content = content;
         this.user = user;
         this.culturalOfferId = offerId;
+        this.culturalOfferName = culturalOfferName;
         this.pictures = new HashSet<>();
     }
     
-    public ReviewDTO(Long id, Long rating, String content, User user, Long offerId) {
+    public ReviewDTO(Long id, Long rating, String content, User user, Long offerId, String culturalOfferName) {
         this.id = id;
     	this.rating = rating;
         this.content = content;
         this.user = new UserDTO(user.getId(), user.getName(),user.getUsername(), user.getPassword());
         this.culturalOfferId = offerId;
+        this.culturalOfferName = culturalOfferName;
         this.pictures = new HashSet<>();
     }
 
-    public ReviewDTO(Long id, Long rating, String content, UserDTO user, Long offerId) {
+    public ReviewDTO(Long id, Long rating, String content, UserDTO user, Long offerId, String culturalOfferName) {
         this.id = id;
         this.rating = rating;
         this.content = content;
         this.user = user;
         this.culturalOfferId = offerId;
+        this.culturalOfferName = culturalOfferName;
         this.pictures = new HashSet<>();
     }
     

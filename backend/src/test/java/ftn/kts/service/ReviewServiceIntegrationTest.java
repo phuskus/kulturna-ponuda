@@ -55,7 +55,7 @@ public class ReviewServiceIntegrationTest {
     @Test
     public void createDelete_ValidNewObject_CreatesAndDeletesSuccessfully(){
         UserDTO user = new UserDTO(EXISTENT_USER_ID, "name", EXISTEND_USERNAME, "pass");
-        ReviewDTO review = new ReviewDTO(NEW_RATING, NEW_CONTENT, user, EXISTENT_OFFER_ID);
+        ReviewDTO review = new ReviewDTO(NEW_RATING, NEW_CONTENT, user, EXISTENT_OFFER_ID, "name");
         ReviewDTO createdReview = reviewService.create(review);
         assertEquals(review, createdReview);
 

@@ -1,4 +1,5 @@
 import Model from "./Model";
+import { Picture } from "./Picture";
 import { User } from "./User";
 
 export interface Review extends Model {
@@ -6,5 +7,6 @@ export interface Review extends Model {
   content: string;
   user: User;
   culturalOfferId: number;
-  pictures: Array<string>;
+  culturalOfferName: string;
+  pictures: Picture[];
 }
