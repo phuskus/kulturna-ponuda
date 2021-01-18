@@ -12,7 +12,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { BaseService } from 'src/app/services/base/base.service';
 import Model from 'src/app/shared/models/Model';
-import Dialog from '../dialog/Dialog';
+import Dialog from '../../../../shared/dialog/Dialog';
 
 @Component({
   template: '',
@@ -40,7 +40,7 @@ export abstract class AbstractTable implements AfterViewInit {
     });
   }
 
-  openDialog(type: ComponentType<unknown>, row: Model): void {
+  openDialog(type: ComponentType<unknown>, row?: Model): void {
     this.dialog.open(type, {
       data: row,
     });

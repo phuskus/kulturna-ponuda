@@ -5,6 +5,7 @@ import { Admin } from 'src/app/shared/models/Admin';
 import { AbstractTable } from '../../table/AbstractTable';
 import { AddAdminDialogComponent } from '../admin-dialogs/add-admin-dialog/add-admin-dialog.component';
 import { DeleteAdminDialogComponent } from '../admin-dialogs/delete-admin-dialog/delete-admin-dialog.component';
+import { UpdateAdminDialogComponent } from '../admin-dialogs/update-admin-dialog/update-admin-dialog.component';
 
 @Component({
   selector: 'app-admin-table',
@@ -18,7 +19,11 @@ export class AdminTableComponent extends AbstractTable {
   }
 
   openAddDialog(): void {
-    this.openDialog(AddAdminDialogComponent, {id: null});
+    this.openDialog(AddAdminDialogComponent);
+  }
+
+  openUpdateDialog(row: Admin): void {
+    this.openDialog(UpdateAdminDialogComponent, row);
   }
 
   openDeleteDialog(row: Admin): void {

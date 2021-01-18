@@ -20,6 +20,13 @@
         <th mat-header-cell *matHeaderCellDef>Actions</th>
         <td mat-cell *matCellDef="let row">
           <button
+          mat-icon-button
+          (click)="openUpdateDialog(row)"
+          disableRipple="true"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+          <button
             mat-icon-button
             (click)="openDeleteDialog(row)"
             disableRipple="true"

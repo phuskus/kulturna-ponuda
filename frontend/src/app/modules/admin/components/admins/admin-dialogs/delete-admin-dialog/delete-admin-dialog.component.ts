@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AdminService } from 'src/app/services/admin/admin.service';
-import Model from 'src/app/shared/models/Model';
-import DeleteDialog from '../../../dialog/DeleteDialog';
+import { Admin } from 'src/app/shared/models/Admin';
+import DeleteDialog from '../../../../../../shared/dialog/DeleteDialog';
 
 @Component({
   selector: 'app-delete-admin-dialog',
@@ -13,7 +13,7 @@ export class DeleteAdminDialogComponent extends DeleteDialog<DeleteAdminDialogCo
   constructor(
     public dialogRef: MatDialogRef<DeleteAdminDialogComponent>,
     public service: AdminService,
-    @Inject(MAT_DIALOG_DATA) public data: Model
+    @Inject(MAT_DIALOG_DATA) public data: Admin
   ) {
     super(dialogRef, service, data);
   }

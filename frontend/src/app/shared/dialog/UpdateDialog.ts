@@ -7,17 +7,20 @@ import Dialog from './Dialog';
 @Component({
   template: '',
 })
-export default abstract class AddDialog<T> extends Dialog<T> {
+export default abstract class UpdateDialog<T> extends Dialog<T> {
+  newObj: Model;
+
   constructor(
     public dialogRef: MatDialogRef<T>,
     public service: BaseService,
     @Inject(MAT_DIALOG_DATA) public data: Model
   ) {
     super(dialogRef, service);
+    this.newObj = JSON.parse(JSON.stringify(data));
   }
 
   onSubmit() {
-    this.service.add(this.data);
+    this.service.update(this.newObj.id, this.newObj);
     this.dialogRef.close();
   }
 }

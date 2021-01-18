@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/services/base/base.service';
+import Model from '../models/Model';
 
 @Component({
   template: '',
@@ -10,7 +11,4 @@ export default abstract class Dialog<T> {
 
   abstract onSubmit(): void;
 
-  onAbort(): void {
-    this.dialogRef.close();
-  }
 }

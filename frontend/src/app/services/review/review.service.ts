@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import Model from 'src/app/shared/models/Model';
 import { Review } from '../../shared/models/Review';
 import PagingReturnValue, {
   BaseDynamicPagingService,
@@ -12,6 +13,24 @@ import PagingReturnValue, {
 export class ReviewService extends BaseDynamicPagingService {
   constructor() {
     super();
+  }
+
+  createEmpty(): Review {
+    return {
+      id: 392,
+      rating: 1,
+      content:
+        'Et consequat sunt sit irure culpa non amet ad et officia. Magna ipsum consectetur qui exercitation culpa ut cupidatat culpa proident in minim minim incididunt. Cupidatat ut eu ipsum do ullamco irure eu do aliquip aute id ut.\r\n',
+      user: {
+        id: 279,
+        name: 'Celia James',
+        username: 'Marian',
+        password: '',
+      },
+      culturalOfferId: 314,
+      culturalOfferName: 'Acruex',
+      pictures: [],
+    };
   }
 
   getPage(

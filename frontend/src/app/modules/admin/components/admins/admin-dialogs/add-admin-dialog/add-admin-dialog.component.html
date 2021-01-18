@@ -1,8 +1,23 @@
 <div class="review-dialog">
   <h1 mat-dialog-title class="text-centre">Add Admin</h1>
-  <div mat-dialog-content></div>
+  <div mat-dialog-content fxLayout="column">
+    <mat-form-field class="example-full-width">
+      <mat-label>Name</mat-label>
+      <input matInput [(ngModel)]="newObj.name" name="name" />
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Username</mat-label>
+      <input matInput [(ngModel)]="newObj.username" name="username" />
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Password</mat-label>
+      <input matInput [(ngModel)]="newObj.password" name="password" />
+    </mat-form-field>
+  </div>
   <div fxLayout="row" fxLayoutAlign="end" mat-dialog-actions>
-    <button mat-button class="button-option-alt" (click)="onAbort()">
+    <button mat-button class="button-option-alt" mat-dialog-close>
       Cancel
     </button>
     <button mat-button class="button-option-main" (click)="onSubmit()">

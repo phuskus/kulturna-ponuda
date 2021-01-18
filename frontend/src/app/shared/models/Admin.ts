@@ -1,6 +1,6 @@
 import Model from './Model';
 
-export interface Admin extends Model {
+export class Admin extends Model {
   name: string;
   username: string;
   password: string;

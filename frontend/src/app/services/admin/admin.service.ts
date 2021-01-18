@@ -11,17 +11,30 @@ export class AdminService extends BaseService {
     super();
   }
 
+  createEmpty(): Admin {
+    return {
+      id: 0, 
+      name: '',
+      username: '',
+      password: '',
+      categories: [],
+      culutralOffers: []
+    }
+  }
+
   getAll(): Observable<Admin[]> {
     return of(ADMINS);
   }
 
   add(admin: Admin): Observable<Admin[]> {
     alert('admin added');
+    console.log(admin);
     return null;
   }
 
   update(id: number, admin: Admin): Observable<Admin[]> {
     alert(`admin ${id} updated`);
+    console.log(admin);
     return null;
   }
 

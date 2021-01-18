@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { NgModelGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import Model from 'src/app/shared/models/Model';
 
@@ -7,6 +8,8 @@ import Model from 'src/app/shared/models/Model';
 })
 export abstract class BaseService {
   constructor() {}
+
+  abstract createEmpty(): Model;
 
   abstract getAll(): Observable<Model[]>;
 

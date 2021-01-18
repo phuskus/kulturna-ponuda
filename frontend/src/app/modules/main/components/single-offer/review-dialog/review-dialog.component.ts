@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 // import { ReviewDialogData } from 'src/app/shared/models/ReviewDialogData';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AddAdminDialogComponent } from 'src/app/modules/admin/components/admins/admin-dialogs/add-admin-dialog/add-admin-dialog.component';
-import AddDialog from 'src/app/modules/admin/components/dialog/AddDialog';
+import AddDialog from 'src/app/shared/dialog/AddDialog';
 import { ReviewService } from 'src/app/services/review/review.service';
 import Model from 'src/app/shared/models/Model';
 import { Review } from 'src/app/shared/models/Review';
@@ -36,7 +36,7 @@ export class ReviewDialogComponent extends AddDialog<ReviewDialogComponent> {
     public service: ReviewService,
     @Inject(MAT_DIALOG_DATA) public data: ReviewDialogData // Should be Cult Offer
   ) {
-    super(dialogRef, service, data);
+    super(dialogRef, service);
   }
 
   onRatingChanged(newValue: number): void {

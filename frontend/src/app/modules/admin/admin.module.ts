@@ -25,15 +25,18 @@ import { AdminTableComponent } from './components/admins/admin-table/admin-table
 import { DeleteReviewDialogComponent } from './components/reviews/dialogs/delete-review-dialog/delete-review-dialog.component';
 import { AddAdminDialogComponent } from './components/admins/admin-dialogs/add-admin-dialog/add-admin-dialog.component';
 import { DeleteAdminDialogComponent } from './components/admins/admin-dialogs/delete-admin-dialog/delete-admin-dialog.component';
+import { FormsModule } from '@angular/forms';
+import { UpdateAdminDialogComponent } from './components/admins/admin-dialogs/update-admin-dialog/update-admin-dialog.component';
 
 
 @NgModule({
-  declarations: [AdminPage, ReviewTableComponent, AdminTableComponent, DeleteReviewDialogComponent, AddAdminDialogComponent, DeleteReviewDialogComponent, DeleteAdminDialogComponent],
+  declarations: [AdminPage, ReviewTableComponent, AdminTableComponent, DeleteReviewDialogComponent, AddAdminDialogComponent, DeleteReviewDialogComponent, DeleteAdminDialogComponent, UpdateAdminDialogComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,
 
     FlexLayoutModule,
+    FormsModule,
 
     MatCardModule,
     MatButtonModule,
