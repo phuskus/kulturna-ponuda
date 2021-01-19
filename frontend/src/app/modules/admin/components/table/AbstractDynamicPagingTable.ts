@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractTable } from './AbstractTable';
-import { merge, Observable, of as observableOf } from 'rxjs';
+import { merge, Observable, of as observableOf, pipe } from 'rxjs';
 import { catchError, delay, map, startWith, switchMap } from 'rxjs/operators';
 import { BaseDynamicPagingService } from 'src/app/services/base/base-dynamic-paging.service';
 import Model from 'src/app/shared/models/Model';
@@ -20,18 +20,23 @@ export abstract class AbstractDynamicPagingTable extends AbstractTable {
     super(service, dialog);
   }
 
-  getTableData(): void {
+  ngAfterViewInit(): void {
+    // subscribe to sort and paginator changes to fetch data
+    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
     merge(this.sort.sortChange, this.paginator.page)
-      .pipe(
-        startWith({}),
-        switchMap(() => this.fetchData()),
-        // delay(1000),
-        map((data) => this.collectFetchedData(data)),
-        catchError(() => this.handleError())
-      )
+      .pipe(this.getDataPipeline())
       .subscribe((data) => {
         this.dataSource.data = data;
       });
+  }
+
+  getDataPipeline() {
+    return pipe(
+      startWith({}),
+      switchMap(() => this.fetchData()),
+      map((data) => this.collectFetchedData(data)),
+      catchError(() => this.handleError())
+    );
   }
 
   fetchData(): Observable<Page<Model>> {

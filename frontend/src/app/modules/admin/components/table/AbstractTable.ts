@@ -12,7 +12,6 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { BaseService } from 'src/app/services/base/base.service';
 import Dialog from 'src/app/shared/dialog/Dialog';
-import UpdateDialog from 'src/app/shared/dialog/UpdateDialog';
 import Model from 'src/app/shared/models/Model';
 
 @Component({
@@ -32,7 +31,7 @@ export abstract class AbstractTable implements AfterViewInit {
     this.getTableData();
   }
 
-  getTableData(): void {
+  private getTableData(): void {
     this.service.getAll().subscribe((data) => {
       this.dataSource.data = data;
       this.dataSource.paginator = this.paginator;

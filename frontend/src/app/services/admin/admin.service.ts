@@ -20,27 +20,6 @@ export class AdminService extends BaseService {
       password: '',
     };
   }
-
-  // getAll(): Observable<Admin[]> {
-  //   return of(ADMINS);
-  // }
-
-  // add(admin: Admin): Observable<Admin[]> {
-  //   alert('admin added');
-  //   console.log(admin);
-  //   return null;
-  // }
-
-  // update(id: number, admin: Admin): Observable<Admin[]> {
-  //   alert(`admin ${id} updated`);
-  //   console.log(admin);
-  //   return null;
-  // }
-
-  // delete(id: number): Observable<Admin[]> {
-  //   alert(`admin ${id} deleted`);
-  //   return null;
-  // }
 }
 
 const ADMINS: Admin[] = [
