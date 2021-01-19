@@ -69,15 +69,16 @@ public class AdminService {
     }
 
     protected Admin toEntity(AdminDTO dto) {
-        return new Admin(dto.getName(), dto.getUsername(), dto.getPassword());
+        return new Admin(dto.getName(), dto.getSurname(), dto.getUsername(), dto.getPassword(), dto.getCategories(), dto.getCulturalOffers());
     }
 
     private AdminDTO toDTO(Admin admin) {
-        return new AdminDTO(admin.getId(), admin.getName(), admin.getUsername(), admin.getPassword());
+        return new AdminDTO(admin.getId(), admin.getName(), admin.getSurname(), admin.getUsername(), admin.getPassword(), admin.getCategories(), admin.getCulturalOffers());
     }
 
     private Admin updateAdmin(Admin admin, AdminDTO dto) {
         admin.setName(dto.getName());
+        admin.setSurname(dto.getSurname());
         admin.setUsername(dto.getUsername());
         admin.setPassword(dto.getPassword());
 //        admin.setCategories(dto.getCategories());

@@ -44,6 +44,13 @@ public class ExceptionHandlers {
 		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 	}
 	
+	@ExceptionHandler(UserException.class)
+	public ResponseEntity<ErrorMessage> loginExceptionHandler(UserException ex, WebRequest request) {
+		ErrorMessage message = new ErrorMessage(ex.getMessage());
+		message.getErrors().put(ex.getCauseField(), ex.getCauseMessage());
+		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+	}
+		
 	@ExceptionHandler(NoSuchElementException.class)
 	public ResponseEntity<ErrorMessage> resourceNotFoundExceptionHandler(NoSuchElementException ex, WebRequest request) {
 		ErrorMessage message = new ErrorMessage(ex.getMessage());

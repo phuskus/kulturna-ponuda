@@ -15,6 +15,8 @@ public class AdminDTO {
     private Long id;
     @NotBlank(message = "Name is required!")
     private String name;
+    @NotBlank(message = "Surname is required!")
+    private String surname;
     @NotBlank(message = "Username is required!")
     private String username;
     @NotBlank(message = "Password is required!")
@@ -24,15 +26,17 @@ public class AdminDTO {
     public AdminDTO() {
     }
 
-    public AdminDTO(String name, String username, String password) {
+    public AdminDTO(String name, String surname, String username, String password) {
         this.name = name;
+        this.surname = surname;
         this.username = username;
         this.password = password;
     }
 
-    public AdminDTO(Long id, String name, String username, String password) {
+    public AdminDTO(Long id, String name, String surname, String username, String password, Set<Category> categories, Set<CulturalOffer> culturalOffers) {
         this.id = id;
         this.name = name;
+        this.surname = surname;
         this.username = username;
         this.password = password;
     }
@@ -44,7 +48,7 @@ public class AdminDTO {
         if (!(obj instanceof AdminDTO)) return false;
 
         AdminDTO admin = (AdminDTO) obj;
-        return this.name.equals(admin.getName()) && this.username.equals(admin.getUsername());
+        return this.name.equals(admin.getName()) && this.surname.equals(admin.getSurname()) && this.username.equals(admin.getUsername());
     }
 
     public Long getId() {
@@ -61,6 +65,14 @@ public class AdminDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+    
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getUsername() {

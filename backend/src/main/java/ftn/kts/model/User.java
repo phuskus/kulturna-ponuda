@@ -21,6 +21,8 @@ public abstract class User implements UserDetails {
 	private Long id;
 	@Column(name = "name", unique = false, nullable = false)
 	private String name;
+	@Column(name = "surname", unique = false, nullable = false)
+	private String surname;
 	@Column(name = "username", unique = true, nullable = false)
 	private String username;
 	@Column(name = "password", unique = false, nullable = false)
@@ -46,8 +48,9 @@ public abstract class User implements UserDetails {
 
 	public User() {}
 
-	public User(String name, String username, String password) {
+	public User(String name, String surname, String username, String password) {
 		this.name = name;
+		this.surname = surname;
 		this.username = username;
 		this.password = password;
 	}
@@ -66,6 +69,14 @@ public abstract class User implements UserDetails {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getSurname() {
+		return surname;
+	}
+
+	public void setSurname(String surname) {
+		this.surname = surname;
 	}
 
 	public String getUsername() {

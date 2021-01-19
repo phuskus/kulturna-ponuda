@@ -10,6 +10,8 @@ public class UserDTO {
     private Long id;
     @NotBlank(message = "Name is required!")
     private String name;
+    @NotBlank(message = "Surname is required")
+    private String surname;
     @NotBlank(message = "Username is required!")
     @Email(message = "Username should be your email address!")
     private String username;
@@ -19,16 +21,18 @@ public class UserDTO {
 
     public UserDTO() {}
 
-    public UserDTO(Long id, String name, String username, String password) {
+    public UserDTO(Long id, String name, String surname, String username, String password) {
         this.id = id;
         this.name = name;
+        this.surname = surname;
         this.username = username;
         this.password = password;
     }
     
-    public UserDTO(String name, String username, String password) {
+    public UserDTO(String name, String surname, String username, String password) {
     	this.name = name;
         this.username = username;
+        this.surname = surname;
         this.password = password;
     }
 
@@ -50,13 +54,21 @@ public class UserDTO {
     public void setId(Long id) {
         this.id = id;
     }
-
+    
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+    
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getUsername() {

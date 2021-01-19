@@ -1,0 +1,20 @@
+@import '../../../login/pages/login-page/login-page.component.scss';
+
+.flex-subcontainer
+{
+  display:inline-flex;
+  flex-direction:row;
+}
+
+.flex-subcontainer > mat-form-field
+{
+  flex:1 0 45%;
+  align-self: center;
+  margin: 0;
+}
+
+.success {
+  color: green;
+  font-size: small;
+}
+
