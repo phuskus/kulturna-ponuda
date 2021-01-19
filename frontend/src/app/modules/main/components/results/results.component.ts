@@ -1,10 +1,10 @@
 import { PageParams } from './../../../../model/PageParams';
 import { CulturalOffer } from './../../../../model/CulturalOffer';
-import { OfferService } from './../../../../services/offer/offer.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CulturalOfferPage } from 'src/app/model/CulturalOfferPage';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { OfferService } from 'src/app/services/offer/offer.service';
 
 @Component({
   selector: 'app-results',
@@ -16,37 +16,31 @@ export class ResultsComponent implements OnInit {
 
   public loading: boolean = true;
 
-  public category: string = "";
-  public query: string = "";
+  public category: string = '';
+  public query: string = '';
 
   public page: number = 1;
   public pageSize: number = 10;
-  public sortBy: string = "id";
+  public sortBy: string = 'id';
   public descending: boolean = false;
 
   public count = 0;
 
+  public sortCriteria = [
+    { name: 'None', value: 'id', selected: true },
+    { name: 'Name', value: 'name', selected: false },
+    { name: 'Description', value: 'description', selected: false },
+    { name: 'Address', value: 'address', selected: false },
+    { name: 'City', value: 'city', selected: false },
+    { name: 'Region', value: 'region', selected: false },
+  ];
+
   public regions = [
-    {
-      name: 'Vojvodina',
-      checked: false
-    },
-    {
-      name: 'Central Serbia',
-      checked: false
-    },
-    {
-      name: 'Eastern Serbia',
-      checked: false
-    },
-    {
-      name: 'Western Serbia',
-      checked: false
-    },
-    {
-      name: 'Southern Serbia',
-      checked: false
-    }
+    { name: 'Vojvodina', checked: false },
+    { name: 'Central Serbia', checked: false },
+    { name: 'Eastern Serbia', checked: false },
+    { name: 'Western Serbia', checked: false },
+    { name: 'Southern Serbia', checked: false },
   ];
 
   public cities = [
@@ -68,12 +62,15 @@ export class ResultsComponent implements OnInit {
     { name: 'Vranje', checked: false },
     { name: 'Zaječar', checked: false },
     { name: 'Negotin', checked: false },
-    { name: 'Užice', checked: false }
+    { name: 'Užice', checked: false },
   ].sort();
 
   public offers: CulturalOffer[] = [];
 
-  constructor(private route: ActivatedRoute, private offerService: OfferService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private offerService: OfferService
+  ) {}
 
   ngOnInit(): void {
     this.subToParamChanges();
@@ -97,33 +94,62 @@ export class ResultsComponent implements OnInit {
       pageNo: this.page - 1,
       pageSize: this.pageSize,
       sortBy: this.sortBy,
-      descending: this.descending
+      descending: this.descending,
     };
     return params;
   }
 
   fetchOffers() {
-    let regionNames = this.regions.filter(r => r.checked).map(r => r.name).join(',');
-    let cityNames = this.cities.filter(c => c.checked).map(c => c.name).join(',');
-    return this.offerService.getCulturalOffers(this.getPageParams(), this.category, this.query, regionNames, cityNames).subscribe((res: CulturalOfferPage) => {
-      this.loading = false;
-      this.offers = res.content;
-      this.count = res.totalElements;
-    });
+    let regionNames = this.regions
+      .filter((r) => r.checked)
+      .map((r) => r.name)
+      .join(',');
+    let cityNames = this.cities
+      .filter((c) => c.checked)
+      .map((c) => c.name)
+      .join(',');
+    return this.offerService
+      .getCulturalOffers(
+        this.getPageParams(),
+        this.category,
+        this.query,
+        regionNames,
+        cityNames
+      )
+      .subscribe((res: CulturalOfferPage) => {
+        this.loading = false;
+        this.offers = res.content;
+        this.count = res.totalElements;
+      });
   }
 
   clearRegions(event?) {
     if (event) {
       event.stopPropagation();
     }
-    this.regions.forEach(region => region.checked = false);
+    this.regions.forEach((region) => (region.checked = false));
   }
 
   clearCities(event?) {
     if (event) {
       event.stopPropagation();
     }
-    this.cities.forEach(city => city.checked = false);
+    this.cities.forEach((city) => (city.checked = false));
+  }
+
+  cancelFilter() {
+    this.clearRegions();
+    this.clearCities();
+  }
+
+  cancelSort() {
+    this.descending = false;
+    this.sortBy = 'id';
+  }
+
+  changeSortDirection(event) {
+    event.stopPropagation();
+    this.descending = !this.descending;
   }
 
   handlePageChange(event): void {

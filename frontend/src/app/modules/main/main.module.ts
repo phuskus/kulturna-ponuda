@@ -18,7 +18,7 @@ import { LandingPageComponent } from './pages/landing-page/landing-page.componen
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-
+import { MatRadioModule } from '@angular/material/radio';
 
 import { ResultsComponent } from './components/results/results.component';
 import { SingleOfferComponent } from './components/single-offer/single-offer.component';
@@ -27,7 +27,6 @@ import { SingleReviewComponent } from './components/single-review/single-review.
 import { SearchComponent } from './components/search/search.component';
 import { CategoryCardComponent } from './components/category-card/category-card.component';
 import { ImageSelectorComponent } from 'src/app/shared/components/image-selector/image-selector.component';
-
 
 import { FormsModule } from '@angular/forms';
 import { ReviewDialogComponent } from './components/single-offer/review-dialog/review-dialog.component';
@@ -68,6 +67,7 @@ import { StarRatingComponent } from 'src/app/shared/components/star-rating/star-
     MatCheckboxModule,
     MatDialogModule,
     MatIconModule,
+    MatRadioModule,
 
     NgxPaginationModule,
 
@@ -79,4 +79,4 @@ import { StarRatingComponent } from 'src/app/shared/components/star-rating/star-
     }),
   ],
 })
-export class MainModule { }
+export class MainModule {}
