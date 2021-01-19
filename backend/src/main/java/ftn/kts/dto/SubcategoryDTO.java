@@ -11,22 +11,29 @@ public class SubcategoryDTO {
     private String name;
     @NotNull(message = "Subcategory needs to belong to a category!")
     private Long categoryId;
-
+    @NotNull(message = "Icon must be selected!")
+    private PictureDTO icon;
+    private boolean containsOffers;
+    
+    
     // TODO: Sets of cultural offers and subscriptions?
     
     public SubcategoryDTO() {
     	
     }
 
-    public SubcategoryDTO(Long id, String name, Category category) {
+    public SubcategoryDTO(Long id, String name, Category category, PictureDTO icon, boolean containsOffers) {
         this.id = id;
         this.name = name;
         this.categoryId = category.getId();
+        this.icon = icon;
+        this.setContainsOffers(containsOffers);
     }
     
-    public SubcategoryDTO(String name, Long categoryId) {
+    public SubcategoryDTO(String name, Long categoryId, PictureDTO icon) {
         this.name = name;
         this.categoryId = categoryId;
+        this.icon = icon;
     }
 
     public Long getId() {
@@ -53,7 +60,23 @@ public class SubcategoryDTO {
         this.categoryId = categoryId;
     }
 
-    @Override
+    public PictureDTO getIcon() {
+		return icon;
+	}
+
+	public void setIcon(PictureDTO icon) {
+		this.icon = icon;
+	}
+
+	public boolean isContainsOffers() {
+		return containsOffers;
+	}
+
+	public void setContainsOffers(boolean containsOffers) {
+		this.containsOffers = containsOffers;
+	}
+
+	@Override
     public boolean equals(Object obj) {
         if (obj == this) return true;
 

@@ -15,11 +15,13 @@ const routes: Routes = [
     component: LandingPageComponent,
     children: [
       { path: '', component: CardbarComponent },
-      { path: 'offers', component: SidebarComponent, children: [
-        {path: 'search/:query', component: ResultsComponent},
-        {path: ':id', component: SingleOfferComponent} //, canActivate: [NoAuthGuard, RoleGuard],
-        //data: { roles: [Role.USER]}}
-      ]},
+      {
+        path: 'offers', component: SidebarComponent, children: [
+          { path: 'search', component: ResultsComponent },
+          { path: ':offerId', component: SingleOfferComponent } //, canActivate: [NoAuthGuard, RoleGuard],
+          //data: { roles: [Role.USER]}}
+        ]
+      },
     ],
   },
 ];
@@ -28,4 +30,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class MainRoutingModule {}
+export class MainRoutingModule { }

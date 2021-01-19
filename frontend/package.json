@@ -28,6 +28,7 @@
     "ng-validate-equal": "^1.0.4",
     "ngx-avatar": "^4.0.0",
     "ngx-mapbox-gl": "^4.8.1",
+    "ngx-pagination": "^5.0.0",
     "rxjs": "~6.6.0",
     "rxjs-compat": "^6.6.3",
     "tslib": "^2.1.0",

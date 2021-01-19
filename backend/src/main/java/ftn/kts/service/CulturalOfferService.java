@@ -1,5 +1,6 @@
 package ftn.kts.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -7,6 +8,7 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +20,7 @@ import ftn.kts.model.CulturalOffer;
 import ftn.kts.model.Picture;
 import ftn.kts.model.Subcategory;
 import ftn.kts.repository.CulturalOfferRepository;
+import ftn.kts.repository.specifications.CulturalOfferSpecification;
 
 @Service
 @Transactional
@@ -76,6 +79,28 @@ public class CulturalOfferService {
 	
 	public List<CulturalOffer> getAll() {
 		return offerRepository.findAll();			
+	}
+	
+
+	public Page<CulturalOfferDTO> filterAll(String categoryName, String query, String regionNames, String cityNames,
+			Pageable paging) {
+		List<String> regionList = new ArrayList<>();
+		List<String> cityList = new ArrayList<>();
+		if (!regionNames.equals("")) {
+			String[] regions = regionNames.split(",");
+			for (String s : regions) {
+				regionList.add(s.toLowerCase());
+			}
+		}
+		if (!cityNames.equals("")) {
+			String[] cities = cityNames.split(",");
+			for (String s : cities) {
+				cityList.add(s.toLowerCase());
+			}
+		}
+		CulturalOfferSpecification spec = new CulturalOfferSpecification(query, categoryName, regionList, cityList);
+		return offerRepository.findAll(spec, paging).map(this::toDTO);
+		
 	}
 
 	public Page<CulturalOfferDTO> filterCategory(long id, Pageable paging) {
@@ -161,4 +186,6 @@ public class CulturalOfferService {
 	public void setPostService(PostService postService) {
 		this.postService = postService;
 	}
+
+
 }

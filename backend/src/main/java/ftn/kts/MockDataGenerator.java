@@ -197,7 +197,8 @@ public abstract class MockDataGenerator {
 
             for (int j = 0; j < subcategories[i].length; j++)
             {
-                SubcategoryDTO dto = new SubcategoryDTO(subcategories[i][j], category.getId());
+            	// TODO: promeniti ovaj null za pravu ikonicu slike
+                SubcategoryDTO dto = new SubcategoryDTO(subcategories[i][j], category.getId(), null);
                 subcategoryList.add(subcategoryService.create(dto));
             }
         }
