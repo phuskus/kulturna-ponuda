@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { AdminPageComponent } from './pages/admin-page/admin-page.component';
+import { AdminPage } from './pages/admin-page/admin.page';
 
-const routes: Routes = [{ path: '', component: AdminPageComponent }];
+const routes: Routes = [{ path: '', component: AdminPage }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

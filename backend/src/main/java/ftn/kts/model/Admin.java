@@ -17,6 +17,7 @@ public class Admin extends User {
     private Set<CulturalOffer> culturalOffers;
 
     public Admin() {
+        super();
         this.categories = new HashSet<>();
         this.categories = new HashSet<>();
     }

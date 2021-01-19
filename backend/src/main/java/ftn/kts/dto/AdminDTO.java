@@ -1,5 +1,6 @@
 package ftn.kts.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import ftn.kts.model.Admin;
 import ftn.kts.model.Category;
 import ftn.kts.model.CulturalOffer;
@@ -11,7 +12,7 @@ import java.util.Set;
 
 public class AdminDTO {
 
-    private Long id;    
+    private Long id;
     @NotBlank(message = "Name is required!")
     private String name;
     @NotBlank(message = "Surname is required!")
@@ -21,12 +22,8 @@ public class AdminDTO {
     @NotBlank(message = "Password is required!")
     private String password;
 
-    private Set<Category> categories;
-    private Set<CulturalOffer> culturalOffers;
 
     public AdminDTO() {
-        this.categories = new HashSet<>();
-        this.culturalOffers = new HashSet<>();
     }
 
     public AdminDTO(String name, String surname, String username, String password) {
@@ -34,18 +31,14 @@ public class AdminDTO {
         this.surname = surname;
         this.username = username;
         this.password = password;
-        this.categories = new HashSet<>();
-        this.culturalOffers = new HashSet<>();
     }
 
-    public AdminDTO(Long id, String name, String surname, String username, String password, Set<Category> categories, Set<CulturalOffer> culturalOffers) {
+    public AdminDTO(Long id, String name, String surname, String username, String password) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.username = username;
         this.password = password;
-        this.categories = categories;
-        this.culturalOffers = culturalOffers;
     }
 
     @Override
@@ -98,19 +91,4 @@ public class AdminDTO {
         this.password = password;
     }
 
-    public Set<Category> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(Set<Category> categories) {
-        this.categories = categories;
-    }
-
-    public Set<CulturalOffer> getCulturalOffers() {
-        return culturalOffers;
-    }
-
-    public void setCulturalOffers(Set<CulturalOffer> culturalOffers) {
-        this.culturalOffers = culturalOffers;
-    }
 }

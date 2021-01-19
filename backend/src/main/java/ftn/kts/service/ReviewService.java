@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLOutput;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -41,6 +42,11 @@ public class ReviewService {
 		return dto;
 	}
 
+	public Page<ReviewDTO> search(String query, Pageable pageable){
+		System.out.println(query.toLowerCase());
+		return reviewRepository.search(query.toLowerCase(), pageable).map(this::toDTO);
+	}
+
 	public ReviewDTO create(ReviewDTO dto) {
 		Review review = toEntity(dto);
 		return toDTO(reviewRepository.save(review));
@@ -70,8 +76,8 @@ public class ReviewService {
 	}
 
 	private Review toEntity(ReviewDTO dto) {
-		RegisteredUser user = userService.getOne(dto.getUser());
-		CulturalOffer offer = offerService.getOne(dto.getCulturalOffer());
+		RegisteredUser user = userService.getOne(dto.getUser().getId());
+		CulturalOffer offer = offerService.getOne(dto.getCulturalOfferId());
 		return new Review(dto.getId(), dto.getRating(), dto.getContent(), user, offer);
 	}
 
@@ -85,8 +91,8 @@ public class ReviewService {
 	private Review updateCategory(Review review, ReviewDTO dto) {
 		review.setRating(dto.getRating());
 		review.setContent(dto.getContent());
-		review.setCulturalOffer(offerService.getOne(dto.getCulturalOffer()));
-		review.setUser(userService.getOne(dto.getUser()));
+		review.setCulturalOffer(offerService.getOne(dto.getCulturalOfferId()));
+		review.setUser(userService.getOne(dto.getUser().getId()));
 
 		return review;
 	}

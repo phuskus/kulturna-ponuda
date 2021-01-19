@@ -25,7 +25,7 @@ insert into subcategories (name, category_id) values ('Sajam', 2);
 insert into subcategories (name, category_id) values ('Spomenik', 3);
 insert into subcategories (name, category_id) values ('Znamenitost', 3);
 
-insert into cultural_offers (address, city, description, latitude, longitude, name, region, admin_id, category_id) 
+insert into cultural_offers (address, city, description, latitude, longitude, name, region, admin_id, category_id)
 			values ('Petrovaradinska Tvrdjava', 'Novi Sad', 'Music festival', 45.2526, 19.8623, 'EXIT festival', 'Vojvodina', 1, 3);
 
 insert into posts (content, cultural_offer_id) values ('Jako vrlo veoma kul', 1);

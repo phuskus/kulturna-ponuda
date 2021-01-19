@@ -29,7 +29,7 @@ public class AdminController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AdminDTO> getAdmin(@PathVariable("id") long id) {
         try {
             return new ResponseEntity<>(service.getOneDTO(id), HttpStatus.OK);
@@ -39,7 +39,7 @@ public class AdminController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Object> addAdmin(@Valid @RequestBody AdminDTO dto) {
         try {
             return new ResponseEntity<>(service.create(dto), HttpStatus.CREATED);
@@ -49,7 +49,7 @@ public class AdminController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Object> updateAdmin(@Valid @RequestBody AdminDTO dto, @PathVariable long id) {
         try {
             AdminDTO updated = service.update(dto, id);
@@ -60,7 +60,7 @@ public class AdminController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AdminDTO> deleteAdmin(@PathVariable("id") long id) {
         try {
             service.delete(id);

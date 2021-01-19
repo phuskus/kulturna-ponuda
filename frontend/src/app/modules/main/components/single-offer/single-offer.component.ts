@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ReviewDialogComponent } from './review-dialog/review-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { Review } from 'src/app/shared/models/Review';
 
 @Component({
   selector: 'app-single-offer',
@@ -10,10 +11,10 @@ import { MatDialog } from '@angular/material/dialog';
 export class SingleOfferComponent implements OnInit {
   constructor(public dialog: MatDialog) {}
 
-  openDialog(): void {
+  openAddDialog(): void {
     this.dialog.open(ReviewDialogComponent, {
       autoFocus: false,
-      data: { offerName: 'Museum of Modern Art' },
+      data: {id: 0, name: 'Museum of Modern Art'},
     });
   }
 
@@ -26,28 +27,42 @@ export class SingleOfferComponent implements OnInit {
     { path: '../../assets/imgs/img-1.jpg' },
   ];
 
-  public review: any = {
-    name: 'Joe Biden',
+  public review: Review = {
+    id: 0,
+    user: { id: 0, name: 'Joe', surname: 'Biden', username: '', password: '' },
     rating: 1,
-    img: '../../assets/imgs/tr.jpg',
-    text:
+    culturalOfferId: 0,
+    culturalOfferName: 'Museum of Modern Art',
+    content:
       "When I was younger, I didn't really understand modern art. Now as an Adult, I",
-    images: [
+    pictures: [
       {
         path:
           'https://s3-media0.fl.yelpcdn.com/bphoto/9d_3VbyQD3rM9fEnz8YC6w/o.jpg',
+        id: 0,
+        placeholder: '',
+        image: '',
       },
       {
         path:
           'https://s3-media0.fl.yelpcdn.com/bphoto/iQWXQYCNSoeDO7shXvbXEw/o.jpg',
+        id: 0,
+        placeholder: '',
+        image: '',
       },
       {
         path:
           'https://s3-media0.fl.yelpcdn.com/bphoto/Edby35itgkcFxzwMvLytDQ/o.jpg',
+        id: 0,
+        placeholder: '',
+        image: '',
       },
       {
         path:
           'https://s3-media0.fl.yelpcdn.com/bphoto/e6i4043nzXxx-7iqQ-Ohsg/o.jpg',
+        id: 0,
+        placeholder: '',
+        image: '',
       },
     ],
   };
