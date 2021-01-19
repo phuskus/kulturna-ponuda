@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AdminPageComponent } from './admin-page.component';
+import { DeleteAdminDialogComponent } from './delete-admin-dialog.component';
 
-describe('AdminPageComponent', () => {
-  let component: AdminPageComponent;
-  let fixture: ComponentFixture<AdminPageComponent>;
+describe('DeleteAdminDialogComponent', () => {
+  let component: DeleteAdminDialogComponent;
+  let fixture: ComponentFixture<DeleteAdminDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AdminPageComponent ]
+      declarations: [ DeleteAdminDialogComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdminPageComponent);
+    fixture = TestBed.createComponent(DeleteAdminDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

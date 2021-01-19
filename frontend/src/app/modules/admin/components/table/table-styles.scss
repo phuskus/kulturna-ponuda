@@ -1,0 +1,60 @@
+@import "~src/styles.scss";
+
+.example-container {
+  position: relative;
+  min-height: 200px;
+  border-radius: 10px;
+}
+
+.paginator {
+  border-radius: 10px;
+}
+
+.card-header {
+  background-color: $accent-color;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: white;
+  padding: 20px 20px 10px;
+}
+
+.example-table-container {
+  position: relative;
+  max-height: 400px;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.example-loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 56px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.new-item-btn {
+  margin: 15px 30px;
+  background-color: $accent-color;
+  color: white;
+}
+
+.search-field {
+  max-width: 400px;
+  margin-right: 1.5%;
+}
