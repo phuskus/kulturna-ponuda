@@ -39,7 +39,6 @@ public class CulturalOfferController {
 	}
 
 	@GetMapping
-	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<Page<CulturalOfferDTO>> getAllOffers(@RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
 			@RequestParam(defaultValue = "false") String descending) {
@@ -60,7 +59,6 @@ public class CulturalOfferController {
 
 
 	@GetMapping("/search")
-	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<Page<CulturalOfferDTO>> filterOffers(@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer pageSize,
 			@RequestParam(defaultValue = "id") String sortBy, @RequestParam(defaultValue = "false") String descending,
 			@RequestParam(defaultValue = "") String categoryName, @RequestParam(defaultValue = "") String query,

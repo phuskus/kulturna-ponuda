@@ -18,13 +18,10 @@ export class OfferService {
   endpoint = 'http://localhost:9001';
 
   constructor(private httpClient: HttpClient) { }
-
-  token = "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImFkbWluMkBnbWFpbC5jb20iLCJhdWQiOiJ3ZWIiLCJpYXQiOjE2MTA5OTQyMjAsImV4cCI6MTYxMTAzNzQyMH0.TY-WDqhfL9KxJvKHnBL5iVGLX0FMKb2NzvFY22gNjDCs2qZCi3BCAqdlDumtGYtWc5Vi_aJdb4gnXOldoX9o2Q";
-
+  
   httpHeaders = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.token}`
     })
   }
 

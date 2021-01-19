@@ -1,0 +1,46 @@
+<div class="review-dialog">
+  <h1 mat-dialog-title class="text-centre">{{ data.offerName }}</h1>
+  <div mat-dialog-content>
+    <div fxLayout="row">
+      <div class="avatar">
+        <ngx-avatar value="S" size="45"></ngx-avatar>
+      </div>
+
+      <div class="username-text" fxLayoutAlign="center center">
+        {{ username }}
+      </div>
+    </div>
+
+    <div class="row-indent">
+      <div class="rating-row">
+        <app-star-rating [maxRating]=5 (newRatingEvent)="onRatingChanged($event)"></app-star-rating>
+      </div>
+
+      <div class="comment-row">
+        <mat-form-field class="text-area">
+          <textarea
+            matInput
+            placeholder="Type something..."
+            cdkTextareaAutosize="false"
+          ></textarea>
+        </mat-form-field>
+      </div>
+
+      <!-- //TODO: figure out why you can't use flexbox parent here -->
+      <!-- <div class="img-row" fxLayout="row wrap" fxLayoutGap="5px"> -->
+      <app-image-selector
+        [multiple]="true"
+        (newFilesEvent)="onFilesSelected($event)"
+      ></app-image-selector>
+      <!-- </div> -->
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="end" fx mat-dialog-actions>
+    <button mat-button mat-dialog-close class="button-option-alt">
+      Cancel
+    </button>
+    <button mat-button (click)="onReviewSubmit()" class="button-option-main" [disabled] = "rating === 0">
+      Post
+    </button>
+  </div>
+</div>

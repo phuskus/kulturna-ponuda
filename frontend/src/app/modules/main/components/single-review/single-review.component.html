@@ -1,9 +1,10 @@
 <div fxLayout="row" class="btn-row">
-    <div fxLayout="column">
-      <img src="../../assets/imgs/tr.jpg" width="50" height="50" alt="" />
+    <div fxLayout="column" fxLayoutAlign="center center">
+      <ngx-avatar value="S" size="45"></ngx-avatar>
     </div>
-    <div fxLayout="column">
-      <p>{{ review.name }}</p>
+    <div fxLayout="column" fxLayoutAlign="center start">
+      {{ review.name }}
+      <app-star-rating [maxRating]=5 [rating]="review.rating" [size]="25" [readonly]="true"></app-star-rating>
     </div>
   </div>
 
