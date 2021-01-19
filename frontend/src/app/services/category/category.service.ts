@@ -10,7 +10,7 @@ import { Category } from 'src/app/model/Category';
 })
 export class CategoryService {
 
-  endpoint = 'http://localhost:9001';
+  endpoint = 'http://localhost:9001/categories';
   
   constructor(private httpClient: HttpClient) { }
 
@@ -21,7 +21,7 @@ export class CategoryService {
   }  
 
   getCategories(): Observable<Category[]> {
-    return this.httpClient.get<Category[]>(this.endpoint + '/categories', this.httpHeaders)
+    return this.httpClient.get<Category[]>(this.endpoint, this.httpHeaders)
     .pipe(
       retry(1),
       catchError(this.processError)

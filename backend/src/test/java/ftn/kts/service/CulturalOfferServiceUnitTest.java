@@ -45,7 +45,7 @@ public class CulturalOfferServiceUnitTest {
 
 	@Before
 	public void setup() {
-		Admin admin = new Admin("Admin", "admin@test.com", "admin");
+		Admin admin = new Admin("Admin", "Admin", "admin@test.com", "admin");
 		admin.setId(1L);
 
 		Category cat = new Category("New category");

@@ -15,10 +15,10 @@ import { CulturalOfferPage } from 'src/app/model/CulturalOfferPage';
 })
 export class OfferService {
 
-  endpoint = 'http://localhost:9001';
+  private readonly endpoint = 'http://localhost:9001/cultural_offers/search';
 
   constructor(private httpClient: HttpClient) { }
-  
+
   httpHeaders = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ export class OfferService {
       .set('regionNames', regionNames)
       .set('cityNames', cityNames);
     const options = { ...this.httpHeaders, params };
-    return this.httpClient.get<CulturalOfferPage>(this.endpoint + '/cultural_offers/search', options)
+    return this.httpClient.get<CulturalOfferPage>(this.endpoint , options)
       .pipe(
         retry(1),
         catchError(this.processError)

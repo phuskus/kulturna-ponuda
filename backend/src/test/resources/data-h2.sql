@@ -2,10 +2,10 @@ insert into authorities (name) values ('ROLE_USER');
 insert into authorities (name) values ('ROLE_ADMIN');
 
 /* password is name (test1, test2, admin1, admin2) */
-insert into users (name, username, password, enabled, role, last_password_reset_date) values ('test1', 'test1@gmail.com', '$2a$10$5JOhdCnEYE5pMO0mXMjRGeYP35rE5nF3wA2q5qnGSEhnowJ7AWUFe', true, 'USER', '2020-12-07 16:00:00.508-07');
-insert into users (name, username, password, enabled, role, key, last_password_reset_date) values ('test2', 'test2@gmail.com', '$2a$10$3/P/qXmm16QDY0mDFXjRKem0Weq1GESCi8sVWHKhC6J2h.qLiWcWW', false, 'USER', 'test-key', '2020-12-19 13:05:59.222');
-insert into users (name, username, password, enabled, role, last_password_reset_date) values ('admin1', 'admin1@gmail.com', '$2a$10$RbxZeg4k0qtP6CY9OKeIPujXP2woY34EikC36tbg.DVhbgwbCREii', true, 'ADMIN', '2020-12-19 13:05:59.222');
-insert into users (name, username, password, enabled, role) values ('admin2', 'admin2@gmail.com', '$2a$10$aWgpmYlLE/ml9MECgeggtuKgjUUe6iyYH0qa.jspVPQAJbjp.Vcji', true, 'ADMIN');
+insert into users (name, surname, username, password, enabled, role, last_password_reset_date) values ('test1', 'test1', 'test1@gmail.com', '$2a$10$5JOhdCnEYE5pMO0mXMjRGeYP35rE5nF3wA2q5qnGSEhnowJ7AWUFe', true, 'USER', '2020-12-07 16:00:00.508-07');
+insert into users (name, surname, username, password, enabled, role, key, last_password_reset_date) values ('test2', 'test2', 'test2@gmail.com', '$2a$10$3/P/qXmm16QDY0mDFXjRKem0Weq1GESCi8sVWHKhC6J2h.qLiWcWW', false, 'USER', 'test-key', '2020-12-19 13:05:59.222');
+insert into users (name, surname, username, password, enabled, role, last_password_reset_date) values ('admin1', 'admin1', 'admin1@gmail.com', '$2a$10$RbxZeg4k0qtP6CY9OKeIPujXP2woY34EikC36tbg.DVhbgwbCREii', true, 'ADMIN', '2020-12-19 13:05:59.222');
+insert into users (name, surname, username, password, enabled, role) values ('admin2', 'admin2', 'admin2@gmail.com', '$2a$10$aWgpmYlLE/ml9MECgeggtuKgjUUe6iyYH0qa.jspVPQAJbjp.Vcji', true, 'ADMIN');
 
 insert into user_authority (user_id, authority_id) values (1, 1);
 insert into user_authority (user_id, authority_id) values (2, 1);

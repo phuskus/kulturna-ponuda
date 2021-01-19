@@ -65,7 +65,7 @@
       itemsPerPage: pageSize,
           currentPage: page,
           totalItems: count
-    };" [routerLink]="'/category/' + subcatId + '/offer/' + offer.id">
+    };" [routerLink]="'/offers/' + offer.id">
     <div fxLayout="row">
       <div fxLayout="column" class="img-col">
         <img [src]="offer.pictures[0].image" />

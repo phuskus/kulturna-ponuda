@@ -69,7 +69,7 @@ public class AdminControllerIntegrationTest {
     @Test
     public void add_ValidAdmin_ReturnsCreatedAndAdmin() {
         int size = adminService.getAllDTO().size();
-        AdminDTO dto = new AdminDTO("nametest", "testusername", "pass");
+        AdminDTO dto = new AdminDTO("nametest", "surnametest", "testusername", "pass");
         HttpEntity<Object> httpEntity = new HttpEntity<>(dto, getAuthHeadersAdmin(restTemplate));
         ResponseEntity<AdminDTO> responseEntity = restTemplate
                 .exchange("/admins", HttpMethod.POST, httpEntity, AdminDTO.class);

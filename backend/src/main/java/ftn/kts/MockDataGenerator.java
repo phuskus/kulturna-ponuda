@@ -144,8 +144,7 @@ public abstract class MockDataGenerator {
         {
             while (true) {
                 try {
-                    String name = faker.name().fullName();
-                    AdminDTO dto = new AdminDTO(name, faker.internet().emailAddress(), "sifra" + name);
+                    AdminDTO dto = new AdminDTO(faker.name().firstName(), faker.name().lastName(), faker.internet().emailAddress(), faker.internet().password(8, 16));
                     adminList.add(adminService.create(dto));
                     break;
                 } catch (Exception e) {
@@ -163,8 +162,8 @@ public abstract class MockDataGenerator {
         {
             while (true) {
                 try {
-                    String name = faker.rickAndMorty().character();
-                    UserDTO dto = new UserDTO(name, faker.internet().emailAddress(), "sifra"+name);
+                    //UserDTO dto1 = new UserDTO(faker.rickAndMorty().character(), faker.internet().emailAddress(), faker.internet().password());
+                	UserDTO dto = new UserDTO(faker.name().firstName(), faker.name().lastName(), faker.internet().emailAddress(), faker.internet().password());
                     userList.add(userService.create(dto));
                     break;
                 } catch (Exception e) {
