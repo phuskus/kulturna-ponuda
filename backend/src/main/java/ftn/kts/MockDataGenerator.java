@@ -141,7 +141,7 @@ public abstract class MockDataGenerator {
     private static ArrayList<AdminDTO> GenerateAdmins(ApplicationContext applicationContext) {
         AdminService adminService = applicationContext.getBean(AdminService.class);
         ArrayList<AdminDTO> adminList = new ArrayList<>();
-        AdminDTO staticAdmin = new AdminDTO("Amin", "covid19.clinic.llc@gmail.com", "123");
+        AdminDTO staticAdmin = new AdminDTO("Amin", "Aminovic", "covid19.clinic.llc@gmail.com", "123");
         adminList.add(adminService.create(staticAdmin));
         for (int i = 0; i < ADMIN_COUNT; i++) {
             while (true) {

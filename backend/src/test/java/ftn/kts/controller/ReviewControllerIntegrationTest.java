@@ -78,7 +78,7 @@ public class ReviewControllerIntegrationTest {
     @Test
     public void add_ValidReview_ReturnsOkAndReview() {
         int size = reviewService.getAll().size();
-        UserDTO user = new UserDTO(1L, "name", "user", "pass");
+        UserDTO user = new UserDTO(1L, "name",  "surname", "user", "pass");
         ReviewDTO dto = new ReviewDTO(3L, "Content", user, 2L, "name");
         HttpEntity<Object> httpEntity = new HttpEntity<>(dto, getAuthHeadersAdmin(restTemplate));
         ResponseEntity<ReviewDTO> responseEntity = restTemplate

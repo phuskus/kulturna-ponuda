@@ -31,6 +31,10 @@ export abstract class AbstractTable implements AfterViewInit {
     this.getTableData();
   }
 
+  updateTable(): void {
+    this.getTableData();
+  }
+
   private getTableData(): void {
     this.service.getAll().subscribe((data) => {
       this.dataSource.data = data;
@@ -44,12 +48,14 @@ export abstract class AbstractTable implements AfterViewInit {
       data: row,
     });
 
-    const sub = (dialogRef.componentInstance as Dialog<Model>).onSubscriptionCallBack.subscribe((data) => {
-      this.getTableData();
+    const sub = (dialogRef.componentInstance as Dialog<Model>).onSubscriptionCallBack.subscribe(
+      (data) => {
+        this.updateTable();
 
-      // since dialog is now closed, you can unsubscribe from its events
-      sub.unsubscribe();
-    });
+        // since dialog is now closed, you can unsubscribe from its events
+        sub.unsubscribe();
+      }
+    );
   }
 
   applyFilter(event: Event) {

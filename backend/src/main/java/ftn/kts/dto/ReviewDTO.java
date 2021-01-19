@@ -33,7 +33,7 @@ public class ReviewDTO {
         this.id = id;
         this.rating = rating;
         this.content = content;
-        this.user = new UserDTO(user.getId(), user.getName(), user.getUsername(), user.getPassword());
+        this.user = new UserDTO(user.getId(), user.getName(), user.getSurname(), user.getUsername(), user.getPassword());
         this.culturalOfferId = offer.getId();
         this.culturalOfferName = offer.getName();
         this.pictures = new HashSet<>();
@@ -42,7 +42,7 @@ public class ReviewDTO {
     public ReviewDTO(Long rating, String content, User user, Long offerId, String culturalOfferName) {
         this.rating = rating;
         this.content = content;
-        this.user = new UserDTO(user.getId(), user.getName(), user.getUsername(), user.getPassword());
+        this.user = new UserDTO(user.getId(), user.getName(), user.getSurname(), user.getUsername(), user.getPassword());
         this.culturalOfferId = offerId;
         this.culturalOfferName = culturalOfferName;
         this.pictures = new HashSet<>();
@@ -61,7 +61,7 @@ public class ReviewDTO {
         this.id = id;
         this.rating = rating;
         this.content = content;
-        this.user = new UserDTO(user.getId(), user.getName(), user.getUsername(), user.getPassword());
+        this.user = new UserDTO(user.getId(), user.getName(), user.getSurname(), user.getUsername(), user.getPassword());
         this.culturalOfferId = offerId;
         this.culturalOfferName = culturalOfferName;
         this.pictures = new HashSet<>();

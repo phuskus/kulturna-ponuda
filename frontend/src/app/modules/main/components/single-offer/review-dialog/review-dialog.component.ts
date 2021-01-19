@@ -22,7 +22,8 @@ export class ReviewDialogComponent extends AddDialog<ReviewDialogComponent> {
     content: '',
     user: {
       id: 279,
-      name: 'Celia James',
+      name: 'Celia',
+      surname: 'James',
       username: 'Marian',
       password: '',
     },

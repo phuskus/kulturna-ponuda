@@ -30,6 +30,11 @@ export abstract class AbstractDynamicPagingTable extends AbstractTable {
       });
   }
 
+  updateTable(): void {
+    // simulate sort event so the table refreshes its data
+    this.sort.sortChange.emit();
+  }
+
   getDataPipeline() {
     return pipe(
       startWith({}),
@@ -81,7 +86,6 @@ export abstract class AbstractDynamicPagingTable extends AbstractTable {
     const filterValue = (event.target as HTMLInputElement).value;
     this.filter = filterValue.trim().toLowerCase();
 
-    // simulate sort event so the table refreshes its data
-    this.sort.sortChange.emit();
+    this.updateTable();
   }
 }

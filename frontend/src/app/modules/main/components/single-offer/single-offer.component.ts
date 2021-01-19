@@ -29,7 +29,7 @@ export class SingleOfferComponent implements OnInit {
 
   public review: Review = {
     id: 0,
-    user: { id: 0, name: 'Joe Biden', username: '', password: '' },
+    user: { id: 0, name: 'Joe', surname: 'Biden', username: '', password: '' },
     rating: 1,
     culturalOfferId: 0,
     culturalOfferName: 'Museum of Modern Art',

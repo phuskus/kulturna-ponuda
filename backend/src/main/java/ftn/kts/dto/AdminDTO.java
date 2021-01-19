@@ -33,7 +33,7 @@ public class AdminDTO {
         this.password = password;
     }
 
-    public AdminDTO(Long id, String name, String surname, String username, String password, Set<Category> categories, Set<CulturalOffer> culturalOffers) {
+    public AdminDTO(Long id, String name, String surname, String username, String password) {
         this.id = id;
         this.name = name;
         this.surname = surname;
