@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { FormValidationService } from 'src/app/services/validation/form-validation.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MessageService } from 'src/app/services/message/message.service';
 
 @Component({
   selector: 'app-login-page',
@@ -24,7 +25,8 @@ export class LoginPageComponent implements OnInit {
     private authService: AuthService, 
     private formValidationService: FormValidationService,
     private activatedRoute: ActivatedRoute,
-    private snackbar: MatSnackBar) {
+    private messageService : MessageService,
+    private snackBar: MatSnackBar) {
     
     this.loginForm = this.fb.group({
       username: ['', [Validators.required, Validators.email]],
@@ -41,7 +43,7 @@ export class LoginPageComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.loginForm.invalid) {
+    if (this.loginForm.invalid || !this.loginForm.value.username || !this.loginForm.value.password) {
       this.formValidationService.validateAllFormFields(this.loginForm);
       return;
     }
@@ -57,7 +59,7 @@ export class LoginPageComponent implements OnInit {
           }
         }, error => {
           if (error.status == 401 && !error.error.errors.jwt) {
-            this.openSnackbar(error.error.message, 'End', 5000);
+            this.messageService.openSnackBar(this.snackBar, error.error.message, 'End', 5000);
             this.formValidationService.clearFormAndValidators(this.loginForm);
           }  else {
             for (let key in error.error.errors) {
@@ -76,21 +78,13 @@ export class LoginPageComponent implements OnInit {
     let key = this.activatedRoute.snapshot.params.key;
     if(key) {
       this.authService.activateAccount(key).subscribe( () => {
-        this.openSnackbar('Successfully activated account!', 'End', 5000);
+        this.messageService.openSnackBar(this.snackBar, 'Successfully activated account!', 'End', 5000);
       }, error => {
         console.log(error.errors);
-        this.openSnackbar(error.errors, 'End', 5000);
+        this.messageService.openSnackBar(this.snackBar, error.errors, 'End', 5000);
       })
       
     }
-  }
-
-  openSnackbar(message:string, action: string, duration: number) {
-    this.snackbar.open(message, action, {
-      duration: duration,
-      verticalPosition: 'top', 
-      horizontalPosition: 'center'
-    });
   }
 
 }

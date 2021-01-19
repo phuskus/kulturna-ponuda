@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { Router } from '@angular/router';
 import { FormValidationService } from 'src/app/services/validation/form-validation.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MessageService } from 'src/app/services/message/message.service';
 
 
 @Component({
@@ -22,7 +23,8 @@ export class RegisterPageComponent implements OnInit {
     private router: Router, 
     private authService: AuthService, 
     private formValidationService: FormValidationService,
-    private snackbar: MatSnackBar) {
+    private snackBar: MatSnackBar,
+    private messageService : MessageService) {
     this.registerForm = this.fb.group({
       name: ['', [Validators.required]],
       surname: ['', [Validators.required]],
@@ -53,7 +55,7 @@ export class RegisterPageComponent implements OnInit {
       this.registerForm.value['password']
     ).subscribe(
       () => {
-        this.openSnackbar();
+        this.messageService.openSnackBar(this.snackBar, 'Successfully registered! Please check your email and activate your account!', 'End', 5000);
         this.formValidationService.clearFormAndValidators(this.registerForm);
       }, error => {
         for (let key in error.errors) {
@@ -66,13 +68,4 @@ export class RegisterPageComponent implements OnInit {
   onTouchField(field: string, fieldErr: boolean) {
     this.usernameErr = this.formValidationService.onTouchField(this.f, field, fieldErr);
   }
-
-  openSnackbar() {
-    this.snackbar.open('Successfully registered! Please check your email and activate your account!', 'End', {
-      duration: 5000,
-      verticalPosition: 'top', 
-      horizontalPosition: 'center'
-    });
-  }
-
 }
