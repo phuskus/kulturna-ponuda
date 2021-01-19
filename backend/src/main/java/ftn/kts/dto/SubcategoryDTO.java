@@ -30,9 +30,10 @@ public class SubcategoryDTO {
         this.setContainsOffers(containsOffers);
     }
     
-    public SubcategoryDTO(String name, Long categoryId) {
+    public SubcategoryDTO(String name, Long categoryId, PictureDTO icon) {
         this.name = name;
         this.categoryId = categoryId;
+        this.icon = icon;
     }
 
     public Long getId() {

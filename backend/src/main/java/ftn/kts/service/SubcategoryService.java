@@ -85,15 +85,16 @@ public class SubcategoryService {
 
 	private SubcategoryDTO toDTO(Subcategory entity) {
 		PictureDTO icon = this.pictureService.convertToDTO(entity.getIcon());
-		boolean containsOffers = entity.getCulturalOffers().size() != 0; 
+		boolean containsOffers = false;
+		if (entity.getCulturalOffers() != null && entity.getCulturalOffers().size() != 0) {
+			containsOffers = true;
+		}
 		return new SubcategoryDTO(entity.getId(), entity.getName(), entity.getCategory(), icon, containsOffers);
 	}
 
 	private void updateSubcategory(Subcategory subcategory, SubcategoryDTO dto) {
 		subcategory.setName(dto.getName());
 		subcategory.setCategory(categoryService.getOne(dto.getCategoryId()));
-		// TODO: Add sets of subscriptions and cultural offers?
-		// TODO: maybe add icon, check if it's the same and update if not
 	}
 
 	@Autowired

@@ -1,5 +1,6 @@
 package ftn.kts.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -27,7 +28,7 @@ public class Subcategory {
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Picture icon;
 
-	@OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
 	private Set<CulturalOffer> culturalOffers;
 	@OneToMany(mappedBy = "subcategory", fetch = FetchType.LAZY)
 	private Set<Subscription> subscriptions;
@@ -40,6 +41,8 @@ public class Subcategory {
 		this.name = name;
 		this.category = category;
 		this.icon = icon;
+		this.culturalOffers = new HashSet<>();
+		this.subscriptions = new HashSet<>();
 	}
 
 	public Long getId() {

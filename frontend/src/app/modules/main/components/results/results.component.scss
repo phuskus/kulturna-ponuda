@@ -14,6 +14,29 @@
   font-size: 24px;
 }
 
+::ng-deep.mat-menu-panel {
+  width: 380px !important;
+  max-width: 380px !important;
+}
+
+.filter-categories {
+  padding: 10px;
+  margin-bottom: 0px;
+}
+
+.filter-row {
+  padding-bottom: 20px;
+  .information {
+    vertical-align: middle;
+    line-height: 45px;
+    margin-bottom: 0px;
+  }
+  button {
+    width: 150px;
+  }
+}
+
+
 .pagination-control ::ng-deep ul {
   padding-inline-start: 0px !important;
 }

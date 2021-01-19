@@ -58,6 +58,22 @@ public class CulturalOfferController {
 		return new ResponseEntity<>(service.getOneDTO(id), HttpStatus.OK);
 	}
 
+
+	@GetMapping("/search")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+	public ResponseEntity<Page<CulturalOfferDTO>> filterOffers(@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer pageSize,
+			@RequestParam(defaultValue = "id") String sortBy, @RequestParam(defaultValue = "false") String descending,
+			@RequestParam(defaultValue = "") String categoryName, @RequestParam(defaultValue = "") String query,
+			@RequestParam(defaultValue = "") String regionNames, @RequestParam(defaultValue = "") String cityNames) {
+		Pageable paging;
+		if (descending.equals("true"))
+			paging = PageRequest.of(pageNo, pageSize, Sort.by(Direction.DESC, sortBy));
+		else
+			paging = PageRequest.of(pageNo, pageSize, Sort.by(Direction.ASC, sortBy));
+		Page<CulturalOfferDTO> page = service.filterAll(categoryName, query, regionNames, cityNames, paging);
+		return new ResponseEntity<>(page, HttpStatus.OK);
+	}
+	
 	@GetMapping("/category/{id}")
 	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<Page<CulturalOfferDTO>> filterOffersCategory(@PathVariable("id") long id,
@@ -69,20 +85,6 @@ public class CulturalOfferController {
 		else
 			paging = PageRequest.of(pageNo, pageSize, Sort.by(Direction.ASC, sortBy));
 		Page<CulturalOfferDTO> page = service.filterCategory(id, paging);
-		return new ResponseEntity<>(page, HttpStatus.OK);
-	}
-	
-	@GetMapping("/query/{query}")
-	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-	public ResponseEntity<Page<CulturalOfferDTO>> filterOffersAny(@PathVariable("query") String query,
-			@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer pageSize,
-			@RequestParam(defaultValue = "id") String sortBy, @RequestParam(defaultValue = "false") String descending) {
-		Pageable paging;
-		if (descending.equals("true"))
-			paging = PageRequest.of(pageNo, pageSize, Sort.by(Direction.DESC, sortBy));
-		else
-			paging = PageRequest.of(pageNo, pageSize, Sort.by(Direction.ASC, sortBy));
-		Page<CulturalOfferDTO> page = service.filterAny(query, paging);
 		return new ResponseEntity<>(page, HttpStatus.OK);
 	}
 	

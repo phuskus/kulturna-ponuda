@@ -16,17 +16,17 @@ insert into categories (name) values ('Manifestacija');
 insert into categories (name) values ('Nije manifestacija');
 insert into categories (name) values ('Treca kat');
 
-insert into subcategories (name, category_id) values ('Festival', 1);
+insert into pictures (path, placeholder) values ('\pictures\exit.jpg', 'picture placeholder');
+insert into pictures (path, placeholder) values ('\pictures\exit1.jpg', 'picture1 placeholder');
 
-insert into subcategories (name, category_id) values ('Okupljanje', 1);
+insert into subcategories (name, category_id, icon_id) values ('Festival', 1, 1);
+
+insert into subcategories (name, category_id, icon_id) values ('Okupljanje', 1, 1);
 
 insert into cultural_offers (address, city, description, latitude, longitude, name, region, admin_id, category_id) 
 			values ('Petrovaradinska Tvrdjava', 'Novi Sad', 'Music festival', 45.2526, 19.8623, 'cultural_offer1', 'Vojvodina', 3, 1);
 insert into cultural_offers (address, city, description, latitude, longitude, name, region, admin_id, category_id) 
 			values ('Kalemegdanska tvrdjava', 'Beograd', 'Music festival', 45.2526, 19.8623, 'cultural_offer2', 'Vojvodina', 3, 1);
-
-insert into pictures (path, placeholder) values ('\pictures\exit.jpg', 'picture placeholder');
-insert into pictures (path, placeholder) values ('\pictures\exit1.jpg', 'picture1 placeholder');
 
 insert into cultural_offers_pictures (cultural_offer_id, pictures_id) values (1, 1);
 insert into cultural_offers_pictures (cultural_offer_id, pictures_id) values (2, 2);

@@ -7,6 +7,7 @@ import { NavigationExtras, Router } from '@angular/router';
   styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent implements OnInit {
+  @Input()
   searchQuery: string = '';
   constructor(private router: Router) { }
   
@@ -15,10 +16,8 @@ export class SearchComponent implements OnInit {
   onSubmit() {
     const navigationExtras: NavigationExtras = {
       queryParams: { query: this.searchQuery },
-      // in case we want to do filtering by category & query
-      //queryParamsHandling: 'merge'
+      queryParamsHandling: 'merge'
     };
-    this.searchQuery = '';
     this.router.navigate(['/offers/search'], navigationExtras);
   }
 }
