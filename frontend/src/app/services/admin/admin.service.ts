@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Admin } from 'src/app/shared/models/Admin';
@@ -7,8 +8,8 @@ import { BaseService } from '../base/base.service';
   providedIn: 'root',
 })
 export class AdminService extends BaseService {
-  constructor() {
-    super();
+  constructor(public http: HttpClient) {
+    super("http://localhost:9001/admins", http);
   }
 
   createEmpty(): Admin {
@@ -20,26 +21,26 @@ export class AdminService extends BaseService {
     };
   }
 
-  getAll(): Observable<Admin[]> {
-    return of(ADMINS);
-  }
+  // getAll(): Observable<Admin[]> {
+  //   return of(ADMINS);
+  // }
 
-  add(admin: Admin): Observable<Admin[]> {
-    alert('admin added');
-    console.log(admin);
-    return null;
-  }
+  // add(admin: Admin): Observable<Admin[]> {
+  //   alert('admin added');
+  //   console.log(admin);
+  //   return null;
+  // }
 
-  update(id: number, admin: Admin): Observable<Admin[]> {
-    alert(`admin ${id} updated`);
-    console.log(admin);
-    return null;
-  }
+  // update(id: number, admin: Admin): Observable<Admin[]> {
+  //   alert(`admin ${id} updated`);
+  //   console.log(admin);
+  //   return null;
+  // }
 
-  delete(id: number): Observable<Admin[]> {
-    alert(`admin ${id} deleted`);
-    return null;
-  }
+  // delete(id: number): Observable<Admin[]> {
+  //   alert(`admin ${id} deleted`);
+  //   return null;
+  // }
 }
 
 const ADMINS: Admin[] = [

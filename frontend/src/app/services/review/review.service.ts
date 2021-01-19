@@ -1,18 +1,18 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import Model from 'src/app/shared/models/Model';
+import Page from 'src/app/shared/models/Page';
 import { Review } from '../../shared/models/Review';
-import PagingReturnValue, {
-  BaseDynamicPagingService,
-} from '../base/base-dynamic-paging.service';
+import { BaseDynamicPagingService } from '../base/base-dynamic-paging.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ReviewService extends BaseDynamicPagingService {
-  constructor() {
-    super();
+  constructor(public http: HttpClient) {
+    super('http://localhost:9001/reviews', http);
   }
 
   createEmpty(): Review {
@@ -33,43 +33,45 @@ export class ReviewService extends BaseDynamicPagingService {
     };
   }
 
-  getPage(
-    pageNumber: number,
-    pageSize: number,
-    sortBy: string,
-    descending: boolean
-  ): Observable<PagingReturnValue<Review>> {
-    const reviews = REVIEWS.slice(
-      pageSize * pageNumber,
-      pageSize * pageNumber + pageSize
-    );
-    return of({ items: reviews, total_count: REVIEWS.length });
-  }
+  // getPage(
+  //   pageNumber: number,
+  //   pageSize: number,
+  //   sortBy: string,
+  //   descending: boolean
+  // ): Observable<Page<Review>> {
+  //   return this.http.get<Page<Review>>(`http://localhost:9001/reviews`);
+  // }
 
-  search(query: string, pageNumber: number, pageSize: number, sortBy: string, descending: boolean): Observable<PagingReturnValue<Model>> {
-    const reviews = REVIEWS.slice(
-      pageSize * pageNumber,
-      pageSize * pageNumber + pageSize
-    );
-    console.log(`Search with ${query}`)
-    return of({ items: reviews, total_count: REVIEWS.length });
-  }
+  // search(
+  //   query: string,
+  //   pageNumber: number,
+  //   pageSize: number,
+  //   sortBy: string,
+  //   descending: boolean
+  // ): Observable<PagingReturnValue<Model>> {
+  //   const reviews = REVIEWS.slice(
+  //     pageSize * pageNumber,
+  //     pageSize * pageNumber + pageSize
+  //   );
+  //   console.log(`Search with ${query}`);
+  //   return of({ items: reviews, total_count: REVIEWS.length });
+  // }
 
-  add(object: Review): Observable<Review[]> {
-    alert('REVIEW ADDED');
-    console.log(object);
-    return null;
-  }
+  // add(object: Review): Observable<Review[]> {
+  //   alert('REVIEW ADDED');
+  //   console.log(object);
+  //   return null;
+  // }
 
-  update(id: number, object: Review): Observable<Review[]> {
-    alert('REVIEW UPDATED');
-    return null;
-  }
+  // update(id: number, object: Review): Observable<Review[]> {
+  //   alert('REVIEW UPDATED');
+  //   return null;
+  // }
 
-  delete(id: number): Observable<Review[]> {
-    alert(`REVIEW WITH ID ${id} DELETED`);
-    return null;
-  }
+  // delete(id: number): Observable<Review[]> {
+  //   alert(`REVIEW WITH ID ${id} DELETED`);
+  //   return null;
+  // }
 }
 
 const REVIEWS: Review[] = [

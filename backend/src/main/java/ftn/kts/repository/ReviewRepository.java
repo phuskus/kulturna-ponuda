@@ -9,10 +9,11 @@ import org.springframework.data.jpa.repository.Query;
 public interface ReviewRepository  extends JpaRepository<Review, Long> {
 
 
-    @Query("select r from Review r " +
+    @Query("SELECT r from Review r " +
             "JOIN r.user u " +
             "JOIN r.culturalOffer o " +
-            "where r.content like %?1% " +
+            "WHERE " +
+            "lower(r.content) like %?1% " +
             "or lower(u.name) like %?1% " +
             "or lower(u.username) like %?1% " +
             "or lower(o.name) like %?1%")

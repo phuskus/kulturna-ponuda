@@ -17,4 +17,6 @@ export class DeleteAdminDialogComponent extends DeleteDialog<DeleteAdminDialogCo
   ) {
     super(dialogRef, service, data);
   }
+
+  // TODO: Admin shouldn't be able to delete himself!!!!!!!!!!
 }

@@ -2,12 +2,11 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractTable } from './AbstractTable';
 import { merge, Observable, of as observableOf } from 'rxjs';
 import { catchError, delay, map, startWith, switchMap } from 'rxjs/operators';
-import PagingReturnValue, {
-  BaseDynamicPagingService,
-} from 'src/app/services/base/base-dynamic-paging.service';
+import { BaseDynamicPagingService } from 'src/app/services/base/base-dynamic-paging.service';
 import Model from 'src/app/shared/models/Model';
 import { MatDialog } from '@angular/material/dialog';
 import * as _ from 'underscore';
+import Page from 'src/app/shared/models/Page';
 
 @Component({
   template: '',
@@ -16,20 +15,17 @@ export abstract class AbstractDynamicPagingTable extends AbstractTable {
   isLoadingResults: boolean = false;
   filter: string = '';
   resultsLength = 0;
-  service: BaseDynamicPagingService;
 
-  constructor(service: BaseDynamicPagingService, dialog: MatDialog) {
+  constructor(public service: BaseDynamicPagingService, dialog: MatDialog) {
     super(service, dialog);
   }
 
-  subscribe(): void {
-    console.log('Abstract Paging Table Subscribe called');
-
+  getTableData(): void {
     merge(this.sort.sortChange, this.paginator.page)
       .pipe(
         startWith({}),
         switchMap(() => this.fetchData()),
-        delay(1000),
+        // delay(1000),
         map((data) => this.collectFetchedData(data)),
         catchError(() => this.handleError())
       )
@@ -38,7 +34,7 @@ export abstract class AbstractDynamicPagingTable extends AbstractTable {
       });
   }
 
-  fetchData(): Observable<PagingReturnValue<Model>> {
+  fetchData(): Observable<Page<Model>> {
     this.isLoadingResults = true;
     let isDescending: boolean = this.sort.direction === 'desc';
     if (this.filter === '') return this.getPage(isDescending);
@@ -46,7 +42,7 @@ export abstract class AbstractDynamicPagingTable extends AbstractTable {
     return this.search(isDescending);
   }
 
-  getPage(isDescending: boolean): Observable<PagingReturnValue<Model>> {
+  getPage(isDescending: boolean): Observable<Page<Model>> {
     return this.service.getPage(
       this.paginator.pageIndex,
       this.paginator.pageSize,
@@ -55,7 +51,7 @@ export abstract class AbstractDynamicPagingTable extends AbstractTable {
     );
   }
 
-  search(isDescending: boolean): Observable<PagingReturnValue<Model>> {
+  search(isDescending: boolean): Observable<Page<Model>> {
     return this.service.search(
       this.filter,
       this.paginator.pageIndex,
@@ -65,10 +61,10 @@ export abstract class AbstractDynamicPagingTable extends AbstractTable {
     );
   }
 
-  collectFetchedData(data: PagingReturnValue<Model>): Model[] {
+  collectFetchedData(data: Page<Model>): Model[] {
     this.isLoadingResults = false;
-    this.resultsLength = data.total_count;
-    return data.items;
+    this.resultsLength = data.totalElements;
+    return data.content;
   }
 
   handleError() {
@@ -79,8 +75,8 @@ export abstract class AbstractDynamicPagingTable extends AbstractTable {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.filter = filterValue.trim().toLowerCase();
-    this.subscribe();
 
-    // _.debounce({this.fn(event)}, 2500);
+    // simulate sort event so the table refreshes its data
+    this.sort.sortChange.emit();
   }
 }

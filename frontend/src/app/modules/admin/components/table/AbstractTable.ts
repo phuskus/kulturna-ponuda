@@ -11,6 +11,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { BaseService } from 'src/app/services/base/base.service';
+import Dialog from 'src/app/shared/dialog/Dialog';
+import UpdateDialog from 'src/app/shared/dialog/UpdateDialog';
 import Model from 'src/app/shared/models/Model';
 
 @Component({
@@ -27,10 +29,10 @@ export abstract class AbstractTable implements AfterViewInit {
   ngAfterViewInit(): void {
     // when sort is changed go back to first page
     this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
-    this.subscribe();
+    this.getTableData();
   }
 
-  subscribe(): void {
+  getTableData(): void {
     this.service.getAll().subscribe((data) => {
       this.dataSource.data = data;
       this.dataSource.paginator = this.paginator;
@@ -39,8 +41,15 @@ export abstract class AbstractTable implements AfterViewInit {
   }
 
   openDialog(type: ComponentType<unknown>, row?: Model): void {
-    this.dialog.open(type, {
+    const dialogRef = this.dialog.open(type, {
       data: row,
+    });
+
+    const sub = (dialogRef.componentInstance as Dialog<Model>).onSubscriptionCallBack.subscribe((data) => {
+      this.getTableData();
+
+      // since dialog is now closed, you can unsubscribe from its events
+      sub.unsubscribe();
     });
   }
 

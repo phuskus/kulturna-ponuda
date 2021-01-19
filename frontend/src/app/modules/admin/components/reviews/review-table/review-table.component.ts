@@ -14,7 +14,7 @@ import { DeleteReviewDialogComponent } from '../dialogs/delete-review-dialog/del
 export class ReviewTableComponent extends AbstractDynamicPagingTable {
   constructor(service: ReviewService, public dialog: MatDialog) {
     super(service, dialog);
-    this.tableColumns = ['offerId', 'user', 'rating', 'content', 'actions'];
+    this.tableColumns = ['culturalOffer', 'user', 'rating', 'content', 'actions'];
   }
 
   openDeleteDialog(row: Review): void {
