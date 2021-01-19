@@ -24,6 +24,9 @@ import { DeleteReviewDialogComponent } from './components/reviews/dialogs/delete
 import { AddAdminDialogComponent } from './components/admins/admin-dialogs/add-admin-dialog/add-admin-dialog.component';
 import { DeleteAdminDialogComponent } from './components/admins/admin-dialogs/delete-admin-dialog/delete-admin-dialog.component';
 import { FormsModule } from '@angular/forms';
+import { UpdateAdminDialogComponent } from './components/admins/admin-dialogs/update-admin-dialog/update-admin-dialog.component';
+import {MatMenuModule} from '@angular/material/menu';
+
 
 @NgModule({
   declarations: [
@@ -34,6 +37,7 @@ import { FormsModule } from '@angular/forms';
     AddAdminDialogComponent,
     DeleteReviewDialogComponent,
     DeleteAdminDialogComponent,
+    UpdateAdminDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -55,6 +59,7 @@ import { FormsModule } from '@angular/forms';
     MatSortModule,
     MatProgressSpinnerModule,
     MatPaginatorModule,
+    MatMenuModule,
   ],
 })
 export class AdminModule {}

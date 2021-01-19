@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ReviewService } from 'src/app/services/review/review.service';
 import { Review } from 'src/app/shared/models/Review';
+import {MatPaginator} from '@angular/material/paginator';
 import { AbstractDynamicPagingTable } from '../../table/AbstractDynamicPagingTable';
 import { DeleteReviewDialogComponent } from '../dialogs/delete-review-dialog/delete-review-dialog.component';
 

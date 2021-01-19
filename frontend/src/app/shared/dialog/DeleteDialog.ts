@@ -14,6 +14,7 @@ export default abstract class DeleteDialog<T> extends Dialog<T> {
     @Inject(MAT_DIALOG_DATA) public data: Model
   ) {
     super(dialogRef, service);
+    if (!data) throw new Error('Data is a requied parameter for delete dialog');
   }
 
   onSubmit() {

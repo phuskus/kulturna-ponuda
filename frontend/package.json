@@ -28,6 +28,7 @@
     "ngx-mapbox-gl": "^4.8.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
+    "underscore": "^1.12.0",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {

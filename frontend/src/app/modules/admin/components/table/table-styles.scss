@@ -17,7 +17,7 @@
   font-size: 1.5rem;
   font-weight: 500;
   color: white;
-  padding: 30px 20px;
+  padding: 20px 20px 10px;
 }
 
 .example-table-container {
@@ -52,4 +52,9 @@ table {
   margin: 15px 30px;
   background-color: $accent-color;
   color: white;
+}
+
+.search-field {
+  max-width: 400px;
+  margin-right: 1.5%;
 }

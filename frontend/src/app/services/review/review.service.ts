@@ -46,6 +46,15 @@ export class ReviewService extends BaseDynamicPagingService {
     return of({ items: reviews, total_count: REVIEWS.length });
   }
 
+  search(query: string, pageNumber: number, pageSize: number, sortBy: string, descending: boolean): Observable<PagingReturnValue<Model>> {
+    const reviews = REVIEWS.slice(
+      pageSize * pageNumber,
+      pageSize * pageNumber + pageSize
+    );
+    console.log(`Search with ${query}`)
+    return of({ items: reviews, total_count: REVIEWS.length });
+  }
+
   add(object: Review): Observable<Review[]> {
     alert('REVIEW ADDED');
     console.log(object);

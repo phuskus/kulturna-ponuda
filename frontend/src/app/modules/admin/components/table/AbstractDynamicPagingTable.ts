@@ -7,12 +7,14 @@ import PagingReturnValue, {
 } from 'src/app/services/base/base-dynamic-paging.service';
 import Model from 'src/app/shared/models/Model';
 import { MatDialog } from '@angular/material/dialog';
+import * as _ from 'underscore';
 
 @Component({
   template: '',
 })
 export abstract class AbstractDynamicPagingTable extends AbstractTable {
   isLoadingResults: boolean = false;
+  filter: string = '';
   resultsLength = 0;
   service: BaseDynamicPagingService;
 
@@ -38,8 +40,29 @@ export abstract class AbstractDynamicPagingTable extends AbstractTable {
 
   fetchData(): Observable<PagingReturnValue<Model>> {
     this.isLoadingResults = true;
-    let isDescending: boolean = this.sort.direction === 'desc'; 
-    return this.service.getPage(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, isDescending);
+    let isDescending: boolean = this.sort.direction === 'desc';
+    if (this.filter === '') return this.getPage(isDescending);
+
+    return this.search(isDescending);
+  }
+
+  getPage(isDescending: boolean): Observable<PagingReturnValue<Model>> {
+    return this.service.getPage(
+      this.paginator.pageIndex,
+      this.paginator.pageSize,
+      this.sort.active,
+      isDescending
+    );
+  }
+
+  search(isDescending: boolean): Observable<PagingReturnValue<Model>> {
+    return this.service.search(
+      this.filter,
+      this.paginator.pageIndex,
+      this.paginator.pageSize,
+      this.sort.active,
+      isDescending
+    );
   }
 
   collectFetchedData(data: PagingReturnValue<Model>): Model[] {
@@ -51,5 +74,13 @@ export abstract class AbstractDynamicPagingTable extends AbstractTable {
   handleError() {
     this.isLoadingResults = false;
     return observableOf([]);
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.filter = filterValue.trim().toLowerCase();
+    this.subscribe();
+
+    // _.debounce({this.fn(event)}, 2500);
   }
 }

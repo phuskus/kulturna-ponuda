@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLOutput;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -39,6 +40,11 @@ public class ReviewService {
 		Review review = getOne(id);
 		ReviewDTO dto = toDTO(review);
 		return dto;
+	}
+
+	public Page<ReviewDTO> search(String query, Pageable pageable){
+		System.out.println(query.toLowerCase());
+		return reviewRepository.search(query.toLowerCase(), pageable).map(this::toDTO);
 	}
 
 	public ReviewDTO create(ReviewDTO dto) {

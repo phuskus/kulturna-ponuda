@@ -18,6 +18,14 @@ export abstract class BaseDynamicPagingService extends BaseService {
     descending: boolean
   ): Observable<PagingReturnValue<Model>>;
 
+  abstract search(
+    query: string,
+    pageNumber: number,
+    pageSize: number,
+    sortBy: string,
+    descending: boolean
+  ): Observable<PagingReturnValue<Model>>;
+
   getAll(): Observable<Model[]> {
     throw new Error('Dyanmic Paging does not implement method getAll');
   }

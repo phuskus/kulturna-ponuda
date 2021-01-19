@@ -33,7 +33,7 @@ public class ReviewDTO {
         this.id = id;
         this.rating = rating;
         this.content = content;
-        this.user = new UserDTO(user.getId(), user.getName(),user.getUsername(), user.getPassword());
+        this.user = new UserDTO(user.getId(), user.getName(), user.getUsername(), user.getPassword());
         this.culturalOfferId = offer.getId();
         this.culturalOfferName = offer.getName();
         this.pictures = new HashSet<>();
@@ -42,7 +42,7 @@ public class ReviewDTO {
     public ReviewDTO(Long rating, String content, User user, Long offerId, String culturalOfferName) {
         this.rating = rating;
         this.content = content;
-        this.user = new UserDTO(user.getId(), user.getName(),user.getUsername(), user.getPassword());
+        this.user = new UserDTO(user.getId(), user.getName(), user.getUsername(), user.getPassword());
         this.culturalOfferId = offerId;
         this.culturalOfferName = culturalOfferName;
         this.pictures = new HashSet<>();
@@ -56,12 +56,12 @@ public class ReviewDTO {
         this.culturalOfferName = culturalOfferName;
         this.pictures = new HashSet<>();
     }
-    
+
     public ReviewDTO(Long id, Long rating, String content, User user, Long offerId, String culturalOfferName) {
         this.id = id;
-    	this.rating = rating;
+        this.rating = rating;
         this.content = content;
-        this.user = new UserDTO(user.getId(), user.getName(),user.getUsername(), user.getPassword());
+        this.user = new UserDTO(user.getId(), user.getName(), user.getUsername(), user.getPassword());
         this.culturalOfferId = offerId;
         this.culturalOfferName = culturalOfferName;
         this.pictures = new HashSet<>();
@@ -76,8 +76,7 @@ public class ReviewDTO {
         this.culturalOfferName = culturalOfferName;
         this.pictures = new HashSet<>();
     }
-    
-    
+
 
     @Override
     public boolean equals(Object obj) {
@@ -128,6 +127,14 @@ public class ReviewDTO {
 
     public void setCulturalOfferId(Long culturalOffer) {
         this.culturalOfferId = culturalOffer;
+    }
+
+    public String getCulturalOfferName() {
+        return culturalOfferName;
+    }
+
+    public void setCulturalOfferName(String culturalOfferName) {
+        this.culturalOfferName = culturalOfferName;
     }
 
     public Set<PictureDTO> getPictures() {

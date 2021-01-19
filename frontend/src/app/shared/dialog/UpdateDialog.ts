@@ -16,6 +16,8 @@ export default abstract class UpdateDialog<T> extends Dialog<T> {
     @Inject(MAT_DIALOG_DATA) public data: Model
   ) {
     super(dialogRef, service);
+    if (!data) throw new Error('Data is a requied parameter for update dialog');
+
     this.newObj = JSON.parse(JSON.stringify(data));
   }
 
