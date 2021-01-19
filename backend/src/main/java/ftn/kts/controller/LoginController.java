@@ -1,24 +1,31 @@
 package ftn.kts.controller;
 
-import ftn.kts.dto.UserDTO;
-import ftn.kts.dto.UserTokenStateDTO;
-import ftn.kts.exceptions.PasswordNotChangedException;
-import ftn.kts.exceptions.UniqueConstraintViolationException;
-import ftn.kts.model.User;
-import ftn.kts.security.auth.JwtAuthenticationRequest;
-import ftn.kts.service.UserService;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import ftn.kts.dto.UserDTO;
+import ftn.kts.dto.UserTokenStateDTO;
+import ftn.kts.exceptions.PasswordNotChangedException;
+import ftn.kts.exceptions.UniqueConstraintViolationException;
+import ftn.kts.exceptions.UserException;
+import ftn.kts.security.auth.JwtAuthenticationRequest;
+import ftn.kts.service.UserService;
 
 @RestController
 @Validated
@@ -40,13 +47,13 @@ public class LoginController {
 
     @GetMapping("/register/{key}")
     public ResponseEntity<UserDTO> confirmRegistration(@PathVariable("key") String key) {
-        UserDTO userDTO = userService.confirmRegistration(key);
-        return new ResponseEntity<>(userDTO, HttpStatus.OK);
+        userService.confirmRegistration(key);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/login")
     public ResponseEntity<UserTokenStateDTO> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest,
-                                                                       HttpServletResponse response) throws PasswordNotChangedException {
+                                                                       HttpServletResponse response) throws PasswordNotChangedException, DisabledException, UserException {
         String username = authenticationRequest.getUsername();
         String password = authenticationRequest.getPassword();
         UserTokenStateDTO token = userService.getLoggedIn(username, password);

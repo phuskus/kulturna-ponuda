@@ -44,7 +44,7 @@ public class AdminServiceIntegrationTest {
 
     @Test
     public void createDelete_ValidNewObject_CreatesAndDeletesSuccessfully() {
-        AdminDTO admin = new AdminDTO(NEW_NAME, "user", "pass");
+        AdminDTO admin = new AdminDTO(NEW_NAME, "surname", "user", "pass");
 
         AdminDTO createdAdmin = adminService.create(admin);
         assertEquals(admin, createdAdmin);
