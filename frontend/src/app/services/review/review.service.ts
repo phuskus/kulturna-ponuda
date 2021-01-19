@@ -1,9 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
-import Model from 'src/app/shared/models/Model';
-import Page from 'src/app/shared/models/Page';
 import { Review } from '../../shared/models/Review';
 import { BaseDynamicPagingService } from '../base/base-dynamic-paging.service';
 
