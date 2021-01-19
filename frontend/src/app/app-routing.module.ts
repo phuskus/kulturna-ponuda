@@ -9,6 +9,7 @@ const routes: Routes = [
   },
   { path: 'login', loadChildren: () => import('./modules/login/login.module').then(m => m.LoginModule) },
   { path: 'login/:key', loadChildren: () => import('./modules/login/login.module').then(m => m.LoginModule) },
+  { path: 'forgot-password', loadChildren: () => import('./modules/forgot-password/forgot-password.module').then(m => m.ForgotPasswordModule)},
   { path: 'register', loadChildren: () => import('./modules/register/register.module').then(m => m.RegisterModule) },
   { path: 'admin', loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule) }
 ];
