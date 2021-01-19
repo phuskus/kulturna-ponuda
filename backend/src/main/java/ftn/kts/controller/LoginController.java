@@ -47,8 +47,8 @@ public class LoginController {
 
     @GetMapping("/register/{key}")
     public ResponseEntity<UserDTO> confirmRegistration(@PathVariable("key") String key) {
-        UserDTO userDTO = userService.confirmRegistration(key);
-        return new ResponseEntity<>(userDTO, HttpStatus.OK);
+        userService.confirmRegistration(key);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/login")

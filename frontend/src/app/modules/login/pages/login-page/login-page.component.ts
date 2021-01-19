@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { FormValidationService } from 'src/app/services/validation/form-validation.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login-page',
@@ -16,7 +19,13 @@ export class LoginPageComponent implements OnInit {
   usernameErr: boolean = false;
   passwordErr: boolean = false;
 
-  constructor(private readonly fb: FormBuilder, private router: Router, public authService: AuthService) {
+  constructor(private readonly fb: FormBuilder, 
+    private router: Router, 
+    private authService: AuthService, 
+    private formValidationService: FormValidationService,
+    private activatedRoute: ActivatedRoute,
+    private snackbar: MatSnackBar) {
+    
     this.loginForm = this.fb.group({
       username: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(5)]]
@@ -24,6 +33,7 @@ export class LoginPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.acccountActivation();
   }
 
   get f() {
@@ -31,36 +41,56 @@ export class LoginPageComponent implements OnInit {
   }
 
   onSubmit() {
+    if (this.loginForm.invalid) {
+      this.formValidationService.validateAllFormFields(this.loginForm);
+      return;
+    }
     this.errMsg = '';
     this.usernameErr = false;
     this.passwordErr = false;
-    this.authService.login(this.loginForm.value['username'], this.loginForm.value['password']).subscribe(
-      (loggedIn: boolean) => {
-        if (loggedIn === true) {
-          this.router.navigate(['/']);
-        }
+    this.authService.login(
+      this.loginForm.value['username'], 
+      this.loginForm.value['password']).subscribe(
+        (loggedIn: boolean) => {
+          if (loggedIn === true) {
+            this.router.navigate(['/']);
+          }
+        }, error => {
+          if (error.status == 401 && !error.error.errors.jwt) {
+            this.openSnackbar(error.error.message, 'End', 5000);
+            this.formValidationService.clearFormAndValidators(this.loginForm);
+          }  else {
+            for (let key in error.error.errors) {
+              this[key + "Err"] = true;
+              this.errMsg = error.error.errors[key];
+            }
+          }
+        });
+  }
+
+  onTouchField(field: string, fieldErr: boolean) {
+    this[field+'Err'] = this.formValidationService.onTouchField(this.f, field, fieldErr);
+  }
+
+  acccountActivation() {
+    let key = this.activatedRoute.snapshot.params.key;
+    if(key) {
+      this.authService.activateAccount(key).subscribe( () => {
+        this.openSnackbar('Successfully activated account!', 'End', 5000);
       }, error => {
-        for (let key in error.errors) {
-          this[key + "Err"] = true;
-          this.errMsg = error.errors[key];
-        }
-      });
-  }
-
-  onChangeUsername() {
-    if(this.usernameErr) {
-      if(this.f.username.touched){
-        this.usernameErr = false;
-      }
+        console.log(error.errors);
+        this.openSnackbar(error.errors, 'End', 5000);
+      })
+      
     }
   }
 
-  onChangePassword() {
-    if(this.passwordErr) {
-      if(this.f.password.touched){
-        this.passwordErr = false;
-      }
-    }
+  openSnackbar(message:string, action: string, duration: number) {
+    this.snackbar.open(message, action, {
+      duration: duration,
+      verticalPosition: 'top', 
+      horizontalPosition: 'center'
+    });
   }
 
 }

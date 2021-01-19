@@ -14,7 +14,7 @@
                             [formControlName]="'name'"
                         />
                         <mat-hint 
-                            *ngIf="f.name.touched && f.name.errors.required"
+                            *ngIf="f.name.touched && f.name?.errors?.required"
                             class="error"
                         >
                             Name is required.
@@ -27,7 +27,7 @@
                             [formControlName]="'surname'"
                         />
                         <mat-hint 
-                            *ngIf="f.surname.touched && f.surname.errors.required"
+                            *ngIf="f.surname.touched && f.surname?.errors?.required"
                             class="error"
                         >
                             Surname is required.
@@ -39,6 +39,7 @@
                         matInput 
                         placeholder="Email"
                         [formControlName]="'username'"
+                        (ngModelChange)="onTouchField('username', usernameErr)"
                     />
                     <mat-hint 
                         *ngIf="f.username.touched && f.username.invalid && f.username.errors.required"
@@ -51,6 +52,12 @@
                         class="error"
                     >
                         Please enter a valid email address.
+                    </mat-hint>
+                    <mat-hint 
+                        *ngIf="usernameErr"
+                        class="error"
+                    >
+                        {{errMsg}}
                     </mat-hint>
                 </mat-form-field>
                 <mat-form-field [style.width.%]="100" appearance="outline">
@@ -82,21 +89,21 @@
                         placeholder="Confirm password" 
                         [type]="hide ? 'password' : 'text'" 
                         [formControlName]="'confirmPassword'"
+                        ngValidateEqual="password"
                         />
                     <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                         <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>
                     <mat-hint 
-                        *ngIf="f.confirmPassword.touched && f.confirmPassword.invalid && f.confirmPassword.errors.required"
-                        class="error"
+                    *ngIf="(f.confirmPassword.dirty || f.confirmPassword.touched) && f.confirmPassword.invalid"
+                    class="error"
                     >
-                        Password is required.
+                        Passwords don't match.
                     </mat-hint>
                     <mat-hint 
-                        *ngIf="f.confirmPassword.touched && f.confirmPassword.invalid && f.confirmPassword.errors.minlength"
-                        class="error"
-                    >
-                        Password should be at least 5 characters long.
+                        *ngIf="(f.confirmPassword.dirty || f.confirmPassword.touched) && !f.confirmPassword.invalid" 
+                        class="success">
+                        Passwords match.
                     </mat-hint>
                 </mat-form-field>
             </div>

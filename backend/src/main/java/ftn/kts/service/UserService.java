@@ -86,7 +86,7 @@ public class UserService {
         try {
         	existUser = getOne(username);        	        	
         } catch (NoSuchElementException e) {
-        	throw new UserException("No such element!", "username", "User with username " + username + " doesn't exist.");
+        	throw new UserException("No such element!", "username", "User with this username doesn't exist.");
         }
        
         if (!existUser.isEnabled()) {
@@ -107,9 +107,10 @@ public class UserService {
         String jwt = tokenUtils.generateToken(user.getUsername());
         int expiresIn = tokenUtils.getExpiredIn();
 
-        if (existUser.getLastPasswordResetDate() == null) {
-            throw new PasswordNotChangedException("Please change your password!", jwt);
-        }
+		/*
+		 * if (existUser.getLastPasswordResetDate() == null) { throw new
+		 * PasswordNotChangedException("Please change your password!", jwt); }
+		 */
 
         return new UserTokenStateDTO(jwt, expiresIn, user.getRole());
     }
@@ -135,7 +136,7 @@ public class UserService {
     public User getOne(String username) throws NoSuchElementException {
         User user = findByUsername(username);
         if (user == null) {
-            throw new NoSuchElementException("User with username " + username + " doesn't exist!");
+            throw new NoSuchElementException("User with this username doesn't exist!");
         }
         return user;
     }

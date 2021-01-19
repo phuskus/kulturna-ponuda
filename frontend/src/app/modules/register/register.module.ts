@@ -8,7 +8,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
-
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ValidateEqualModule } from 'ng-validate-equal';
 import { RegisterRoutingModule } from './register-routing.module';
 import { RegisterPageComponent } from './pages/register-page/register-page.component';
 
@@ -24,7 +25,9 @@ import { RegisterPageComponent } from './pages/register-page/register-page.compo
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatIconModule
+    MatIconModule,
+    ValidateEqualModule,
+    MatSnackBarModule
   ]
 })
 export class RegisterModule { }

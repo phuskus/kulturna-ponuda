@@ -9,8 +9,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 //import { MainModule } from './modules/main/main.module';
 // import { AdminModule } from './modules/admin/admin.module';
 //import { LoginModule } from './modules/login/login.module';
-import { TokenInterceptorService } from './services/auth/interceptors/token-interceptor.service';
 // import { RegisterModule } from './modules/register/register.module';
+import { TokenInterceptorService } from './services/auth/interceptors/token-interceptor.service';
 
 @NgModule({
   declarations: [AppComponent],

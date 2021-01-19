@@ -5,15 +5,15 @@ import { HttpHandler } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { HttpEvent } from '@angular/common/http';
 import { Injector } from '@angular/core';
-import { AuthService } from '../auth.service';
+import { JwtTokenService } from '../jwt-token.service';
 
 @Injectable()
 export class TokenInterceptorService implements HttpInterceptor {
 
-  constructor(private inj: Injector, private authService: AuthService) { }
+  constructor(private inj: Injector, private jwtTokenService : JwtTokenService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = this.authService.getToken();
+    const token = this.jwtTokenService.getToken();
     if (token) {
       req = req.clone({
         setHeaders: {
