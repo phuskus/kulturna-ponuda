@@ -6,7 +6,7 @@ import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MatCardModule } from '@angular/material/card';
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatMenuModule } from '@angular/material/menu';
@@ -17,7 +17,7 @@ import { MainRoutingModule } from './main-routing.module';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatInputModule } from '@angular/material/input';
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 
 
 import { ResultsComponent } from './components/results/results.component';
@@ -68,7 +68,7 @@ import { StarRatingComponent } from 'src/app/shared/components/star-rating/star-
     MatCheckboxModule,
     MatDialogModule,
     MatIconModule,
-    
+
     NgxPaginationModule,
 
     MainRoutingModule,

@@ -1,7 +1,12 @@
 <div class="result-component">
-  <mat-card class="search-comp" style="margin-bottom: 20px">
-    <app-search [searchQuery]="query"></app-search>
-  </mat-card>
+  <div fxLayout="row" style="margin-bottom: 20px" >
+    <button mat-fab color="white" style="margin-right: 10px" [routerLink]="'/'">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <mat-card class="search-comp" fxFlex="1 0 80%">  
+      <app-search [searchQuery]="query"></app-search>
+    </mat-card>
+  </div>
   <div fxLayout="row" class="filter-row" fxLayoutAlign="space-between">
     <div class="information mat-title">
       Category: {{this.category || "any"}}
