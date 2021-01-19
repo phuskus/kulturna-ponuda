@@ -56,12 +56,11 @@ export class RegisterPageComponent implements OnInit {
     ).subscribe(
       () => {
         this.messageService.openSnackBar(this.snackBar, 'Successfully registered! Please check your email and activate your account!', 'End', 5000);
-        this.formValidationService.clearFormAndValidators(this.registerForm);
+        //this.router.navigate(['/login']);
       }, error => {
-        for (let key in error.errors) {
-          this[key + "Err"] = true;
-          this.errMsg = error.errors[key];
-        }
+        //username already exists
+        this.usernameErr = true;
+        this.errMsg = error.errors['username'];
     });
   }
 

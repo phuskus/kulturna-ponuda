@@ -132,6 +132,17 @@ public class UserService {
         save(user);
         return toDTO(user);
     }
+    
+    public void forgotPassword(String username) {
+    	User user = getOne(username);
+    	if (!user.isEnabled()) {
+            throw new DisabledException("Your account hasn't been activated yet. Please check your email first!");
+        }
+    	String generatedKey = RandomUtil.buildAuthString(30);
+    	user.setResetKey(generatedKey);
+    	mailSenderService.forgotPassword(user.getUsername(), generatedKey);
+    	save(user);
+    }
 
     public User getOne(String username) throws NoSuchElementException {
         User user = findByUsername(username);

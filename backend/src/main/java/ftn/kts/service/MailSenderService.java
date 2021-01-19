@@ -16,7 +16,10 @@ public class MailSenderService {
     private JavaMailSender emailSender;
 
     @Value("${registration.link}")
-    private String link;
+    private String registrationLink;
+    
+    @Value("${recovery.link}")
+    private String recoveryLink;
 
     @Autowired
     public MailSenderService(JavaMailSender emailSender) {
@@ -36,12 +39,21 @@ public class MailSenderService {
     public Future<SimpleMailMessage> confirmRegistration(String username, String key) {
         String content = "Welcome to CultYourself!\nYou’re just one click away from getting started with CultYourself. " +
                 "\nPlease follow this link to activate your account:\n"
-                + link + key +
+                + registrationLink + key +
                 "\nOnce your account is activated, you can start using all of CultYourself features" +
                 "\n\nYou’re receiving this email because you recently created a new CultYourself account or added a new email address. " +
                 "If this wasn’t you, please ignore this email.";
         return sendEmail(username, "Activate Your CultYourself Account Now", content);
 
+    }
+    
+    @Async
+    public Future<SimpleMailMessage> forgotPassword(String username, String key) {
+    	String content = "Hi " + username + "!" + "\n\nSorry to hear you're having trouble logging into CultYourself." + 
+    			"\n\nWe can help you get straight back into your account.\n\n" +
+    			"Please follow this link to reset your password:\n" + recoveryLink + "/" + key;
+    	return sendEmail(username, username + ", we've made it easy to get back on CultYourself", content);
+    			
     }
 
 }

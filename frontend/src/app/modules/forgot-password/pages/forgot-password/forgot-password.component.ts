@@ -21,7 +21,9 @@ export class ForgotPasswordComponent implements OnInit {
     private router: Router, 
     private authService: AuthService, 
     private formValidationService: FormValidationService,
-    private activatedRoute: ActivatedRoute) {
+    private messageService : MessageService,
+    private snackBar: MatSnackBar
+    ) {
       this.forgotPasswordForm = this.fb.group({
         username: ['', [Validators.required, Validators.email]]
       })
@@ -35,7 +37,29 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('Forgot password');
+    if (this.forgotPasswordForm.invalid || !this.forgotPasswordForm.value.username) {
+      this.formValidationService.validateAllFormFields(this.forgotPasswordForm);
+      return;
+    }
+    this.errMsg = '';
+    this.usernameErr = false;
+    this.authService.forgotPassword(
+      this.forgotPasswordForm.value['username']
+    ).subscribe( () => {
+      this.router.navigate(['/login'])
+      this.messageService.openSnackBar(this.snackBar, 'We sent an email with a link to get back into your account.', 'End', 7000);
+    }, error => {
+      console.log(error);
+      if (error.status == 401) {
+        //account not activated
+        this.messageService.openSnackBar(this.snackBar, error.error.message, 'End', 5000);
+        this.formValidationService.clearFormAndValidators(this.forgotPasswordForm);
+      } else {
+        //username not exists
+        this.usernameErr = true;
+        this.errMsg = error.error.message;
+      }
+    })
   }
 
   onTouchField(field: string, fieldErr: boolean) {

@@ -33,6 +33,9 @@ public abstract class User implements UserDetails {
 
 	@Column(name = "key")
 	private String key;
+	
+	@Column(name="reset_password_key")
+	private String resetKey;
 
 	@Column(name = "role", insertable = false, updatable = false)
 	private String role;
@@ -120,6 +123,15 @@ public abstract class User implements UserDetails {
 	public void setKey(String key) {
 		this.key = key;
 	}
+	
+	public String getResetKey() {
+		return this.resetKey;
+	}
+	
+	public void setResetKey(String resetKey) {
+		this.resetKey = resetKey;
+	}
+	
 
 	@Override
 	public List<Authority> getAuthorities() {

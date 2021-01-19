@@ -14,7 +14,7 @@ export class AuthService {
 
   private readonly loginEndpoint = "http://localhost:9001/auth/login";
   private readonly registerEndpoint = "http://localhost:9001/auth/register";
-  private readonly activationEndpoint = "http://localhost:9001/auth/register/";
+  private readonly forgotPasswordEndpoint = "http://localhost:9001/auth/forgot-password"; 
 
   constructor(private http: HttpClient) { }
 
@@ -58,10 +58,23 @@ export class AuthService {
 
   activateAccount(key: string): Observable<any> {
     return this.http.get(
-      this.activationEndpoint + key,
+      this.registerEndpoint + "/" + key,
     ).pipe(
       catchError(error => {
-        return throwError(error.error);
+        return throwError(error);
+      })
+    )
+  }
+
+  forgotPassword(username: string): Observable<any> {
+    var headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'text/plain' });
+    return this.http.post(
+      this.forgotPasswordEndpoint,
+      username,
+      { headers }
+    ).pipe(
+      catchError(error => {
+        return throwError(error);
       })
     )
   }
