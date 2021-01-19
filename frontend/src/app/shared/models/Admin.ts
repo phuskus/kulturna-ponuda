@@ -1,8 +1,4 @@
 import Model from './Model';
+import { User } from './User';
 
-export class Admin extends Model {
-  name: string;
-  surname: string;
-  username: string;
-  password: string;
-}
+export class Admin extends User {}
