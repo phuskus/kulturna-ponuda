@@ -31,7 +31,7 @@ export class RegisterPageComponent implements OnInit {
       username: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(5)]],
       confirmPassword: ['', Validators.required]
-    })
+    });
   }
 
   ngOnInit(): void {

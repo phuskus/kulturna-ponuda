@@ -2,6 +2,7 @@ package ftn.kts.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 public class UserDTO {
 
@@ -14,6 +15,7 @@ public class UserDTO {
     @Email(message = "Username should be your email address!")
     private String username;
     @NotBlank(message = "Password is required!")
+    @Size(min = 5, message = "Password must be at least 5 characters!")
     private String password;
 
     public UserDTO() {}

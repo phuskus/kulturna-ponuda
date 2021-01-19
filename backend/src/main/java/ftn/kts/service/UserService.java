@@ -1,5 +1,6 @@
 package ftn.kts.service;
 
+import ftn.kts.dto.ResetPasswordDTO;
 import ftn.kts.dto.UserDTO;
 import ftn.kts.dto.UserTokenStateDTO;
 import ftn.kts.exceptions.UserException;
@@ -25,6 +26,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
+
+import javax.validation.Valid;
 
 @Service
 public class UserService {
@@ -93,7 +96,13 @@ public class UserService {
             throw new DisabledException("Your account hasn't been activated yet. Please check your email!");
         }
         
-        Authentication authentication = null;
+        UserTokenStateDTO token = generateToken(username, password);
+        return token;
+        
+    }
+    
+    public UserTokenStateDTO generateToken(String username, String password) throws UserException {
+    	Authentication authentication = null;
         try {
             authentication =
             	authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
@@ -107,11 +116,6 @@ public class UserService {
         String jwt = tokenUtils.generateToken(user.getUsername());
         int expiresIn = tokenUtils.getExpiredIn();
 
-		/*
-		 * if (existUser.getLastPasswordResetDate() == null) { throw new
-		 * PasswordNotChangedException("Please change your password!", jwt); }
-		 */
-
         return new UserTokenStateDTO(jwt, expiresIn, user.getRole());
     }
 
@@ -121,6 +125,19 @@ public class UserService {
         userDTO.setUsername(user);
         return userDTO;
     }
+    
+    public UserTokenStateDTO resetPassword(ResetPasswordDTO dto) throws UserException {
+		User user = userRepository.findByKey(dto.getResetKey()); //PAZI treba reset key
+		if (user == null) {
+            throw new NoSuchElementException("The password is already reset or the link is invalid!");
+        }
+		userDetailsService.changePassword(user.getPassword(), dto.getNewPassword());
+		//user.setRkey(null);
+		save(user);
+		
+		UserTokenStateDTO token = generateToken(user.getUsername(), dto.getNewPassword());
+        return token;
+	}
 
     public UserDTO confirmRegistration(String key) throws NoSuchElementException {
         User user = userRepository.findByKey(key);
@@ -139,7 +156,7 @@ public class UserService {
             throw new DisabledException("Your account hasn't been activated yet. Please check your email first!");
         }
     	String generatedKey = RandomUtil.buildAuthString(30);
-    	user.setResetKey(generatedKey);
+    	//user.setRkey(generatedKey);
     	mailSenderService.forgotPassword(user.getUsername(), generatedKey);
     	save(user);
     }
@@ -181,4 +198,5 @@ public class UserService {
             }
         }
     }
+
 }

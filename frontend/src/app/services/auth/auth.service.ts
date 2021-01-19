@@ -6,6 +6,7 @@ import { catchError } from 'rxjs/operators';
 import 'rxjs/add/operator/map';
 import 'rxjs/Rx';
 import { JwtTokenService } from './jwt-token.service';
+import { UserTokenState } from 'src/app/shared/models/UserTokenState';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,8 @@ export class AuthService {
 
   private readonly loginEndpoint = "http://localhost:9001/auth/login";
   private readonly registerEndpoint = "http://localhost:9001/auth/register";
-  private readonly forgotPasswordEndpoint = "http://localhost:9001/auth/forgot-password"; 
+  private readonly forgotPasswordEndpoint = "http://localhost:9001/auth/forgot-password";
+  private readonly resetPasswordEndpoint = "http://localhost:9001/auth/reset-password"; 
 
   constructor(private http: HttpClient) { }
 
@@ -24,16 +26,21 @@ export class AuthService {
       this.loginEndpoint,
       JSON.stringify({ username, password }),
       { headers }).map((res: any) => {
-        let token = res && res['accessToken'];
-        let expiresIn = res && res['expiresIn'];
-        let userRole = res && res['userRole'];
-        if (token) {
-          localStorage.setItem('currentUser', JSON.stringify({
-            username: username,
+        let user: UserTokenState =  {
+          token: res && res['accessToken'],
+          expiresIn: res && res['expiresIn'],
+          userRole: res && res['userRole']
+        };
+        //let token = res && res['accessToken'];
+        //let expiresIn = res && res['expiresIn'];
+        //let userRole = res && res['userRole'];
+        if (user.token) {
+          localStorage.setItem('currentUser', JSON.stringify(user))
+            /*username: username,
             token: token,
             expiresIn: expiresIn,
             role: userRole
-          }));
+          }));*/
           return true;
         }
       }).pipe(
@@ -71,6 +78,26 @@ export class AuthService {
     return this.http.post(
       this.forgotPasswordEndpoint,
       username,
+      { headers }
+    ).map((res: any) => {
+      let user: UserTokenState =  {
+        token: res && res['accessToken'],
+        expiresIn: res && res['expiresIn'],
+        userRole: res && res['userRole']
+      };
+      localStorage.setItem('currentUser', JSON.stringify(user));
+    }).pipe(
+      catchError(error => {
+        return throwError(error);
+      })
+    )
+  }
+
+  resetPassword(newPassword: string, resetKey: string) {
+    var headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'text/plain' });
+    return this.http.post(
+      this.resetPasswordEndpoint,
+      JSON.stringify({newPassword, resetKey}),
       { headers }
     ).pipe(
       catchError(error => {

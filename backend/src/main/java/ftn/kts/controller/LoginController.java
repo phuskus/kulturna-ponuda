@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ftn.kts.dto.ResetPasswordDTO;
 import ftn.kts.dto.UserDTO;
 import ftn.kts.dto.UserTokenStateDTO;
 import ftn.kts.exceptions.PasswordNotChangedException;
@@ -75,6 +76,12 @@ public class LoginController {
     public ResponseEntity<UserDTO> forgotPassword(@Valid @RequestBody String username) {
         userService.forgotPassword(username);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @PostMapping("/reset-password")
+    public ResponseEntity<UserTokenStateDTO> resetPassword(@Valid @RequestBody ResetPasswordDTO dto) throws UserException {
+    	UserTokenStateDTO user = userService.resetPassword(dto);
+    	return new ResponseEntity<>(user, HttpStatus.OK);
     }
     
 
