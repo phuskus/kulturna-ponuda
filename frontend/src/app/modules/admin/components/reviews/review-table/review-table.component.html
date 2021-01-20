@@ -1,0 +1,81 @@
+<div class="example-container mat-elevation-z8" style="height: 100% !important">
+  <div class="example-loading-shade" *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+
+  <div
+    class="card-header"
+    fxLayout="row"
+    fxLayoutAlign="space-between center"
+    fxLayoutGap="5%"
+  >
+    <div>Reviews</div>
+
+    <mat-form-field class="search-field">
+      <input
+        matInput
+        (keyup)="applyFilter($event)"
+        placeholder="Search"
+        #input
+      />
+    </mat-form-field>
+  </div>
+
+  <div class="example-table-container">
+    <table
+      mat-table
+      [dataSource]="dataSource"
+      class="example-table"
+      matSort
+      matSortDisableClear
+      matSortDirection="desc"
+    >
+      <!-- Offer Column -->
+      <ng-container matColumnDef="culturalOffer">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Cultural Offer
+        </th>
+        <td mat-cell *matCellDef="let row">{{ row.culturalOfferName }}</td>
+      </ng-container>
+
+      <!-- User Column -->
+      <ng-container matColumnDef="user">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>User</th>
+        <td mat-cell *matCellDef="let row">{{ row.user.name + " " + row.user.surname  }}</td>
+      </ng-container>
+
+      <!-- Content Column -->
+      <ng-container matColumnDef="content">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Content</th>
+        <td mat-cell *matCellDef="let row">
+          {{ row.content.substring(0, 50) }}
+        </td>
+      </ng-container>
+
+      <!-- Rating Column -->
+      <ng-container matColumnDef="rating">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Rating</th>
+        <td mat-cell *matCellDef="let row">{{ row.rating }}</td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let row">
+          <button mat-icon-button (click)="openDeleteDialog(row)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: tableColumns"></tr>
+    </table>
+  </div>
+
+  <mat-paginator
+    class="paginator"
+    [length]="resultsLength"
+    [pageSizeOptions]="[10, 15, 20]"
+  ></mat-paginator>
+</div>

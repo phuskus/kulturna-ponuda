@@ -3,11 +3,12 @@ package ftn.kts.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import ftn.kts.model.CulturalOffer;
 import ftn.kts.model.Subcategory;
 
-public interface CulturalOfferRepository extends JpaRepository<CulturalOffer, Long> {
+public interface CulturalOfferRepository extends JpaRepository<CulturalOffer, Long>, JpaSpecificationExecutor<CulturalOffer> {
 
 	CulturalOffer findByNameIgnoringCase(String name);
 	Page<CulturalOffer> findAll(Pageable pageable);

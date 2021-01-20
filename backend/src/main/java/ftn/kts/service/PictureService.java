@@ -97,6 +97,16 @@ public class PictureService {
 		return pics;
 	}
 	
+
+	public PictureDTO convertToDTO(Picture picture) {
+		try {
+			return this.toDTO(picture);			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return new PictureDTO();
+	}
+	
 	public Set<Picture> convertToEntity(Set<PictureDTO> pictures) {
 		Set<Picture> pics = new HashSet<>();
 		try {
@@ -122,6 +132,7 @@ public class PictureService {
 		fis.close();
 		return imageString;
 	}
+
 
 
 }

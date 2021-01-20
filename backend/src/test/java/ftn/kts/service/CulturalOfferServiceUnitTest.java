@@ -27,6 +27,7 @@ import ftn.kts.exceptions.UniqueConstraintViolationException;
 import ftn.kts.model.Admin;
 import ftn.kts.model.Category;
 import ftn.kts.model.CulturalOffer;
+import ftn.kts.model.Picture;
 import ftn.kts.model.Subcategory;
 import ftn.kts.repository.CulturalOfferRepository;
 
@@ -44,13 +45,15 @@ public class CulturalOfferServiceUnitTest {
 
 	@Before
 	public void setup() {
-		Admin admin = new Admin("Admin", "admin@test.com", "admin");
+		Admin admin = new Admin("Admin", "Admin", "admin@test.com", "admin");
 		admin.setId(1L);
 
 		Category cat = new Category("New category");
 		cat.setId(1L);
 
-		Subcategory subcat = new Subcategory("New subcategory", cat);
+		Picture picture = new Picture("path", "placeholder");
+		
+		Subcategory subcat = new Subcategory("New subcategory", cat, picture);
 		subcat.setId(1L);
 
 		CulturalOffer firstOffer = new CulturalOffer(UNIT_TEST_NAME_FIRST, UNIT_TEST_DESCRIPTION, 0F, 0F,

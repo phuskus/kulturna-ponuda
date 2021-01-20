@@ -1,6 +1,8 @@
 package ftn.kts.service;
 
 import ftn.kts.dto.AdminDTO;
+import ftn.kts.model.Authority;
+import ftn.kts.utils.RandomUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +16,12 @@ import java.util.NoSuchElementException;
 @Service
 public class AdminService {
     private AdminRepository adminRepository;
+    private UserService userService;
 
     @Autowired
-    public AdminService(AdminRepository adminRepository) {
+    public AdminService(AdminRepository adminRepository, UserService userService) {
         this.adminRepository = adminRepository;
+        this.userService = userService;
     }
 
     public List<AdminDTO> getAllDTO() {
@@ -37,7 +41,12 @@ public class AdminService {
 
     public AdminDTO create(AdminDTO dto) {
         Admin admin = toEntity(dto);
-        return toDTO(adminRepository.save(admin));
+        String key = userService.createUserAuthority(admin, "ADMIN");
+        AdminDTO saved = toDTO(adminRepository.save(admin));
+
+        //TODO: delete this
+        userService.confirmRegistration(key);
+        return saved;
     }
 
     public AdminDTO update(AdminDTO dto, Long id) {
@@ -60,19 +69,20 @@ public class AdminService {
     }
 
     protected Admin toEntity(AdminDTO dto) {
-        return new Admin(dto.getName(), dto.getUsername(), dto.getPassword(), dto.getCategories(), dto.getCulturalOffers());
+        return new Admin(dto.getName(), dto.getSurname(), dto.getUsername(), dto.getPassword());
     }
 
     private AdminDTO toDTO(Admin admin) {
-        return new AdminDTO(admin.getId(), admin.getName(), admin.getUsername(), admin.getPassword(), admin.getCategories(), admin.getCulturalOffers());
+        return new AdminDTO(admin.getId(), admin.getName(), admin.getSurname(), admin.getUsername(), admin.getPassword());
     }
 
     private Admin updateAdmin(Admin admin, AdminDTO dto) {
         admin.setName(dto.getName());
+        admin.setSurname(dto.getSurname());
         admin.setUsername(dto.getUsername());
         admin.setPassword(dto.getPassword());
-        admin.setCategories(dto.getCategories());
-        admin.setCulturalOffers(dto.getCulturalOffers());
+//        admin.setCategories(dto.getCategories());
+//        admin.setCulturalOffers(dto.getCulturalOffers());
         return admin;
     }
 }

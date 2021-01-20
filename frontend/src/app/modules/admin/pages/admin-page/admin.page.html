@@ -1,0 +1,67 @@
+<div class="root">
+  <mat-drawer-container class="drawer-container" autosize>
+    <!-- TOOLBAR -->
+    <mat-toolbar class="toolbar">
+      <button
+        mat-icon-button
+        (click)="drawer.toggle()"
+        class="example-icon"
+        aria-label="Example icon-button with menu icon"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="toolbar-title">Admin Dashboard</span>
+      <span class="example-spacer"></span>
+      <button
+        mat-icon-button
+        class="example-icon favorite-icon"
+        aria-label="Example icon-button with heart icon"
+        (click)="openLink()"
+      >
+        <mat-icon>favorite</mat-icon>
+      </button>
+      <button
+        mat-icon-button
+        class="example-icon"
+        aria-label="Example icon-button with share icon"
+        (click)="openLink()"
+      >
+        <mat-icon>share</mat-icon>
+      </button>
+    </mat-toolbar>
+
+    <!-- SIDE DRAWER -->
+    <mat-drawer #drawer class="example-sidenav" mode="side">
+      <div class="parent" fxLayout="column" fxLayoutAlign="start start">
+        <mat-list>
+          <mat-list-item>
+            <div mat-line>Mijat Miletic</div>
+          </mat-list-item>
+        </mat-list>
+
+        <!-- ICON LIST -->
+        <mat-nav-list class="nav-list">
+          <mat-list-item
+            *ngFor="let link of links"
+            [class]="getLastUrlPath() === link.route ? 'disabled-link' : ''"
+          >
+            <mat-icon mat-list-icon>{{link.icon}}</mat-icon>
+            <a matLine [href]="link.route">{{ link.text }}</a>
+          </mat-list-item>
+        </mat-nav-list>
+
+        <button mat-raised-button class="child">LOGOUT</button>
+      </div>
+    </mat-drawer>
+
+    <div
+      class="main"
+      fxLayout="row wrap"
+      fxLayout.lt-lg="column"
+      fxLayoutAlign="start start"
+    >
+      <app-admin-table class="flex-table"></app-admin-table>
+      <app-review-table class="flex-table"></app-review-table>
+    </div>
+  </mat-drawer-container>
+</div>

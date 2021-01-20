@@ -12,6 +12,7 @@ import static ftn.kts.constants.UserConstants.DB_USER_USERNAME;
 import static ftn.kts.constants.UserConstants.DB_USER_USERNAME_DISABLED;
 import static ftn.kts.constants.UserConstants.DB_USER_WRONG_USERNAME;
 import static ftn.kts.constants.UserConstants.INVALID_PASSWORD;
+import static ftn.kts.constants.UserConstants.DB_USER_SURNAME;
 import static ftn.kts.util.ControllerUtil.getAuthHeadersUser;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -49,7 +50,7 @@ public class LoginControllerIntegrationTest {
 		
 	@Test
 	public void register_UsernameNotExists_Success() {
-		UserDTO dto = new UserDTO(DB_NEW_USER_NAME, DB_CREATE_USERNAME, DB_NEW_USER_PASSWORD);
+		UserDTO dto = new UserDTO(DB_NEW_USER_NAME, DB_USER_SURNAME, DB_CREATE_USERNAME, DB_NEW_USER_PASSWORD);
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(dto);
 		ResponseEntity<UserDTO> responseEntity = restTemplate.exchange("/auth/register", HttpMethod.POST, 
 				httpEntity, UserDTO.class);
@@ -62,7 +63,7 @@ public class LoginControllerIntegrationTest {
 	
 	@Test
 	public void register_UsernameExists_BadRequestReturned() {
-		UserDTO dto = new UserDTO(DB_NEW_USER_NAME, DB_USER_USERNAME, DB_NEW_USER_PASSWORD);
+		UserDTO dto = new UserDTO(DB_NEW_USER_NAME, DB_USER_SURNAME, DB_USER_USERNAME, DB_NEW_USER_PASSWORD);
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(dto);
 		ResponseEntity<UserDTO> responseEntity = restTemplate.exchange("/auth/register", HttpMethod.POST, 
 				httpEntity, UserDTO.class);
@@ -72,7 +73,7 @@ public class LoginControllerIntegrationTest {
 	
 	@Test
 	public void register_InvalidUsername_BadRequestReturned() {
-		UserDTO dto = new UserDTO(DB_NEW_USER_NAME, DB_USER_WRONG_USERNAME, DB_NEW_USER_PASSWORD);
+		UserDTO dto = new UserDTO(DB_NEW_USER_NAME, DB_USER_SURNAME, DB_USER_WRONG_USERNAME, DB_NEW_USER_PASSWORD);
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(dto);
 		ResponseEntity<UserDTO> responseEntity = restTemplate.exchange("/auth/register", HttpMethod.POST, 
 				httpEntity, UserDTO.class);
@@ -82,7 +83,7 @@ public class LoginControllerIntegrationTest {
 	
 	@Test
 	public void register_ShortPassword_BadRequestReturned() {
-		UserDTO dto = new UserDTO(DB_NEW_USER_NAME, DB_CREATE_USERNAME, INVALID_PASSWORD);
+		UserDTO dto = new UserDTO(DB_NEW_USER_NAME, DB_USER_SURNAME, DB_CREATE_USERNAME, INVALID_PASSWORD);
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(dto);
 		ResponseEntity<UserDTO> responseEntity = restTemplate.exchange("/auth/register", HttpMethod.POST, 
 				httpEntity, UserDTO.class);
@@ -92,7 +93,17 @@ public class LoginControllerIntegrationTest {
 	
 	@Test
 	public void register_NoName_BadRequestReturned() {
-		UserDTO dto = new UserDTO("", DB_CREATE_USERNAME, DB_NEW_USER_PASSWORD);
+		UserDTO dto = new UserDTO("", DB_USER_SURNAME, DB_CREATE_USERNAME, DB_NEW_USER_PASSWORD);
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(dto);
+		ResponseEntity<UserDTO> responseEntity = restTemplate.exchange("/auth/register", HttpMethod.POST, 
+				httpEntity, UserDTO.class);
+		
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+	}
+	
+	@Test
+	public void register_NoSurname_BadRequestReturned() {
+		UserDTO dto = new UserDTO(DB_NEW_USER_NAME, "", DB_CREATE_USERNAME, DB_NEW_USER_PASSWORD);
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(dto);
 		ResponseEntity<UserDTO> responseEntity = restTemplate.exchange("/auth/register", HttpMethod.POST, 
 				httpEntity, UserDTO.class);
@@ -102,7 +113,7 @@ public class LoginControllerIntegrationTest {
 	
 	@Test
 	public void register_NoUsername_BadRequestReturned() {
-		UserDTO dto = new UserDTO(DB_NEW_USER_NAME, "", DB_NEW_USER_PASSWORD);
+		UserDTO dto = new UserDTO(DB_NEW_USER_NAME, DB_USER_SURNAME, "", DB_NEW_USER_PASSWORD);
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(dto);
 		ResponseEntity<UserDTO> responseEntity = restTemplate.exchange("/auth/register", HttpMethod.POST, 
 				httpEntity, UserDTO.class);
@@ -112,7 +123,7 @@ public class LoginControllerIntegrationTest {
 	
 	@Test
 	public void register_NoPassword_BadRequestReturned() {
-		UserDTO dto = new UserDTO(DB_NEW_USER_NAME, DB_CREATE_USERNAME, "");
+		UserDTO dto = new UserDTO(DB_NEW_USER_NAME, DB_USER_SURNAME, DB_CREATE_USERNAME, "");
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(dto);
 		ResponseEntity<UserDTO> responseEntity = restTemplate.exchange("/auth/register", HttpMethod.POST, 
 				httpEntity, UserDTO.class);
@@ -163,14 +174,14 @@ public class LoginControllerIntegrationTest {
 	}
 	
 	@Test
-	public void createAuthenticationToken_UsernameNotExists_NotFoundReturned() {
+	public void createAuthenticationToken_UsernameNotExists_BadRequestReturned() {
 		JwtAuthenticationRequest dto = new JwtAuthenticationRequest("test11@gmail.com", "test1");
 		HttpEntity<JwtAuthenticationRequest> httpEntity = new HttpEntity<JwtAuthenticationRequest>(dto);
 		ResponseEntity<UserTokenStateDTO> responseEntity = restTemplate.exchange("/auth/login", 
 					HttpMethod.POST, httpEntity, UserTokenStateDTO.class);
 		UserTokenStateDTO token = responseEntity.getBody();
 		
-		assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
 		assertNull(token.getAccessToken());
 	}
 	

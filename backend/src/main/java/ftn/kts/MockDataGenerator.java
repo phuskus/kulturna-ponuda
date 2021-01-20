@@ -4,6 +4,7 @@ import com.github.javafaker.Faker;
 import ftn.kts.dto.*;
 import ftn.kts.exceptions.UniqueConstraintViolationException;
 import ftn.kts.model.Category;
+import ftn.kts.model.CulturalOffer;
 import ftn.kts.model.Subcategory;
 import ftn.kts.repository.*;
 import ftn.kts.service.*;
@@ -140,12 +141,12 @@ public abstract class MockDataGenerator {
     private static ArrayList<AdminDTO> GenerateAdmins(ApplicationContext applicationContext) {
         AdminService adminService = applicationContext.getBean(AdminService.class);
         ArrayList<AdminDTO> adminList = new ArrayList<>();
-        for (int i = 0; i < ADMIN_COUNT; i++)
-        {
+        AdminDTO staticAdmin = new AdminDTO("Amin", "Aminovic", "covid19.clinic.llc@gmail.com", "123");
+        adminList.add(adminService.create(staticAdmin));
+        for (int i = 0; i < ADMIN_COUNT; i++) {
             while (true) {
                 try {
-                    String name = faker.name().fullName();
-                    AdminDTO dto = new AdminDTO(name, faker.internet().emailAddress(), "sifra" + name);
+                    AdminDTO dto = new AdminDTO(faker.name().firstName(), faker.name().lastName(), faker.internet().emailAddress(), faker.internet().password(8, 16));
                     adminList.add(adminService.create(dto));
                     break;
                 } catch (Exception e) {
@@ -159,12 +160,11 @@ public abstract class MockDataGenerator {
     private static ArrayList<UserDTO> GenerateUsers(ApplicationContext applicationContext) {
         UserService userService = applicationContext.getBean(UserService.class);
         ArrayList<UserDTO> userList = new ArrayList<>();
-        for (int i = 0; i < REGISTERED_USER_COUNT; i++)
-        {
+        for (int i = 0; i < REGISTERED_USER_COUNT; i++) {
             while (true) {
                 try {
-                    String name = faker.rickAndMorty().character();
-                    UserDTO dto = new UserDTO(name, faker.internet().emailAddress(), "sifra"+name);
+                    //UserDTO dto1 = new UserDTO(faker.rickAndMorty().character(), faker.internet().emailAddress(), faker.internet().password());
+                	UserDTO dto = new UserDTO(faker.name().firstName(), faker.name().lastName(), faker.internet().emailAddress(), faker.internet().password());
                     userList.add(userService.create(dto));
                     break;
                 } catch (Exception e) {
@@ -197,7 +197,8 @@ public abstract class MockDataGenerator {
 
             for (int j = 0; j < subcategories[i].length; j++)
             {
-                SubcategoryDTO dto = new SubcategoryDTO(subcategories[i][j], category.getId());
+            	// TODO: promeniti ovaj null za pravu ikonicu slike
+                SubcategoryDTO dto = new SubcategoryDTO(subcategories[i][j], category.getId(), null);
                 subcategoryList.add(subcategoryService.create(dto));
             }
         }
@@ -207,13 +208,11 @@ public abstract class MockDataGenerator {
     private static ArrayList<CulturalOfferDTO> GenerateCulturalOffers(ApplicationContext applicationContext, List<SubcategoryDTO> subcategoryList, List<AdminDTO> adminList) {
         CulturalOfferService culturalOfferService = applicationContext.getBean(CulturalOfferService.class);
         ArrayList<CulturalOfferDTO> culturalOfferList = new ArrayList<>();
-        for (SubcategoryDTO subcategory : subcategoryList)
-        {
+        for (SubcategoryDTO subcategory : subcategoryList) {
             int randomCount = random.nextInt(CULTURAL_OFFERS_PER_SUBCATEGORY_MAX - CULTURAL_OFFERS_PER_SUBCATEGORY_MIN);
             int culturalOfferRandomCount = CULTURAL_OFFERS_PER_SUBCATEGORY_MIN + randomCount;
 
-            for (int i = 0; i < culturalOfferRandomCount; i++)
-            {
+            for (int i = 0; i < culturalOfferRandomCount; i++) {
                 while (true) {
                     try {
                         float longitude = LONGITUDE_MIN + random.nextFloat() * (LONGITUDE_MAX - LONGITUDE_MIN);
@@ -244,8 +243,7 @@ public abstract class MockDataGenerator {
             int randomCount = random.nextInt(SUBSCRIPTIONS_PER_USER_MAX - SUBSCRIPTIONS_PER_USER_MIN);
             int subscriptionsRandomCount = SUBSCRIPTIONS_PER_USER_MIN + randomCount;
 
-            for (int i = 0; i < subscriptionsRandomCount; i++)
-            {
+            for (int i = 0; i < subscriptionsRandomCount; i++) {
                 while (true) {
                     try {
                         SubscriptionDTO dto;
@@ -276,8 +274,7 @@ public abstract class MockDataGenerator {
             int randomCount = random.nextInt(POSTS_PER_CULTURAL_OFFER_MAX - POSTS_PER_CULTURAL_OFFER_MIN);
             int postsRandomCount = POSTS_PER_CULTURAL_OFFER_MIN + randomCount;
 
-            for (int i = 0; i < postsRandomCount; i++)
-            {
+            for (int i = 0; i < postsRandomCount; i++) {
                 while (true) {
                     try {
                         Set<PictureDTO> pictureSet = new HashSet<>();
@@ -312,14 +309,14 @@ public abstract class MockDataGenerator {
             int randomCount = random.nextInt(REVIEWS_PER_USER_MAX - REVIEWS_PER_USER_MIN);
             int reviewsRandomCount = REVIEWS_PER_USER_MIN + randomCount;
 
-            for (int i = 0; i < reviewsRandomCount; i++)
-            {
+            for (int i = 0; i < reviewsRandomCount; i++) {
                 while (true) {
                     try {
+                        CulturalOfferDTO offer = culturalOfferList.get(random.nextInt(culturalOfferList.size()));
                         ReviewDTO dto = new ReviewDTO((long) (random.nextInt(5) + 1),
                                 faker.rickAndMorty().quote(),
-                                user.getId(),
-                                culturalOfferList.get(random.nextInt(culturalOfferList.size())).getId());
+                                user,
+                                offer.getId(), offer.getName());
                         reviewService.create(dto);
                         break;
                     } catch (Exception e) {
