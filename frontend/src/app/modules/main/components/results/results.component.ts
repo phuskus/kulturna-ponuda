@@ -157,5 +157,6 @@ export class ResultsComponent implements OnInit {
 
   handlePageChange(event): void {
     this.page = event;
+    this.fetchOffers();
   }
 }

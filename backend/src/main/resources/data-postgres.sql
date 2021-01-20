@@ -51,3 +51,4 @@ insert into cultural_offers_pictures (cultural_offer_id, pictures_id) values (2,
 
 insert into reviews (rating, content, cultural_offer_id, user_id) values (5, 'Otkazano zbog korone', 1, 3);
 insert into reviews (rating, content, cultural_offer_id, user_id) values (0, 'Ne valja nista', 1, 3);
+

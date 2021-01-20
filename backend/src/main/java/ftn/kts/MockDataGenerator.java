@@ -11,6 +11,7 @@ import ftn.kts.service.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -20,16 +21,25 @@ public abstract class MockDataGenerator {
     private static final int REGISTERED_USER_COUNT = 100;
 
     private static final String[] CATEGORIES = {
-            "Institucija",
-            "Manifestacija",
-            "Kulturno dobro"
+            "Institution",
+            "Manifestation",
+            "Cultural good"
     };
 
 
     private static final String[][] SUBCATEGORIES = {
-            { "Muzej", "Galerija" },
-            { "Festival", "Sajam" },
-            { "Spomenik", "Znamenitost" }
+            { "Museum", "Gallery" },
+            { "Festival", "Fair" },
+            { "Monument", "Landmark" }
+    };
+    
+    private static final String[][] ICONS = {
+    		{ "\\pictures\\mus.png", "Museum placeholder" },
+    		{ "\\pictures\\gal.png", "Gallery placeholder" },
+    		{ "\\pictures\\fest.png", "Festival placeholder" },
+    		{ "\\pictures\\fair.png", "Fair placeholder" },
+    		{ "\\pictures\\mon.png", "Monument placeholder" },
+    		{ "\\pictures\\lmark.png", "Landmark placeholder" }
     };
 
     private static final int CULTURAL_OFFERS_PER_SUBCATEGORY_MIN = 1;
@@ -90,15 +100,18 @@ public abstract class MockDataGenerator {
         {
             throw new IllegalArgumentException("There must be an array of subcategories for each category");
         }
+        
+        System.out.println("Adding pictures for subcategories...");
+        ArrayList<PictureDTO> icons = GeneratePicturesSubcategories(applicationContext, ICONS);
 
         System.out.println("Creating categories...");
         ArrayList<CategoryDTO> categoryList = GenerateCategories(applicationContext, CATEGORIES);
 
         System.out.println("Creating subcategories...");
-        ArrayList<SubcategoryDTO> subcategoryList = GenerateSubcategories(applicationContext, categoryList, SUBCATEGORIES);
+        ArrayList<SubcategoryDTO> subcategoryList = GenerateSubcategories(applicationContext, categoryList, SUBCATEGORIES, icons);
 
         System.out.println("Creating cultural offers...");
-        ArrayList<CulturalOfferDTO> culturalOfferList = GenerateCulturalOffers(applicationContext, subcategoryList, adminList);
+        ArrayList<CulturalOfferDTO> culturalOfferList = GenerateCulturalOffers(applicationContext, subcategoryList, adminList, icons);
 
         System.out.println("Creating subscriptions...");
         GenerateSubscriptions(applicationContext, userList, culturalOfferList, subcategoryList);
@@ -129,8 +142,8 @@ public abstract class MockDataGenerator {
         subscriptionRepository.deleteAll();
         postRepository.deleteAll();
         culturalOfferRepository.deleteAll();
-        pictureRepository.deleteAll();
         subcategoryRepository.deleteAll();
+        pictureRepository.deleteAll();
         categoryRepository.deleteAll();
         registeredUserRepository.deleteAll();
         adminRepository.deleteAll();
@@ -174,6 +187,23 @@ public abstract class MockDataGenerator {
         }
         return userList;
     }
+    
+    private static ArrayList<PictureDTO> GeneratePicturesSubcategories(ApplicationContext applicationContext, String[][] icons) {
+    	PictureService pictureService = applicationContext.getBean(PictureService.class);
+    	ArrayList<PictureDTO> iconList = new ArrayList<>();
+    	
+    	for (int i = 0; i < icons.length; i++) 
+    	{
+    		PictureDTO dto = new PictureDTO(icons[i][1], icons[i][0]);
+    		try {
+    			iconList.add(pictureService.save(dto));
+			} catch (IOException e) {
+				System.out.println("Something went wrong with generating image...");
+				e.printStackTrace();
+			}
+    	}
+    	return iconList;
+    }
 
     private static ArrayList<CategoryDTO> GenerateCategories(ApplicationContext applicationContext, String[] categories) throws UniqueConstraintViolationException {
         CategoryService categoryService = applicationContext.getBean(CategoryService.class);
@@ -187,27 +217,29 @@ public abstract class MockDataGenerator {
         return categoryList;
     }
 
-    private static ArrayList<SubcategoryDTO> GenerateSubcategories(ApplicationContext applicationContext, List<CategoryDTO> categoryList, String[][] subcategories) throws UniqueConstraintViolationException {
+    private static ArrayList<SubcategoryDTO> GenerateSubcategories(ApplicationContext applicationContext, List<CategoryDTO> categoryList, String[][] subcategories, List<PictureDTO> iconList) throws UniqueConstraintViolationException {
         SubcategoryService subcategoryService = applicationContext.getBean(SubcategoryService.class);
         ArrayList<SubcategoryDTO> subcategoryList = new ArrayList<>();
-
+        int iconCounter = 0;
         for (int i = 0; i < categoryList.size(); i++)
         {
             CategoryDTO category = categoryList.get(i);
 
             for (int j = 0; j < subcategories[i].length; j++)
             {
-            	// TODO: promeniti ovaj null za pravu ikonicu slike
-                SubcategoryDTO dto = new SubcategoryDTO(subcategories[i][j], category.getId(), null);
+            	PictureDTO icon = iconList.get(iconCounter);
+                SubcategoryDTO dto = new SubcategoryDTO(subcategories[i][j], category.getId(), icon);
                 subcategoryList.add(subcategoryService.create(dto));
+                iconCounter++;
             }
         }
         return subcategoryList;
     }
 
-    private static ArrayList<CulturalOfferDTO> GenerateCulturalOffers(ApplicationContext applicationContext, List<SubcategoryDTO> subcategoryList, List<AdminDTO> adminList) {
+    private static ArrayList<CulturalOfferDTO> GenerateCulturalOffers(ApplicationContext applicationContext, List<SubcategoryDTO> subcategoryList, List<AdminDTO> adminList, ArrayList<PictureDTO> icons) {
         CulturalOfferService culturalOfferService = applicationContext.getBean(CulturalOfferService.class);
         ArrayList<CulturalOfferDTO> culturalOfferList = new ArrayList<>();
+        int iconCounter = 0;
         for (SubcategoryDTO subcategory : subcategoryList) {
             int randomCount = random.nextInt(CULTURAL_OFFERS_PER_SUBCATEGORY_MAX - CULTURAL_OFFERS_PER_SUBCATEGORY_MIN);
             int culturalOfferRandomCount = CULTURAL_OFFERS_PER_SUBCATEGORY_MIN + randomCount;
@@ -226,6 +258,9 @@ public abstract class MockDataGenerator {
                                 faker.address().country(),
                                 adminList.get(0).getId(),
                                 subcategory.getId());
+                        Set<PictureDTO> pictures = new HashSet<>();
+                        pictures.add(icons.get(iconCounter));
+                        dto.setPictures(pictures);
                         culturalOfferList.add(culturalOfferService.create(dto));
                         break;
                     } catch (Exception e) {
@@ -233,6 +268,7 @@ public abstract class MockDataGenerator {
                     }
                 }
             }
+            iconCounter++;
         }
         return culturalOfferList;
     }
