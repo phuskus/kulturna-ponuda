@@ -96,5 +96,4 @@ public class CultSecurityConfiguration extends WebSecurityConfigurerAdapter {
 				"/**/*.css", "/**/*.js", "/categories", "/cultural_offers/*", "/reviews", "/reviews/offer/*", "/posts",
 				"/pictures");
 	}
-
 }
