@@ -14,7 +14,8 @@ import { FormValidationService } from 'src/app/services/validation/form-validati
 export class ResetPasswordComponent implements OnInit {
 
   resetForm: FormGroup;
-  hide: boolean = true;
+  hidePassword: boolean = true;
+  hideConfirmPassword: boolean = true;
 
   constructor(private readonly fb: FormBuilder, 
     private router: Router, 
@@ -30,8 +31,6 @@ export class ResetPasswordComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    if(!this.activatedRoute.snapshot.params.key)
-      this.router.navigate(['/']);
   }
 
   get f() {
@@ -46,10 +45,13 @@ export class ResetPasswordComponent implements OnInit {
     let newPassword = this.resetForm.value['newPassword'];
     let resetKey = this.activatedRoute.snapshot.params.key;
     this.authService.resetPassword(newPassword, resetKey).subscribe(() => {
-      this.messageService.openSnackBar(this.snackBar, 'Successfully reset password!', 'End', 6000);
+      this.messageService.openSnackBar(this.snackBar, 'Successfully recovered account!', 'End', 6000);
       this.router.navigate(['/']);
+      console.log(localStorage['currentUser']);
     }, error => {
       console.log(error);
+      this.messageService.openSnackBar(this.snackBar, error.error.message, 'End', 6000);
+      this.router.navigate(['/login']);
     })
   }
 

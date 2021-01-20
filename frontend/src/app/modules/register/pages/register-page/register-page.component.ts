@@ -15,7 +15,8 @@ import { MessageService } from 'src/app/services/message/message.service';
 export class RegisterPageComponent implements OnInit {
 
   registerForm: FormGroup;
-  hide: boolean = true;
+  hidePassword: boolean = true;
+  hideConfirmPassword: boolean = true;
   errMsg: String = '';
   usernameErr: boolean = false;
 

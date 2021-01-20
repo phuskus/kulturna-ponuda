@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot} from '@angular/router';
 import { Router } from '@angular/router';
+import { Role } from 'src/app/shared/models/Role';
 import { AuthService } from '../auth.service';
 
 @Injectable({
@@ -11,7 +12,7 @@ export class RoleGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
-    const currentUserRole: string = this.authService.getCurrentUserRole();
+    const currentUserRole: Role = this.authService.getCurrentUserRole();
     
     //check if route is restricted by role
     if(route.data.roles && route.data.roles.indexOf(currentUserRole) === -1) {

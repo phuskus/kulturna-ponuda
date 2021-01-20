@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { ResetPasswordRoutingModule } from './reset-password-routing.module';
-
+import { ValidateEqualModule } from 'ng-validate-equal';
 
 
 @NgModule({
@@ -22,7 +22,8 @@ import { ResetPasswordRoutingModule } from './reset-password-routing.module';
     MatInputModule,
     MatIconModule,
     MatSnackBarModule,
-    ResetPasswordRoutingModule
+    ResetPasswordRoutingModule,
+    ValidateEqualModule
   ]
 })
 export class ResetPasswordModule { }

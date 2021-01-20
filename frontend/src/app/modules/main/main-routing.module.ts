@@ -17,8 +17,8 @@ const routes: Routes = [
       { path: '', component: CardbarComponent },
       { path: 'offers', component: SidebarComponent, children: [
         {path: 'search/:query', component: ResultsComponent},
-        {path: ':id', component: SingleOfferComponent} //, canActivate: [NoAuthGuard, RoleGuard],
-        //data: { roles: [Role.USER]}}
+        {path: ':id', component: SingleOfferComponent, canActivate: [NoAuthGuard, RoleGuard],
+        data: { roles: [Role.USER]}}
       ]},
     ],
   },

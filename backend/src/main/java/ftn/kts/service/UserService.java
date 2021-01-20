@@ -127,12 +127,12 @@ public class UserService {
     }
     
     public UserTokenStateDTO resetPassword(ResetPasswordDTO dto) throws UserException {
-		User user = userRepository.findByKey(dto.getResetKey()); //PAZI treba reset key
+		User user = userRepository.findByResetKey(dto.getResetKey());
 		if (user == null) {
             throw new NoSuchElementException("The password is already reset or the link is invalid!");
         }
-		userDetailsService.changePassword(user.getPassword(), dto.getNewPassword());
-		//user.setRkey(null);
+		userDetailsService.changePasswordUtil(user, dto.getNewPassword());
+		user.setResetKey(null);
 		save(user);
 		
 		UserTokenStateDTO token = generateToken(user.getUsername(), dto.getNewPassword());
@@ -156,7 +156,7 @@ public class UserService {
             throw new DisabledException("Your account hasn't been activated yet. Please check your email first!");
         }
     	String generatedKey = RandomUtil.buildAuthString(30);
-    	//user.setRkey(generatedKey);
+    	user.setResetKey(generatedKey);
     	mailSenderService.forgotPassword(user.getUsername(), generatedKey);
     	save(user);
     }

@@ -34,8 +34,8 @@ public abstract class User implements UserDetails {
 	@Column(name = "key")
 	private String key;
 	
-	//@Column(name="rkey")
-	//private String rkey;
+	@Column(name="reset_key")
+	private String resetKey;
 
 	@Column(name = "role", insertable = false, updatable = false)
 	private String role;
@@ -124,15 +124,14 @@ public abstract class User implements UserDetails {
 		this.key = key;
 	}
 	
-	/*public String getRkey() {
-		return this.rkey;
+	public String getResetKey() {
+		return resetKey;
+	}
+
+	public void setResetKey(String resetKey) {
+		this.resetKey = resetKey;
 	}
 	
-	public void setRkey(String rkey) {
-		this.rkey = rkey;
-	}*/
-	
-
 	@Override
 	public List<Authority> getAuthorities() {
 		return authorities;

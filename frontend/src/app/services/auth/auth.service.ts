@@ -7,6 +7,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/Rx';
 import { JwtTokenService } from './jwt-token.service';
 import { UserTokenState } from 'src/app/shared/models/UserTokenState';
+import { Role } from 'src/app/shared/models/Role';
 
 @Injectable({
   providedIn: 'root'
@@ -31,16 +32,8 @@ export class AuthService {
           expiresIn: res && res['expiresIn'],
           userRole: res && res['userRole']
         };
-        //let token = res && res['accessToken'];
-        //let expiresIn = res && res['expiresIn'];
-        //let userRole = res && res['userRole'];
         if (user.token) {
           localStorage.setItem('currentUser', JSON.stringify(user))
-            /*username: username,
-            token: token,
-            expiresIn: expiresIn,
-            role: userRole
-          }));*/
           return true;
         }
       }).pipe(
@@ -79,14 +72,7 @@ export class AuthService {
       this.forgotPasswordEndpoint,
       username,
       { headers }
-    ).map((res: any) => {
-      let user: UserTokenState =  {
-        token: res && res['accessToken'],
-        expiresIn: res && res['expiresIn'],
-        userRole: res && res['userRole']
-      };
-      localStorage.setItem('currentUser', JSON.stringify(user));
-    }).pipe(
+    ).pipe(
       catchError(error => {
         return throwError(error);
       })
@@ -94,12 +80,20 @@ export class AuthService {
   }
 
   resetPassword(newPassword: string, resetKey: string) {
-    var headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'text/plain' });
+    var headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post(
       this.resetPasswordEndpoint,
       JSON.stringify({newPassword, resetKey}),
-      { headers }
-    ).pipe(
+      { headers })
+      .map((res: any) => {
+        let user: UserTokenState =  {
+          token: res && res['accessToken'],
+          expiresIn: res && res['expiresIn'],
+          userRole: res && res['userRole']
+        };
+        localStorage.setItem('currentUser', JSON.stringify(user));
+      }
+      ).pipe(
       catchError(error => {
         return throwError(error);
       })
@@ -123,10 +117,11 @@ export class AuthService {
     let user = localStorage.currentUser;
     if (user) {
       user = JSON.parse(user);
-      return user.role;
+      let role: string = user.userRole;
+      return Role[role];
     }
     else {
-      return "NO_AUTH";
+      return Role['NO_AUTH'];
     }
   }
 
