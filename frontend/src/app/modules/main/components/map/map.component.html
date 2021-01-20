@@ -1,6 +1,16 @@
-<mgl-map
-  [style]="'mapbox://styles/mapbox/streets-v9'"
-  [zoom]="[3]"
-  [center]="[-74.5, 40]"
+<div id="map"></div>
+<div
+  id="info"
+  [style.visibility]="displayInfo"
+  [style.left]="displayInfoLat"
+  [style.top]="displayInfoLon"
 >
-</mgl-map>
+    <mat-card *ngIf="focusedOffer">
+        <mat-card-title>
+            {{focusedOffer.name}}
+        </mat-card-title>
+        <mat-card-subtitle>
+            {{focusedOffer.categoryName}}
+        </mat-card-subtitle>
+    </mat-card>
+</div>

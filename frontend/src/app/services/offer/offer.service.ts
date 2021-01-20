@@ -62,9 +62,11 @@ export class OfferService {
       .set('regionNames', regionNames)
       .set('cityNames', cityNames);
     const options = { ...this.httpHeaders, params };
-    return this.httpClient
-      .get<CulturalOfferPage>(this.endpoint, options)
-      .pipe(retry(1), catchError(this.processError));
+    return this.httpClient.get<CulturalOfferPage>(this.endpoint, options)
+      .pipe(
+        retry(1),
+        catchError(this.processError)
+      )
   }
 
   processError(err) {

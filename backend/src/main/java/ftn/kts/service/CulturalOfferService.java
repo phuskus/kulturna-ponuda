@@ -150,7 +150,7 @@ public class CulturalOfferService {
 	private CulturalOfferDTO toDTO(CulturalOffer entity) {
 		CulturalOfferDTO dto = new CulturalOfferDTO(entity.getId(), entity.getName(), entity.getDescription(),
 				entity.getLatitude(), entity.getLongitude(), entity.getAddress(), entity.getCity(), entity.getRegion(),
-				entity.getAdmin().getId(), entity.getCategory().getId());
+				entity.getAdmin().getId(), entity.getCategory());
 		dto.setPictures(pictureService.convertToDTO(entity.getPictures()));
 		dto.setPosts(postService.convertToDTO(entity.getPosts()));
 		dto.setReviews(reviewService.convertToDTO(entity.getReviews()));

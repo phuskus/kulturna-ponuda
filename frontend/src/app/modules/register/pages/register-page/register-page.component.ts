@@ -15,7 +15,8 @@ import { MessageService } from 'src/app/services/message/message.service';
 export class RegisterPageComponent implements OnInit {
 
   registerForm: FormGroup;
-  hide: boolean = true;
+  hidePassword: boolean = true;
+  hideConfirmPassword: boolean = true;
   errMsg: String = '';
   usernameErr: boolean = false;
 
@@ -31,7 +32,7 @@ export class RegisterPageComponent implements OnInit {
       username: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(5)]],
       confirmPassword: ['', Validators.required]
-    })
+    });
   }
 
   ngOnInit(): void {
@@ -56,12 +57,11 @@ export class RegisterPageComponent implements OnInit {
     ).subscribe(
       () => {
         this.messageService.openSnackBar(this.snackBar, 'Successfully registered! Please check your email and activate your account!', 'End', 5000);
-        this.formValidationService.clearFormAndValidators(this.registerForm);
+        //this.router.navigate(['/login']);
       }, error => {
-        for (let key in error.errors) {
-          this[key + "Err"] = true;
-          this.errMsg = error.errors[key];
-        }
+        //username already exists
+        this.usernameErr = true;
+        this.errMsg = error.errors['username'];
     });
   }
 
