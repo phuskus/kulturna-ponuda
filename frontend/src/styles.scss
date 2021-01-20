@@ -1,5 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* leaflet css */
+@import "~leaflet/dist/leaflet.css";
 @import "~src/themes/variables";
+
+$primary-color: #1a73e8;
 
 html,
 body {
