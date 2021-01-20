@@ -3,7 +3,7 @@
   <div mat-dialog-content>
     <div fxLayout="row">
       <div class="avatar">
-        <ngx-avatar value="S" size="45"></ngx-avatar>
+        <ngx-avatar [value]="newReview.user.name[0] + newReview.user.surname[0]" size="45"></ngx-avatar>
       </div>
 
       <div class="username-text" fxLayoutAlign="center center">

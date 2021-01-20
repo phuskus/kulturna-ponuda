@@ -12,6 +12,7 @@ import Page from 'src/app/shared/models/Page';
   template: '',
 })
 export abstract class AbstractDynamicPagingTable extends AbstractTable {
+  timer = null;
   isLoadingResults: boolean = false;
   filter: string = '';
   resultsLength = 0;
@@ -83,9 +84,11 @@ export abstract class AbstractDynamicPagingTable extends AbstractTable {
   }
 
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.filter = filterValue.trim().toLowerCase();
-
-    this.updateTable();
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
+      const filterValue = (event.target as HTMLInputElement).value;
+      this.filter = filterValue.trim().toLowerCase();
+      this.updateTable();
+    }, 500);
   }
 }
