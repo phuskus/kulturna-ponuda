@@ -3,7 +3,6 @@ package ftn.kts.dto;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import ftn.kts.model.Admin;
 import ftn.kts.model.Subcategory;
 
 import java.util.HashSet;
@@ -23,6 +22,7 @@ public class CulturalOfferDTO {
 	private String address;
 	private String city;
 	private String region;
+	private String categoryName;
 
 	@NotNull(message = "Admin ID is required!")
 	private Long admin;
@@ -36,7 +36,7 @@ public class CulturalOfferDTO {
 	}
 
 	public CulturalOfferDTO(Long id, String name, String description, float latitude, float longitude, String address,
-			String city, String region, Long admin, Long category) {
+			String city, String region, Long admin, Subcategory category) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -46,12 +46,48 @@ public class CulturalOfferDTO {
 		this.city = city;
 		this.region = region;
 		this.admin = admin;
-		this.category = category;
+		this.category = category.getId();
+		this.categoryName = category.getName();
 		this.reviews = new HashSet<>();
 		this.posts = new HashSet<>();
 		this.pictures = new HashSet<>();
 	}
 	
+	public CulturalOfferDTO(String name, String description, float latitude, float longitude, String address,
+			String city, String region, Long admin, Subcategory category) {
+		this.name = name;
+		this.description = description;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.address = address;
+		this.city = city;
+		this.region = region;
+		this.admin = admin;
+		this.category = category.getId();
+		this.categoryName = category.getName();
+		this.reviews = new HashSet<>();
+		this.posts = new HashSet<>();
+		this.pictures = new HashSet<>();
+	}
+	
+	public CulturalOfferDTO(Long id, String name, String description, float latitude, float longitude, String address,
+			String city, String region, Long admin, Subcategory category, Set<ReviewDTO> reviews, Set<PostDTO> posts, Set<PictureDTO> pictures) {
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.address = address;
+		this.city = city;
+		this.region = region;
+		this.admin = admin;
+		this.category = category.getId();
+		this.categoryName = category.getName();
+		this.reviews = reviews;
+		this.posts = posts;
+		this.pictures = pictures;
+	}
+
 	public CulturalOfferDTO(String name, String description, float latitude, float longitude, String address,
 			String city, String region, Long admin, Long category) {
 		this.name = name;
@@ -66,23 +102,6 @@ public class CulturalOfferDTO {
 		this.reviews = new HashSet<>();
 		this.posts = new HashSet<>();
 		this.pictures = new HashSet<>();
-	}
-	
-	public CulturalOfferDTO(Long id, String name, String description, float latitude, float longitude, String address,
-			String city, String region, Long admin, Long category, Set<ReviewDTO> reviews, Set<PostDTO> posts, Set<PictureDTO> pictures) {
-		this.id = id;
-		this.name = name;
-		this.description = description;
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.address = address;
-		this.city = city;
-		this.region = region;
-		this.admin = admin;
-		this.category = category;
-		this.reviews = reviews;
-		this.posts = posts;
-		this.pictures = pictures;
 	}
 
 	public Long getId() {
@@ -187,6 +206,14 @@ public class CulturalOfferDTO {
 
 	public void setPictures(Set<PictureDTO> pictures) {
 		this.pictures = pictures;
+	}
+
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
 	}
 
 }

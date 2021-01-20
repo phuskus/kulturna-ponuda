@@ -105,7 +105,7 @@ public class CulturalOfferServiceIntegrationTest {
 		picturesDTO.add(oldPicture);
 		CulturalOfferDTO dto = new CulturalOfferDTO(cultOffer.getId(), CREATE_NAME, CREATE_DESCRIPTION,
 				  cultOffer.getLatitude(), cultOffer.getLongitude(), cultOffer.getAddress(), cultOffer.getCity(),
-				  cultOffer.getRegion(), cultOffer.getAdmin().getId(), cultOffer.getCategory().getId(), reviewsDTO,
+				  cultOffer.getRegion(), cultOffer.getAdmin().getId(), cultOffer.getCategory(), reviewsDTO,
 				  postsDTO, picturesDTO);
 		CulturalOfferDTO updatedDTO = cultOfferService.update(dto, DB_CULTURAL_OFFER_ID);
 		assertEquals(updatedDTO.getName(), CREATE_NAME);
@@ -136,7 +136,7 @@ public class CulturalOfferServiceIntegrationTest {
 		picturesDTO.add(oldPicture);
 		CulturalOfferDTO dto = new CulturalOfferDTO(cultOffer.getId(), UPDATE_DUPLICATE_NAME, cultOffer.getDescription(),
 				  cultOffer.getLatitude(), cultOffer.getLongitude(), cultOffer.getAddress(), cultOffer.getCity(),
-				  cultOffer.getRegion(), cultOffer.getAdmin().getId(), cultOffer.getCategory().getId(), reviewsDTO,
+				  cultOffer.getRegion(), cultOffer.getAdmin().getId(), cultOffer.getCategory(), reviewsDTO,
 				  postsDTO, picturesDTO);
 		cultOfferService.update(dto, DB_CULTURAL_OFFER_ID);
 	}

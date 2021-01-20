@@ -53,14 +53,23 @@ export class MapComponent implements OnInit, AfterViewInit {
   public zoom: number;
   public markers: Marker[] = [];
 
+  public displayInfo: string = 'hidden';
+  public displayInfoLat: string = '0px';
+  public displayInfoLon: string = '0px';
+
+  private offerList: CulturalOffer[];
+
+  public focusedOffer: CulturalOffer;
+
   private eventBusSub: Subscription;
 
   constructor(private eventBus: EventBusService, private router: Router) {}
 
   ngOnInit(): void {
-    this.eventBusSub = this.eventBus.on(Events.OfferListChange, (offers) =>
-      this.addMarkers(offers)
-    );
+    this.eventBusSub = this.eventBus.on(Events.OfferListChange, (offers) => {
+      this.offerList = offers;
+      this.addMarkers(offers);
+    });
   }
 
   ngAfterViewInit(): void {
@@ -74,17 +83,32 @@ export class MapComponent implements OnInit, AfterViewInit {
       const lat = m.latitude;
       const lon = m.longitude;
       const options: MarkerOptions = {
-        title: m.id.toString(),
+        attribution: m.id.toString()
       };
-      const marker = new Marker([lat, lon], options).addTo(this.map);
+      const marker = new Marker([lat, lon], options);
       marker.on('click', this.offerClick, this);
+      marker.on('mouseover', this.offerMouseOver, this);
+      marker.on('mouseout', this.offerMouseOut, this);
+      marker.addTo(this.map);
       this.markers.push(marker);
     }
   }
 
   offerClick($event) {
-    const id = $event.sourceTarget.options.title;
+    const id = $event.sourceTarget.options.attribution;
     this.router.navigate(['/offers/' + id]);
+  }
+
+  offerMouseOver($event) {
+    const id = $event.sourceTarget.options.attribution;
+    this.focusedOffer = this.offerList.find((offer) => offer.id == id);
+    this.displayInfo = 'visible';
+    this.displayInfoLat = $event.containerPoint.x.toString() + 'px';
+    this.displayInfoLon = $event.containerPoint.y.toString() + 'px';
+  }
+
+  offerMouseOut($event) {
+    this.displayInfo = 'hidden';
   }
 
   ngOnDestroy() {

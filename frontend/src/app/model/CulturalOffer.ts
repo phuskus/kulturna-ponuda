@@ -13,6 +13,7 @@ export class CulturalOffer {
     region: string;
     admin: number;
     category: number;
+    categoryName: string;
     reviews: Review[];
     posts: Post[];
     pictures: Picture[];
