@@ -1,5 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { catchError, delay } from 'rxjs/operators';
+import Page from 'src/app/shared/models/Page';
 import { Review } from '../../shared/models/Review';
 import { BaseDynamicPagingService } from '../base/base-dynamic-paging.service';
 
@@ -28,5 +31,19 @@ export class ReviewService extends BaseDynamicPagingService {
       culturalOfferName: 'Acruex',
       pictures: [],
     };
+  }
+
+  getForOfferId(
+    id: number,
+    pageNumber: number,
+    pageSize: number
+  ): Observable<Page<Review>> {
+    const delayInMiliseconds = pageNumber > 0 ? 500: 0;
+    return this.http
+      .get<Page<Review>>(
+        `${this.url}/offer/${id}?pageNo=${pageNumber}&pageSize=${pageSize}`,
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError<Page<Review>>()), delay(delayInMiliseconds));
   }
 }

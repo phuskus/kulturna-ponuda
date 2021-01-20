@@ -19,86 +19,91 @@ import java.util.stream.Collectors;
 @Service
 public class ReviewService {
 
-	private ReviewRepository reviewRepository;
-	private RegisteredUserService userService;
-	private CulturalOfferService offerService;
-	private PictureService pictureService;
+    private ReviewRepository reviewRepository;
+    private RegisteredUserService userService;
+    private CulturalOfferService offerService;
+    private PictureService pictureService;
 
-	@Autowired
-	public ReviewService(ReviewRepository reviewRepository,
-			CulturalOfferService offerService, PictureService pictureService) {
-		this.reviewRepository = reviewRepository;
-		this.offerService = offerService;
-		this.pictureService = pictureService;
-	}
+    @Autowired
+    public ReviewService(ReviewRepository reviewRepository,
+                         CulturalOfferService offerService, PictureService pictureService) {
+        this.reviewRepository = reviewRepository;
+        this.offerService = offerService;
+        this.pictureService = pictureService;
+    }
 
-	public Page<ReviewDTO> getAllDTO(Pageable pageable) {
-		return reviewRepository.findAll(pageable).map(this::toDTO);
-	}
+    public Page<ReviewDTO> getAllDTO(Pageable pageable) {
+        return reviewRepository.findAll(pageable).map(this::toDTO);
+    }
 
-	public ReviewDTO getOneDTO(long id) {
-		Review review = getOne(id);
-		ReviewDTO dto = toDTO(review);
-		return dto;
-	}
+    public ReviewDTO getOneDTO(long id) {
+        Review review = getOne(id);
+        ReviewDTO dto = toDTO(review);
+        return dto;
+    }
 
-	public Page<ReviewDTO> search(String query, Pageable pageable){
-		System.out.println(query.toLowerCase());
-		return reviewRepository.search(query.toLowerCase(), pageable).map(this::toDTO);
-	}
+    public Page<ReviewDTO> getForCulturalOffer(long offerId, Pageable pageable) {
+        return reviewRepository.findByCulturalOffer(offerId, pageable).map(this::toDTO);
+    }
 
-	public ReviewDTO create(ReviewDTO dto) {
-		Review review = toEntity(dto);
-		return toDTO(reviewRepository.save(review));
-	}
+    public Page<ReviewDTO> search(String query, Pageable pageable) {
+        System.out.println(query.toLowerCase());
+        return reviewRepository.search(query.toLowerCase(), pageable).map(this::toDTO);
+    }
 
-	public ReviewDTO update(ReviewDTO dto, Long id) {
-		Review review = getOne(id);
-		reviewRepository.save(updateCategory(review, dto));
-		return toDTO(review);
-	}
+    public ReviewDTO create(ReviewDTO dto) {
+        Review review = toEntity(dto);
+        return toDTO(reviewRepository.save(review));
+    }
 
-	public void delete(Long id) {
-		reviewRepository.deleteById(id);
-	}
+    public ReviewDTO update(ReviewDTO dto, Long id) {
+        Review review = getOne(id);
+        reviewRepository.save(updateCategory(review, dto));
+        return toDTO(review);
+    }
 
-	public Review getOne(long id) {
-		return reviewRepository.findById(id)
-				.orElseThrow(() -> new NoSuchElementException("Review with id " + id + " doesn't exist!"));
-	}
+    public void delete(Long id) {
+        reviewRepository.deleteById(id);
+    }
 
-	public List<Review> getAll() {
-		return reviewRepository.findAll();
-	}
+    public Review getOne(long id) {
+        return reviewRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Review with id " + id + " doesn't exist!"));
+    }
 
-	public Set<ReviewDTO> convertToDTO(Set<Review> reviews) {
-		return reviews.stream().map(this::toDTO).collect(Collectors.toSet());
-	}
+    public List<Review> getAll() {
+        return reviewRepository.findAll();
+    }
 
-	private Review toEntity(ReviewDTO dto) {
-		RegisteredUser user = userService.getOne(dto.getUser().getId());
-		CulturalOffer offer = offerService.getOne(dto.getCulturalOfferId());
-		return new Review(dto.getId(), dto.getRating(), dto.getContent(), user, offer);
-	}
+    public Set<ReviewDTO> convertToDTO(Set<Review> reviews) {
+        return reviews.stream().map(this::toDTO).collect(Collectors.toSet());
+    }
 
-	private ReviewDTO toDTO(Review review) {
-		ReviewDTO dto = new ReviewDTO(review.getId(), review.getRating(), review.getContent(), review.getUser(),
-				review.getCulturalOffer());
-		dto.setPictures(pictureService.convertToDTO(review.getPictures()));
-		return dto;
-	}
+    private Review toEntity(ReviewDTO dto) {
+        RegisteredUser user = userService.getOne(dto.getUser().getId());
+        CulturalOffer offer = offerService.getOne(dto.getCulturalOfferId());
+        return new Review(dto.getId(), dto.getRating(), dto.getContent(), user, offer);
+    }
 
-	private Review updateCategory(Review review, ReviewDTO dto) {
-		review.setRating(dto.getRating());
-		review.setContent(dto.getContent());
-		review.setCulturalOffer(offerService.getOne(dto.getCulturalOfferId()));
-		review.setUser(userService.getOne(dto.getUser().getId()));
+    private ReviewDTO toDTO(Review review) {
+        ReviewDTO dto = new ReviewDTO(review.getId(), review.getRating(), review.getContent(), review.getUser(),
+                review.getCulturalOffer());
+        dto.setPictures(pictureService.convertToDTO(review.getPictures()));
+        return dto;
+    }
 
-		return review;
-	}
+    private Review updateCategory(Review review, ReviewDTO dto) {
+        review.setRating(dto.getRating());
+        review.setContent(dto.getContent());
+        review.setCulturalOffer(offerService.getOne(dto.getCulturalOfferId()));
+        review.setUser(userService.getOne(dto.getUser().getId()));
 
-	@Autowired
-	public void setUserService(RegisteredUserService userService) {
-		this.userService = userService;
-	}
+        return review;
+    }
+
+    @Autowired
+    public void setUserService(RegisteredUserService userService) {
+        this.userService = userService;
+    }
+
 }

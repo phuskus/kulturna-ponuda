@@ -13,7 +13,7 @@ export abstract class BaseService {
     headers: new HttpHeaders({
       Authentication: '',
       'Content-Type': 'application/json',
-      'Authorization': `Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImNvdmlkMTkuY2xpbmljLmxsY0BnbWFpbC5jb20iLCJhdWQiOiJ3ZWIiLCJpYXQiOjE2MTEwNzU1ODcsImV4cCI6MTYxMTExODc4N30.UI43LocqUy9E4qGiByk6vU6_08_qDWYDISDuKpve7OMTCGF5mOG70adwhQATqgcUwwhuPTKnbViuwPtDF6VL2Q`
+      Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImNvdmlkMTkuY2xpbmljLmxsY0BnbWFpbC5jb20iLCJhdWQiOiJ3ZWIiLCJpYXQiOjE2MTExMDI2OTIsImV4cCI6MTYxMTE0NTg5Mn0.hx_LstFjWuDd8LO8qI4VUcPLa_Pj1zQpf08eUtl9hK5d__55Z5hGQKWgDS7gp5y-psjAucXcG5YJeR6hSXuJRQ`,
     }),
   };
 
@@ -22,11 +22,15 @@ export abstract class BaseService {
   abstract createEmpty(): Model;
 
   getAll(): Observable<Model[]> {
-    return this.http.get<Model[]>(this.url, this.httpOptions);
+    return this.http
+      .get<Model[]>(this.url, this.httpOptions)
+      .pipe(catchError(this.handleError<Model[]>()));
   }
 
   get(id: number): Observable<Model> {
-    return this.http.get<Model>(this.url + '/' + id, this.httpOptions);
+    return this.http
+      .get<Model>(this.url + '/' + id, this.httpOptions)
+      .pipe(catchError(this.handleError<Model>()));
   }
 
   add(object: Model): Observable<Model> {
@@ -36,11 +40,15 @@ export abstract class BaseService {
   }
 
   update(id: number, object: Model): Observable<Model> {
-    return this.http.put<Model>(this.url + '/' + id, object, this.httpOptions);
+    return this.http
+      .put<Model>(this.url + '/' + id, object, this.httpOptions)
+      .pipe(catchError(this.handleError<Model>()));
   }
 
   delete(id: number): Observable<Model> {
-    return this.http.delete<Model>(this.url + '/' + id, this.httpOptions);
+    return this.http
+      .delete<Model>(this.url + '/' + id, this.httpOptions)
+      .pipe(catchError(this.handleError<Model>()));
   }
 
   handleError<P>(result?: P) {

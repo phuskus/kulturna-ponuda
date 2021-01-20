@@ -52,7 +52,7 @@ public class CulturalOfferController {
 	}
 
 	@GetMapping("/{id}")
-	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+//	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<CulturalOfferDTO> getOffer(@PathVariable("id") long id) {
 		return new ResponseEntity<>(service.getOneDTO(id), HttpStatus.OK);
 	}

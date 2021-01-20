@@ -10,4 +10,8 @@ export class SingleReviewComponent {
   @Input() public review: Review;
 
   constructor() {}
+
+  carouselCells() {
+    return Math.min(3, this.review.pictures.length);
+  }
 }
