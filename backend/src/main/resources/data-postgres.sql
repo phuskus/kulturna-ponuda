@@ -38,10 +38,10 @@ insert into subcategories (name, category_id, icon_id) values ('Monument', 3, 5)
 insert into subcategories (name, category_id, icon_id) values ('Landmark', 3, 6);
 
 insert into cultural_offers (address, city, description, latitude, longitude, name, region, admin_id, category_id)
-			values ('Petrovaradinska Tvrdjava', 'Novi Sad', 'Music festival', 45.2526, 19.8623, 'EXIT festival', 'Vojvodina', 1, 3);
+			values ('Petrovaradinska Tvrdjava', 'Novi Sad', 'Music festival', 44.80401, 20.46513, 'EXIT festival', 'Vojvodina', 1, 3);
 			
 insert into cultural_offers (address, city, description, latitude, longitude, name, region, admin_id, category_id) 
-			values ('Kalemegdanska Tvrdjava', 'Belgrade', 'Emotional festival', 45.2526, 19.8623, 'No Sleep festival', 'Central Serbia', 1, 3);
+			values ('Kalemegdanska Tvrdjava', 'Belgrade', 'Emotional festival', 45.2167, 19.83694, 'No Sleep festival', 'Central Serbia', 1, 3);
 
 insert into posts (content, cultural_offer_id) values ('Jako vrlo veoma kul', 1);
 insert into posts (content, cultural_offer_id) values ('Otkazano zbog korone', 1);
