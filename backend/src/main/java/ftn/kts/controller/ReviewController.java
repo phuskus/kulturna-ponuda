@@ -28,7 +28,6 @@ public class ReviewController {
     }
 
     @GetMapping
-//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<Page<ReviewDTO>> getAllReviews(@RequestParam(defaultValue = "0") Integer pageNo,
                                                          @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
                                                          @RequestParam(defaultValue = "true") String descending) {
@@ -42,16 +41,22 @@ public class ReviewController {
     }
 
     @GetMapping("/{id}")
-//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<ReviewDTO> getReview(@PathVariable("id") long id) {
         return new ResponseEntity<>(service.getOneDTO(id), HttpStatus.OK);
     }
 
+    @GetMapping("/offer/{id}")
+    public ResponseEntity<Page<ReviewDTO>> getForCulturalOffer(@PathVariable("id") long id, @RequestParam(defaultValue = "0") Integer pageNo,
+                                                               @RequestParam(defaultValue = "10") Integer pageSize) {
+        Pageable paging = PageRequest.of(pageNo, pageSize);;
+        Page<ReviewDTO> reviews = service.getForCulturalOffer(id, paging);
+        return new ResponseEntity<>(reviews, HttpStatus.OK);
+    }
+
     @GetMapping("/search")
-//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<Page<ReviewDTO>> searchReview(@RequestParam("query") String query, @RequestParam(defaultValue = "0") Integer pageNo,
-                                                         @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
-                                                         @RequestParam(defaultValue = "true") String descending) {
+                                                        @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
+                                                        @RequestParam(defaultValue = "true") String descending) {
         Pageable paging;
         if (descending.equals("true"))
             paging = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.DESC, sortBy));

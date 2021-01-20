@@ -1,5 +1,6 @@
 import { ComponentType } from '@angular/cdk/portal';
 import {
+  AfterContentChecked,
   AfterContentInit,
   AfterViewInit,
   Component,

@@ -18,4 +18,9 @@ public interface ReviewRepository  extends JpaRepository<Review, Long> {
             "or lower(o.name) like %?1%")
     Page<Review> search(String query, Pageable pageable);
 
+    @Query("SELECT r from Review r " +
+            "JOIN r.culturalOffer o " +
+            "WHERE o.id = ?1")
+    Page<Review> findByCulturalOffer(long offerId, Pageable pageable);
+
 }

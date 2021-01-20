@@ -79,12 +79,16 @@ public class SubcategoryService {
 
 	private Subcategory toEntity(SubcategoryDTO dto) {
 		Category category = categoryService.getOne(dto.getCategoryId());
-		Picture icon = pictureService.getOne(dto.getIcon().getId());
-		return new Subcategory(dto.getName(), category, icon);
+		// TODO:
+//		Picture icon = pictureService.getOne(dto.getIcon().getId());
+		return new Subcategory(dto.getName(), category, null);
 	}
 
 	private SubcategoryDTO toDTO(Subcategory entity) {
-		PictureDTO icon = this.pictureService.convertToDTO(entity.getIcon());
+		PictureDTO icon = null;
+		if (entity == null) {
+			icon = this.pictureService.convertToDTO(entity.getIcon());
+		}
 		boolean containsOffers = false;
 		if (entity.getCulturalOffers() != null && entity.getCulturalOffers().size() != 0) {
 			containsOffers = true;

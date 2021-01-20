@@ -39,7 +39,6 @@ public class PostController {
 	}
 
 	@GetMapping
-	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<List<PostDTO>> getAllPosts(@RequestParam(defaultValue = "0") Integer pageNo,
 													 @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
 													 @RequestParam(defaultValue = "true") String descending) {
@@ -53,7 +52,6 @@ public class PostController {
 	}
 
 	@GetMapping("/{id}")
-	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<PostDTO> getPost(@PathVariable("id") long id) {
 		return new ResponseEntity<>(service.getOneDTO(id), HttpStatus.OK);
 	}
