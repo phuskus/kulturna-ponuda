@@ -1,16 +1,23 @@
 <div>
   <carousel [cellsToShow]="3" [images]="images" [borderRadius]="10"> </carousel>
 
-  <div class="mat-title" style="margin-top: 16px">{{offer.name}}</div>
+  <div class="mat-title title-name">{{ offer.name }}</div>
 
-  <app-star-rating
-    [maxRating]="5"
-    [rating]="4"
-    [size]="35"
-    [readonly]="true"
-  ></app-star-rating>
+  <div class="title-address">{{ offer.address + ", " + offer.city }}</div>
 
-  <div class="mat-subheading-2">{{offer.category}}</div>
+  <div fxLayout="row" fxLayoutGap="2.5%">
+    <app-star-rating
+      [maxRating]="5"
+      [rating]="4"
+      [size]="35"
+      [readonly]="true"
+    ></app-star-rating>
+    <div class="num-reviews" fxLayout="row" fxLayoutAlign="start center">
+      {{ totalReviews }} reviews
+    </div>
+  </div>
+
+  <div class="mat-subheading-2">{{ offer.category }}</div>
 
   <div flexLayout="row">
     <button
@@ -27,16 +34,24 @@
   </div>
 
   <div class="mat-h4 offer-desc">
-    {{offer.description}}
+    {{ offer.description }}
   </div>
 
   <div class="mat-h3" style="font-weight: 550">Reviews</div>
 
-  <div class="review-container" *ngFor="let rev of reviews">
-    <app-single-review [review]="rev"></app-single-review>
+  <div fxLayout="column" fxLayoutGap="5%">
+    <app-single-review
+      *ngFor="let rev of reviews"
+      [review]="rev"
+    ></app-single-review>
   </div>
 
-  <div fxLayout="row" fxLayoutAlign="center" *ngIf="isReviewsLoading && !isLastReviewPage" style="margin-top:-100px;">
+  <div
+    fxLayout="row"
+    fxLayoutAlign="center"
+    *ngIf="isReviewsLoading && !isLastReviewPage"
+    style="margin-top: -100px"
+  >
     <mat-progress-spinner
       mode="indeterminate"
       diameter="100"

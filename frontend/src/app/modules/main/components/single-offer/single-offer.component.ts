@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
 import { ReviewDialogComponent } from './review-dialog/review-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Review } from 'src/app/shared/models/Review';
@@ -11,11 +11,12 @@ import { CulturalOffer } from 'src/app/model/CulturalOffer';
   templateUrl: './single-offer.component.html',
   styleUrls: ['./single-offer.component.scss'],
 })
-export class SingleOfferComponent implements AfterViewInit {
+export class SingleOfferComponent implements AfterContentInit  {
   offerId: number;
   offer: CulturalOffer;
   reviews: Review[] = [];
   currentReviewPage: number = 0;
+  totalReviews: number = 0;
   pageSize: number = 5;
   isLastReviewPage: boolean = false;
   isReviewsLoading: boolean = false;
@@ -28,12 +29,12 @@ export class SingleOfferComponent implements AfterViewInit {
     this.offer = offerService.createEmpty();
   }
 
-  ngAfterViewInit(): void {
+  ngAfterContentInit (): void {
     const tokens = window.location.pathname.split('/');
     this.offerId = Number(tokens[tokens.length - 1]);
     if (this.offerId === NaN) {
       // should redirect to 404
-      throw new Error('Redirect to 404 page, invalid id');
+      throw new Error('Error 404, invalid id');
     }
     this.fetchReviews();
     this.fetchOffer();
@@ -43,7 +44,6 @@ export class SingleOfferComponent implements AfterViewInit {
   fetchOffer() {
     this.offerService.getOfferById(this.offerId).subscribe((data) => {
       this.offer = data;
-      console.log(this.offer)
     });
   }
 
@@ -57,6 +57,7 @@ export class SingleOfferComponent implements AfterViewInit {
         (data) => {
           this.reviews = this.reviews.concat(data.content);
           this.isReviewsLoading = false;
+          this.totalReviews = data.totalElements; 
           if (data.totalPages == this.currentReviewPage) {
             this.isLastReviewPage = true;
           }

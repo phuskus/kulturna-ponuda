@@ -53,8 +53,3 @@ export abstract class BaseDynamicPagingService extends BaseService {
     throw new Error('Dyanmic Paging does not implement method getAll');
   }
 }
-
-// export default interface PagingReturnValue<Model> {
-//   items: Model[];
-//   total_count: number;
-// }

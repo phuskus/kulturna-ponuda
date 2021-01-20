@@ -31,7 +31,6 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<CategoryDTO> getCategory(@PathVariable("id") long id) {
         return new ResponseEntity<>(service.getOneDTO(id), HttpStatus.OK);
     }

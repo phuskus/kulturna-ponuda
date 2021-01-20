@@ -28,7 +28,6 @@ public class ReviewController {
     }
 
     @GetMapping
-//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<Page<ReviewDTO>> getAllReviews(@RequestParam(defaultValue = "0") Integer pageNo,
                                                          @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
                                                          @RequestParam(defaultValue = "true") String descending) {
@@ -42,7 +41,6 @@ public class ReviewController {
     }
 
     @GetMapping("/{id}")
-//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<ReviewDTO> getReview(@PathVariable("id") long id) {
         return new ResponseEntity<>(service.getOneDTO(id), HttpStatus.OK);
     }
@@ -56,7 +54,6 @@ public class ReviewController {
     }
 
     @GetMapping("/search")
-//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<Page<ReviewDTO>> searchReview(@RequestParam("query") String query, @RequestParam(defaultValue = "0") Integer pageNo,
                                                         @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
                                                         @RequestParam(defaultValue = "true") String descending) {
