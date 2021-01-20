@@ -1,6 +1,11 @@
 <div class="example-container mat-elevation-z8" style="height: 100% !important">
   <div class="example-loading-shade" *ngIf="isLoadingResults">
-    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    <!-- <mat-spinner *ngIf="isLoadingResults"></mat-spinner> -->
+    <mat-progress-spinner
+    *ngIf="isLoadingResults"
+    mode="indeterminate"
+    diameter="100"
+  ></mat-progress-spinner>
   </div>
 
   <div

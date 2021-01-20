@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, delay } from 'rxjs/operators';
 import Model from 'src/app/shared/models/Model';
 import Page from 'src/app/shared/models/Page';
 import { BaseService } from './base.service';
@@ -27,7 +27,7 @@ export abstract class BaseDynamicPagingService extends BaseService {
         }&descending=${descending}`,
         this.httpOptions
       )
-      .pipe(catchError(this.handleError<Page<Model>>()));
+      .pipe(catchError(this.handleError<Page<Model>>()), delay(250));
   }
 
   search(
@@ -46,15 +46,10 @@ export abstract class BaseDynamicPagingService extends BaseService {
         }&descending=${descending}`,
         this.httpOptions
       )
-      .pipe(catchError(this.handleError<Page<Model>>()));
+      .pipe(catchError(this.handleError<Page<Model>>()), delay(250));
   }
 
   getAll(): Observable<Model[]> {
     throw new Error('Dyanmic Paging does not implement method getAll');
   }
 }
-
-// export default interface PagingReturnValue<Model> {
-//   items: Model[];
-//   total_count: number;
-// }

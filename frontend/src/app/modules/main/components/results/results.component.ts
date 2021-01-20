@@ -1,3 +1,4 @@
+import { EmitEvent, EventBusService, Events } from './../../../../services/event-bus/event-bus.service';
 import { PageParams } from './../../../../model/PageParams';
 import { CulturalOffer } from './../../../../model/CulturalOffer';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -69,7 +70,8 @@ export class ResultsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private offerService: OfferService
+    private offerService: OfferService,
+    private eventBus: EventBusService
   ) {}
 
   ngOnInit(): void {
@@ -119,6 +121,7 @@ export class ResultsComponent implements OnInit {
       .subscribe((res: CulturalOfferPage) => {
         this.loading = false;
         this.offers = res.content;
+        this.eventBus.emit(new EmitEvent(Events.OfferListChange, res.content));
         this.count = res.totalElements;
       });
   }
