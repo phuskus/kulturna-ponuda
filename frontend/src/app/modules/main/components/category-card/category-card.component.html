@@ -1,0 +1,18 @@
+<div *ngIf="containsOffers">
+    <mat-card class="category-card mgl-map-overlay-stack" tabindex="1">
+        <p class="mat-title" style="margin-bottom: 4px">{{category.name}}</p>
+        <mat-card-content>
+            <div class="category-container">
+                <div *ngFor="let subcat of subcategories" class="content-column">
+                    <div *ngIf="subcat.containsOffers">
+                        <button [routerLink]="'offers/search'" [queryParams]="{ category: subcat.name }" mat-button
+                            disableRipple="true">
+                            <img [src]="subcat.icon.image" />
+                            <p>{{ subcat.name }}</p>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

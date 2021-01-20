@@ -32,9 +32,9 @@ public class CategoryServiceIntegrationTest {
 
     @Test
     public void getOne_ExistentId_ReturnsCategory() {
-        CategoryDTO category = categoryService.getOneDTO(EXISTENT_ID);
-        assertNotNull(category);
-        assertEquals(CATEGORY_NAME, category.getName());
+		CategoryDTO category = categoryService.getOneDTO(EXISTENT_ID);
+		assertNotNull(category);
+		assertEquals(CATEGORY_NAME, category.getName());    	
     }
 
     @Test

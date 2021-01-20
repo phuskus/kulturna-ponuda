@@ -1,5 +1,6 @@
 package ftn.kts.service;
 
+import ftn.kts.dto.PictureDTO;
 import ftn.kts.dto.SubcategoryDTO;
 import ftn.kts.exceptions.UniqueConstraintViolationException;
 import org.junit.Test;
@@ -47,7 +48,9 @@ public class SubcategoryServiceIntegrationTest {
 
     @Test
     public void createDelete_ValidNewObject_CreatesAndDeletesSuccessfully() {
-        SubcategoryDTO subcategory = new SubcategoryDTO(DB_NONEXISTENT_SUBCATEGORY_NAME, DB_CATEGORY_ID);
+        PictureDTO icon = new PictureDTO();
+        icon.setId(1L);
+    	SubcategoryDTO subcategory = new SubcategoryDTO(DB_NONEXISTENT_SUBCATEGORY_NAME, DB_CATEGORY_ID, icon);
 
         try {
             SubcategoryDTO createdSubcategory = subcategoryService.create(subcategory);
@@ -64,7 +67,9 @@ public class SubcategoryServiceIntegrationTest {
 
     @Test
     public void create_ExistentName_ThrowsUniqueConstraintValidation() {
-        SubcategoryDTO subcategory = new SubcategoryDTO(DB_SUBCATEGORY_NAME, DB_CATEGORY_ID);
+        PictureDTO icon = new PictureDTO();
+        icon.setId(1L);
+        SubcategoryDTO subcategory = new SubcategoryDTO(DB_SUBCATEGORY_NAME, DB_CATEGORY_ID, icon);
         assertThrows(UniqueConstraintViolationException.class, () -> subcategoryService.create(subcategory));
     }
 

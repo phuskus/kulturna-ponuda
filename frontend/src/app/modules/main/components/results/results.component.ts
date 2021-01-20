@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { PageParams } from './../../../../model/PageParams';
+import { CulturalOffer } from './../../../../model/CulturalOffer';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { CulturalOfferPage } from 'src/app/model/CulturalOfferPage';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { OfferService } from 'src/app/services/offer/offer.service';
 
 @Component({
   selector: 'app-results',
@@ -6,16 +12,147 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./results.component.scss'],
 })
 export class ResultsComponent implements OnInit {
-  public result: any = {
-    id: 2,
-    name: 'Museum of Modern Art',
-    location: 'Dunavska 35, Novi Sad',
-    category: 'Museum of art & history',
-    image: '../../../../../assets/imgs/ill.jpg',
-    description:
-      'The museum is open, and many exhibits are available. Unfortunately, the planetarium is closed. The rainforest sphere and the shake house require special reseratiaos and a 2-4 hour wait. Sadly, not worth going during COVID, I would wait until restrictions are lifted to get the ful experience.',
-  };
-  constructor() {}
+  @ViewChild(MatMenuTrigger) filterMenuTrigger: MatMenuTrigger;
 
-  ngOnInit(): void {}
+  public loading: boolean = true;
+
+  public category: string = '';
+  public query: string = '';
+
+  public page: number = 1;
+  public pageSize: number = 10;
+  public sortBy: string = 'id';
+  public descending: boolean = false;
+
+  public count = 0;
+
+  public sortCriteria = [
+    { name: 'None', value: 'id', selected: true },
+    { name: 'Name', value: 'name', selected: false },
+    { name: 'Description', value: 'description', selected: false },
+    { name: 'Address', value: 'address', selected: false },
+    { name: 'City', value: 'city', selected: false },
+    { name: 'Region', value: 'region', selected: false },
+  ];
+
+  public regions = [
+    { name: 'Vojvodina', checked: false },
+    { name: 'Central Serbia', checked: false },
+    { name: 'Eastern Serbia', checked: false },
+    { name: 'Western Serbia', checked: false },
+    { name: 'Southern Serbia', checked: false },
+  ];
+
+  public cities = [
+    { name: 'Belgrade', checked: false },
+    { name: 'Novi Sad', checked: false },
+    { name: 'Kragujevac', checked: false },
+    { name: 'Leskovac', checked: false },
+    { name: 'Novi Pazar', checked: false },
+    { name: 'Niš', checked: false },
+    { name: 'Kraljevo', checked: false },
+    { name: 'Zrenjanin', checked: false },
+    { name: 'Kruševac', checked: false },
+    { name: 'Subotica', checked: false },
+    { name: 'Smederevo', checked: false },
+    { name: 'Valjevo', checked: false },
+    { name: 'Bor', checked: false },
+    { name: 'Čačak', checked: false },
+    { name: 'Sombor', checked: false },
+    { name: 'Vranje', checked: false },
+    { name: 'Zaječar', checked: false },
+    { name: 'Negotin', checked: false },
+    { name: 'Užice', checked: false },
+  ].sort();
+
+  public offers: CulturalOffer[] = [];
+
+  constructor(
+    private route: ActivatedRoute,
+    private offerService: OfferService
+  ) {}
+
+  ngOnInit(): void {
+    this.subToParamChanges();
+  }
+
+  subToParamChanges() {
+    this.route.queryParamMap.subscribe((paramMap) => {
+      const params = paramMap['params'];
+      if (params['category'] != undefined) {
+        this.category = params['category'];
+      }
+      if (params['query'] != undefined) {
+        this.query = params['query'];
+      }
+      this.fetchOffers();
+    });
+  }
+
+  getPageParams(): PageParams {
+    let params: PageParams = {
+      pageNo: this.page - 1,
+      pageSize: this.pageSize,
+      sortBy: this.sortBy,
+      descending: this.descending,
+    };
+    return params;
+  }
+
+  fetchOffers() {
+    let regionNames = this.regions
+      .filter((r) => r.checked)
+      .map((r) => r.name)
+      .join(',');
+    let cityNames = this.cities
+      .filter((c) => c.checked)
+      .map((c) => c.name)
+      .join(',');
+    return this.offerService
+      .getCulturalOffers(
+        this.getPageParams(),
+        this.category,
+        this.query,
+        regionNames,
+        cityNames
+      )
+      .subscribe((res: CulturalOfferPage) => {
+        this.loading = false;
+        this.offers = res.content;
+        this.count = res.totalElements;
+      });
+  }
+
+  clearRegions(event?) {
+    if (event) {
+      event.stopPropagation();
+    }
+    this.regions.forEach((region) => (region.checked = false));
+  }
+
+  clearCities(event?) {
+    if (event) {
+      event.stopPropagation();
+    }
+    this.cities.forEach((city) => (city.checked = false));
+  }
+
+  cancelFilter() {
+    this.clearRegions();
+    this.clearCities();
+  }
+
+  cancelSort() {
+    this.descending = false;
+    this.sortBy = 'id';
+  }
+
+  changeSortDirection(event) {
+    event.stopPropagation();
+    this.descending = !this.descending;
+  }
+
+  handlePageChange(event): void {
+    this.page = event;
+  }
 }
