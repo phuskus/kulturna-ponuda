@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Router } from '@angular/router';
+import { MessageService } from 'src/app/services/message/message.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-landing-page',
@@ -9,7 +11,11 @@ import { Router } from '@angular/router';
 })
 export class LandingPageComponent implements OnInit {
   isLoggedIn : boolean;
-  constructor(private router: Router, public authService: AuthService) { }
+  constructor(
+    private router: Router, 
+    private authService: AuthService,
+    private messageService: MessageService,
+    private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.isLoggedIn = (localStorage['currentUser'] !== undefined);
@@ -19,7 +25,7 @@ export class LandingPageComponent implements OnInit {
     this.isLoggedIn = false;
     this.authService.logout();
     this.router.navigateByUrl('/', { skipLocationChange: true });
-    alert('Logged out! Current user: ' + localStorage['currentUser']);
+    this.messageService.openSnackBar(this.snackBar, 'Successfully logged out!', 'End', 5000);
   }
 
 }

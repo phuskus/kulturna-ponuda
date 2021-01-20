@@ -19,6 +19,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { ResultsComponent } from './components/results/results.component';
 import { SingleOfferComponent } from './components/single-offer/single-offer.component';
@@ -48,7 +51,7 @@ import { StarRatingComponent } from 'src/app/shared/components/star-rating/star-
     ReviewDialogComponent,
     ImageSelectorComponent,
     SafeUrlPipe,
-    StarRatingComponent,
+    StarRatingComponent
   ],
   imports: [
     CommonModule,
@@ -68,6 +71,9 @@ import { StarRatingComponent } from 'src/app/shared/components/star-rating/star-
     MatDialogModule,
     MatIconModule,
     MatRadioModule,
+    MatBadgeModule,
+    MatDividerModule,
+    MatSnackBarModule,
 
     NgxPaginationModule,
 
