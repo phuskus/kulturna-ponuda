@@ -1,5 +1,7 @@
 package ftn.kts.controller;
 
+import java.util.HashMap;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ftn.kts.dto.ResetPasswordDTO;
 import ftn.kts.dto.UserDTO;
 import ftn.kts.dto.UserTokenStateDTO;
 import ftn.kts.exceptions.PasswordNotChangedException;
@@ -50,6 +53,7 @@ public class LoginController {
         userService.confirmRegistration(key);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    
 
     @PostMapping("/login")
     public ResponseEntity<UserTokenStateDTO> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest,
@@ -67,6 +71,19 @@ public class LoginController {
         UserDTO user = userService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
+    
+    @PostMapping("/forgot-password")
+    public ResponseEntity<UserDTO> forgotPassword(@Valid @RequestBody String username) {
+        userService.forgotPassword(username);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @PostMapping("/reset-password")
+    public ResponseEntity<UserTokenStateDTO> resetPassword(@Valid @RequestBody ResetPasswordDTO dto) throws UserException {
+    	UserTokenStateDTO user = userService.resetPassword(dto);
+    	return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+    
 
     static class PasswordChanger {
         @NotBlank(message = "Old password is a required field!")

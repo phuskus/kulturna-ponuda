@@ -6,6 +6,8 @@ import { catchError } from 'rxjs/operators';
 import 'rxjs/add/operator/map';
 import 'rxjs/Rx';
 import { JwtTokenService } from './jwt-token.service';
+import { UserTokenState } from 'src/app/shared/models/UserTokenState';
+import { Role } from 'src/app/shared/models/Role';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +16,8 @@ export class AuthService {
 
   private readonly loginEndpoint = "http://localhost:9001/auth/login";
   private readonly registerEndpoint = "http://localhost:9001/auth/register";
-  private readonly activationEndpoint = "http://localhost:9001/auth/register/";
+  private readonly forgotPasswordEndpoint = "http://localhost:9001/auth/forgot-password";
+  private readonly resetPasswordEndpoint = "http://localhost:9001/auth/reset-password"; 
 
   constructor(private http: HttpClient) { }
 
@@ -24,16 +27,13 @@ export class AuthService {
       this.loginEndpoint,
       JSON.stringify({ username, password }),
       { headers }).map((res: any) => {
-        let token = res && res['accessToken'];
-        let expiresIn = res && res['expiresIn'];
-        let userRole = res && res['userRole'];
-        if (token) {
-          localStorage.setItem('currentUser', JSON.stringify({
-            username: username,
-            token: token,
-            expiresIn: expiresIn,
-            role: userRole
-          }));
+        let user: UserTokenState =  {
+          token: res && res['accessToken'],
+          expiresIn: res && res['expiresIn'],
+          userRole: res && res['userRole']
+        };
+        if (user.token) {
+          localStorage.setItem('currentUser', JSON.stringify(user))
           return true;
         }
       }).pipe(
@@ -58,10 +58,44 @@ export class AuthService {
 
   activateAccount(key: string): Observable<any> {
     return this.http.get(
-      this.activationEndpoint + key,
+      this.registerEndpoint + "/" + key,
     ).pipe(
       catchError(error => {
-        return throwError(error.error);
+        return throwError(error);
+      })
+    )
+  }
+
+  forgotPassword(username: string): Observable<any> {
+    var headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'text/plain' });
+    return this.http.post(
+      this.forgotPasswordEndpoint,
+      username,
+      { headers }
+    ).pipe(
+      catchError(error => {
+        return throwError(error);
+      })
+    )
+  }
+
+  resetPassword(newPassword: string, resetKey: string) {
+    var headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post(
+      this.resetPasswordEndpoint,
+      JSON.stringify({newPassword, resetKey}),
+      { headers })
+      .map((res: any) => {
+        let user: UserTokenState =  {
+          token: res && res['accessToken'],
+          expiresIn: res && res['expiresIn'],
+          userRole: res && res['userRole']
+        };
+        localStorage.setItem('currentUser', JSON.stringify(user));
+      }
+      ).pipe(
+      catchError(error => {
+        return throwError(error);
       })
     )
   }
@@ -83,10 +117,11 @@ export class AuthService {
     let user = localStorage.currentUser;
     if (user) {
       user = JSON.parse(user);
-      return user.role;
+      let role: string = user.userRole;
+      return Role[role];
     }
     else {
-      return "NO_AUTH";
+      return Role['NO_AUTH'];
     }
   }
 

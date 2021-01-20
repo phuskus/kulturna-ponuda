@@ -58,10 +58,12 @@ export class LoginPageComponent implements OnInit {
             this.router.navigate(['/']);
           }
         }, error => {
-          if (error.status == 401 && !error.error.errors.jwt) {
+          if (error.status == 401) {
+            //account not activated
             this.messageService.openSnackBar(this.snackBar, error.error.message, 'End', 5000);
             this.formValidationService.clearFormAndValidators(this.loginForm);
           }  else {
+            //username not exists or incorrect password
             for (let key in error.error.errors) {
               this[key + "Err"] = true;
               this.errMsg = error.error.errors[key];
