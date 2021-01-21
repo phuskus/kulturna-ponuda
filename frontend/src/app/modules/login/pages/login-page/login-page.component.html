@@ -67,6 +67,7 @@
                     class="button" 
                     mat-flat-button
                     type="submit"
+                    [disabled]="loginForm.invalid"
                     >SIGN IN</button>
                 <p class="link"><a [routerLink]="['/register']">Don't have an account? Register now</a></p>
             </div>

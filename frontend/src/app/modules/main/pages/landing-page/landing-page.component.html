@@ -13,14 +13,6 @@
     </button>
   </div>
   <div *ngIf="isLoggedIn" class="mgl-map-overlay-right">
-    <div class="button-container">
-      <button
-        class="item"
-        mat-mini-fab 
-        color="primary"
-        disableRipple="true">
-      <mat-icon matBadge="15" matBadgeColor="warn">notifications</mat-icon>
-    </button>
     <button
         class="item"
         mat-mini-fab 
@@ -29,7 +21,6 @@
         [matMenuTriggerFor]="menu">
       <mat-icon>account_circle</mat-icon>
     </button>
-  </div>
   <div>
     <mat-menu #menu="matMenu">
       <button mat-menu-item (click)="onEditProfile()">
