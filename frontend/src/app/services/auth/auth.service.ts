@@ -28,12 +28,14 @@ export class AuthService {
       JSON.stringify({ username, password }),
       { headers }).map((res: any) => {
         let user: UserTokenState =  {
+          id: res && res['id'],
           token: res && res['accessToken'],
           expiresIn: res && res['expiresIn'],
           userRole: res && res['userRole']
         };
         if (user.token) {
-          localStorage.setItem('currentUser', JSON.stringify(user))
+          localStorage.setItem('currentUser', JSON.stringify(user));
+          console.log(localStorage['currentUser']);
           return true;
         }
       }).pipe(
@@ -87,11 +89,13 @@ export class AuthService {
       { headers })
       .map((res: any) => {
         let user: UserTokenState =  {
+          id: res && res['id'],
           token: res && res['accessToken'],
           expiresIn: res && res['expiresIn'],
           userRole: res && res['userRole']
         };
         localStorage.setItem('currentUser', JSON.stringify(user));
+        console.log(localStorage['currentUser']);
       }
       ).pipe(
       catchError(error => {

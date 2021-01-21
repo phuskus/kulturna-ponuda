@@ -3,7 +3,8 @@ package ftn.kts.dto;
 import javax.validation.constraints.NotBlank;
 
 public class UserTokenStateDTO {
-
+	
+	private Long id;
     @NotBlank(message = "Access token is required!")
     private String accessToken;
     private Long expiresIn;
@@ -15,13 +16,22 @@ public class UserTokenStateDTO {
         this.expiresIn = null;
     }
 
-    public UserTokenStateDTO(String accessToken, long expiresIn, String role) {
+    public UserTokenStateDTO(Long id, String accessToken, long expiresIn, String role) {
+    	this.id = id;
         this.accessToken = accessToken;
         this.expiresIn = expiresIn;
         this.setUserRole(role);
     }
+    
+    public Long getId() {
+		return id;
+	}
 
-    public String getAccessToken() {
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getAccessToken() {
         return accessToken;
     }
 

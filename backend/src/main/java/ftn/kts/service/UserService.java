@@ -1,5 +1,6 @@
 package ftn.kts.service;
 
+import ftn.kts.dto.AccountDTO;
 import ftn.kts.dto.ResetPasswordDTO;
 import ftn.kts.dto.UserDTO;
 import ftn.kts.dto.UserTokenStateDTO;
@@ -54,6 +55,12 @@ public class UserService {
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+    
+    public AccountDTO getAccount(Long id) {
+		User user = userRepository.findById(id).get();
+		AccountDTO dto = new AccountDTO(user.getId(), user.getName(), user.getSurname(), user.getUsername());
+		return dto;
+	}
 
     public User findByKey(String key) {
         return userRepository.findByKey(key);
@@ -121,7 +128,7 @@ public class UserService {
         String jwt = tokenUtils.generateToken(user.getUsername());
         int expiresIn = tokenUtils.getExpiredIn();
 
-        return new UserTokenStateDTO(jwt, expiresIn, user.getRole());
+        return new UserTokenStateDTO(user.getId(), jwt, expiresIn, user.getRole());
     }
 
     public UserDTO changePassword(String oldPassword, String newPassword) {
@@ -165,6 +172,13 @@ public class UserService {
     	mailSenderService.forgotPassword(user.getUsername(), generatedKey);
     	save(user);
     }
+    
+    public void update(Long id, AccountDTO dto) {
+    	User user = userRepository.findById(id).get();
+    	user.setName(dto.getName());
+    	user.setSurname(dto.getSurname());
+    	save(user);
+    }
 
     public User getOne(String username) throws NoSuchElementException {
         User user = findByUsername(username);
@@ -188,20 +202,24 @@ public class UserService {
     	return dto;
     }
 
-    private void checkUnique(UserDTO dto) throws UniqueConstraintViolationException {
+    private User checkUnique(UserDTO dto) throws UniqueConstraintViolationException {
         User user = userRepository.findByUsername(dto.getUsername());
         if (user != null) {
             // register
             if (dto.getId() == null) {
                 throw new UniqueConstraintViolationException("Unique key constraint violated!", "username",
-                        "User with this username already exists!");
+                        "User with this username already exists!"); 
             } else {
                 // update profile
-                if (!user.getId().equals(dto.getId()))
+                if (!user.getId().equals(dto.getId())) {
                     throw new UniqueConstraintViolationException("Unique key constraint violated!", "username",
                             "User with this username already exists!");
+                } else {
+                	return user;
+                }
             }
         }
+        return user;
     }
 
 }

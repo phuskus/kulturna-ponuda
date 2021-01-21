@@ -50,7 +50,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		String username = currentUser.getName();
 		
 		LOGGER.debug("Re-authenticating user '" + username + "' for password change request.");
-		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, oldPassword));//oldPassword));
+		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, oldPassword));
 		LOGGER.debug("Changing password for user '" + username + "'");
 		
 		User user = (User) loadUserByUsername(username);
@@ -60,7 +60,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		
 		return username;
 	}
-	
+		
 	public void changePasswordUtil(User user, String newPassword) {
 		user.setPassword(passwordEncoder.encode(newPassword));
 	}

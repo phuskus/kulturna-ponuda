@@ -35,6 +35,8 @@ import { ReviewDialogComponent } from './components/single-offer/review-dialog/r
 import { SafeUrlPipe } from 'src/app/shared/pipes/safe-url.pipe';
 import { AvatarModule } from 'ngx-avatar';
 import { StarRatingComponent } from 'src/app/shared/components/star-rating/star-rating.component';
+import { ProfileDialogComponent } from './components/account/profile-dialog/profile-dialog.component';
+import { PasswordDialogComponent } from './components/account/password-dialog/password-dialog.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,9 @@ import { StarRatingComponent } from 'src/app/shared/components/star-rating/star-
     ReviewDialogComponent,
     ImageSelectorComponent,
     SafeUrlPipe,
-    StarRatingComponent
+    StarRatingComponent,
+    ProfileDialogComponent,
+    PasswordDialogComponent
   ],
   imports: [
     CommonModule,
