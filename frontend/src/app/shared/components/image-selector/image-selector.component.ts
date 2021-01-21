@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  Output,
+} from '@angular/core';
 
 @Component({
   selector: 'app-image-selector',
@@ -7,7 +13,6 @@ import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core
 })
 export class ImageSelectorComponent implements OnDestroy {
   @Input() public multiple: boolean = false;
-
   @Output() private newFilesEvent = new EventEmitter<FileList>();
 
   public picturePaths: Array<string> = [];

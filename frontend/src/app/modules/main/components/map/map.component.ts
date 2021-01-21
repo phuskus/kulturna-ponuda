@@ -4,7 +4,7 @@ import {
   EventBusService,
   Events,
 } from './../../../../services/event-bus/event-bus.service';
-import { CulturalOffer } from 'src/app/model/CulturalOffer';
+import { CulturalOffer } from 'src/app/shared/models/CulturalOffer';
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import {
   Map,

@@ -32,6 +32,7 @@ import { ReviewDialogComponent } from './components/single-offer/review-dialog/r
 import { SafeUrlPipe } from 'src/app/shared/pipes/safe-url.pipe';
 import { AvatarModule } from 'ngx-avatar';
 import { StarRatingComponent } from 'src/app/shared/components/star-rating/star-rating.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -45,9 +46,6 @@ import { StarRatingComponent } from 'src/app/shared/components/star-rating/star-
     SearchComponent,
     CategoryCardComponent,
     ReviewDialogComponent,
-    ImageSelectorComponent,
-    SafeUrlPipe,
-    StarRatingComponent,
   ],
   imports: [
     CommonModule,
@@ -56,6 +54,7 @@ import { StarRatingComponent } from 'src/app/shared/components/star-rating/star-
     FlexLayoutModule,
     IvyCarouselModule,
     AvatarModule,
+    SharedModule,
 
     MatCardModule,
     MatButtonModule,

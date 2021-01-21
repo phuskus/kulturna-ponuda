@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UpdateAdminDialogComponent } from './update-admin-dialog.component';
+import { CategoryTableComponent } from './category-table.component';
 
-describe('UpdateAdminDialogComponent', () => {
-  let component: UpdateAdminDialogComponent;
-  let fixture: ComponentFixture<UpdateAdminDialogComponent>;
+describe('CategoryTableComponent', () => {
+  let component: CategoryTableComponent;
+  let fixture: ComponentFixture<CategoryTableComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UpdateAdminDialogComponent ]
+      declarations: [ CategoryTableComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UpdateAdminDialogComponent);
+    fixture = TestBed.createComponent(CategoryTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

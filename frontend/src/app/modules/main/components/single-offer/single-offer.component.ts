@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Review } from 'src/app/shared/models/Review';
 import { ReviewService } from 'src/app/services/review/review.service';
 import { OfferService } from 'src/app/services/offer/offer.service';
-import { CulturalOffer } from 'src/app/model/CulturalOffer';
+import { CulturalOffer } from 'src/app/shared/models/CulturalOffer';
 
 @Component({
   selector: 'app-single-offer',
@@ -42,8 +42,8 @@ export class SingleOfferComponent implements AfterContentInit  {
   }
 
   fetchOffer() {
-    this.offerService.getOfferById(this.offerId).subscribe((data) => {
-      this.offer = data;
+    this.offerService.get(this.offerId).subscribe((data) => {
+      this.offer = data as CulturalOffer;
     });
   }
 

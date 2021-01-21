@@ -46,6 +46,7 @@ export abstract class AbstractTable implements AfterViewInit {
 
   openDialog(type: ComponentType<unknown>, row?: Model): void {
     const dialogRef = this.dialog.open(type, {
+      autoFocus: false,
       data: row,
     });
 

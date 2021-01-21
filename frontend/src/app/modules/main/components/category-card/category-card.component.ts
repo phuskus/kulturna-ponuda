@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Category } from 'src/app/model/Category';
-import { Subcategory } from 'src/app/model/Subcategory';
+import { Category } from 'src/app/shared/models/Category';
+import { Subcategory } from 'src/app/shared/models/Subcategory';
 
 @Component({
   selector: 'app-category-card',
