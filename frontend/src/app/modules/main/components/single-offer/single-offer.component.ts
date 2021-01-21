@@ -5,6 +5,7 @@ import { Review } from 'src/app/shared/models/Review';
 import { ReviewService } from 'src/app/services/review/review.service';
 import { OfferService } from 'src/app/services/offer/offer.service';
 import { CulturalOffer } from 'src/app/shared/models/CulturalOffer';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-single-offer',
@@ -24,20 +25,25 @@ export class SingleOfferComponent implements AfterContentInit  {
   constructor(
     public dialog: MatDialog,
     public offerService: OfferService,
-    public reviewService: ReviewService
+    public reviewService: ReviewService,
+    private route: ActivatedRoute
   ) {
     this.offer = offerService.createEmpty();
   }
 
   ngAfterContentInit (): void {
-    const tokens = window.location.pathname.split('/');
-    this.offerId = Number(tokens[tokens.length - 1]);
-    if (this.offerId === NaN) {
-      // should redirect to 404
-      throw new Error('Error 404, invalid id');
-    }
-    this.fetchReviews();
-    this.fetchOffer();
+    this.route.params.subscribe(params => {
+      this.offerId = params.offerId;
+      if (this.offerId === NaN) {
+        // should redirect to 404
+        throw new Error('Error 404, invalid id');
+      }
+      this.reviews = [];
+      this.currentReviewPage = 0;
+      this.totalReviews = 0;
+      this.fetchReviews();
+      this.fetchOffer();
+    });
     this.subscribeToScrollEvent();
   }
 
