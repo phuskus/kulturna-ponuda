@@ -48,6 +48,7 @@ body {
   @extend %button-option;
   background-color: $primary-color;
   color: white;
+  margin-right: 0px !important;
   &:disabled {
     background-color: rgb(236, 234, 234);
   }

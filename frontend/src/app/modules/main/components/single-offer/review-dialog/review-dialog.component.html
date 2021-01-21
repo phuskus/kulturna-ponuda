@@ -27,13 +27,10 @@
         </mat-form-field>
       </div>
 
-      <!-- //TODO: figure out why you can't use flexbox parent here -->
-      <!-- <div class="img-row" fxLayout="row wrap" fxLayoutGap="5px"> -->
       <app-image-selector
         [multiple]="true"
         (newFilesEvent)="onFilesSelected($event)"
       ></app-image-selector>
-      <!-- </div> -->
     </div>
   </div>
   <div fxLayout="row" fxLayoutAlign="end" fx mat-dialog-actions>

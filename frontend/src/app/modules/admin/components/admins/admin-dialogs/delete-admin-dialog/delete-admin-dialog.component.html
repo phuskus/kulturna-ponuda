@@ -1,12 +1,17 @@
-<div class="review-dialog">
-  <h1 mat-dialog-title class="text-centre">Delete Admin</h1>
-  <div mat-dialog-content></div>
+<div class="delete-dialog">
+  <h1 mat-dialog-title>Delete Admin</h1>
+  <div mat-dialog-content>
+    <p>
+      Deleting Admin <span class="bold">{{data.name + ' ' + data.surname}}</span> will permanently remove it from the database. <br>
+      Be careful because this operation is irreversible.
+    </p>
+  </div>
   <div fxLayout="row" fxLayoutAlign="end" mat-dialog-actions>
     <button mat-button class="button-option-alt" mat-dialog-close>
       Cancel
     </button>
     <button mat-button class="button-option-main" (click)="onSubmit()">
-      Post
+      Delete
     </button>
   </div>
 </div>
