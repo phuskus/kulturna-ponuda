@@ -3,23 +3,18 @@ import { Injectable } from '@angular/core';
 import { retry, catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { CulturalOffer } from 'src/app/model/CulturalOffer';
-import { PageParams } from 'src/app/model/PageParams';
-import { CulturalOfferPage } from 'src/app/model/CulturalOfferPage';
+import { CulturalOffer } from 'src/app/shared/models/CulturalOffer';
+import { PageParams } from 'src/app/shared/models/PageParams';
+import Page from 'src/app/shared/models/Page';
+import { BaseDynamicPagingService } from '../base/base-dynamic-paging.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class OfferService {
-  private readonly endpoint = 'http://localhost:9001/cultural_offers/search';
-
-  constructor(private httpClient: HttpClient) {}
-
-  httpHeaders = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-    }),
-  };
+export class OfferService extends BaseDynamicPagingService {
+  constructor(public http: HttpClient) {
+    super('http://localhost:9001/cultural_offers', http);
+  }
 
   createEmpty(): CulturalOffer {
     return {
@@ -34,25 +29,20 @@ export class OfferService {
       admin: 0,
       category: 0,
       categoryName: '',
+      averageRating: 0,
       reviews: [],
       posts: [],
       pictures: [],
     };
   }
 
-  getOfferById(id: number): Observable<CulturalOffer> {
-    return this.httpClient
-      .get<CulturalOffer>(`http://localhost:9001/cultural_offers/${id}`)
-      .pipe(catchError(this.processError));
-  }
-
-  getCulturalOffers(
+  searchFilterCulturalOffers(
     pageParams: PageParams,
     categoryName: string,
     query: string,
     regionNames: string,
     cityNames: string
-  ): Observable<CulturalOfferPage> {
+  ): Observable<Page<CulturalOffer>> {
     const params = new HttpParams()
       .set('pageNo', pageParams.pageNo.toString())
       .set('pageSize', pageParams.pageSize.toString())
@@ -62,22 +52,9 @@ export class OfferService {
       .set('query', query)
       .set('regionNames', regionNames)
       .set('cityNames', cityNames);
-    const options = { ...this.httpHeaders, params };
-    return this.httpClient.get<CulturalOfferPage>(this.endpoint, options)
-      .pipe(
-        retry(1),
-        catchError(this.processError)
-      )
-  }
-
-  processError(err) {
-    let message = '';
-    if (err.error instanceof ErrorEvent) {
-      message = err.error.message;
-    } else {
-      message = `Error Code: ${err.status}\nMessage: ${err.message}`;
-    }
-    console.log(message);
-    return throwError(message);
+    const options = { ...this.httpOptions, params };
+    return this.http
+      .get<Page<CulturalOffer>>(this.url + '/search', options)
+      .pipe(catchError(this.handleError<Page<CulturalOffer>>()));
   }
 }

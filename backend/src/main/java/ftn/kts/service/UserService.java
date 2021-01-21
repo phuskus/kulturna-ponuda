@@ -69,7 +69,7 @@ public class UserService {
     public UserDTO create(UserDTO dto) throws UniqueConstraintViolationException {
         checkUnique(dto);
         RegisteredUser user = toEntity(dto);
-        createUserAuthority(user, "REGISTERED_USER");
+        createUserAuthority(user, "ROLE_USER");
         save(user);
         return toDTO(user);
     }
@@ -84,8 +84,7 @@ public class UserService {
         mailSenderService.confirmRegistration(user.getUsername(), generatedKey);
         return generatedKey;
     }
-
-    
+        
     public User save(User user) {
     	return userRepository.save(user);    		
     }
@@ -93,7 +92,6 @@ public class UserService {
     public void delete(String username) throws NoSuchElementException {
 		User user = getOne(username);
 		userRepository.delete(user);    		
-    	
 	}
 
     public UserTokenStateDTO getLoggedIn(String username, String password) throws DisabledException, PasswordNotChangedException, UserException {

@@ -12,7 +12,6 @@ import { User } from 'src/app/shared/models/User';
 })
 export class ProfileDialogComponent extends UpdateDialog<ProfileDialogComponent> {
   newObj: User;
-
   profileForm: FormGroup;
 
   constructor(

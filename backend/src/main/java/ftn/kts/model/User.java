@@ -40,7 +40,7 @@ public abstract class User implements UserDetails {
 	@Column(name = "role", insertable = false, updatable = false)
 	private String role;
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinTable(name = "user_authority", 
 		joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), 
 		inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))

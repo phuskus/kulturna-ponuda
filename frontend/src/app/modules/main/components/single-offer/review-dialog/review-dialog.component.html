@@ -13,7 +13,7 @@
 
     <div class="row-indent">
       <div class="rating-row">
-        <app-star-rating [maxRating]=5 (newRatingEvent)="onRatingChanged($event)"></app-star-rating>
+        <app-star-rating [maxRating]=5 gap="10px" (newRatingEvent)="onRatingChanged($event)"></app-star-rating>
       </div>
 
       <div class="comment-row">
@@ -27,13 +27,10 @@
         </mat-form-field>
       </div>
 
-      <!-- //TODO: figure out why you can't use flexbox parent here -->
-      <!-- <div class="img-row" fxLayout="row wrap" fxLayoutGap="5px"> -->
       <app-image-selector
         [multiple]="true"
         (newFilesEvent)="onFilesSelected($event)"
       ></app-image-selector>
-      <!-- </div> -->
     </div>
   </div>
   <div fxLayout="row" fxLayoutAlign="end" fx mat-dialog-actions>

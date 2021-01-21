@@ -13,6 +13,7 @@ export class StarRatingComponent {
   @Input() public color: string = goldColor;
   @Input() public size: number = 40;
   @Input() public readonly: boolean = false;
+  @Input() public gap: string = "5px";
 
   @Output() private newRatingEvent = new EventEmitter<number>();
 
@@ -35,5 +36,9 @@ export class StarRatingComponent {
 
     this.rating = value;
     this.newRatingEvent.emit(value);
+  }
+
+  formatRating(): number {
+    return Math.round(this.rating);
   }
 }

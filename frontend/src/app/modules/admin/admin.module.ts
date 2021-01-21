@@ -24,9 +24,12 @@ import { DeleteReviewDialogComponent } from './components/reviews/dialogs/delete
 import { AddAdminDialogComponent } from './components/admins/admin-dialogs/add-admin-dialog/add-admin-dialog.component';
 import { DeleteAdminDialogComponent } from './components/admins/admin-dialogs/delete-admin-dialog/delete-admin-dialog.component';
 import { FormsModule } from '@angular/forms';
-import { UpdateAdminDialogComponent } from './components/admins/admin-dialogs/update-admin-dialog/update-admin-dialog.component';
-import {MatMenuModule} from '@angular/material/menu';
-
+import { MatMenuModule } from '@angular/material/menu';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { CategoryTableComponent } from './components/categories/category-table/category-table.component';
+import { AddCategoryDialogComponent } from './components/categories/category-dialogs/add-category-dialog/add-category-dialog.component';
+import { DeleteCategoryDialogComponent } from './components/categories/category-dialogs/delete-category-dialog/delete-category-dialog.component';
+import { UpdateCategoryDialogComponent } from './components/categories/category-dialogs/update-category-dialog/update-category-dialog.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +40,10 @@ import {MatMenuModule} from '@angular/material/menu';
     AddAdminDialogComponent,
     DeleteReviewDialogComponent,
     DeleteAdminDialogComponent,
-    UpdateAdminDialogComponent,
+    CategoryTableComponent,
+    AddCategoryDialogComponent,
+    DeleteCategoryDialogComponent,
+    UpdateCategoryDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -45,6 +51,7 @@ import {MatMenuModule} from '@angular/material/menu';
 
     FlexLayoutModule,
     FormsModule,
+    SharedModule,
 
     MatCardModule,
     MatButtonModule,

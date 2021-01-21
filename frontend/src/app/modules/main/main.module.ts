@@ -22,6 +22,8 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ValidateEqualModule } from 'ng-validate-equal';
+import {MatPaginatorModule} from '@angular/material/paginator';
+
 
 import { ResultsComponent } from './components/results/results.component';
 import { SingleOfferComponent } from './components/single-offer/single-offer.component';
@@ -29,15 +31,13 @@ import { IvyCarouselModule } from 'angular-responsive-carousel';
 import { SingleReviewComponent } from './components/single-review/single-review.component';
 import { SearchComponent } from './components/search/search.component';
 import { CategoryCardComponent } from './components/category-card/category-card.component';
-import { ImageSelectorComponent } from 'src/app/shared/components/image-selector/image-selector.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ReviewDialogComponent } from './components/single-offer/review-dialog/review-dialog.component';
-import { SafeUrlPipe } from 'src/app/shared/pipes/safe-url.pipe';
 import { AvatarModule } from 'ngx-avatar';
-import { StarRatingComponent } from 'src/app/shared/components/star-rating/star-rating.component';
 import { ProfileDialogComponent } from './components/account/profile-dialog/profile-dialog.component';
 import { PasswordDialogComponent } from './components/account/password-dialog/password-dialog.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -51,9 +51,6 @@ import { PasswordDialogComponent } from './components/account/password-dialog/pa
     SearchComponent,
     CategoryCardComponent,
     ReviewDialogComponent,
-    ImageSelectorComponent,
-    SafeUrlPipe,
-    StarRatingComponent,
     ProfileDialogComponent,
     PasswordDialogComponent
   ],
@@ -66,6 +63,7 @@ import { PasswordDialogComponent } from './components/account/password-dialog/pa
     AvatarModule,
     ReactiveFormsModule,
     ValidateEqualModule,
+    SharedModule,
 
     MatCardModule,
     MatButtonModule,
@@ -80,6 +78,7 @@ import { PasswordDialogComponent } from './components/account/password-dialog/pa
     MatBadgeModule,
     MatDividerModule,
     MatSnackBarModule,
+    MatPaginatorModule,
 
     NgxPaginationModule,
 

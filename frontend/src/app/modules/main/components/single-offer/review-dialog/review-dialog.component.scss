@@ -1,3 +1,5 @@
+@import "~src/themes/dialog-styles";
+
 $left-margin-width: 60px;
 
 %base-row {
@@ -5,6 +7,7 @@ $left-margin-width: 60px;
 }
 
 .review-dialog {
+  @extend .add-dialog;
   width: 600px;
 }
 

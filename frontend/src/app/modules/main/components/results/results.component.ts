@@ -1,11 +1,11 @@
 import { EmitEvent, EventBusService, Events } from './../../../../services/event-bus/event-bus.service';
-import { PageParams } from './../../../../model/PageParams';
-import { CulturalOffer } from './../../../../model/CulturalOffer';
+import { PageParams } from '../../../../shared/models/PageParams';
+import { CulturalOffer } from '../../../../shared/models/CulturalOffer';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CulturalOfferPage } from 'src/app/model/CulturalOfferPage';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { OfferService } from 'src/app/services/offer/offer.service';
+import Page from 'src/app/shared/models/Page';
 
 @Component({
   selector: 'app-results',
@@ -111,14 +111,14 @@ export class ResultsComponent implements OnInit {
       .map((c) => c.name)
       .join(',');
     return this.offerService
-      .getCulturalOffers(
+      .searchFilterCulturalOffers(
         this.getPageParams(),
         this.category,
         this.query,
         regionNames,
         cityNames
       )
-      .subscribe((res: CulturalOfferPage) => {
+      .subscribe((res: Page<CulturalOffer>) => {
         this.loading = false;
         this.offers = res.content;
         this.eventBus.emit(new EmitEvent(Events.OfferListChange, res.content));
