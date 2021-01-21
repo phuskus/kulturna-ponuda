@@ -12,18 +12,19 @@ import ftn.kts.model.Admin;
 import ftn.kts.model.Authority;
 import ftn.kts.model.User;
 import ftn.kts.repository.AdminRepository;
+import ftn.kts.security.CustomUserDetailsService;
 
 @Service
 public class AdminService {
     private AdminRepository adminRepository;
-    private UserService userService;
     private AuthorityService authService;
+    private CustomUserDetailsService userDetailsService;
 
     @Autowired
-    public AdminService(AdminRepository adminRepository, UserService userService, AuthorityService authService) {
+    public AdminService(AdminRepository adminRepository, UserService userService, AuthorityService authService, CustomUserDetailsService userDetailsService) {
         this.adminRepository = adminRepository;
-        this.userService = userService;
         this.authService = authService;
+        this.userDetailsService = userDetailsService;
     }
 
     public List<AdminDTO> getAllDTO() {
@@ -43,9 +44,11 @@ public class AdminService {
 
     public AdminDTO create(AdminDTO dto) {
         Admin admin = toEntity(dto);
+        admin.setPassword(userDetailsService.encodePassword(dto.getPassword()));
         ArrayList<Authority> auth = new ArrayList<>();
         auth.add(authService.findByName("ROLE_ADMIN"));
         admin.setAuthorities(auth);
+        admin.setEnabled(true);
         AdminDTO saved = toDTO(adminRepository.save(admin));
         return saved;
     }

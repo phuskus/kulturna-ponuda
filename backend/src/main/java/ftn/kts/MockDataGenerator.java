@@ -147,7 +147,7 @@ public abstract class MockDataGenerator {
         random = new Random();
         
         System.out.println("Creating authorities...");
-        ArrayList<Authority> authorities = generateAuthorities(applicationContext);
+        generateAuthorities(applicationContext);
 
 
         System.out.println("Creating admins...");
@@ -212,15 +212,13 @@ public abstract class MockDataGenerator {
         userRepository.deleteAll();
     }
     
-    private static ArrayList<Authority> generateAuthorities(ApplicationContext applicationContext) {
+    private static void generateAuthorities(ApplicationContext applicationContext) {
     	AuthorityService authorityService = applicationContext.getBean(AuthorityService.class);
     	ArrayList<Authority> authorities = new ArrayList<>();
     
     	for (int i = 0; i < ROLES.length; i++) {
-    		authorities.add(authorityService.create(ROLES[i]));
-    	}
-    	
-    	return authorities;
+    		authorityService.create(ROLES[i]);
+    	}    	
     }
 
     private static ArrayList<AdminDTO> GenerateAdmins(ApplicationContext applicationContext) {
@@ -250,7 +248,7 @@ public abstract class MockDataGenerator {
                 try {
                     //UserDTO dto1 = new UserDTO(faker.rickAndMorty().character(), faker.internet().emailAddress(), faker.internet().password());
                 	UserDTO dto = new UserDTO(faker.name().firstName(), faker.name().lastName(), faker.internet().emailAddress(), faker.internet().password());
-                    userList.add(userService.create(dto));
+                    userList.add(userService.createConfirmed(dto));
                     break;
                 } catch (Exception e) {
                     System.out.println("Faker user create failed, probably duplicate, trying again...");

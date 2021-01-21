@@ -70,19 +70,31 @@ public class UserService {
         checkUnique(dto);
         RegisteredUser user = toEntity(dto);
         createUserAuthority(user, "ROLE_USER");
+        createUserKey(user);
+        save(user);
+        return toDTO(user);
+    }
+    
+    public UserDTO createConfirmed(UserDTO dto) throws UniqueConstraintViolationException {
+        checkUnique(dto);
+        RegisteredUser user = toEntity(dto);
+        createUserAuthority(user, "ROLE_USER");
+        user.setEnabled(true);
         save(user);
         return toDTO(user);
     }
 
-    public String createUserAuthority(User user, String role){
+    public void createUserAuthority(User user, String role){
         user.setPassword(userDetailsService.encodePassword(user.getPassword()));
         ArrayList<Authority> auth = new ArrayList<>();
         auth.add(authorityService.findByName(role));
         user.setAuthorities(auth);
+    }
+    
+    public void createUserKey(User user) {
         String generatedKey = RandomUtil.buildAuthString(30);
         user.setKey(generatedKey);
         mailSenderService.confirmRegistration(user.getUsername(), generatedKey);
-        return generatedKey;
     }
         
     public User save(User user) {
