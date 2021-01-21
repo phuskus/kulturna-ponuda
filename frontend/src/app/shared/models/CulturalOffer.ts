@@ -15,6 +15,7 @@ export class CulturalOffer extends Model {
     category: number;
     categoryName: string;
     reviews: Review[];
+    averageRating: number;
     posts: Post[];
     pictures: Picture[];
   }

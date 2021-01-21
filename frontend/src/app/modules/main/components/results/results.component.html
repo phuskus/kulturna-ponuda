@@ -216,6 +216,15 @@
           <div fxLayout="column">{{ offer.address }}, {{ offer.city }}</div>
         </div>
 
+        <div fxLayout="row" style="padding-top: 8px;">
+          <app-star-rating
+            [maxRating]="5"
+            [rating]="offer.averageRating"
+            [size]="35"
+            [readonly]="true"
+          ></app-star-rating>
+        </div>
+
         <div fxLayout="row" style="padding: 15px 0px">
           <div>{{ offer.categoryName }}</div>
         </div>

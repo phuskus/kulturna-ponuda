@@ -29,6 +29,7 @@ export class OfferService extends BaseDynamicPagingService {
       admin: 0,
       category: 0,
       categoryName: '',
+      averageRating: 0,
       reviews: [],
       posts: [],
       pictures: [],

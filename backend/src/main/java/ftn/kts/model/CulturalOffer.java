@@ -32,8 +32,12 @@ public class CulturalOffer {
 	private String address;
 	@Column(name = "city", unique = false, nullable = true)
 	private String city;
+
+
 	@Column(name = "region", unique = false, nullable = true)
 	private String region;
+	@Column(name = "averageRating", unique = false, nullable = true)
+	private double averageRating;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Admin admin;
@@ -181,6 +185,19 @@ public class CulturalOffer {
 
 	public void setCategory(Subcategory category) {
 		this.category = category;
+	}
+
+	public double getAverageRating() {
+		double average = 0.;
+		for (Review review: this.reviews)
+			average += review.getRating();
+
+		average = average / Math.max(1, this.reviews.size());
+		return average;
+	}
+
+	public void setAverageRating(Double averageRating) {
+		this.averageRating = averageRating;
 	}
 
 }
