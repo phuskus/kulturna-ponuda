@@ -36,6 +36,9 @@
   }
 }
 
+.pagination-control-div {
+  height: 100%;
+}
 
 .pagination-control ::ng-deep ul {
   padding-inline-start: 0px !important;
@@ -59,7 +62,7 @@
 }
 
 .result-card {
-  margin-bottom: 15px;
+  // margin-bottom: 15px;
   padding-bottom: 0px;
   min-height: 190px;
   cursor: pointer;
@@ -86,3 +89,4 @@
 .search-comp {
   @extend %base-card;
 }
+

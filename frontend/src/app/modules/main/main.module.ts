@@ -18,6 +18,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
+import {MatPaginatorModule} from '@angular/material/paginator';
+
 
 import { ResultsComponent } from './components/results/results.component';
 import { SingleOfferComponent } from './components/single-offer/single-offer.component';
@@ -25,13 +27,10 @@ import { IvyCarouselModule } from 'angular-responsive-carousel';
 import { SingleReviewComponent } from './components/single-review/single-review.component';
 import { SearchComponent } from './components/search/search.component';
 import { CategoryCardComponent } from './components/category-card/category-card.component';
-import { ImageSelectorComponent } from 'src/app/shared/components/image-selector/image-selector.component';
 
 import { FormsModule } from '@angular/forms';
 import { ReviewDialogComponent } from './components/single-offer/review-dialog/review-dialog.component';
-import { SafeUrlPipe } from 'src/app/shared/pipes/safe-url.pipe';
 import { AvatarModule } from 'ngx-avatar';
-import { StarRatingComponent } from 'src/app/shared/components/star-rating/star-rating.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
@@ -66,6 +65,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     MatDialogModule,
     MatIconModule,
     MatRadioModule,
+    MatPaginatorModule,
 
     NgxPaginationModule,
 

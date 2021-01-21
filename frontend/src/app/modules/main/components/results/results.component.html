@@ -192,54 +192,61 @@
   <div *ngIf="count === 0 && !loading">
     <div class="no-results mat-title">No results available for your query!</div>
   </div>
-  <mat-card
-    class="result-card"
-    *ngFor="
-      let offer of offers
-        | paginate
-          : {
-              itemsPerPage: pageSize,
-              currentPage: page,
-              totalItems: count
-            }
-    "
-    [routerLink]="'/offers/' + offer.id"
-  >
-    <div fxLayout="row">
-      <div fxLayout="column" class="img-col">
-        <img [src]="offer.pictures[0].image" />
+
+  <div class="offer-container" fxLayout="column" fxLayoutGap="2.5%">
+    <mat-card
+      class="result-card"
+      *ngFor="
+        let offer of offers
+          | paginate
+            : {
+                itemsPerPage: pageSize,
+                currentPage: page,
+                totalItems: count
+              }
+      "
+      [routerLink]="'/offers/' + offer.id"
+    >
+      <div fxLayout="row">
+        <div fxLayout="column" class="img-col">
+          <img [src]="offer.pictures[0].image" />
+        </div>
+
+        <div
+          fxLayout="column"
+          fxLayoutAlign="space-between"
+          class="content-col"
+        >
+          <div fxLayout="row" fxLayoutAlign="space-between">
+            <div fxLayout="column">{{ offer.name }}</div>
+            <div fxLayout="column">{{ offer.address }}, {{ offer.city }}</div>
+          </div>
+
+          <div fxLayout="row" style="padding-top: 8px">
+            <app-star-rating
+              [maxRating]="5"
+              [rating]="offer.averageRating"
+              [size]="35"
+              [readonly]="true"
+            ></app-star-rating>
+          </div>
+
+          <div fxLayout="row" style="padding: 15px 0px">
+            <div>{{ offer.categoryName }}</div>
+          </div>
+
+          <div fxLayout="row">
+            {{ offer.description }}
+          </div>
+        </div>
       </div>
-
-      <div fxLayout="column" fxLayoutAlign="space-between" class="content-col">
-        <div fxLayout="row" fxLayoutAlign="space-between">
-          <div fxLayout="column">{{ offer.name }}</div>
-          <div fxLayout="column">{{ offer.address }}, {{ offer.city }}</div>
-        </div>
-
-        <div fxLayout="row" style="padding-top: 8px;">
-          <app-star-rating
-            [maxRating]="5"
-            [rating]="offer.averageRating"
-            [size]="35"
-            [readonly]="true"
-          ></app-star-rating>
-        </div>
-
-        <div fxLayout="row" style="padding: 15px 0px">
-          <div>{{ offer.categoryName }}</div>
-        </div>
-
-        <div fxLayout="row">
-          {{ offer.description }}
-        </div>
-      </div>
-    </div>
-  </mat-card>
+    </mat-card>
+  </div>
   <div
     *ngIf="count != 0 && !loading"
     class="pagination-control-div"
     fxLayout="row"
-    fxFlexAlign="center"
+    fxLayoutAlign="center end"
   >
     <pagination-controls
       class="pagination-control"
