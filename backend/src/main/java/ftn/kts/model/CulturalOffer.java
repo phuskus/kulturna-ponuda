@@ -37,7 +37,7 @@ public class CulturalOffer {
 	@Column(name = "region", unique = false, nullable = true)
 	private String region;
 	@Column(name = "averageRating", unique = false, nullable = true)
-	private double averageRating;
+	private double averageRating = 0;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Admin admin;
@@ -188,6 +188,9 @@ public class CulturalOffer {
 	}
 
 	public double getAverageRating() {
+		if (this.averageRating == 0)
+			return this.averageRating;
+		
 		double average = 0.;
 		for (Review review: this.reviews)
 			average += review.getRating();
