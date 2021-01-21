@@ -14,17 +14,18 @@ import { Role } from 'src/app/shared/models/Role';
 })
 export class AuthService {
 
-  private readonly loginEndpoint = "http://localhost:9001/auth/login";
-  private readonly registerEndpoint = "http://localhost:9001/auth/register";
-  private readonly forgotPasswordEndpoint = "http://localhost:9001/auth/forgot-password";
-  private readonly resetPasswordEndpoint = "http://localhost:9001/auth/reset-password"; 
+  private endpoint = "http://localhost:9001/auth/";
+  //private readonly loginEndpoint = "http://localhost:9001/auth/login";
+  //private readonly registerEndpoint = "http://localhost:9001/auth/register";
+  //private readonly forgotPasswordEndpoint = "http://localhost:9001/auth/forgot-password";
+  //private readonly resetPasswordEndpoint = "http://localhost:9001/auth/reset-password"; 
 
   constructor(private http: HttpClient) { }
 
   login(username: string, password: string): Observable<any> {
     var headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post(
-      this.loginEndpoint,
+      this.endpoint + 'login',
       JSON.stringify({ username, password }),
       { headers }).map((res: any) => {
         let user: UserTokenState =  {
@@ -48,8 +49,21 @@ export class AuthService {
   register(name: string, surname: string, username: string, password: string): Observable<any> {
     var headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post(
-      this.registerEndpoint,
+      this.endpoint + 'register',
       JSON.stringify({name, surname, username, password }),
+      { headers })
+      .pipe(
+        catchError(error => {
+          return throwError(error.error);
+        })
+      );
+  }
+
+  changePassword(oldPassword: string, newPassword: string): Observable<any> {
+    var headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post(
+      this.endpoint + 'change-password',
+      JSON.stringify({oldPassword, newPassword}),
       { headers })
       .pipe(
         catchError(error => {
@@ -60,7 +74,7 @@ export class AuthService {
 
   activateAccount(key: string): Observable<any> {
     return this.http.get(
-      this.registerEndpoint + "/" + key,
+      this.endpoint + "register/" + key,
     ).pipe(
       catchError(error => {
         return throwError(error);
@@ -71,7 +85,7 @@ export class AuthService {
   forgotPassword(username: string): Observable<any> {
     var headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'text/plain' });
     return this.http.post(
-      this.forgotPasswordEndpoint,
+      this.endpoint + 'forgot-password',
       username,
       { headers }
     ).pipe(
@@ -84,7 +98,7 @@ export class AuthService {
   resetPassword(newPassword: string, resetKey: string) {
     var headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post(
-      this.resetPasswordEndpoint,
+      this.endpoint + 'reset-password',
       JSON.stringify({newPassword, resetKey}),
       { headers })
       .map((res: any) => {
@@ -103,6 +117,7 @@ export class AuthService {
       })
     )
   }
+
 
   logout(): void {
     localStorage.removeItem('currentUser');

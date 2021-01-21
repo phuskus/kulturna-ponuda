@@ -7,6 +7,7 @@ import { ProfileDialogComponent } from '../../components/account/profile-dialog/
 import { MatDialog } from '@angular/material/dialog';
 import { UserService } from 'src/app/services/user/user.service';
 import { User } from 'src/app/shared/models/User';
+import { PasswordDialogComponent } from '../../components/account/password-dialog/password-dialog.component';
 
 @Component({
   selector: 'app-landing-page',
@@ -27,7 +28,7 @@ export class LandingPageComponent implements OnInit {
     this.isLoggedIn = (localStorage['currentUser'] !== undefined);
   }
 
-  logout() {
+  logout(): void {
     this.isLoggedIn = false;
     this.authService.logout();
     this.router.navigateByUrl('/', { skipLocationChange: true });
@@ -43,5 +44,13 @@ export class LandingPageComponent implements OnInit {
       });  
     });
   }
+
+  onChangePassword(): void {
+    this.dialog.open(PasswordDialogComponent, {
+      autoFocus: false,
+      data: {}
+    })
+  }
+
 
 }

@@ -21,6 +21,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ValidateEqualModule } from 'ng-validate-equal';
 
 import { ResultsComponent } from './components/results/results.component';
 import { SingleOfferComponent } from './components/single-offer/single-offer.component';
@@ -30,7 +31,7 @@ import { SearchComponent } from './components/search/search.component';
 import { CategoryCardComponent } from './components/category-card/category-card.component';
 import { ImageSelectorComponent } from 'src/app/shared/components/image-selector/image-selector.component';
 
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ReviewDialogComponent } from './components/single-offer/review-dialog/review-dialog.component';
 import { SafeUrlPipe } from 'src/app/shared/pipes/safe-url.pipe';
 import { AvatarModule } from 'ngx-avatar';
@@ -63,6 +64,8 @@ import { PasswordDialogComponent } from './components/account/password-dialog/pa
     FlexLayoutModule,
     IvyCarouselModule,
     AvatarModule,
+    ReactiveFormsModule,
+    ValidateEqualModule,
 
     MatCardModule,
     MatButtonModule,
