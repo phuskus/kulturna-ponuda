@@ -23,6 +23,7 @@ public class CulturalOfferDTO {
 	private String city;
 	private String region;
 	private String categoryName;
+	private Double averageRating;
 
 	@NotNull(message = "Admin ID is required!")
 	private Long admin;
@@ -216,4 +217,11 @@ public class CulturalOfferDTO {
 		this.categoryName = categoryName;
 	}
 
+	public Double getAverageRating() {
+		return averageRating;
+	}
+
+	public void setAverageRating(Double averageRating) {
+		this.averageRating = averageRating;
+	}
 }

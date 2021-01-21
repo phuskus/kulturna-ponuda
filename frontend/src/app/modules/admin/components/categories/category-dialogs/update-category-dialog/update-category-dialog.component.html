@@ -1,14 +1,9 @@
-<div class="add-dialog">
-  <h1 mat-dialog-title>Add Admin</h1>
+<div class="update-dialog">
+  <h1 mat-dialog-title>Update Category</h1>
   <div mat-dialog-content fxLayout="column">
     <mat-form-field class="example-full-width">
       <mat-label>Name</mat-label>
       <input matInput [(ngModel)]="newObj.name" name="name" />
-    </mat-form-field>
-
-    <mat-form-field class="example-full-width">
-      <mat-label>Username</mat-label>
-      <input matInput [(ngModel)]="newObj.username" name="username" />
     </mat-form-field>
   </div>
   <div fxLayout="row" fxLayoutAlign="end" mat-dialog-actions>
@@ -16,7 +11,7 @@
       Cancel
     </button>
     <button mat-button class="button-option-main" (click)="onSubmit()">
-      Add
+      Update
     </button>
   </div>
 </div>

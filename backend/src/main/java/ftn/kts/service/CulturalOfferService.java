@@ -144,6 +144,7 @@ public class CulturalOfferService {
 			pictures.add(pictureService.getOne(picture.getId()));
 		}
 		offer.setPictures(pictures);
+		offer.setAverageRating(dto.getAverageRating());
 		return offer;
 	}
 	
@@ -151,6 +152,7 @@ public class CulturalOfferService {
 		CulturalOfferDTO dto = new CulturalOfferDTO(entity.getId(), entity.getName(), entity.getDescription(),
 				entity.getLatitude(), entity.getLongitude(), entity.getAddress(), entity.getCity(), entity.getRegion(),
 				entity.getAdmin().getId(), entity.getCategory());
+		dto.setAverageRating(entity.getAverageRating());
 		dto.setPictures(pictureService.convertToDTO(entity.getPictures()));
 		dto.setPosts(postService.convertToDTO(entity.getPosts()));
 		dto.setReviews(reviewService.convertToDTO(entity.getReviews()));
@@ -165,6 +167,7 @@ public class CulturalOfferService {
 		offer.setLongitude(dto.getLongitude());
 		offer.setName(dto.getName());
 		offer.setRegion(dto.getRegion());
+		offer.setAverageRating(dto.getAverageRating());
 		HashSet<Picture> pictures = new HashSet<>();
 		for (PictureDTO picture : dto.getPictures()) {
 			pictures.add(pictureService.getOne(picture.getId()));

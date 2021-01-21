@@ -41,6 +41,28 @@ public abstract class MockDataGenerator {
     		{ "\\pictures\\mon.png", "Monument placeholder" },
     		{ "\\pictures\\lmark.png", "Landmark placeholder" }
     };
+    
+    private static final String[][] LOCATIONS = {
+    	    { "Belgrade", "44.80401", "20.46513", "Central Serbia"},
+    	    { "Novi Sad", "45.25167", "19.83694", "Vojvodina"},
+    	    { "Kragujevac", "44.01667", "20.91667", "Central Serbia"},
+    	    { "Leskovac", "42.99806", "21.94611", "Southern Serbia"},
+    	    { "Novi Pazar", "43.13667", "20.51222", "Southern Serbia"},
+    	    { "Niš", "43.32472", "21.90333", "Southern Serbia"},
+    	    { "Kraljevo", "43.72583", "20.68944", "Central Serbia"},
+    	    { "Zrenjanin", "45.38361", "20.38194", "Vojvodina"},
+    	    { "Kruševac", "43.58", "21.33389", "Central Serbia"},
+    	    { "Subotica", "46.1", "19.66667", "Vojvodina"},
+    	    { "Smederevo", "44.66436", "20.92763", "Central Serbia"},
+    	    { "Valjevo", "44.27513", "19.89821", "Western Serbia"},
+    	    { "Bor", "44.07488", "22.09591", "Eastern Serbia"},
+    	    { "Čačak", "43.89139", "20.34972", "Western Serbia"},
+    	    { "Sombor", "45.77417", "19.11222", "Vojvodina"},
+    	    { "Vranje", "42.55139", "21.90028", "Southern Serbia"},
+    	    { "Zaječar", "43.90358", "22.26405", "Eastern Serbia"},
+    	    { "Negotin", "44.22639", "22.53083", "Eastern Serbia"},
+    	    { "Užice", "43.85861", "19.84878", "Western Serbia"}
+	};
 
     private static final int CULTURAL_OFFERS_PER_SUBCATEGORY_MIN = 1;
     private static final int CULTURAL_OFFERS_PER_SUBCATEGORY_MAX = 30;
@@ -111,7 +133,7 @@ public abstract class MockDataGenerator {
         ArrayList<SubcategoryDTO> subcategoryList = GenerateSubcategories(applicationContext, categoryList, SUBCATEGORIES, icons);
 
         System.out.println("Creating cultural offers...");
-        ArrayList<CulturalOfferDTO> culturalOfferList = GenerateCulturalOffers(applicationContext, subcategoryList, adminList, icons);
+        ArrayList<CulturalOfferDTO> culturalOfferList = GenerateCulturalOffers(applicationContext, subcategoryList, adminList, icons, LOCATIONS);
 
         System.out.println("Creating subscriptions...");
         GenerateSubscriptions(applicationContext, userList, culturalOfferList, subcategoryList);
@@ -236,7 +258,7 @@ public abstract class MockDataGenerator {
         return subcategoryList;
     }
 
-    private static ArrayList<CulturalOfferDTO> GenerateCulturalOffers(ApplicationContext applicationContext, List<SubcategoryDTO> subcategoryList, List<AdminDTO> adminList, ArrayList<PictureDTO> icons) {
+    private static ArrayList<CulturalOfferDTO> GenerateCulturalOffers(ApplicationContext applicationContext, List<SubcategoryDTO> subcategoryList, List<AdminDTO> adminList, ArrayList<PictureDTO> icons, String[][] locations) {
         CulturalOfferService culturalOfferService = applicationContext.getBean(CulturalOfferService.class);
         ArrayList<CulturalOfferDTO> culturalOfferList = new ArrayList<>();
         int iconCounter = 0;
@@ -247,17 +269,20 @@ public abstract class MockDataGenerator {
             for (int i = 0; i < culturalOfferRandomCount; i++) {
                 while (true) {
                     try {
-                        float longitude = LONGITUDE_MIN + random.nextFloat() * (LONGITUDE_MAX - LONGITUDE_MIN);
-                        float latitude = LATITUDE_MIN + random.nextFloat() * (LATITUDE_MAX - LATITUDE_MIN);
+                    	String[] location = locations[random.nextInt(locations.length)];
+                    	// range je -0.5 do 0.5 podeljeno sa 20, tj -0.025 do 0.025
+                    	float latitude = Float.parseFloat(location[1]) + (random.nextFloat() - 0.5f)/20;
+                        float longitude = Float.parseFloat(location[2]) + (random.nextFloat() - 0.5f)/20;
                         CulturalOfferDTO dto = new CulturalOfferDTO(subcategory.getName() + "_" + i,
                                 faker.lorem().paragraph(5),
                                 latitude,
                                 longitude,
                                 faker.address().streetAddress(),
-                                faker.address().cityName(),
-                                faker.address().country(),
+                                location[0],
+                                location[3],
                                 adminList.get(0).getId(),
                                 subcategory.getId());
+                        dto.setAverageRating(-1d);
                         Set<PictureDTO> pictures = new HashSet<>();
                         pictures.add(icons.get(iconCounter));
                         dto.setPictures(pictures);

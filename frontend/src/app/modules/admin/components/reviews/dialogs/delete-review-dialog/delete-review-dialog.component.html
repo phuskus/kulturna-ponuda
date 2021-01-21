@@ -1,17 +1,20 @@
-<div class="review-dialog">
-    <h1 mat-dialog-title class="text-centre">Delete Review</h1>
-    <div mat-dialog-content></div>
-    <div fxLayout="row" fxLayoutAlign="end" mat-dialog-actions>
-      <button mat-button class="button-option-alt" mat-dialog-close>
-        Cancel
-      </button>
-      <button
-        mat-button
-        class="button-option-main"
-        (click) = "onSubmit()"
-      >
-        Post
-      </button>
-    </div>
+<div class="delete-dialog">
+  <h1 mat-dialog-title>Delete Review</h1>
+  <div mat-dialog-content>
+    <p>
+      Deleting this review by
+      <span class="bold">{{ data.user.name + " " + data.user.surname }}</span>
+      for <span class="bold">{{ data.culturalOfferName }}</span> will
+      permanently remove it from the database. <br />
+      Be careful because this operation is irreversible.
+    </p>
   </div>
-  
+  <div fxLayout="row" fxLayoutAlign="end" mat-dialog-actions>
+    <button mat-button class="button-option-alt" mat-dialog-close>
+      Cancel
+    </button>
+    <button mat-button class="button-option-main" (click)="onSubmit()">
+      Delete
+    </button>
+  </div>
+</div>

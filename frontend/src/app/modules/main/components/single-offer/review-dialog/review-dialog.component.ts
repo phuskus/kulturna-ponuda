@@ -6,6 +6,7 @@ import AddDialog from 'src/app/shared/dialog/AddDialog';
 import { ReviewService } from 'src/app/services/review/review.service';
 import Model from 'src/app/shared/models/Model';
 import { Review } from 'src/app/shared/models/Review';
+import { CulturalOffer } from 'src/app/shared/models/CulturalOffer';
 
 @Component({
   selector: 'app-review-dialog',
@@ -35,7 +36,7 @@ export class ReviewDialogComponent extends AddDialog<ReviewDialogComponent> {
   constructor(
     public dialogRef: MatDialogRef<ReviewDialogComponent>,
     public service: ReviewService,
-    @Inject(MAT_DIALOG_DATA) public data: ReviewDialogData // Should be Cult Offer
+    @Inject(MAT_DIALOG_DATA) public data: CulturalOffer // Should be Cult Offer
   ) {
     super(dialogRef, service);
   }

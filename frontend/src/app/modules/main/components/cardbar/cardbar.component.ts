@@ -1,6 +1,6 @@
 import { CategoryService } from './../../../../services/category/category.service';
 import { Component, OnInit } from '@angular/core';
-import { Category } from 'src/app/model/Category';
+import { Category } from 'src/app/shared/models/Category';
 
 @Component({
   selector: 'app-cardbar',
@@ -17,7 +17,7 @@ export class CardbarComponent implements OnInit {
   }
 
   fetchOffers() {
-    return this.categoryService.getCategories().subscribe((res: Category[]) => {
+    return this.categoryService.getAll().subscribe((res: Category[]) => {
       this.categories = res;
     })
   }
