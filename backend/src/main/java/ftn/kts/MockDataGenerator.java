@@ -258,6 +258,7 @@ public abstract class MockDataGenerator {
                                 faker.address().country(),
                                 adminList.get(0).getId(),
                                 subcategory.getId());
+                        dto.setAverageRating(-1d);
                         Set<PictureDTO> pictures = new HashSet<>();
                         pictures.add(icons.get(iconCounter));
                         dto.setPictures(pictures);
