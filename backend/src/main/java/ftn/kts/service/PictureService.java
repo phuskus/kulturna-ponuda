@@ -44,10 +44,15 @@ public class PictureService {
 		Path path = Paths.get(projectFolder + fullPath);
 		Files.write(path,  data);
 		
-		Picture picture = new Picture(fullPath, file.getOriginalFilename());
-		pictureRepository.save(picture);
+		PictureDTO dto = new PictureDTO(file.getOriginalFilename(), fullPath);
 		
-		return toDTO(picture);
+		return save(dto);
+    }
+    
+    public PictureDTO save(PictureDTO pic) throws IOException {
+		Picture picture = new Picture(pic.getPath(), pic.getPlaceholder());
+    	pictureRepository.save(picture);
+    	return toDTO(picture);
     }
 
 	public PictureDTO getOneDTO(Long id) throws IOException {

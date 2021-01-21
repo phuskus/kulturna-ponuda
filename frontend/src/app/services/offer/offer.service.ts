@@ -33,6 +33,7 @@ export class OfferService {
       region: '',
       admin: 0,
       category: 0,
+      categoryName: '',
       reviews: [],
       posts: [],
       pictures: [],

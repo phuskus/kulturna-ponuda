@@ -13,7 +13,7 @@ export abstract class BaseService {
     headers: new HttpHeaders({
       Authentication: '',
       'Content-Type': 'application/json',
-      Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImNvdmlkMTkuY2xpbmljLmxsY0BnbWFpbC5jb20iLCJhdWQiOiJ3ZWIiLCJpYXQiOjE2MTExMDI2OTIsImV4cCI6MTYxMTE0NTg5Mn0.hx_LstFjWuDd8LO8qI4VUcPLa_Pj1zQpf08eUtl9hK5d__55Z5hGQKWgDS7gp5y-psjAucXcG5YJeR6hSXuJRQ`,
+      // Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImNvdmlkMTkuY2xpbmljLmxsY0BnbWFpbC5jb20iLCJhdWQiOiJ3ZWIiLCJpYXQiOjE2MTExNzgxMzgsImV4cCI6MTYxMTIyMTMzOH0.2s0OtQVEtVtfLy6AM2YI4pXVxwBiQRN9ztYVFcRfoXghYZtgetNRWiu4ONGgiiN3u4gxZe7eIoGiDHPo_Y_BkQ`,
     }),
   };
 
