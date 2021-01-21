@@ -1,26 +1,55 @@
 <div>
     <h1 mat-dialog-title class="text-centre">Edit Profile</h1>
-    <div mat-dialog-content fxLayout="column">
-        <mat-form-field>
-            <mat-label>Username</mat-label>
-            <input matInput [(ngModel)]="newObj.username" name="username" disabled/>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>Name</mat-label>
-            <input matInput [(ngModel)]="newObj.name" name="name" />
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>Surname</mat-label>
-            <input matInput [(ngModel)]="newObj.surname" name="surname" />
-            <mat-hint>*Your name and surname are public!</mat-hint>
-        </mat-form-field>
-    </div>
-    <div fxLayout="row" fxLayoutAlign="end" mat-dialog-actions>
-        <button mat-button class="button-option-main" (click)="onSubmit()">
-           Edit
+    <form [formGroup]="profileForm">
+        <div mat-dialog-content fxLayout="column">
+            <mat-form-field>
+                <mat-label>Username</mat-label>
+                <input 
+                    matInput 
+                    [formControlName]="'username'"
+                    name="username" 
+                    readonly
+                />
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Name</mat-label>
+                <input 
+                    matInput  
+                    [formControlName]="'name'"
+                    name="name"
+                    [(ngModel)]="newObj.name"
+                />
+                <mat-hint 
+                    *ngIf="f.name.touched && f.name.invalid && f.name.errors.required"
+                    class="error"
+                >
+                    Name is required.
+                </mat-hint>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Surname</mat-label>
+                <input 
+                    matInput 
+                    [formControlName]="'surname'"
+                    name="surname"
+                    [(ngModel)]="newObj.surname"
+                />
+                <mat-hint 
+                    *ngIf="f.surname.touched && f.surname.invalid && f.surname.errors.required"
+                    class="error"
+                >
+                    Surname is required.
+                </mat-hint>
+                <mat-hint>*Your name and surname are public!</mat-hint>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="end" mat-dialog-actions>
+            <button mat-button class="button-option-main" [disabled]="profileForm.invalid" (click)="onSubmit()">
+            Edit
+            </button>
+        <button mat-button class="button-option-alt" mat-dialog-close>
+            Cancel
         </button>
-      <button mat-button class="button-option-alt" mat-dialog-close>
-        Cancel
-      </button>
-    </div>
+        </div>
+    </form>
 </div>
