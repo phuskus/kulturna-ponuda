@@ -5,12 +5,14 @@
   [style.left]="displayInfoLat"
   [style.top]="displayInfoLon"
 >
-    <mat-card *ngIf="focusedOffer">
-        <mat-card-title>
-            {{focusedOffer.name}}
-        </mat-card-title>
-        <mat-card-subtitle>
-            {{focusedOffer.categoryName}}
-        </mat-card-subtitle>
-    </mat-card>
+  <mat-card *ngIf="focusedOffer">
+    <mat-card-title>
+      {{ focusedOffer.name }}
+    </mat-card-title>
+    <mat-card-subtitle>
+      {{ focusedOffer.categoryName }}
+      <br />
+      {{ focusedOffer.city }}
+    </mat-card-subtitle>
+  </mat-card>
 </div>
