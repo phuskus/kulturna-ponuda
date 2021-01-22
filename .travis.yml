@@ -9,7 +9,7 @@ matrix:
         sonarcloud:
           organization: "ftn-kts-nvt-2020"
           token:
-            secure: "m8TcvTXt21+EIckr6PVLk3uHF3qX/nx0sxOm7x09k75eMA+loRFy91IsqaW6hgFquehI3CaF+2jkTbEV7Qp5rONsjbjxcvgUIAnoMxlTxJ3YqIuul9hda0sf264HTVBwkvVXgZdQgq301VIEcLKC6T+GqNxBcKtTQNQ9g4HPiJwRLY0TLU/yU+qJy/b321wqsyKFZrYtHeDxEAozovDHonFzU6N2dCtY4CQW+Oj1HvML+ygRugVKYMplZhUvJZwaif91mD8sR3DPWjXWRFUGMQHm9v4nxb+DmHztk1uNeWQFk+vtd6PH1Ji1OuPmDwLit1xHtkL2Hbr988KrquU6lmvG3SwojILFXTfh013xgb1uEDasFXbDCAXIDcFBeoFj4eUoah91cbqrhE5FN5kmnifFc7srzVcc2wcIRyw2T0QktTAWLeZ/kYYEKAgwSfv4zZhtdcxieeMqZL+KuOsOrTSYuinW+iN4orGIRx0KorHwrIVYffUp6CSRly5gODIHZju0C159lQEbfJOEWdNCevOKNkdodKlukX9TIiNzHtokf9SYIu9wZhBUTHdOTg7idX/sntbCdZ70QghJwmXVwq/8JxMg74g3mzH+8Jlc7clNcjaGXBL7vomaqR6org0qrpMw8nC526//8UWU5BjIDYmyidFqGQLLtln0e80PPNY="
+            secure: "fWYg/vqd8RguGHm4Uf1++mRekcoZfQM0dc5h7m/TXRgVM+XpJDvDmkuYBr8g3gnZH4BhH7XpAz8baiX8UHCzh9jWM2fqZtYxi+N/Pa0QSt2iZX8RnzkvpcScw/Lo+uGaMpR0gABWMO1Ka4/M8INKDFNqB25yZv3UD8nr1wY8xjC4kaH3qW45kwkD7xv/EEz5NZgian1KyuTQiJzxsJOy2ugIFxsRoTBYfxf7mwiL8Wfb/IBBeHMHzySh00G6u2Ij3CDjBOasyRuQG83PPY8iNVUJbewYSPoGiOceP6HesdyH+9d4XGfC7tjy44JSwt1iPggTSzUuuxzSzcQgCg0E0865XIGXhVKOlcyMp7ZtnYJwgHSQkDWAiyWlCz26jDaeytHgQV11OVeeLj1RfeaPOVhQpJ8wOcFRvfq7ukhkufNCn20f27hK1sqWuyCiJzBDcgvhYA9ojaItDWNZPYdm2JZnFYHuPYP0zN5v21ifgasRPLziSqFT0/CkxmeEdsDrRDWEzv59bAgE+NX1lrueoOWunjozNqAfsvI6O0d/6+WAxg2gUH2mBtsO9yZmcOPiLwLNTdXS/1iLc9H/VP0v6ZSNRV4GfAM5htQ939dawPfrs9mVqtHLQ0H3dVI/Sx3MsEYn2c0iv9UDHHZLKgTNv5OD3X2y3QGEZNrPiINy/6s="
       before_script:
         - psql -c 'create database cultism;' -U postgres
       before_install:
@@ -33,7 +33,7 @@ matrix:
         sonarcloud:
           organization: "ftn-kts-nvt-2020"
           token:
-            secure: "m8TcvTXt21+EIckr6PVLk3uHF3qX/nx0sxOm7x09k75eMA+loRFy91IsqaW6hgFquehI3CaF+2jkTbEV7Qp5rONsjbjxcvgUIAnoMxlTxJ3YqIuul9hda0sf264HTVBwkvVXgZdQgq301VIEcLKC6T+GqNxBcKtTQNQ9g4HPiJwRLY0TLU/yU+qJy/b321wqsyKFZrYtHeDxEAozovDHonFzU6N2dCtY4CQW+Oj1HvML+ygRugVKYMplZhUvJZwaif91mD8sR3DPWjXWRFUGMQHm9v4nxb+DmHztk1uNeWQFk+vtd6PH1Ji1OuPmDwLit1xHtkL2Hbr988KrquU6lmvG3SwojILFXTfh013xgb1uEDasFXbDCAXIDcFBeoFj4eUoah91cbqrhE5FN5kmnifFc7srzVcc2wcIRyw2T0QktTAWLeZ/kYYEKAgwSfv4zZhtdcxieeMqZL+KuOsOrTSYuinW+iN4orGIRx0KorHwrIVYffUp6CSRly5gODIHZju0C159lQEbfJOEWdNCevOKNkdodKlukX9TIiNzHtokf9SYIu9wZhBUTHdOTg7idX/sntbCdZ70QghJwmXVwq/8JxMg74g3mzH+8Jlc7clNcjaGXBL7vomaqR6org0qrpMw8nC526//8UWU5BjIDYmyidFqGQLLtln0e80PPNY="
+            secure: "fWYg/vqd8RguGHm4Uf1++mRekcoZfQM0dc5h7m/TXRgVM+XpJDvDmkuYBr8g3gnZH4BhH7XpAz8baiX8UHCzh9jWM2fqZtYxi+N/Pa0QSt2iZX8RnzkvpcScw/Lo+uGaMpR0gABWMO1Ka4/M8INKDFNqB25yZv3UD8nr1wY8xjC4kaH3qW45kwkD7xv/EEz5NZgian1KyuTQiJzxsJOy2ugIFxsRoTBYfxf7mwiL8Wfb/IBBeHMHzySh00G6u2Ij3CDjBOasyRuQG83PPY8iNVUJbewYSPoGiOceP6HesdyH+9d4XGfC7tjy44JSwt1iPggTSzUuuxzSzcQgCg0E0865XIGXhVKOlcyMp7ZtnYJwgHSQkDWAiyWlCz26jDaeytHgQV11OVeeLj1RfeaPOVhQpJ8wOcFRvfq7ukhkufNCn20f27hK1sqWuyCiJzBDcgvhYA9ojaItDWNZPYdm2JZnFYHuPYP0zN5v21ifgasRPLziSqFT0/CkxmeEdsDrRDWEzv59bAgE+NX1lrueoOWunjozNqAfsvI6O0d/6+WAxg2gUH2mBtsO9yZmcOPiLwLNTdXS/1iLc9H/VP0v6ZSNRV4GfAM5htQ939dawPfrs9mVqtHLQ0H3dVI/Sx3MsEYn2c0iv9UDHHZLKgTNv5OD3X2y3QGEZNrPiINy/6s="
       before_install:
         - cd frontend
       install:
@@ -41,7 +41,7 @@ matrix:
       script:
         - npm run build
         - cd ..
-        - sonar-scanner -X
+        - sonar-scanner
       deploy:
         provider: heroku
         api_key: 5f905c71-937c-47a5-b3f2-7611aa2dd7c1
