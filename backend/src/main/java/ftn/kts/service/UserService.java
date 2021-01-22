@@ -1,5 +1,6 @@
 package ftn.kts.service;
 
+import ftn.kts.dto.AccountDTO;
 import ftn.kts.dto.ResetPasswordDTO;
 import ftn.kts.dto.UserDTO;
 import ftn.kts.dto.UserTokenStateDTO;
@@ -54,6 +55,12 @@ public class UserService {
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+    
+    public AccountDTO getAccount(Long id) {
+		User user = userRepository.findById(id).get();
+		AccountDTO dto = new AccountDTO(user.getId(), user.getName(), user.getSurname(), user.getUsername());
+		return dto;
+	}
 
     public User findByKey(String key) {
         return userRepository.findByKey(key);
@@ -62,23 +69,34 @@ public class UserService {
     public UserDTO create(UserDTO dto) throws UniqueConstraintViolationException {
         checkUnique(dto);
         RegisteredUser user = toEntity(dto);
-        createUserAuthority(user, "REGISTERED_USER");
+        createUserAuthority(user, "ROLE_USER");
+        createUserKey(user);
+        save(user);
+        return toDTO(user);
+    }
+    
+    public UserDTO createConfirmed(UserDTO dto) throws UniqueConstraintViolationException {
+        checkUnique(dto);
+        RegisteredUser user = toEntity(dto);
+        createUserAuthority(user, "ROLE_USER");
+        user.setEnabled(true);
         save(user);
         return toDTO(user);
     }
 
-    public String createUserAuthority(User user, String role){
+    public void createUserAuthority(User user, String role){
         user.setPassword(userDetailsService.encodePassword(user.getPassword()));
         ArrayList<Authority> auth = new ArrayList<>();
         auth.add(authorityService.findByName(role));
         user.setAuthorities(auth);
+    }
+    
+    public void createUserKey(User user) {
         String generatedKey = RandomUtil.buildAuthString(30);
         user.setKey(generatedKey);
         mailSenderService.confirmRegistration(user.getUsername(), generatedKey);
-        return generatedKey;
     }
-
-    
+        
     public User save(User user) {
     	return userRepository.save(user);    		
     }
@@ -86,7 +104,6 @@ public class UserService {
     public void delete(String username) throws NoSuchElementException {
 		User user = getOne(username);
 		userRepository.delete(user);    		
-    	
 	}
 
     public UserTokenStateDTO getLoggedIn(String username, String password) throws DisabledException, PasswordNotChangedException, UserException {
@@ -121,7 +138,7 @@ public class UserService {
         String jwt = tokenUtils.generateToken(user.getUsername());
         int expiresIn = tokenUtils.getExpiredIn();
 
-        return new UserTokenStateDTO(jwt, expiresIn, user.getRole());
+        return new UserTokenStateDTO(user.getId(), jwt, expiresIn, user.getRole());
     }
 
     public UserDTO changePassword(String oldPassword, String newPassword) {
@@ -165,6 +182,13 @@ public class UserService {
     	mailSenderService.forgotPassword(user.getUsername(), generatedKey);
     	save(user);
     }
+    
+    public void update(Long id, AccountDTO dto) {
+    	User user = userRepository.findById(id).get();
+    	user.setName(dto.getName());
+    	user.setSurname(dto.getSurname());
+    	save(user);
+    }
 
     public User getOne(String username) throws NoSuchElementException {
         User user = findByUsername(username);
@@ -188,20 +212,24 @@ public class UserService {
     	return dto;
     }
 
-    private void checkUnique(UserDTO dto) throws UniqueConstraintViolationException {
+    private User checkUnique(UserDTO dto) throws UniqueConstraintViolationException {
         User user = userRepository.findByUsername(dto.getUsername());
         if (user != null) {
             // register
             if (dto.getId() == null) {
                 throw new UniqueConstraintViolationException("Unique key constraint violated!", "username",
-                        "User with this username already exists!");
+                        "User with this username already exists!"); 
             } else {
                 // update profile
-                if (!user.getId().equals(dto.getId()))
+                if (!user.getId().equals(dto.getId())) {
                     throw new UniqueConstraintViolationException("Unique key constraint violated!", "username",
                             "User with this username already exists!");
+                } else {
+                	return user;
+                }
             }
         }
+        return user;
     }
 
 }

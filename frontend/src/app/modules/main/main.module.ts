@@ -18,6 +18,10 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ValidateEqualModule } from 'ng-validate-equal';
 import {MatPaginatorModule} from '@angular/material/paginator';
 
 
@@ -28,9 +32,11 @@ import { SingleReviewComponent } from './components/single-review/single-review.
 import { SearchComponent } from './components/search/search.component';
 import { CategoryCardComponent } from './components/category-card/category-card.component';
 
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ReviewDialogComponent } from './components/single-offer/review-dialog/review-dialog.component';
 import { AvatarModule } from 'ngx-avatar';
+import { ProfileDialogComponent } from './components/account/profile-dialog/profile-dialog.component';
+import { PasswordDialogComponent } from './components/account/password-dialog/password-dialog.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
@@ -45,6 +51,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     SearchComponent,
     CategoryCardComponent,
     ReviewDialogComponent,
+    ProfileDialogComponent,
+    PasswordDialogComponent
   ],
   imports: [
     CommonModule,
@@ -53,6 +61,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     FlexLayoutModule,
     IvyCarouselModule,
     AvatarModule,
+    ReactiveFormsModule,
+    ValidateEqualModule,
     SharedModule,
 
     MatCardModule,
@@ -65,6 +75,9 @@ import { SharedModule } from 'src/app/shared/shared.module';
     MatDialogModule,
     MatIconModule,
     MatRadioModule,
+    MatBadgeModule,
+    MatDividerModule,
+    MatSnackBarModule,
     MatPaginatorModule,
 
     NgxPaginationModule,

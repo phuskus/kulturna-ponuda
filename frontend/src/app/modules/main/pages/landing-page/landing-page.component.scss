@@ -1,3 +1,5 @@
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+
 $top-margin: 20px;
 $left-margin: 20px;
 
@@ -27,6 +29,7 @@ $left-margin: 20px;
   @extend %mgl-map-overlay;
   top: $top-margin;
   right: $left-margin;
+  
 }
 
 .category-container {
@@ -35,6 +38,21 @@ $left-margin: 20px;
   flex-wrap: wrap;
   justify-content: flex-start;
   align-content: flex-start;
+}
+
+
+.button-container {
+  display: inline-flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+
+}
+
+.item {
+  flex:1 1 auto;
+  text-align:center;
+  margin:5px; 
 }
 
 .content-column {
@@ -77,6 +95,11 @@ $left-margin: 20px;
   width: 350px;
   display: flex;
   flex-direction: column;
+}
+
+.icon-display {
+  transform: scale(2);
+  align-self: center;
 }
 
 // .example-card {
