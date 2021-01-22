@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { AppSettings } from 'src/app/app-settings/AppSettings';
 import { Category } from 'src/app/shared/models/Category';
+import { Picture } from 'src/app/shared/models/Picture';
 import { Subcategory } from 'src/app/shared/models/Subcategory';
 
 @Component({
@@ -30,6 +32,10 @@ export class CategoryCardComponent implements OnInit {
       this.containsOffers = !allSubcatsEmpty;
     }
     this.subcategories = this.category.subcategories.filter(sc => sc.containsOffers)
+  }
+
+  getImgPath(picture: Picture){
+    return AppSettings.API_ENDPOINT + picture.path;
   }
 
 }

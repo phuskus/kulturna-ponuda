@@ -13,7 +13,7 @@ import { BaseDynamicPagingService } from '../base/base-dynamic-paging.service';
 })
 export class OfferService extends BaseDynamicPagingService {
   constructor(public http: HttpClient) {
-    super('http://localhost:9001/cultural_offers', http);
+    super('cultural_offers', http);
   }
 
   createEmpty(): CulturalOffer {

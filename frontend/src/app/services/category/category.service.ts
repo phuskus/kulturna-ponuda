@@ -8,7 +8,7 @@ import { Category } from 'src/app/shared/models/Category';
 })
 export class CategoryService extends BaseService {
   constructor(public http: HttpClient) {
-    super('http://localhost:9001/categories', http);
+    super('categories', http);
   }
 
   createEmpty(): Category {

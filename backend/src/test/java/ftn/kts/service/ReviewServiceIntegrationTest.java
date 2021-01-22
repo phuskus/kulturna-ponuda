@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.NoSuchElementException;
 
@@ -56,7 +57,8 @@ public class ReviewServiceIntegrationTest {
     public void createDelete_ValidNewObject_CreatesAndDeletesSuccessfully(){
         UserDTO user = new UserDTO(EXISTENT_USER_ID, "name", "name", EXISTEND_USERNAME, "pass");
         ReviewDTO review = new ReviewDTO(NEW_RATING, NEW_CONTENT, user, EXISTENT_OFFER_ID, "name");
-        ReviewDTO createdReview = reviewService.create(review);
+        MultipartFile[] files = new MultipartFile[]{};
+        ReviewDTO createdReview = reviewService.create(review, files);
         assertEquals(review, createdReview);
 
         // delete

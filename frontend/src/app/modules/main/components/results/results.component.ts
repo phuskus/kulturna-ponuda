@@ -6,6 +6,8 @@ import { ActivatedRoute } from '@angular/router';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { OfferService } from 'src/app/services/offer/offer.service';
 import Page from 'src/app/shared/models/Page';
+import { AppSettings } from 'src/app/app-settings/AppSettings';
+import { Picture } from 'src/app/shared/models/Picture';
 
 @Component({
   selector: 'app-results',
@@ -158,5 +160,9 @@ export class ResultsComponent implements OnInit {
   handlePageChange(event): void {
     this.page = event;
     this.fetchOffers();
+  }
+
+  getImgPath(picture: Picture){
+    return AppSettings.API_ENDPOINT + picture.path;
   }
 }

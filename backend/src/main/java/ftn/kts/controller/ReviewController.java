@@ -1,5 +1,7 @@
 package ftn.kts.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import ftn.kts.dto.ReviewDTO;
 import ftn.kts.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +14,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -48,7 +52,8 @@ public class ReviewController {
     @GetMapping("/offer/{id}")
     public ResponseEntity<Page<ReviewDTO>> getForCulturalOffer(@PathVariable("id") long id, @RequestParam(defaultValue = "0") Integer pageNo,
                                                                @RequestParam(defaultValue = "10") Integer pageSize) {
-        Pageable paging = PageRequest.of(pageNo, pageSize);;
+        Pageable paging = PageRequest.of(pageNo, pageSize);
+        ;
         Page<ReviewDTO> reviews = service.getForCulturalOffer(id, paging);
         return new ResponseEntity<>(reviews, HttpStatus.OK);
     }
@@ -66,11 +71,19 @@ public class ReviewController {
         return new ResponseEntity<>(reviews, HttpStatus.OK);
     }
 
+//    @PostMapping
+////    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+//    public ResponseEntity<Object> addReview(@Valid @RequestBody ReviewDTO dto) {
+//        return new ResponseEntity<>(service.create(dto), HttpStatus.CREATED);
+//    }
+
     @PostMapping
-//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<Object> addReview(@Valid @RequestBody ReviewDTO dto) {
-        return new ResponseEntity<>(service.create(dto), HttpStatus.CREATED);
+    public ResponseEntity<Object> addReview(@Valid @RequestParam String review, @RequestParam(value = "files", required = true) MultipartFile[] files) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        ReviewDTO dto = mapper.readValue(review, ReviewDTO.class);
+        return new ResponseEntity<>(service.create(dto, files), HttpStatus.CREATED);
     }
+
 
     @PutMapping("/{id}")
 //    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
