@@ -41,7 +41,7 @@ matrix:
       script:
         - npm run build
         - cd ..
-        - sonar-scanner
+        - sonar-scanner -X
       deploy:
         provider: heroku
         api_key: 5f905c71-937c-47a5-b3f2-7611aa2dd7c1
