@@ -47,7 +47,7 @@ matrix:
         app: cult-yourself
         on: main
 
-dist: xenial
+dist: trusty
 
 
   
