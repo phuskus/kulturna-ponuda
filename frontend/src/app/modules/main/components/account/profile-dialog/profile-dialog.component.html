@@ -1,0 +1,54 @@
+<div>
+    <h1 mat-dialog-title class="text-centre">Edit Profile</h1>
+    <form [formGroup]="profileForm">
+        <div mat-dialog-content fxLayout="column">
+            <mat-form-field>
+                <mat-label>Username</mat-label>
+                <input 
+                    matInput 
+                    [formControlName]="'username'"
+                    name="username" 
+                    readonly
+                />
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Name</mat-label>
+                <input 
+                    matInput  
+                    [formControlName]="'name'"
+                    name="name"
+                    [(ngModel)]="newObj.name"
+                />
+                <mat-hint 
+                    *ngIf="f.name.touched && f.name.invalid && f.name.errors.required"
+                    class="error"
+                >
+                    Name is required.
+                </mat-hint>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Surname</mat-label>
+                <input 
+                    matInput 
+                    [formControlName]="'surname'"
+                    name="surname"
+                    [(ngModel)]="newObj.surname"
+                />
+                <mat-hint 
+                    *ngIf="f.surname.touched && f.surname.invalid && f.surname.errors.required"
+                    class="error"
+                >
+                    Surname is required.
+                </mat-hint>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="end" mat-dialog-actions>
+            <button mat-button class="button-option-main" [disabled]="profileForm.invalid" (click)="onSubmit()">
+            Edit
+            </button>
+        <button mat-button class="button-option-alt" mat-dialog-close>
+            Cancel
+        </button>
+        </div>
+    </form>
+</div>

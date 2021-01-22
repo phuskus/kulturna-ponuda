@@ -21,7 +21,7 @@ const routes: Routes = [
           { path: ':offerId', component: SingleOfferComponent } //, canActivate: [NoAuthGuard, RoleGuard],
           //data: { roles: [Role.USER]}}
         ]
-      },
+      }
     ],
   },
 ];

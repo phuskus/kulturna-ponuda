@@ -8,9 +8,9 @@
             <div class="item">
                 <div class="flex-subcontainer">
                     <mat-form-field appearance="outline" style="padding-right: 5px;" >
+                        <mat-label>Name</mat-label>
                         <input 
                             matInput
-                            placeholder="Name"
                             [formControlName]="'name'"
                         />
                         <mat-hint 
@@ -21,9 +21,9 @@
                         </mat-hint>
                     </mat-form-field>
                     <mat-form-field appearance="outline" style="padding-left: 5px;">
+                        <mat-label>Surname</mat-label>
                         <input 
                             matInput 
-                            placeholder="Surname"
                             [formControlName]="'surname'"
                         />
                         <mat-hint 
@@ -35,9 +35,9 @@
                     </mat-form-field>
                 </div>
                 <mat-form-field [style.width.%]="100" appearance="outline">
+                    <mat-label>Email</mat-label>
                     <input 
                         matInput 
-                        placeholder="Email"
                         [formControlName]="'username'"
                         (ngModelChange)="onTouchField('username', usernameErr)"
                     />
@@ -61,9 +61,9 @@
                     </mat-hint>
                 </mat-form-field>
                 <mat-form-field [style.width.%]="100" appearance="outline">
+                    <mat-label>Password</mat-label>
                     <input 
-                        matInput 
-                        placeholder="Password" 
+                        matInput
                         [type]="hidePassword ? 'password' : 'text'" 
                         [formControlName]="'password'"
                         />
@@ -84,9 +84,9 @@
                     </mat-hint>
                 </mat-form-field>
                 <mat-form-field [style.width.%]="100" appearance="outline">
+                    <mat-label>Confirm password</mat-label>
                     <input 
                         matInput 
-                        placeholder="Confirm password" 
                         [type]="hideConfirmPassword ? 'password' : 'text'" 
                         [formControlName]="'confirmPassword'"
                         ngValidateEqual="password"
@@ -112,6 +112,7 @@
                     class="button" 
                     mat-flat-button
                     type="submit"
+                    [disabled]="registerForm.invalid"
                     >REGISTER</button>
                 <p class="link"><a [routerLink]="['/login']">Already have an account? Sign in now</a></p>
             </div>

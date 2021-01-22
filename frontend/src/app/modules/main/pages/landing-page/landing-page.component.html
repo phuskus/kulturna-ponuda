@@ -12,16 +12,35 @@
       Log In
     </button>
   </div>
-  <div *ngIf="isLoggedIn">
+  <div *ngIf="isLoggedIn" class="mgl-map-overlay-right">
     <button
-      mat-raised-button
-      color="primary"
-      class="mgl-map-overlay-right"
-      disableRipple="true"
-      (click)="logout()"
-    >
-      Log Out
+        class="item"
+        mat-mini-fab 
+        color="primary"
+        disableRipple="true"
+        [matMenuTriggerFor]="menu">
+      <mat-icon>account_circle</mat-icon>
     </button>
+  <div>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="onEditProfile()">
+        <mat-icon>account_circle</mat-icon>
+        <span>Edit profile</span>
+      </button>
+      <button mat-menu-item (click)="onChangePassword()">
+        <mat-icon>lock</mat-icon>
+        <span>Change password</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>comment</mat-icon>
+        <span>Edit subscriptions</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
   </div>
-  
 </div>
+

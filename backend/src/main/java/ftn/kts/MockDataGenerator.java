@@ -1,25 +1,61 @@
 package ftn.kts;
 
-import com.github.javafaker.Faker;
-import ftn.kts.dto.*;
-import ftn.kts.exceptions.UniqueConstraintViolationException;
-import ftn.kts.model.Category;
-import ftn.kts.model.CulturalOffer;
-import ftn.kts.model.Subcategory;
-import ftn.kts.repository.*;
-import ftn.kts.service.*;
-import org.springframework.context.ApplicationContext;
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
+import org.springframework.context.ApplicationContext;
+
+import com.github.javafaker.Faker;
+
+import ftn.kts.dto.AdminDTO;
+import ftn.kts.dto.CategoryDTO;
+import ftn.kts.dto.CulturalOfferDTO;
+import ftn.kts.dto.PictureDTO;
+import ftn.kts.dto.PostDTO;
+import ftn.kts.dto.ReviewDTO;
+import ftn.kts.dto.SubcategoryDTO;
+import ftn.kts.dto.SubscriptionDTO;
+import ftn.kts.dto.UserDTO;
+import ftn.kts.exceptions.UniqueConstraintViolationException;
+import ftn.kts.model.Authority;
+import ftn.kts.repository.AdminRepository;
+import ftn.kts.repository.AuthorityRepository;
+import ftn.kts.repository.CategoryRepository;
+import ftn.kts.repository.CulturalOfferRepository;
+import ftn.kts.repository.PictureRepository;
+import ftn.kts.repository.PostRepository;
+import ftn.kts.repository.RegisteredUserRepository;
+import ftn.kts.repository.ReviewRepository;
+import ftn.kts.repository.SubcategoryRepository;
+import ftn.kts.repository.SubscriptionRepository;
+import ftn.kts.repository.UserRepository;
+import ftn.kts.service.AdminService;
+import ftn.kts.service.AuthorityService;
+import ftn.kts.service.CategoryService;
+import ftn.kts.service.CulturalOfferService;
+import ftn.kts.service.PictureService;
+import ftn.kts.service.PostService;
+import ftn.kts.service.ReviewService;
+import ftn.kts.service.SubcategoryService;
+import ftn.kts.service.SubscriptionService;
+import ftn.kts.service.UserService;
 
 public abstract class MockDataGenerator {
 
     private static final int ADMIN_COUNT = 5;
     private static final int REGISTERED_USER_COUNT = 100;
-
+    
+    private static final String[] ROLES = {
+    		"ROLE_USER",
+    		"ROLE_ADMIN"
+    };
+    
     private static final String[] CATEGORIES = {
             "Institution",
             "Manifestation",
@@ -109,6 +145,9 @@ public abstract class MockDataGenerator {
 
         faker = new Faker();
         random = new Random();
+        
+        System.out.println("Creating authorities...");
+        generateAuthorities(applicationContext);
 
 
         System.out.println("Creating admins...");
@@ -148,8 +187,8 @@ public abstract class MockDataGenerator {
     }
 
     private static void PurgeDatabase(ApplicationContext applicationContext) {
+    	AuthorityRepository authorityRepository = applicationContext.getBean(AuthorityRepository.class);
         AdminRepository adminRepository = applicationContext.getBean(AdminRepository.class);
-        AuthorityRepository authorityRepository = applicationContext.getBean(AuthorityRepository.class);
         CategoryRepository categoryRepository = applicationContext.getBean(CategoryRepository.class);
         CulturalOfferRepository culturalOfferRepository = applicationContext.getBean(CulturalOfferRepository.class);
         PictureRepository pictureRepository = applicationContext.getBean(PictureRepository.class);
@@ -171,6 +210,15 @@ public abstract class MockDataGenerator {
         adminRepository.deleteAll();
         authorityRepository.deleteAll();
         userRepository.deleteAll();
+    }
+    
+    private static void generateAuthorities(ApplicationContext applicationContext) {
+    	AuthorityService authorityService = applicationContext.getBean(AuthorityService.class);
+    	ArrayList<Authority> authorities = new ArrayList<>();
+    
+    	for (int i = 0; i < ROLES.length; i++) {
+    		authorityService.create(ROLES[i]);
+    	}    	
     }
 
     private static ArrayList<AdminDTO> GenerateAdmins(ApplicationContext applicationContext) {
@@ -199,9 +247,9 @@ public abstract class MockDataGenerator {
         for (int i = 0; i < REGISTERED_USER_COUNT; i++) {
             while (true) {
                 try {
-                    String email = faker.internet().emailAddress();
+                	String email = faker.internet().emailAddress();
                 	UserDTO dto = new UserDTO(faker.name().firstName(), faker.name().lastName(), email, "sifra" + email);
-                    userList.add(userService.create(dto));
+                    userList.add(userService.createConfirmed(dto));
                     break;
                 } catch (Exception e) {
                     System.out.println("Faker user create failed, probably duplicate, trying again...");
