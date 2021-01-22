@@ -19,7 +19,7 @@ matrix:
         - ./mvnw install -DskipTests=false -Dmaven.javadoc.skip=true -B -V
       script:
         - ./mvnw clean install
-        - ./mvnw clean verify sonar:sonar -Pcoverage -Dsonar.projectKey=phuskus_kulturna-ponuda -Dsonar.login=73d1396263c493b79593e2fe3c2a3cb060520b58
+        - ./mvnw clean verify sonar:sonar -Pcoverage -Dsonar.projectKey=phuskus_kulturna-ponuda -Dsonar.login=c1b10c9e696ea3f68a99b4d2ccc990806f9cb8e0
       deploy:
         provider: heroku
         api_key: 5f905c71-937c-47a5-b3f2-7611aa2dd7c1
@@ -40,6 +40,7 @@ matrix:
         - npm install
       script:
         - npm run build
+        - cd ..
         - sonar-scanner
       deploy:
         provider: heroku
