@@ -19,7 +19,7 @@ matrix:
         - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
       script:
         - ./mvnw clean install
-        - ./mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=phuskus_kulturna-ponuda
+        - ./mvnw clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=phuskus_kulturna-ponuda
       deploy:
         provider: heroku
         api_key: 5f905c71-937c-47a5-b3f2-7611aa2dd7c1
@@ -31,9 +31,9 @@ matrix:
         - node
       addons:
         sonarcloud:
-        organization: "ftn-kts-nvt-2020"
-        token:
-           secure: "T1KykGWXO/s8WqyBFYQEVAH/FnTD0OX5zpCp93+R+3vTSyvUIQxibKcxTjnQMYHby7Mtv6T3mKdXiTAJqeIXyJTBDInZ86NnXxWFT+VP0jGA9N1pO/2bgMndq1/WpVHFR+sP7C0wud0gHHNd+uzVCX/HjstHDn6oSL3T1u1fOFPKxFc7WKQuyJJ2pZp6nAaPS1A4Bj/UtgKBRG6/6xVkoLAReEJZk1WDrtoK8w25wrJPWXBgGuev7umIjFn9gmNkyBdlQhYLSilKduqEbqL2BEM7k2l5pj+K4ZhNR3UIrIq1AfdOz6Dd1cSe4sX+qINIoclJOBsPSyo+VnLaCSlfJKXjVIP6Gi9pQpsFZAL+CoiLsDUBMx8GentvWdIp3EWNxmQ1dWzu5KPfneieF7uNvCRCma8BZhXz9NIJtZ7Xe/IhdMGDu6OJeA2DgYUqJwXHxa1GRIvJWXYs04A25x97a1FA4bZNZh8swYzPzxpmYS6jXJextw3X4lVu/dq11mreeoVzuI1h5LdfUJYH7QDzf6oW/KzX3g1OHeA9ECOvengsgT8wuboFX3lunFtcdtQyFYrvGZJkS55U+If4ghSwjBD9AwF9ucUilU0M2CbBL7A//EG82lOjILro3Vh68DQE6eDVzl4mDUlWDDle3wv+dPzPUy7ubzE6UyWB1tFshk4="
+          organization: "ftn-kts-nvt-2020"
+          token:
+            secure: "T1KykGWXO/s8WqyBFYQEVAH/FnTD0OX5zpCp93+R+3vTSyvUIQxibKcxTjnQMYHby7Mtv6T3mKdXiTAJqeIXyJTBDInZ86NnXxWFT+VP0jGA9N1pO/2bgMndq1/WpVHFR+sP7C0wud0gHHNd+uzVCX/HjstHDn6oSL3T1u1fOFPKxFc7WKQuyJJ2pZp6nAaPS1A4Bj/UtgKBRG6/6xVkoLAReEJZk1WDrtoK8w25wrJPWXBgGuev7umIjFn9gmNkyBdlQhYLSilKduqEbqL2BEM7k2l5pj+K4ZhNR3UIrIq1AfdOz6Dd1cSe4sX+qINIoclJOBsPSyo+VnLaCSlfJKXjVIP6Gi9pQpsFZAL+CoiLsDUBMx8GentvWdIp3EWNxmQ1dWzu5KPfneieF7uNvCRCma8BZhXz9NIJtZ7Xe/IhdMGDu6OJeA2DgYUqJwXHxa1GRIvJWXYs04A25x97a1FA4bZNZh8swYzPzxpmYS6jXJextw3X4lVu/dq11mreeoVzuI1h5LdfUJYH7QDzf6oW/KzX3g1OHeA9ECOvengsgT8wuboFX3lunFtcdtQyFYrvGZJkS55U+If4ghSwjBD9AwF9ucUilU0M2CbBL7A//EG82lOjILro3Vh68DQE6eDVzl4mDUlWDDle3wv+dPzPUy7ubzE6UyWB1tFshk4="
       before_install:
         - cd frontend
       install:
