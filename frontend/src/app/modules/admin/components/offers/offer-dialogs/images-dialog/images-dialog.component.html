@@ -1,0 +1,10 @@
+<div>
+    <h1>Images</h1>
+    <carousel>
+        <ng-container *ngFor="let pic of data.pictures">
+            <div class="carousel-cell">
+                <img [src]="pic.image">
+            </div>
+        </ng-container>
+    </carousel>
+</div>

@@ -25,6 +25,10 @@ public class SubcategoryService {
 	public Page<SubcategoryDTO> getAllDTO(Pageable pageable) {
 		return subcategoryRepository.findAll(pageable).map(this::toDTO);
 	}
+	
+	public Set<SubcategoryDTO> getAllDTO() {
+		return subcategoryRepository.findAll().stream().map(this::toDTO).collect(Collectors.toSet());
+	}
 
 	public Set<SubcategoryDTO> convertToDTO(Set<Subcategory> subcategories) {
 		return subcategories.stream().map(this::toDTO).collect(Collectors.toSet());

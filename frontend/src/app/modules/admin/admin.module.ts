@@ -30,6 +30,14 @@ import { CategoryTableComponent } from './components/categories/category-table/c
 import { AddCategoryDialogComponent } from './components/categories/category-dialogs/add-category-dialog/add-category-dialog.component';
 import { DeleteCategoryDialogComponent } from './components/categories/category-dialogs/delete-category-dialog/delete-category-dialog.component';
 import { UpdateCategoryDialogComponent } from './components/categories/category-dialogs/update-category-dialog/update-category-dialog.component';
+import { OfferTableComponent } from './components/offers/offer-table/offer-table.component';
+import { DescriptionDialogComponent } from './components/offers/offer-dialogs/description-dialog/description-dialog.component';
+import { ImagesDialogComponent } from './components/offers/offer-dialogs/images-dialog/images-dialog.component';
+import { AddOfferDialogComponent } from './components/offers/offer-dialogs/add-offer-dialog/add-offer-dialog.component';
+import { IvyCarouselModule } from 'angular-responsive-carousel';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -44,6 +52,10 @@ import { UpdateCategoryDialogComponent } from './components/categories/category-
     AddCategoryDialogComponent,
     DeleteCategoryDialogComponent,
     UpdateCategoryDialogComponent,
+    OfferTableComponent,
+    DescriptionDialogComponent,
+    ImagesDialogComponent,
+    AddOfferDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -67,6 +79,10 @@ import { UpdateCategoryDialogComponent } from './components/categories/category-
     MatProgressSpinnerModule,
     MatPaginatorModule,
     MatMenuModule,
+    IvyCarouselModule,
+    ReactiveFormsModule,
+    MatAutocompleteModule,
+    MatSelectModule
   ],
 })
 export class AdminModule {}

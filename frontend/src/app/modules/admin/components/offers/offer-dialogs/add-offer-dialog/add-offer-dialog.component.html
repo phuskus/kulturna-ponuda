@@ -1,0 +1,58 @@
+<div class="add-dialog">
+    <h1 mat-dialog-title>Add Cultural Offer</h1>
+    <form>
+      <div mat-dialog-content fxLayout="column">
+        <mat-form-field class="example-full-width">
+          <mat-label>Name</mat-label>
+          <input matInput [(ngModel)]="newObj.name" name="name" />
+        </mat-form-field>
+    
+        <mat-form-field class="example-full-width">
+          <mat-label>Description</mat-label>
+          <textarea  matInput [(ngModel)]="newObj.description" name="description" ></textarea>
+        </mat-form-field>
+
+        <mat-form-field >
+          <mat-label>Select Category</mat-label>
+          <mat-select [(value)]="categoryName">
+            <mat-option *ngFor="let sub of subcategories" [value]="sub">
+              {{sub}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field >
+          <mat-label>Select Region</mat-label>
+          <mat-select [(value)]="region">
+            <mat-option *ngFor="let reg of regions" [value]="reg">
+              {{reg}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+  
+        <mat-form-field class="example-full-width">
+          <mat-label>Address</mat-label>
+          <input matInput [(ngModel)]="newObj.address" name="address" />
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <mat-label>Category</mat-label>
+          <input matInput [(ngModel)]="newObj.category" name="category" />
+        </mat-form-field>
+
+        <app-image-selector
+          [multiple]="true"
+          (newFilesEvent)="onFilesSelected($event)"
+        ></app-image-selector>
+
+      </div>
+      <div fxLayout="row" fxLayoutAlign="end" mat-dialog-actions>
+        <button mat-button class="button-option-alt" mat-dialog-close>
+          Cancel
+        </button>
+        <button mat-button class="button-option-main" (click)="onSubmit()">
+          Add
+        </button>
+      </div>
+    </form>
+  </div>
