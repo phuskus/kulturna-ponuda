@@ -44,10 +44,15 @@ public class PictureService {
 		Path path = Paths.get(projectFolder + fullPath);
 		Files.write(path,  data);
 		
-		Picture picture = new Picture(fullPath, file.getOriginalFilename());
-		pictureRepository.save(picture);
+		PictureDTO dto = new PictureDTO(file.getOriginalFilename(), fullPath);
 		
-		return toDTO(picture);
+		return save(dto);
+    }
+    
+    public PictureDTO save(PictureDTO pic) throws IOException {
+		Picture picture = new Picture(pic.getPath(), pic.getPlaceholder());
+    	pictureRepository.save(picture);
+    	return toDTO(picture);
     }
 
 	public PictureDTO getOneDTO(Long id) throws IOException {
@@ -97,6 +102,16 @@ public class PictureService {
 		return pics;
 	}
 	
+
+	public PictureDTO convertToDTO(Picture picture) {
+		try {
+			return this.toDTO(picture);			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return new PictureDTO();
+	}
+	
 	public Set<Picture> convertToEntity(Set<PictureDTO> pictures) {
 		Set<Picture> pics = new HashSet<>();
 		try {
@@ -122,6 +137,7 @@ public class PictureService {
 		fis.close();
 		return imageString;
 	}
+
 
 
 }

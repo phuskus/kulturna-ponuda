@@ -1,15 +1,29 @@
 <div fxLayout="row" class="btn-row">
-    <div fxLayout="column">
-      <img src="../../assets/imgs/tr.jpg" width="50" height="50" alt="" />
-    </div>
-    <div fxLayout="column">
-      <p>{{ review.name }}</p>
-    </div>
+  <div fxLayout="column" fxLayoutAlign="center center">
+    <ngx-avatar
+      [value]="review.user.name[0] + review.user.surname[0]"
+      size="45"
+    ></ngx-avatar>
   </div>
+  <div fxLayout="column" fxLayoutAlign="center start">
+    {{ review.user.name + " " + review.user.surname }}
+    <app-star-rating
+      [maxRating]="5"
+      [rating]="review.rating"
+      [size]="25"
+      [readonly]="true"
+    ></app-star-rating>
+  </div>
+</div>
 
-  <p style="margin-top: 8px;">
-    {{ review.text }}
-  </p>
+<p style="margin-top: 8px">
+  {{ review.content }}
+</p>
 
-  <carousel [cellsToShow]="3" [images]="review.images" [borderRadius]="10">
-  </carousel>
+<carousel
+  *ngIf="review.pictures.length > 0"
+  [cellsToShow]="carouselCells()"
+  [images]="review.pictures"
+  [borderRadius]="10"
+>
+</carousel>

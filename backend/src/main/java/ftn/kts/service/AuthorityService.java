@@ -23,5 +23,10 @@ public class AuthorityService {
     public Authority findByName(String name) {
         return authRepository.findByName(name);
     }
+    
+    public Authority create(String name) {
+    	Authority role = new Authority(name);
+    	return authRepository.save(role);
+    }
 
 }

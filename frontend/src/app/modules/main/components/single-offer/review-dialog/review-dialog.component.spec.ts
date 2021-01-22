@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AdminPageComponent } from './admin-page.component';
+import { ReviewDialogComponent } from './review-dialog.component';
 
-describe('AdminPageComponent', () => {
-  let component: AdminPageComponent;
-  let fixture: ComponentFixture<AdminPageComponent>;
+describe('ReviewDialogComponent', () => {
+  let component: ReviewDialogComponent;
+  let fixture: ComponentFixture<ReviewDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AdminPageComponent ]
+      declarations: [ ReviewDialogComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdminPageComponent);
+    fixture = TestBed.createComponent(ReviewDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

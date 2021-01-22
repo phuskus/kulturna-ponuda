@@ -17,18 +17,19 @@ public class Admin extends User {
     private Set<CulturalOffer> culturalOffers;
 
     public Admin() {
+        super();
         this.categories = new HashSet<>();
         this.categories = new HashSet<>();
     }
 
-    public Admin(String name, String username, String password) {
-        super(name, username, password);
+    public Admin(String name, String surname, String username, String password) {
+        super(name, surname, username, password);
         this.categories = new HashSet<>();
         this.categories = new HashSet<>();
     }
 
-    public Admin(String name, String username, String password, Set<Category> categories, Set<CulturalOffer> culturalOffers) {
-        super(name, username, password);
+    public Admin(String name, String surname, String username, String password, Set<Category> categories, Set<CulturalOffer> culturalOffers) {
+        super(name, surname, username, password);
         this.categories = categories;
         this.culturalOffers = culturalOffers;
     }

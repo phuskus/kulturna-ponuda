@@ -1,36 +1,70 @@
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+
 $top-margin: 20px;
 $left-margin: 20px;
 
+.landing-page-container {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 %mgl-map-overlay {
   position: absolute;
+  flex: 1;
   z-index: 1;
 }
 
-.mgl-map-overlay-top {
+.mgl-map-overlay-stack {
   @extend %mgl-map-overlay;
-  top: $top-margin;
-  left: $left-margin;
+  position: relative;
+  margin-left: $left-margin;
+  margin-top: $top-margin;
 }
 
-.mgl-map-overlay-bottom {
-  @extend %mgl-map-overlay;
-  top: $top-margin + 65px;
-  left: $left-margin;
-}
+
 
 .mgl-map-overlay-right {
   @extend %mgl-map-overlay;
   top: $top-margin;
   right: $left-margin;
+  
+}
+
+.category-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-content: flex-start;
+}
+
+
+.button-container {
+  display: inline-flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+
+}
+
+.item {
+  flex:1 1 auto;
+  text-align:center;
+  margin:5px; 
 }
 
 .content-column {
+  flex: 0 0 33%;
+  box-sizing: border-box;
   img {
     height: 50px;
     width: 50px;
     border-radius: 50%;
   }
   button {
+    width: 100%;
     padding-top: 8px;
   }
   p {
@@ -43,6 +77,7 @@ $left-margin: 20px;
   }
 }
 
+
 %base-card {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -52,7 +87,19 @@ $left-margin: 20px;
 
 .example-card {
   @extend %base-card;
-  width: 400px !important;
+  width: 350px !important;
+}
+
+.category-card {
+  @extend %base-card;
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+}
+
+.icon-display {
+  transform: scale(2);
+  align-self: center;
 }
 
 // .example-card {

@@ -1,6 +1,7 @@
 package ftn.kts.controller;
 
 import ftn.kts.dto.ReviewDTO;
+import ftn.kts.dto.UserDTO;
 import ftn.kts.service.ReviewService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -77,7 +78,8 @@ public class ReviewControllerIntegrationTest {
     @Test
     public void add_ValidReview_ReturnsOkAndReview() {
         int size = reviewService.getAll().size();
-        ReviewDTO dto = new ReviewDTO(3L, "Content", 1L, 2L);
+        UserDTO user = new UserDTO(1L, "name",  "surname", "user", "pass");
+        ReviewDTO dto = new ReviewDTO(3L, "Content", user, 2L, "name");
         HttpEntity<Object> httpEntity = new HttpEntity<>(dto, getAuthHeadersAdmin(restTemplate));
         ResponseEntity<ReviewDTO> responseEntity = restTemplate
                 .exchange("/reviews", HttpMethod.POST, httpEntity, ReviewDTO.class);

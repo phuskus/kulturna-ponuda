@@ -19,8 +19,8 @@ public class RegisteredUser extends User {
 	public RegisteredUser() {
 	}
 
-	public RegisteredUser(String name, String username, String password) {
-		super(name, username, password);
+	public RegisteredUser(String name, String surname, String username, String password) {
+		super(name, surname, username, password);
 		this.reviews = new HashSet<>();
 	}
 

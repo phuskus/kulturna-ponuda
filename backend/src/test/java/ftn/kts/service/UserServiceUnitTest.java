@@ -33,10 +33,10 @@ public class UserServiceUnitTest {
 	
 	@Test
 	public void create_UsernameNotExists_UserReturned() {
-		UserDTO dto = new UserDTO(DB_NEW_USER_NAME, DB_USER_NO_SUCH_USERNAME, DB_NEW_USER_PASSWORD);
+		UserDTO dto = new UserDTO(DB_NEW_USER_NAME, DB_USER_SURNAME, DB_USER_NO_SUCH_USERNAME, DB_NEW_USER_PASSWORD);
 		
 		given(userRepository.findByUsername(DB_USER_NO_SUCH_USERNAME)).willReturn(null);
-		given(userRepository.save(any())).willReturn(new RegisteredUser(DB_NEW_USER_NAME, DB_USER_NO_SUCH_USERNAME, DB_NEW_USER_PASSWORD));
+		given(userRepository.save(any())).willReturn(new RegisteredUser(DB_NEW_USER_NAME, DB_USER_SURNAME, DB_USER_NO_SUCH_USERNAME, DB_NEW_USER_PASSWORD));
 		
 		try {
 			UserDTO created = userService.create(dto);
@@ -50,8 +50,8 @@ public class UserServiceUnitTest {
 	
 	@Test
 	public void create_UsernameExists_UniqueConstraintViolationExceptionThrown() {
-		UserDTO dto = new UserDTO(DB_NEW_USER_NAME, DB_USER_USERNAME, DB_NEW_USER_PASSWORD);
-		User existingUser = new RegisteredUser(DB_USER_NAME, DB_USER_USERNAME, DB_USER_PASSWORD);
+		UserDTO dto = new UserDTO(DB_NEW_USER_NAME, DB_USER_SURNAME, DB_USER_USERNAME, DB_NEW_USER_PASSWORD);
+		User existingUser = new RegisteredUser(DB_USER_NAME, DB_USER_SURNAME, DB_USER_USERNAME, DB_USER_PASSWORD);
 		
 		given(userRepository.findByUsername(DB_USER_USERNAME)).willReturn(existingUser);
 		

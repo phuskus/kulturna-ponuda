@@ -3,6 +3,7 @@ package ftn.kts.constants;
 public class UserConstants {
 	
 	public static final String DB_USER_NAME = "test1";
+	public static final String DB_USER_SURNAME = "test1";
 	public static final String DB_USER_USERNAME = "test1@gmail.com";
 	public static final String DB_USER_PASSWORD = "test1";
 	public static final String DB_USER_USERNAME_DISABLED = "test2@gmail.com";

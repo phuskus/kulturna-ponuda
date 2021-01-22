@@ -1,24 +1,34 @@
 package ftn.kts.controller;
 
-import ftn.kts.dto.UserDTO;
-import ftn.kts.dto.UserTokenStateDTO;
-import ftn.kts.exceptions.PasswordNotChangedException;
-import ftn.kts.exceptions.UniqueConstraintViolationException;
-import ftn.kts.model.User;
-import ftn.kts.security.auth.JwtAuthenticationRequest;
-import ftn.kts.service.UserService;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import ftn.kts.dto.AccountDTO;
+import ftn.kts.dto.ResetPasswordDTO;
+import ftn.kts.dto.UserDTO;
+import ftn.kts.dto.UserTokenStateDTO;
+import ftn.kts.exceptions.PasswordNotChangedException;
+import ftn.kts.exceptions.UniqueConstraintViolationException;
+import ftn.kts.exceptions.UserException;
+import ftn.kts.security.auth.JwtAuthenticationRequest;
+import ftn.kts.service.UserService;
 
 @RestController
 @Validated
@@ -40,13 +50,14 @@ public class LoginController {
 
     @GetMapping("/register/{key}")
     public ResponseEntity<UserDTO> confirmRegistration(@PathVariable("key") String key) {
-        UserDTO userDTO = userService.confirmRegistration(key);
-        return new ResponseEntity<>(userDTO, HttpStatus.OK);
+        userService.confirmRegistration(key);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
+    
 
     @PostMapping("/login")
     public ResponseEntity<UserTokenStateDTO> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest,
-                                                                       HttpServletResponse response) throws PasswordNotChangedException {
+                                                                       HttpServletResponse response) throws PasswordNotChangedException, DisabledException, UserException {
         String username = authenticationRequest.getUsername();
         String password = authenticationRequest.getPassword();
         UserTokenStateDTO token = userService.getLoggedIn(username, password);
@@ -60,6 +71,33 @@ public class LoginController {
         UserDTO user = userService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
+    
+    @PostMapping("/forgot-password")
+    public ResponseEntity<UserDTO> forgotPassword(@Valid @RequestBody String username) {
+        userService.forgotPassword(username);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @PostMapping("/reset-password")
+    public ResponseEntity<UserTokenStateDTO> resetPassword(@Valid @RequestBody ResetPasswordDTO dto) throws UserException {
+    	UserTokenStateDTO user = userService.resetPassword(dto);
+    	return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+    
+    @GetMapping("/account/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<AccountDTO> getProfile(@PathVariable("id") Long id) {
+    	AccountDTO dto = userService.getAccount(id);
+    	return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+    
+    @PutMapping("/account/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<Object> updateProfile(@PathVariable("id") Long id, @Valid @RequestBody AccountDTO account) {
+    	userService.update(id, account);
+    	return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
 
     static class PasswordChanger {
         @NotBlank(message = "Old password is a required field!")

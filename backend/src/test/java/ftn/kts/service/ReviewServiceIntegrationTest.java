@@ -1,6 +1,7 @@
 package ftn.kts.service;
 
 import ftn.kts.dto.ReviewDTO;
+import ftn.kts.dto.UserDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,8 @@ public class ReviewServiceIntegrationTest {
 
     @Test
     public void createDelete_ValidNewObject_CreatesAndDeletesSuccessfully(){
-        ReviewDTO review = new ReviewDTO(NEW_RATING, NEW_CONTENT, EXISTENT_USER_ID, EXISTENT_OFFER_ID);
+        UserDTO user = new UserDTO(EXISTENT_USER_ID, "name", "name", EXISTEND_USERNAME, "pass");
+        ReviewDTO review = new ReviewDTO(NEW_RATING, NEW_CONTENT, user, EXISTENT_OFFER_ID, "name");
         ReviewDTO createdReview = reviewService.create(review);
         assertEquals(review, createdReview);
 

@@ -1,4 +1,6 @@
+import { CategoryService } from './../../../../services/category/category.service';
 import { Component, OnInit } from '@angular/core';
+import { Category } from 'src/app/shared/models/Category';
 
 @Component({
   selector: 'app-cardbar',
@@ -6,14 +8,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./cardbar.component.scss'],
 })
 export class CardbarComponent implements OnInit {
-  public offers: any = [
-    { name: 'Festivals', img: '../../assets/imgs/fest.png', path: 'festival' },
-    { name: 'Galleries', img: '../../assets/imgs/gal.jpg', path: 'gallery' },
-    { name: 'Museums', img: '../../assets/imgs/mus.png', path: 'museum' },
-    { name: 'Monuments', img: '../../assets/imgs/mon.jpg', path: 'monument' },
-  ];
+  public categories: Category[];
   
-  constructor() {}
+  constructor(private categoryService : CategoryService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.fetchOffers();
+  }
+
+  fetchOffers() {
+    return this.categoryService.getAll().subscribe((res: Category[]) => {
+      this.categories = res;
+    })
+  }
 }

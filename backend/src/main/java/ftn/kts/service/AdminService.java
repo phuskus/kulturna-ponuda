@@ -1,23 +1,30 @@
 package ftn.kts.service;
 
-import ftn.kts.dto.AdminDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import ftn.kts.model.Admin;
-import ftn.kts.repository.AdminRepository;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import ftn.kts.dto.AdminDTO;
+import ftn.kts.model.Admin;
+import ftn.kts.model.Authority;
+import ftn.kts.model.User;
+import ftn.kts.repository.AdminRepository;
+import ftn.kts.security.CustomUserDetailsService;
+
 @Service
 public class AdminService {
     private AdminRepository adminRepository;
+    private AuthorityService authService;
+    private CustomUserDetailsService userDetailsService;
 
     @Autowired
-    public AdminService(AdminRepository adminRepository) {
+    public AdminService(AdminRepository adminRepository, UserService userService, AuthorityService authService, CustomUserDetailsService userDetailsService) {
         this.adminRepository = adminRepository;
+        this.authService = authService;
+        this.userDetailsService = userDetailsService;
     }
 
     public List<AdminDTO> getAllDTO() {
@@ -37,9 +44,15 @@ public class AdminService {
 
     public AdminDTO create(AdminDTO dto) {
         Admin admin = toEntity(dto);
-        return toDTO(adminRepository.save(admin));
+        admin.setPassword(userDetailsService.encodePassword(dto.getPassword()));
+        ArrayList<Authority> auth = new ArrayList<>();
+        auth.add(authService.findByName("ROLE_ADMIN"));
+        admin.setAuthorities(auth);
+        admin.setEnabled(true);
+        AdminDTO saved = toDTO(adminRepository.save(admin));
+        return saved;
     }
-
+    
     public AdminDTO update(AdminDTO dto, Long id) {
         Admin admin = adminRepository.findById(id).get();
         adminRepository.save(updateAdmin(admin, dto));
@@ -60,19 +73,20 @@ public class AdminService {
     }
 
     protected Admin toEntity(AdminDTO dto) {
-        return new Admin(dto.getName(), dto.getUsername(), dto.getPassword(), dto.getCategories(), dto.getCulturalOffers());
+        return new Admin(dto.getName(), dto.getSurname(), dto.getUsername(), dto.getPassword());
     }
 
     private AdminDTO toDTO(Admin admin) {
-        return new AdminDTO(admin.getId(), admin.getName(), admin.getUsername(), admin.getPassword(), admin.getCategories(), admin.getCulturalOffers());
+        return new AdminDTO(admin.getId(), admin.getName(), admin.getSurname(), admin.getUsername(), admin.getPassword());
     }
 
     private Admin updateAdmin(Admin admin, AdminDTO dto) {
         admin.setName(dto.getName());
+        admin.setSurname(dto.getSurname());
         admin.setUsername(dto.getUsername());
         admin.setPassword(dto.getPassword());
-        admin.setCategories(dto.getCategories());
-        admin.setCulturalOffers(dto.getCulturalOffers());
+//        admin.setCategories(dto.getCategories());
+//        admin.setCulturalOffers(dto.getCulturalOffers());
         return admin;
     }
 }

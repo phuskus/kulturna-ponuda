@@ -39,7 +39,6 @@ public class CulturalOfferController {
 	}
 
 	@GetMapping
-	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<Page<CulturalOfferDTO>> getAllOffers(@RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
 			@RequestParam(defaultValue = "false") String descending) {
@@ -53,13 +52,26 @@ public class CulturalOfferController {
 	}
 
 	@GetMapping("/{id}")
-	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<CulturalOfferDTO> getOffer(@PathVariable("id") long id) {
 		return new ResponseEntity<>(service.getOneDTO(id), HttpStatus.OK);
 	}
 
+
+	@GetMapping("/search")
+	public ResponseEntity<Page<CulturalOfferDTO>> filterOffers(@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer pageSize,
+			@RequestParam(defaultValue = "id") String sortBy, @RequestParam(defaultValue = "false") String descending,
+			@RequestParam(defaultValue = "") String categoryName, @RequestParam(defaultValue = "") String query,
+			@RequestParam(defaultValue = "") String regionNames, @RequestParam(defaultValue = "") String cityNames) {
+		Pageable paging;
+		if (descending.equals("true"))
+			paging = PageRequest.of(pageNo, pageSize, Sort.by(Direction.DESC, sortBy));
+		else
+			paging = PageRequest.of(pageNo, pageSize, Sort.by(Direction.ASC, sortBy));
+		Page<CulturalOfferDTO> page = service.filterAll(categoryName, query, regionNames, cityNames, paging);
+		return new ResponseEntity<>(page, HttpStatus.OK);
+	}
+	
 	@GetMapping("/category/{id}")
-	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<Page<CulturalOfferDTO>> filterOffersCategory(@PathVariable("id") long id,
 			@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer pageSize,
 			@RequestParam(defaultValue = "id") String sortBy, @RequestParam(defaultValue = "false") String descending) {
@@ -72,8 +84,8 @@ public class CulturalOfferController {
 		return new ResponseEntity<>(page, HttpStatus.OK);
 	}
 	
+	
 	@GetMapping("/city/{city}")
-	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<Page<CulturalOfferDTO>> filterOffersCity(@PathVariable("city") String city,
 			@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer pageSize,
 			@RequestParam(defaultValue = "id") String sortBy, @RequestParam(defaultValue = "false") String descending) {
@@ -87,7 +99,6 @@ public class CulturalOfferController {
 	}
 	
 	@GetMapping("/name/{name}")
-	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<Page<CulturalOfferDTO>> filterOffersName(@PathVariable("name") String name,
 			@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer pageSize,
 			@RequestParam(defaultValue = "id") String sortBy, @RequestParam(defaultValue = "false") String descending) {
@@ -101,7 +112,6 @@ public class CulturalOfferController {
 	}
 
 	@GetMapping("/description/{desc}")
-	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<Page<CulturalOfferDTO>> filterOffersDescription(@PathVariable("desc") String desc,
 			@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer pageSize,
 			@RequestParam(defaultValue = "id") String sortBy, @RequestParam(defaultValue = "false") String descending) {

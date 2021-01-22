@@ -48,18 +48,21 @@ public class CustomUserDetailsService implements UserDetailsService {
 		// Ocitavamo trenutno ulogovanog korisnika
 		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
 		String username = currentUser.getName();
-
+		
 		LOGGER.debug("Re-authenticating user '" + username + "' for password change request.");
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, oldPassword));
 		LOGGER.debug("Changing password for user '" + username + "'");
-
+		
 		User user = (User) loadUserByUsername(username);
-
-		// pre nego sto u bazu upisemo novu lozinku, potrebno ju je hesirati
-		// ne zelimo da u bazi cuvamo lozinke u plain text formatu
-		user.setPassword(passwordEncoder.encode(newPassword));
+		changePasswordUtil(user, newPassword);
+		
 		userRepository.save(user);
+		
 		return username;
+	}
+		
+	public void changePasswordUtil(User user, String newPassword) {
+		user.setPassword(passwordEncoder.encode(newPassword));
 	}
 	
 	public String encodePassword(String password) {

@@ -21,6 +21,8 @@ public abstract class User implements UserDetails {
 	private Long id;
 	@Column(name = "name", unique = false, nullable = false)
 	private String name;
+	@Column(name = "surname", unique = false, nullable = false)
+	private String surname;
 	@Column(name = "username", unique = true, nullable = false)
 	private String username;
 	@Column(name = "password", unique = false, nullable = false)
@@ -31,11 +33,14 @@ public abstract class User implements UserDetails {
 
 	@Column(name = "key")
 	private String key;
+	
+	@Column(name="reset_key")
+	private String resetKey;
 
 	@Column(name = "role", insertable = false, updatable = false)
 	private String role;
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinTable(name = "user_authority", 
 		joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), 
 		inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
@@ -46,8 +51,9 @@ public abstract class User implements UserDetails {
 
 	public User() {}
 
-	public User(String name, String username, String password) {
+	public User(String name, String surname, String username, String password) {
 		this.name = name;
+		this.surname = surname;
 		this.username = username;
 		this.password = password;
 	}
@@ -66,6 +72,14 @@ public abstract class User implements UserDetails {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getSurname() {
+		return surname;
+	}
+
+	public void setSurname(String surname) {
+		this.surname = surname;
 	}
 
 	public String getUsername() {
@@ -109,7 +123,15 @@ public abstract class User implements UserDetails {
 	public void setKey(String key) {
 		this.key = key;
 	}
+	
+	public String getResetKey() {
+		return resetKey;
+	}
 
+	public void setResetKey(String resetKey) {
+		this.resetKey = resetKey;
+	}
+	
 	@Override
 	public List<Authority> getAuthorities() {
 		return authorities;

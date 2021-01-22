@@ -4,7 +4,6 @@ import ftn.kts.dto.CategoryDTO;
 import ftn.kts.exceptions.UniqueConstraintViolationException;
 import ftn.kts.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,20 +25,18 @@ public class CategoryController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<List<CategoryDTO>> getAllCategories() {
         List<CategoryDTO> categories = service.getAllDTO();
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<CategoryDTO> getCategory(@PathVariable("id") long id) {
         return new ResponseEntity<>(service.getOneDTO(id), HttpStatus.OK);
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Object> addCategory(@Valid @RequestBody CategoryDTO dto) throws UniqueConstraintViolationException {
         try {
             return new ResponseEntity<>(service.create(dto), HttpStatus.CREATED);
@@ -49,14 +46,14 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Object> updateCategory(@Valid @RequestBody CategoryDTO dto, @PathVariable long id) throws UniqueConstraintViolationException {
         CategoryDTO updated = service.update(dto, id);
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Object> deleteCategory(@PathVariable("id") long id) {
         try {
             service.delete(id);

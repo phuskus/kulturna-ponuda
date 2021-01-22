@@ -1,5 +1,6 @@
 package ftn.kts.service;
 
+import ftn.kts.dto.PictureDTO;
 import ftn.kts.dto.SubcategoryDTO;
 import ftn.kts.exceptions.UniqueConstraintViolationException;
 import ftn.kts.model.*;
@@ -19,6 +20,7 @@ public class SubcategoryService {
 
 	private SubcategoryRepository subcategoryRepository;
 	private CategoryService categoryService;
+	private PictureService pictureService;
 
 	public Page<SubcategoryDTO> getAllDTO(Pageable pageable) {
 		return subcategoryRepository.findAll(pageable).map(this::toDTO);
@@ -77,17 +79,23 @@ public class SubcategoryService {
 
 	private Subcategory toEntity(SubcategoryDTO dto) {
 		Category category = categoryService.getOne(dto.getCategoryId());
-		return new Subcategory(dto.getName(), category);
+		Picture icon = pictureService.getOne(dto.getIcon().getId());
+		return new Subcategory(dto.getName(), category, icon);
 	}
 
 	private SubcategoryDTO toDTO(Subcategory entity) {
-		return new SubcategoryDTO(entity.getId(), entity.getName(), entity.getCategory());
+		PictureDTO icon = null;
+		icon = this.pictureService.convertToDTO(entity.getIcon());
+		boolean containsOffers = false;
+		if (entity.getCulturalOffers() != null && entity.getCulturalOffers().size() != 0) {
+			containsOffers = true;
+		}
+		return new SubcategoryDTO(entity.getId(), entity.getName(), entity.getCategory(), icon, containsOffers);
 	}
 
 	private void updateSubcategory(Subcategory subcategory, SubcategoryDTO dto) {
 		subcategory.setName(dto.getName());
 		subcategory.setCategory(categoryService.getOne(dto.getCategoryId()));
-		// TODO: Add sets of subscriptions and cultural offers?
 	}
 
 	@Autowired
@@ -98,5 +106,10 @@ public class SubcategoryService {
 	@Autowired
 	public void setCategoryService(CategoryService categoryService) {
 		this.categoryService = categoryService;
+	}
+	
+	@Autowired
+	public void setPictureService(PictureService pictureService) {
+		this.pictureService = pictureService;
 	}
 }

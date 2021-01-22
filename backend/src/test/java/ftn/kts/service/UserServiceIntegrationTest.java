@@ -12,6 +12,7 @@ import static ftn.kts.constants.UserConstants.DB_USER_PASSWORD;
 import static ftn.kts.constants.UserConstants.DB_USER_PASSWORD_DISABLED;
 import static ftn.kts.constants.UserConstants.DB_USER_USERNAME;
 import static ftn.kts.constants.UserConstants.DB_USER_USERNAME_DISABLED;
+import static ftn.kts.constants.UserConstants.DB_USER_SURNAME;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -25,11 +26,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import ftn.kts.dto.UserDTO;
 import ftn.kts.dto.UserTokenStateDTO;
 import ftn.kts.exceptions.PasswordNotChangedException;
 import ftn.kts.exceptions.UniqueConstraintViolationException;
+import ftn.kts.exceptions.UserException;
 import ftn.kts.model.RegisteredUser;
 import ftn.kts.model.User;
 
@@ -66,7 +69,7 @@ public class UserServiceIntegrationTest {
 	
 	@Test(expected = NoSuchElementException.class)
 	public void createAndDelete_UsernameNotExists_EntitySavedAndDeleted() throws UniqueConstraintViolationException {
-		UserDTO newUser = new UserDTO(DB_NEW_USER_NAME, DB_USER_NO_SUCH_USERNAME, DB_NEW_USER_PASSWORD);
+		UserDTO newUser = new UserDTO(DB_NEW_USER_NAME, DB_USER_SURNAME, DB_USER_NO_SUCH_USERNAME, DB_NEW_USER_PASSWORD);
 		UserDTO user = userService.create(newUser);
 		assertEquals(user.getId(), DB_CREATED_USER_ID);
 		
@@ -77,23 +80,23 @@ public class UserServiceIntegrationTest {
 	
 	@Test(expected = UniqueConstraintViolationException.class)
 	public void create_UsernameExists_UniqueConstraintViolationExceptionTrown() throws UniqueConstraintViolationException {
-		UserDTO newUser = new UserDTO(DB_NEW_USER_NAME, DB_USER_USERNAME, DB_NEW_USER_PASSWORD);
+		UserDTO newUser = new UserDTO(DB_NEW_USER_NAME, DB_USER_SURNAME, DB_USER_USERNAME, DB_NEW_USER_PASSWORD);
 		userService.create(newUser);
 	}
 	
 	@Test
-	public void getLoggedIn_AccountExists_JWTTokenReturned() throws DisabledException, PasswordNotChangedException {
+	public void getLoggedIn_AccountExists_JWTTokenReturned() throws DisabledException, PasswordNotChangedException, MethodArgumentNotValidException, UserException {
 		UserTokenStateDTO tokenDTO = userService.getLoggedIn(DB_USER_USERNAME, DB_USER_PASSWORD);
 		assertNotNull(tokenDTO);
 	}
 	
 	@Test(expected = DisabledException.class)
-	public void getLoggedIn_AccountDisabled_DisabledExceptionThrown() throws DisabledException, PasswordNotChangedException {
+	public void getLoggedIn_AccountDisabled_DisabledExceptionThrown() throws DisabledException, PasswordNotChangedException, MethodArgumentNotValidException, UserException {
 		userService.getLoggedIn(DB_USER_USERNAME_DISABLED, DB_USER_PASSWORD_DISABLED);
 	}
 	
 	@Test(expected = PasswordNotChangedException.class)
-	public void getLoggedIn_AdminAccountPasswordNotChanged_PasswordNotChangedExceptionThrown() throws DisabledException, PasswordNotChangedException {
+	public void getLoggedIn_AdminAccountPasswordNotChanged_PasswordNotChangedExceptionThrown() throws DisabledException, PasswordNotChangedException, MethodArgumentNotValidException, UserException {
 		userService.getLoggedIn(DB_ADMIN_USERNAME_FAILED, DB_ADMIN_PASSWORD_FAILED);
 	}
 	
@@ -116,7 +119,7 @@ public class UserServiceIntegrationTest {
 	
 	@Test
 	public void save_UsernameNotExists_OneEntityReturned() {
-		RegisteredUser newUser = new RegisteredUser(DB_NEW_USER_NAME, DB_USER_NO_SUCH_USERNAME, DB_NEW_USER_PASSWORD);
+		RegisteredUser newUser = new RegisteredUser(DB_NEW_USER_NAME, DB_USER_SURNAME, DB_USER_NO_SUCH_USERNAME, DB_NEW_USER_PASSWORD);
 		User user = userService.save(newUser);
 		assertNotNull(user);
 		assertEquals(user.getName(), DB_NEW_USER_NAME);
@@ -126,7 +129,7 @@ public class UserServiceIntegrationTest {
 	
 	@Test(expected = DataIntegrityViolationException.class)
 	public void save_UsernameExists_DataIntegrityViolationExceptionThrown() {
-		RegisteredUser newUser = new RegisteredUser(DB_USER_USERNAME, DB_USER_USERNAME, DB_NEW_USER_PASSWORD);
+		RegisteredUser newUser = new RegisteredUser(DB_USER_USERNAME, DB_USER_SURNAME, DB_USER_USERNAME, DB_NEW_USER_PASSWORD);
 		userService.save(newUser);
 	}
 	

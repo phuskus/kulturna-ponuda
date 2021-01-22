@@ -1,34 +1,260 @@
-<!-- <mat-card class="example-card" style="margin-bottom: 40px">
-  <mat-card-subtitle>Search</mat-card-subtitle>
-</mat-card> -->
-
-<mat-card class="search-comp" style="margin-bottom: 40px">
-  <app-search></app-search>
-</mat-card>
-
-<mat-card
-  class="result-card"
-  *ngFor="let i of [1, 2, 3, 4, 5]"
-  [routerLink]="'/offers/' + result.id"
->
-  <div fxLayout="row">
-    <div fxLayout="column" class="img-col">
-      <img [src]="result.image" />
+<div class="result-component">
+  <div fxLayout="row" style="margin-bottom: 20px">
+    <button mat-fab color="white" style="margin-right: 10px" [routerLink]="'/'">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <mat-card class="search-comp" fxFlex="1 0 80%">
+      <app-search [searchQuery]="query"></app-search>
+    </mat-card>
+  </div>
+  <div fxLayout="row" class="filter-row" fxLayoutAlign="space-between">
+    <div class="information mat-title" fxFlex="1 0 70%">
+      Category: {{ this.category || "any" }}
     </div>
-
-    <div fxLayout="column" fxLayoutAlign="space-between" class="content-col">
-      <div fxLayout="row" fxLayoutAlign="space-between">
-        <div fxLayout="column">{{ result.name }}</div>
-        <div fxLayout="column">{{ result.location }}</div>
-      </div>
-
-      <div fxLayout="row" style="padding: 15px 0px">
-        <div>{{ result.category }}</div>
-      </div>
-
-      <div fxLayout="row">
-        {{ result.description }}
-      </div>
+    <div fxLayout="row" fxFlex="1 0 30%" fxLayoutAlign="space-between">
+      <button
+        style="width: 100px"
+        mat-raised-button
+        color="primary"
+        disableRipple="true"
+        [matMenuTriggerFor]="menuSort"
+      >
+        Sort
+      </button>
+      <button
+        style="width: 100px"
+        mat-raised-button
+        color="primary"
+        disableRipple="true"
+        [matMenuTriggerFor]="menuFilter"
+      >
+        Filter
+      </button>
     </div>
   </div>
-</mat-card>
+  <mat-menu #menuSort="matMenu" panelClass="filter-menu">
+    <div fxLayout="row" fxLayoutAlign="space-between">
+      <div
+        class="filter-categories mat-title"
+        (click)="$event.stopPropagation()"
+      >
+        Sort by:
+      </div>
+      <div style="padding: 10px">
+        <button
+          mat-stroked-button
+          color="secondary"
+          disableRipple="true"
+          (click)="changeSortDirection($event)"
+        >
+          {{ descending ? "Descending" : "Ascending&nbsp;" }}
+          <mat-icon>
+            {{ descending ? "arrow_downward" : "arrow_upward" }}
+          </mat-icon>
+        </button>
+      </div>
+    </div>
+    <mat-radio-group
+      fxLayout="row wrap"
+      class="filter-checkboxes"
+      [(ngModel)]="sortBy"
+    >
+      <mat-radio-button
+        *ngFor="let criteria of sortCriteria"
+        (click)="$event.stopPropagation()"
+        fxFlex="1 0 50%"
+        style="padding: 10px"
+        [value]="criteria.value"
+      >
+        {{ criteria.name }}
+      </mat-radio-button>
+    </mat-radio-group>
+    <div
+      fxLayout="row wrap"
+      fxLayoutAlign="space-between"
+      style="padding: 10px"
+    >
+      <button
+        mat-raised-button
+        color="primary"
+        disableRipple="true"
+        fxFlex="1 0 40%"
+        (click)="fetchOffers()"
+      >
+        Apply
+      </button>
+      <button
+        mat-raised-button
+        color="secondary"
+        disableRipple="true"
+        fxFlex="1 0 40%"
+        (click)="cancelSort()"
+      >
+        Cancel
+      </button>
+    </div>
+  </mat-menu>
+  <mat-menu #menuFilter="matMenu" panelClass="filter-menu">
+    <div fxLayout="row wrap">
+      <div
+        class="filter-categories mat-title"
+        fxFlex="1 0 40%"
+        (click)="$event.stopPropagation()"
+      >
+        Region
+      </div>
+      <div style="padding: 10px">
+        <button
+          mat-stroked-button
+          color="secondary"
+          disableRipple="true"
+          fxFlex="1 0 20%"
+          (click)="clearRegions($event)"
+        >
+          Clear filters
+        </button>
+      </div>
+    </div>
+    <div fxLayout="row wrap" class="filter-checkboxes">
+      <mat-checkbox
+        [(ngModel)]="region.checked"
+        *ngFor="let region of regions"
+        (click)="$event.stopPropagation()"
+        fxFlex="1 0 50%"
+        style="padding: 10px"
+      >
+        {{ region.name }}
+      </mat-checkbox>
+    </div>
+    <div fxLayout="row wrap">
+      <div
+        class="filter-categories mat-title"
+        fxFlex="1 0 40%"
+        (click)="$event.stopPropagation()"
+      >
+        City
+      </div>
+      <div style="padding: 10px">
+        <button
+          mat-stroked-button
+          color="secondary"
+          disableRipple="true"
+          fxFlex="1 0 20%"
+          (click)="clearCities($event)"
+        >
+          Clear filters
+        </button>
+      </div>
+    </div>
+    <div fxLayout="row wrap" class="filter-checkboxes">
+      <mat-checkbox
+        [(ngModel)]="city.checked"
+        *ngFor="let city of cities"
+        (click)="$event.stopPropagation()"
+        fxFlex="1 0 33%"
+        style="padding: 10px"
+      >
+        {{ city.name }}
+      </mat-checkbox>
+    </div>
+    <div
+      fxLayout="row wrap"
+      fxLayoutAlign="space-between"
+      style="padding: 10px"
+    >
+      <button
+        mat-raised-button
+        color="primary"
+        disableRipple="true"
+        fxFlex="1 0 40%"
+        (click)="fetchOffers()"
+      >
+        Apply
+      </button>
+      <button
+        mat-raised-button
+        color="secondary"
+        disableRipple="true"
+        fxFlex="1 0 40%"
+        (click)="cancelFilter()"
+      >
+        Cancel
+      </button>
+    </div>
+  </mat-menu>
+  <div fxLayout="row" fxLayoutAlign="center" *ngIf="loading">
+    <mat-progress-spinner
+      mode="indeterminate"
+      diameter="100"
+    ></mat-progress-spinner>
+  </div>
+
+  <div *ngIf="count === 0 && !loading">
+    <div class="no-results mat-title">No results available for your query!</div>
+  </div>
+
+  <div class="offer-container" fxLayout="column" fxLayoutGap="2.5%">
+    <mat-card
+      class="result-card"
+      *ngFor="
+        let offer of offers
+          | paginate
+            : {
+                itemsPerPage: pageSize,
+                currentPage: page,
+                totalItems: count
+              }
+      "
+      [routerLink]="'/offers/' + offer.id"
+    >
+      <div fxLayout="row">
+        <div fxLayout="column" class="img-col">
+          <img [src]="offer.pictures[0].image" />
+        </div>
+
+        <div
+          fxLayout="column"
+          fxLayoutAlign="space-between"
+          class="content-col"
+        >
+          <div fxLayout="row" fxLayoutAlign="space-between">
+            <div fxLayout="column">{{ offer.name }}</div>
+            <div fxLayout="column">{{ offer.address }}, {{ offer.city }}</div>
+          </div>
+
+          <div fxLayout="row" style="padding-top: 8px">
+            <app-star-rating
+              [maxRating]="5"
+              [rating]="offer.averageRating"
+              [size]="35"
+              [readonly]="true"
+            ></app-star-rating>
+          </div>
+
+          <div fxLayout="row" style="padding: 15px 0px">
+            <div>{{ offer.categoryName }}</div>
+          </div>
+
+          <div fxLayout="row">
+            {{ offer.description }}
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+  <div
+    *ngIf="count != 0 && !loading"
+    class="pagination-control-div"
+    fxLayout="row"
+    fxLayoutAlign="center end"
+  >
+    <pagination-controls
+      class="pagination-control"
+      previousLabel="Prev"
+      nextLabel="Next"
+      responsive="true"
+      (pageChange)="handlePageChange($event)"
+    >
+    </pagination-controls>
+  </div>
+</div>
