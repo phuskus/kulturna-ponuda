@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AppSettings } from 'src/app/app-settings/AppSettings';
+import { ImagePathExtractorComponent } from 'src/app/shared/components/image-path-extractor/image-path-extractor.component';
 import { Review } from 'src/app/shared/models/Review';
 
 @Component({
@@ -7,17 +8,18 @@ import { Review } from 'src/app/shared/models/Review';
   templateUrl: './single-review.component.html',
   styleUrls: ['./single-review.component.scss'],
 })
-export class SingleReviewComponent implements OnInit {
+export class SingleReviewComponent
+  extends ImagePathExtractorComponent
+  implements OnInit {
   @Input() public review: Review;
 
   constructor() {
-    if (this.review) {
-      console.log(this.review.pictures);
-    }
+    super();
   }
+
   ngOnInit(): void {
     this.review.pictures.forEach((picture) => {
-      picture.path = AppSettings.API_ENDPOINT + picture.path;
+      picture.path = super.getFullImgPath(picture);
     });
   }
 

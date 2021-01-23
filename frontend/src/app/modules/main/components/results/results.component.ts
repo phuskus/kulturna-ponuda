@@ -1,4 +1,8 @@
-import { EmitEvent, EventBusService, Events } from './../../../../services/event-bus/event-bus.service';
+import {
+  EmitEvent,
+  EventBusService,
+  Events,
+} from './../../../../services/event-bus/event-bus.service';
 import { PageParams } from '../../../../shared/models/PageParams';
 import { CulturalOffer } from '../../../../shared/models/CulturalOffer';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -8,13 +12,16 @@ import { OfferService } from 'src/app/services/offer/offer.service';
 import Page from 'src/app/shared/models/Page';
 import { AppSettings } from 'src/app/app-settings/AppSettings';
 import { Picture } from 'src/app/shared/models/Picture';
+import { ImagePathExtractorComponent } from 'src/app/shared/components/image-path-extractor/image-path-extractor.component';
 
 @Component({
   selector: 'app-results',
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.scss'],
 })
-export class ResultsComponent implements OnInit {
+export class ResultsComponent
+  extends ImagePathExtractorComponent
+  implements OnInit {
   @ViewChild(MatMenuTrigger) filterMenuTrigger: MatMenuTrigger;
 
   public loading: boolean = true;
@@ -74,7 +81,9 @@ export class ResultsComponent implements OnInit {
     private route: ActivatedRoute,
     private offerService: OfferService,
     private eventBus: EventBusService
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     this.subToParamChanges();
@@ -160,9 +169,5 @@ export class ResultsComponent implements OnInit {
   handlePageChange(event): void {
     this.page = event;
     this.fetchOffers();
-  }
-
-  getImgPath(picture: Picture){
-    return AppSettings.API_ENDPOINT + picture.path;
   }
 }
