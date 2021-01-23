@@ -20,14 +20,12 @@ export class TokenInterceptorService implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     const token = this.jwtTokenService.getToken();
-    if (token) {
-      req = req.clone({
-        url: AppSettings.API_ENDPOINT + req.url,
-        setHeaders: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-    }
+    req = req.clone({
+      url: AppSettings.API_ENDPOINT + req.url,
+      setHeaders: {
+        Authorization: `Bearer ${token || ''}`,
+      },
+    });
     return next.handle(req);
   }
 }

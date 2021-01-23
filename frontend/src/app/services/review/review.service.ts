@@ -19,6 +19,7 @@ export class ReviewService extends BaseDynamicPagingService {
       id: -1,
       rating: 0,
       content: '',
+      datePosted: new Date(),
       user: {
         id: 11,
         name: 'Justin',
