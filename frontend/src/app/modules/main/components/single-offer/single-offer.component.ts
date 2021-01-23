@@ -1,9 +1,11 @@
+import { Subscription } from 'rxjs';
 import {
   AfterContentChecked,
   AfterContentInit,
   AfterViewInit,
   Component,
   HostListener,
+  OnDestroy,
   OnInit,
 } from '@angular/core';
 import { ReviewDialogComponent } from './review-dialog/review-dialog.component';
@@ -12,14 +14,25 @@ import { Review } from 'src/app/shared/models/Review';
 import { ReviewService } from 'src/app/services/review/review.service';
 import { OfferService } from 'src/app/services/offer/offer.service';
 import { CulturalOffer } from 'src/app/shared/models/CulturalOffer';
-import { ActivatedRoute } from '@angular/router';
+import {
+  ActivatedRoute,
+  NavigationStart,
+  Router,
+  NavigationEnd,
+} from '@angular/router';
+import {
+  EmitEvent,
+  EventBusService,
+  Events,
+} from 'src/app/services/event-bus/event-bus.service';
 
 @Component({
   selector: 'app-single-offer',
   templateUrl: './single-offer.component.html',
   styleUrls: ['./single-offer.component.scss'],
 })
-export class SingleOfferComponent implements AfterContentInit {
+export class SingleOfferComponent
+  implements OnInit, AfterContentInit, OnDestroy {
   offerId: number;
   offer: CulturalOffer;
   reviews: Review[] = [];
@@ -28,6 +41,9 @@ export class SingleOfferComponent implements AfterContentInit {
   pageSize: number = 5;
   isLastReviewPage: boolean = false;
   isReviewsLoading: boolean = false;
+  previousRoute: string = '';
+
+  private subscriptions: Subscription[] = [];
 
   public images: any = [
     { path: '../../assets/imgs/img1.jpg' },
@@ -40,30 +56,56 @@ export class SingleOfferComponent implements AfterContentInit {
     public dialog: MatDialog,
     public offerService: OfferService,
     public reviewService: ReviewService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private eventBus: EventBusService,
+    private router: Router
   ) {
     this.offer = offerService.createEmpty();
+    this.subscriptions.push(
+      this.router.events
+        .filter((e) => e instanceof NavigationEnd)
+        .subscribe((e: NavigationEnd) => {
+          const navigation = this.router.getCurrentNavigation();
+          this.previousRoute = navigation.extras.state
+            ? navigation.extras.state.previousRoute
+            : this.previousRoute;
+        })
+    );
+  }
+  ngOnInit(): void {}
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
+  goBack(): void {
+    // worst case scenario
+    //window.history.back();
+    this.router.navigateByUrl(this.previousRoute);
   }
 
   ngAfterContentInit(): void {
-    this.route.params.subscribe((params) => {
-      this.offerId = params.offerId;
-      if (this.offerId === NaN) {
-        // should redirect to 404
-        throw new Error('Error 404, invalid id');
-      }
-      this.reviews = [];
-      this.currentReviewPage = 0;
-      this.totalReviews = 0;
-      this.fetchReviews();
-      this.fetchOffer();
-    });
+    this.subscriptions.push(
+      this.route.params.subscribe((params) => {
+        this.offerId = params.offerId;
+        if (this.offerId === NaN) {
+          // should redirect to 404
+          throw new Error('Error 404, invalid id');
+        }
+        this.reviews = [];
+        this.currentReviewPage = 0;
+        this.totalReviews = 0;
+        this.fetchReviews();
+        this.fetchOffer();
+      })
+    );
     this.subscribeToScrollEvent();
   }
 
   fetchOffer() {
-    this.offerService.get(this.offerId).subscribe((data) => {
-      this.offer = data as CulturalOffer;
+    this.offerService.get(this.offerId).subscribe((data: CulturalOffer) => {
+      this.offer = data;
+      this.eventBus.emit(new EmitEvent(Events.OfferFocused, data));
     });
   }
 

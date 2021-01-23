@@ -31,4 +31,6 @@ export class EmitEvent {
 
 export enum Events {
   OfferListChange,
+  OfferFocused,
+  RouteChange,
 }
