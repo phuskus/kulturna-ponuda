@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { NgModelGroup } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { AppSettings } from 'src/app/app-settings/AppSettings';
 import Model from 'src/app/shared/models/Model';
 
 @Injectable({
@@ -15,7 +16,11 @@ export abstract class BaseService {
     }),
   };
 
-  constructor(public url: string, public http: HttpClient) {}
+  public url: string;
+
+  constructor(public path: string, public http: HttpClient) {
+    this.url = AppSettings.API_ENDPOINT + path;
+  }
 
   abstract createEmpty(): Model;
 

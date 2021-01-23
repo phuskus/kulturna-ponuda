@@ -105,7 +105,6 @@ export class SingleOfferComponent implements AfterContentInit {
         event.target.offsetHeight + event.target.scrollTop >=
         event.target.scrollHeight
       ) {
-        console.log('event called');
         this.scrolledToTheEndSoFetchNextPage();
       }
     });

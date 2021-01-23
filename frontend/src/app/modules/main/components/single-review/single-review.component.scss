@@ -1,10 +1,19 @@
 .btn-row {
-    div {
-        margin-right: 10px;
-    }
+  div {
+    margin-right: 10px;
+  }
 }
 
 .date-field {
-    margin-left: 15px;
-    margin-bottom: 5px;
+  margin-left: 15px;
+  margin-bottom: 5px;
+}
+
+.carousel-item {
+  margin-bottom: 15px;
+  z-index: 5 !important;
+  img {
+    z-index: 6 !important;
+    border-radius: 50% !important;
+  }
 }
