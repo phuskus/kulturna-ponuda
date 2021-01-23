@@ -13,6 +13,7 @@ import { ReviewService } from 'src/app/services/review/review.service';
 import { OfferService } from 'src/app/services/offer/offer.service';
 import { CulturalOffer } from 'src/app/shared/models/CulturalOffer';
 import { ActivatedRoute } from '@angular/router';
+import Dialog from 'src/app/shared/dialog/Dialog';
 
 @Component({
   selector: 'app-single-offer',
@@ -52,13 +53,18 @@ export class SingleOfferComponent implements AfterContentInit {
         // should redirect to 404
         throw new Error('Error 404, invalid id');
       }
-      this.reviews = [];
-      this.currentReviewPage = 0;
-      this.totalReviews = 0;
       this.fetchReviews();
       this.fetchOffer();
     });
     this.subscribeToScrollEvent();
+  }
+
+  resetFileds() {
+    this.reviews = [];
+    this.isLastReviewPage = false;
+    this.isReviewsLoading = false;
+    this.currentReviewPage = 0;
+    this.totalReviews = 0;
   }
 
   fetchOffer() {
@@ -100,7 +106,6 @@ export class SingleOfferComponent implements AfterContentInit {
         event.target.scrollHeight
       ) {
         this.scrolledToTheEndSoFetchNextPage();
-      } else {
       }
     });
   }
@@ -110,9 +115,19 @@ export class SingleOfferComponent implements AfterContentInit {
   }
 
   openAddDialog(): void {
-    this.dialog.open(ReviewDialogComponent, {
+    const dialogRef = this.dialog.open(ReviewDialogComponent, {
       autoFocus: false,
-      data: { id: 0, name: 'Museum of Modern Art' },
+      data: this.offer,
     });
+
+    const sub = (dialogRef.componentInstance as ReviewDialogComponent).onSubscriptionCallBack.subscribe(
+      (data) => {
+        this.resetFileds();
+        this.fetchReviews();
+
+        // since dialog is now closed, you can unsubscribe from its events
+        sub.unsubscribe();
+      }
+    );
   }
 }

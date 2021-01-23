@@ -1,5 +1,6 @@
 package ftn.kts.model;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,81 +17,90 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "reviews")
 public class Review {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	@Column(name = "rating", unique = false, nullable = false)
-	private Long rating;
-	@Column(name = "content", unique = false, nullable = false)
-	private String content;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "rating", unique = false, nullable = false)
+    private Long rating;
+    @Column(name = "content", unique = false, nullable = false)
+    private String content;
+    @Column(name = "datePosted", unique = false, nullable = false)
+    private Date datePosted;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	private RegisteredUser user;
-	@ManyToOne(fetch = FetchType.EAGER)
-	private CulturalOffer culturalOffer;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private RegisteredUser user;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private CulturalOffer culturalOffer;
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	private Set<Picture> pictures;
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<Picture> pictures;
 
-	public Review() {
-		this.pictures = new HashSet<>();
-	}
+    public Review() {
+        this.pictures = new HashSet<>();
+    }
 
-	public Review(Long id, Long rating, String content, RegisteredUser user, CulturalOffer offer) {
-		this.id = id;
-		this.rating = rating;
-		this.content = content;
-		this.user = user;
-		this.culturalOffer = offer;
-		this.pictures = new HashSet<>();
-	}
-	
-	public Long getId() {
-		return id;
-	}
+    public Review(Long id, Long rating, String content, RegisteredUser user, CulturalOffer offer) {
+        this.id = id;
+        this.rating = rating;
+        this.content = content;
+        this.user = user;
+        this.culturalOffer = offer;
+        this.pictures = new HashSet<>();
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public Long getRating() {
-		return rating;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setRating(Long rating) {
-		this.rating = rating;
-	}
+    public Long getRating() {
+        return rating;
+    }
 
-	public String getContent() {
-		return content;
-	}
+    public void setRating(Long rating) {
+        this.rating = rating;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public String getContent() {
+        return content;
+    }
 
-	public RegisteredUser getUser() {
-		return user;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-	public void setUser(RegisteredUser user) {
-		this.user = user;
-	}
+    public RegisteredUser getUser() {
+        return user;
+    }
 
-	public CulturalOffer getCulturalOffer() {
-		return culturalOffer;
-	}
+    public void setUser(RegisteredUser user) {
+        this.user = user;
+    }
 
-	public void setCulturalOffer(CulturalOffer culturalOffer) {
-		this.culturalOffer = culturalOffer;
-	}
+    public CulturalOffer getCulturalOffer() {
+        return culturalOffer;
+    }
 
-	public Set<Picture> getPictures() {
-		return pictures;
-	}
+    public void setCulturalOffer(CulturalOffer culturalOffer) {
+        this.culturalOffer = culturalOffer;
+    }
 
-	public void setPictures(Set<Picture> pictures) {
-		this.pictures = pictures;
-	}
+    public Set<Picture> getPictures() {
+        return pictures;
+    }
 
+    public void setPictures(Set<Picture> pictures) {
+        this.pictures = pictures;
+    }
+
+    public Date getDatePosted() {
+        return datePosted;
+    }
+
+    public void setDatePosted(Date datePosted) {
+        this.datePosted = datePosted;
+    }
 }

@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.sql.SQLOutput;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -56,6 +57,9 @@ public class ReviewService {
     }
 
     public ReviewDTO create(ReviewDTO dto, MultipartFile[] files) {
+        if (files == null)
+            files = new MultipartFile[]{};
+
         for (MultipartFile file : files) {
             try {
                 dto.getPictures().add(pictureService.add(file));
@@ -64,6 +68,7 @@ public class ReviewService {
             }
         }
         Review review = toEntity(dto);
+        review.setDatePosted(new Date());
         return toDTO(reviewRepository.save(review));
     }
 
@@ -94,6 +99,8 @@ public class ReviewService {
         RegisteredUser user = userService.getOne(dto.getUser().getId());
         CulturalOffer offer = offerService.getOne(dto.getCulturalOfferId());
         Review review = new Review(dto.getId(), dto.getRating(), dto.getContent(), user, offer);
+        if (dto.getDatePosted() != null)
+            review.setDatePosted(dto.getDatePosted());
         if (dto.getPictures().size() > 0)
             review.setPictures(pictureService.convertToEntity(dto.getPictures()));
         return review;
@@ -103,6 +110,7 @@ public class ReviewService {
         ReviewDTO dto = new ReviewDTO(review.getId(), review.getRating(), review.getContent(), review.getUser(),
                 review.getCulturalOffer());
         dto.setPictures(pictureService.convertToDTO(review.getPictures()));
+        dto.setDatePosted(review.getDatePosted());
         return dto;
     }
 
