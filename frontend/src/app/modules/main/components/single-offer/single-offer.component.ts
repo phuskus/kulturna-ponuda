@@ -25,6 +25,7 @@ import {
   EventBusService,
   Events,
 } from 'src/app/services/event-bus/event-bus.service';
+import Dialog from 'src/app/shared/dialog/Dialog';
 
 @Component({
   selector: 'app-single-offer',
@@ -79,8 +80,6 @@ export class SingleOfferComponent
   }
 
   goBack(): void {
-    // worst case scenario
-    //window.history.back();
     this.router.navigateByUrl(this.previousRoute);
   }
 
@@ -100,6 +99,14 @@ export class SingleOfferComponent
       })
     );
     this.subscribeToScrollEvent();
+  }
+
+  resetFields() {
+    this.reviews = [];
+    this.isLastReviewPage = false;
+    this.isReviewsLoading = false;
+    this.currentReviewPage = 0;
+    this.totalReviews = 0;
   }
 
   fetchOffer() {
@@ -142,7 +149,6 @@ export class SingleOfferComponent
         event.target.scrollHeight
       ) {
         this.scrolledToTheEndSoFetchNextPage();
-      } else {
       }
     });
   }
@@ -152,9 +158,19 @@ export class SingleOfferComponent
   }
 
   openAddDialog(): void {
-    this.dialog.open(ReviewDialogComponent, {
+    const dialogRef = this.dialog.open(ReviewDialogComponent, {
       autoFocus: false,
-      data: { id: 0, name: 'Museum of Modern Art' },
+      data: this.offer,
     });
+
+    const sub = (dialogRef.componentInstance as ReviewDialogComponent).onSubscriptionCallBack.subscribe(
+      (data) => {
+        this.resetFields();
+        this.fetchReviews();
+
+        // since dialog is now closed, you can unsubscribe from its events
+        sub.unsubscribe();
+      }
+    );
   }
 }
