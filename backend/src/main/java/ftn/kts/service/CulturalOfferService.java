@@ -1,5 +1,6 @@
 package ftn.kts.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import ftn.kts.dto.CulturalOfferDTO;
 import ftn.kts.dto.PictureDTO;
@@ -51,8 +53,19 @@ public class CulturalOfferService {
 		return dto;
 	}
 
-	public CulturalOfferDTO create(CulturalOfferDTO dto) throws UniqueConstraintViolationException {
+	public CulturalOfferDTO create(CulturalOfferDTO dto, MultipartFile[] files) throws UniqueConstraintViolationException {
 		checkUnique(dto);
+		if (files == null)
+            files = new MultipartFile[]{};
+
+        for (MultipartFile file : files) {
+            try {
+                dto.getPictures().add(pictureService.add(file));
+            } catch (IOException ex) {
+                System.out.println("File upload failed: " + file);
+            }
+        }
+		
 		CulturalOffer offer = toEntity(dto);
 		CulturalOffer saved = offerRepository.save(offer);
 		return toDTO(saved);

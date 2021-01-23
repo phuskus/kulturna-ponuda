@@ -15,16 +15,16 @@ insert into user_authority (user_id, authority_id) values (3, 1);
 insert into user_authority (user_id, authority_id) values (4, 1);
 
 /*icons for subcategories 1 - 6*/
-insert into pictures (path, placeholder) values ('\pictures\mus.png', 'Museum placeholder');
-insert into pictures (path, placeholder) values ('\pictures\gal.png', 'Gallery placeholder');
+insert into pictures (path, placeholder) values ('images/gal.png', 'Gallery placeholder');
+insert into pictures (path, placeholder) values ('images/mus.png', 'Museum placeholder');
 
-insert into pictures (path, placeholder) values ('\pictures\fest.png', 'Festival placeholder');
-insert into pictures (path, placeholder) values ('\pictures\fair.png', 'Fair placeholder');
+insert into pictures (path, placeholder) values ('images/fest.png', 'Festival placeholder');
+insert into pictures (path, placeholder) values ('images/fair.png', 'Fair placeholder');
 
-insert into pictures (path, placeholder) values ('\pictures\mon.png', 'Monument placeholder');
-insert into pictures (path, placeholder) values ('\pictures\lmark.png', 'Landmark placeholder');
+insert into pictures (path, placeholder) values ('images/mon.png', 'Monument placeholder');
+insert into pictures (path, placeholder) values ('images/lmark.png', 'Landmark placeholder');
 /*pictures - starts at id 7*/
-insert into pictures (path, placeholder) values ('\pictures\exit.jpg', 'Exit festival picture placeholder');
+insert into pictures (path, placeholder) values ('images/exit.jpg', 'Exit festival picture placeholder');
 
 insert into categories (name) values ('Institutions');
 insert into categories (name) values ('Manifestations');

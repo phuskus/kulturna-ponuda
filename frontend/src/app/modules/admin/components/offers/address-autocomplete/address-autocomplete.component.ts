@@ -49,7 +49,7 @@ export class AddressAutocompleteComponent implements OnDestroy {
   }
 
   private generateSuggestions(text: string) {
-    const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${text}&lang=en&limit=5&apiKey=3e882b80c3fc49a88d287f7a8ab80964`;
+    const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${text}&limit=5&apiKey=3e882b80c3fc49a88d287f7a8ab80964`;
 
     if (this.requestSub) {
       this.requestSub.unsubscribe();

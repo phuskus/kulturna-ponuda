@@ -28,7 +28,6 @@ export class AddOfferDialogComponent extends AddDialog<AddOfferDialogComponent>
 
   constructor(
     private readonly fb: FormBuilder,
-    private router: Router,
     public dialogRef: MatDialogRef<AddOfferDialogComponent>,
     public service: OfferService,
     public subcatService: SubcategoryService
@@ -71,12 +70,17 @@ export class AddOfferDialogComponent extends AddDialog<AddOfferDialogComponent>
     this.newObj.description = this.cultForm.value['description'];
     this.newObj.categoryName = this.cultForm.value['category'];
     this.newObj.region = this.cultForm.value['region'];
+
     if (!this.newObj.latitude || !this.newObj.longitude) {
       alert('Please check address again!');
       return;
     }
 
-    this.service.add(this.newObj).subscribe(data => this.onSubscriptionCallBack.emit(data));
+    this.service
+      .addMultipart(this.newObj, this.filesSelected)
+      .subscribe((data) => {
+        this.onSubscriptionCallBack.emit(data);
+      });
     this.dialogRef.close();
   }
 
@@ -106,10 +110,10 @@ export class AddOfferDialogComponent extends AddDialog<AddOfferDialogComponent>
   }
 
     
-    private filter(value: string, options: string[]) {
-      const filterValue = value.toLowerCase();
-      return options.filter(option => 
-        option.toLowerCase().includes(filterValue));
-    }
+  private filter(value: string, options: string[]) {
+    const filterValue = value.toLowerCase();
+    return options.filter(option => 
+      option.toLowerCase().includes(filterValue));
+  }
 
 }

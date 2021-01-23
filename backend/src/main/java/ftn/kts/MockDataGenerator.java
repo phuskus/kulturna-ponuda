@@ -216,7 +216,6 @@ public abstract class MockDataGenerator {
     
     private static void generateAuthorities(ApplicationContext applicationContext) {
     	AuthorityService authorityService = applicationContext.getBean(AuthorityService.class);
-    	ArrayList<Authority> authorities = new ArrayList<>();
     
     	for (int i = 0; i < ROLES.length; i++) {
     		authorityService.create(ROLES[i]);
@@ -337,7 +336,7 @@ public abstract class MockDataGenerator {
                         Set<PictureDTO> pictures = new HashSet<>();
                         pictures.add(icons.get(iconCounter));
                         dto.setPictures(pictures);
-                        culturalOfferList.add(culturalOfferService.create(dto));
+                        culturalOfferList.add(culturalOfferService.create(dto, null));
                         break;
                     } catch (Exception e) {
                         System.out.println("Faker cultural offer create failed, probably duplicate, trying again...");

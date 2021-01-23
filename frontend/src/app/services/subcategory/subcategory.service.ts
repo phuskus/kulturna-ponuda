@@ -10,7 +10,7 @@ import { BaseService } from '../base/base.service';
 export class SubcategoryService extends BaseService {
   
   constructor(public http: HttpClient) {
-    super('http://localhost:9001/subcategories', http);
+    super('subcategories', http);
    }
 
    createEmpty(): Subcategory {
