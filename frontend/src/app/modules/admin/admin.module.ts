@@ -38,6 +38,11 @@ import { IvyCarouselModule } from 'angular-responsive-carousel';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
+import { AddressAutocompleteComponent } from './components/offers/address-autocomplete/address-autocomplete.component';
+import { HttpClientModule } from '@angular/common/http';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 
 @NgModule({
   declarations: [
@@ -56,6 +61,7 @@ import { MatSelectModule } from '@angular/material/select';
     DescriptionDialogComponent,
     ImagesDialogComponent,
     AddOfferDialogComponent,
+    AddressAutocompleteComponent,
   ],
   imports: [
     CommonModule,
@@ -82,7 +88,10 @@ import { MatSelectModule } from '@angular/material/select';
     IvyCarouselModule,
     ReactiveFormsModule,
     MatAutocompleteModule,
-    MatSelectModule
+    MatSelectModule,
+    HttpClientModule,
+    MatFormFieldModule,
+    MatTooltipModule,
   ],
 })
 export class AdminModule {}

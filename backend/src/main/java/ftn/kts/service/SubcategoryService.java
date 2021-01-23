@@ -37,6 +37,10 @@ public class SubcategoryService {
 	public SubcategoryDTO getOneDTO(long id) {
 		return toDTO(getOne(id));
 	}
+	
+	public Subcategory findByName(String categoryName) {
+		return subcategoryRepository.findByNameIgnoringCase(categoryName);
+	}
 
 	public SubcategoryDTO create(SubcategoryDTO dto) throws UniqueConstraintViolationException {
 		checkUnique(dto);
@@ -116,4 +120,5 @@ public class SubcategoryService {
 	public void setPictureService(PictureService pictureService) {
 		this.pictureService = pictureService;
 	}
+
 }

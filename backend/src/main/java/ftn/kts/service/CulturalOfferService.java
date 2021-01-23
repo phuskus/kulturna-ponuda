@@ -136,7 +136,8 @@ public class CulturalOfferService {
 
 	private CulturalOffer toEntity(CulturalOfferDTO dto) {
 		Admin admin = adminService.getOne(dto.getAdmin());
-		Subcategory category = subcategoryService.getOne(dto.getCategory());
+		Subcategory category = subcategoryService.findByName(dto.getCategoryName());
+		//Subcategory category = subcategoryService.getOne(dto.getCategory());
 		CulturalOffer offer = new CulturalOffer(dto.getName(), dto.getDescription(), dto.getLatitude(),
 				dto.getLongitude(), dto.getAddress(), dto.getCity(), dto.getRegion(), admin, category);
 		HashSet<Picture> pictures = new HashSet<>();
