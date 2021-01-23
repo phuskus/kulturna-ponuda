@@ -7,12 +7,16 @@
   </div>
   <div fxLayout="column" fxLayoutAlign="center start">
     {{ review.user.name + " " + review.user.surname }}
-    <app-star-rating
-      [maxRating]="5"
-      [rating]="review.rating"
-      [size]="25"
-      [readonly]="true"
-    ></app-star-rating>
+
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <app-star-rating
+        [maxRating]="5"
+        [rating]="review.rating"
+        [size]="25"
+        [readonly]="true"
+      ></app-star-rating>
+      <div class="date-field">{{ review.datePosted | date }}</div>
+    </div>
   </div>
 </div>
 
@@ -21,6 +25,7 @@
 </p>
 
 <carousel
+  class="carousel-item"
   *ngIf="review.pictures.length > 0"
   [cellsToShow]="carouselCells()"
   [images]="review.pictures"

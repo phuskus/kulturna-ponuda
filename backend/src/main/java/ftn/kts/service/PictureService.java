@@ -23,12 +23,13 @@ import ftn.kts.dto.PictureDTO;
 import ftn.kts.model.Picture;
 import ftn.kts.repository.PictureRepository;
 import ftn.kts.utils.RandomUtil;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @Service
 public class PictureService {
 	private final String projectFolder = System.getProperty("user.dir");
-	private final String fileFolder = "\\pictures\\";
-	
+	private final String fileFolder = "/src/main/webapp/WEB-INF/images/";
+
     private PictureRepository pictureRepository;
 
     @Autowired
@@ -43,14 +44,16 @@ public class PictureService {
 		String fullPath = fileFolder + fileName + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
 		Path path = Paths.get(projectFolder + fullPath);
 		Files.write(path,  data);
-		
-		PictureDTO dto = new PictureDTO(file.getOriginalFilename(), fullPath);
-		
+
+		PictureDTO dto = new PictureDTO(file.getOriginalFilename(), path.toString());
 		return save(dto);
     }
     
     public PictureDTO save(PictureDTO pic) throws IOException {
-		Picture picture = new Picture(pic.getPath(), pic.getPlaceholder());
+    	Path path = Paths.get(pic.getPath());
+    	String relativePath = path.getName(path.getNameCount() - 2).toString() + '/' + path.getFileName().toString();
+
+		Picture picture = new Picture(relativePath, pic.getPlaceholder());
     	pictureRepository.save(picture);
     	return toDTO(picture);
     }
@@ -86,7 +89,8 @@ public class PictureService {
 	}
 	
 	private PictureDTO toDTO(Picture entity) throws IOException {
-		String encodedData = getEncodedPicture(entity.getPath());
+//		String encodedData = getEncodedPicture(entity.getPath());
+		String encodedData = "";
 		PictureDTO dto = new PictureDTO(entity.getId(), entity.getPlaceholder(), encodedData, entity.getPath());
 		return dto;
 	}

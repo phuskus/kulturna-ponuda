@@ -10,8 +10,8 @@ import { BaseService } from './base.service';
   providedIn: 'root',
 })
 export abstract class BaseDynamicPagingService extends BaseService {
-  constructor(public url: string, public http: HttpClient) {
-    super(url, http);
+  constructor(public path: string, public http: HttpClient) {
+    super(path, http);
   }
 
   getPage(

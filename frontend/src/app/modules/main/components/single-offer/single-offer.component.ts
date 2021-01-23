@@ -1,4 +1,11 @@
-import { AfterContentChecked, AfterContentInit, AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
+import {
+  AfterContentChecked,
+  AfterContentInit,
+  AfterViewInit,
+  Component,
+  HostListener,
+  OnInit,
+} from '@angular/core';
 import { ReviewDialogComponent } from './review-dialog/review-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Review } from 'src/app/shared/models/Review';
@@ -6,13 +13,14 @@ import { ReviewService } from 'src/app/services/review/review.service';
 import { OfferService } from 'src/app/services/offer/offer.service';
 import { CulturalOffer } from 'src/app/shared/models/CulturalOffer';
 import { ActivatedRoute } from '@angular/router';
+import Dialog from 'src/app/shared/dialog/Dialog';
 
 @Component({
   selector: 'app-single-offer',
   templateUrl: './single-offer.component.html',
   styleUrls: ['./single-offer.component.scss'],
 })
-export class SingleOfferComponent implements AfterContentInit  {
+export class SingleOfferComponent implements AfterContentInit {
   offerId: number;
   offer: CulturalOffer;
   reviews: Review[] = [];
@@ -21,6 +29,13 @@ export class SingleOfferComponent implements AfterContentInit  {
   pageSize: number = 5;
   isLastReviewPage: boolean = false;
   isReviewsLoading: boolean = false;
+
+  public images: any = [
+    { path: '../../assets/imgs/img1.jpg' },
+    { path: '../../assets/imgs/img2.jpg' },
+    { path: '../../assets/imgs/img3.jpg' },
+    { path: '../../assets/imgs/img-1.jpg' },
+  ];
 
   constructor(
     public dialog: MatDialog,
@@ -31,20 +46,25 @@ export class SingleOfferComponent implements AfterContentInit  {
     this.offer = offerService.createEmpty();
   }
 
-  ngAfterContentInit (): void {
-    this.route.params.subscribe(params => {
+  ngAfterContentInit(): void {
+    this.route.params.subscribe((params) => {
       this.offerId = params.offerId;
       if (this.offerId === NaN) {
         // should redirect to 404
         throw new Error('Error 404, invalid id');
       }
-      this.reviews = [];
-      this.currentReviewPage = 0;
-      this.totalReviews = 0;
       this.fetchReviews();
       this.fetchOffer();
     });
     this.subscribeToScrollEvent();
+  }
+
+  resetFileds() {
+    this.reviews = [];
+    this.isLastReviewPage = false;
+    this.isReviewsLoading = false;
+    this.currentReviewPage = 0;
+    this.totalReviews = 0;
   }
 
   fetchOffer() {
@@ -63,7 +83,7 @@ export class SingleOfferComponent implements AfterContentInit  {
         (data) => {
           this.reviews = this.reviews.concat(data.content);
           this.isReviewsLoading = false;
-          this.totalReviews = data.totalElements; 
+          this.totalReviews = data.totalElements;
           if (data.totalPages == this.currentReviewPage) {
             this.isLastReviewPage = true;
           }
@@ -86,7 +106,6 @@ export class SingleOfferComponent implements AfterContentInit  {
         event.target.scrollHeight
       ) {
         this.scrolledToTheEndSoFetchNextPage();
-      } else {
       }
     });
   }
@@ -96,16 +115,19 @@ export class SingleOfferComponent implements AfterContentInit  {
   }
 
   openAddDialog(): void {
-    this.dialog.open(ReviewDialogComponent, {
+    const dialogRef = this.dialog.open(ReviewDialogComponent, {
       autoFocus: false,
-      data: { id: 0, name: 'Museum of Modern Art' },
+      data: this.offer,
     });
-  }
 
-  public images: any = [
-    { path: '../../assets/imgs/img1.jpg' },
-    { path: '../../assets/imgs/img2.jpg' },
-    { path: '../../assets/imgs/img3.jpg' },
-    { path: '../../assets/imgs/img-1.jpg' },
-  ];
+    const sub = (dialogRef.componentInstance as ReviewDialogComponent).onSubscriptionCallBack.subscribe(
+      (data) => {
+        this.resetFileds();
+        this.fetchReviews();
+
+        // since dialog is now closed, you can unsubscribe from its events
+        sub.unsubscribe();
+      }
+    );
+  }
 }

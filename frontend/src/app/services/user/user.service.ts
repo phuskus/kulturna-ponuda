@@ -13,7 +13,7 @@ export class UserService extends BaseService {
   }
 
   constructor(public http: HttpClient) {
-    super("http://localhost:9001/auth/account", http);
+    super("auth/account", http);
    }
    
 }
