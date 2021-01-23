@@ -11,7 +11,7 @@ import { BaseDynamicPagingService } from '../base/base-dynamic-paging.service';
 })
 export class ReviewService extends BaseDynamicPagingService {
   constructor(public http: HttpClient) {
-    super('http://localhost:9001/reviews', http);
+    super('reviews', http);
   }
 
   createEmpty(): Review {

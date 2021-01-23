@@ -1,4 +1,11 @@
-import { AfterContentChecked, AfterContentInit, AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
+import {
+  AfterContentChecked,
+  AfterContentInit,
+  AfterViewInit,
+  Component,
+  HostListener,
+  OnInit,
+} from '@angular/core';
 import { ReviewDialogComponent } from './review-dialog/review-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Review } from 'src/app/shared/models/Review';
@@ -12,7 +19,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './single-offer.component.html',
   styleUrls: ['./single-offer.component.scss'],
 })
-export class SingleOfferComponent implements AfterContentInit  {
+export class SingleOfferComponent implements AfterContentInit {
   offerId: number;
   offer: CulturalOffer;
   reviews: Review[] = [];
@@ -21,6 +28,13 @@ export class SingleOfferComponent implements AfterContentInit  {
   pageSize: number = 5;
   isLastReviewPage: boolean = false;
   isReviewsLoading: boolean = false;
+
+  public images: any = [
+    { path: '../../assets/imgs/img1.jpg' },
+    { path: '../../assets/imgs/img2.jpg' },
+    { path: '../../assets/imgs/img3.jpg' },
+    { path: '../../assets/imgs/img-1.jpg' },
+  ];
 
   constructor(
     public dialog: MatDialog,
@@ -31,8 +45,8 @@ export class SingleOfferComponent implements AfterContentInit  {
     this.offer = offerService.createEmpty();
   }
 
-  ngAfterContentInit (): void {
-    this.route.params.subscribe(params => {
+  ngAfterContentInit(): void {
+    this.route.params.subscribe((params) => {
       this.offerId = params.offerId;
       if (this.offerId === NaN) {
         // should redirect to 404
@@ -63,7 +77,7 @@ export class SingleOfferComponent implements AfterContentInit  {
         (data) => {
           this.reviews = this.reviews.concat(data.content);
           this.isReviewsLoading = false;
-          this.totalReviews = data.totalElements; 
+          this.totalReviews = data.totalElements;
           if (data.totalPages == this.currentReviewPage) {
             this.isLastReviewPage = true;
           }
@@ -101,11 +115,4 @@ export class SingleOfferComponent implements AfterContentInit  {
       data: { id: 0, name: 'Museum of Modern Art' },
     });
   }
-
-  public images: any = [
-    { path: '../../assets/imgs/img1.jpg' },
-    { path: '../../assets/imgs/img2.jpg' },
-    { path: '../../assets/imgs/img3.jpg' },
-    { path: '../../assets/imgs/img-1.jpg' },
-  ];
 }

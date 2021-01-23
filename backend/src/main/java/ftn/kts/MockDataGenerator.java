@@ -45,6 +45,7 @@ import ftn.kts.service.ReviewService;
 import ftn.kts.service.SubcategoryService;
 import ftn.kts.service.SubscriptionService;
 import ftn.kts.service.UserService;
+import org.springframework.web.multipart.MultipartFile;
 
 public abstract class MockDataGenerator {
 
@@ -68,14 +69,15 @@ public abstract class MockDataGenerator {
             { "Festival", "Fair" },
             { "Monument", "Landmark" }
     };
-    
+
+    private static final String IMG_STATIC_FOLDER = "/src/main/webapp/WEB-INF/images/";
     private static final String[][] ICONS = {
-    		{ "\\pictures\\mus.png", "Museum placeholder" },
-    		{ "\\pictures\\gal.png", "Gallery placeholder" },
-    		{ "\\pictures\\fest.png", "Festival placeholder" },
-    		{ "\\pictures\\fair.png", "Fair placeholder" },
-    		{ "\\pictures\\mon.png", "Monument placeholder" },
-    		{ "\\pictures\\lmark.png", "Landmark placeholder" }
+    		{ "mus.png", "Museum placeholder" },
+    		{ "gal.png", "Gallery placeholder" },
+    		{ "fest.png", "Festival placeholder" },
+    		{ "fair.png", "Fair placeholder" },
+    		{ "mon.png", "Monument placeholder" },
+    		{ "lmark.png", "Landmark placeholder" }
     };
     
     private static final String[][] LOCATIONS = {
@@ -265,7 +267,7 @@ public abstract class MockDataGenerator {
     	
     	for (int i = 0; i < icons.length; i++) 
     	{
-    		PictureDTO dto = new PictureDTO(icons[i][1], icons[i][0]);
+    		PictureDTO dto = new PictureDTO(icons[i][1], IMG_STATIC_FOLDER + icons[i][0]);
     		try {
     			iconList.add(pictureService.save(dto));
 			} catch (IOException e) {
@@ -427,7 +429,8 @@ public abstract class MockDataGenerator {
                                 faker.rickAndMorty().quote(),
                                 user,
                                 offer.getId(), offer.getName());
-                        reviewService.create(dto);
+                        MultipartFile[] files = new MultipartFile[]{};
+                        reviewService.create(dto, files);
                         break;
                     } catch (Exception e) {
                         System.out.println("Faker review create failed, probably duplicate, trying again...");
