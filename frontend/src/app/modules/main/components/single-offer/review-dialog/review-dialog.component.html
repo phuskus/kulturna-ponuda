@@ -3,7 +3,7 @@
   <div mat-dialog-content>
     <div fxLayout="row">
       <div class="avatar">
-        <ngx-avatar [value]="newReview.user.name[0] + newReview.user.surname[0]" size="45"></ngx-avatar>
+        <ngx-avatar [value]="newObj.user.name[0] + newObj.user.surname[0]" size="45"></ngx-avatar>
       </div>
 
       <div class="username-text" fxLayoutAlign="center center">
@@ -20,7 +20,7 @@
         <mat-form-field class="text-area">
           <textarea
             matInput
-            [(ngModel)]="newReview.content"
+            [(ngModel)]="newObj.content"
             placeholder="Type something..."
             cdkTextareaAutosize="false"
           ></textarea>
@@ -37,7 +37,7 @@
     <button mat-button mat-dialog-close class="button-option-alt">
       Cancel
     </button>
-    <button mat-button (click)="onReviewSubmit()" class="button-option-main" [disabled] = "newReview.rating === 0">
+    <button mat-button (click)="onSubmit()" class="button-option-main" [disabled] = "newObj.rating === 0">
       Post
     </button>
   </div>

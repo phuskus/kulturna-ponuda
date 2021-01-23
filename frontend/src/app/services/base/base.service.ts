@@ -11,9 +11,7 @@ import Model from 'src/app/shared/models/Model';
 export abstract class BaseService {
   httpOptions = {
     headers: new HttpHeaders({
-      Authentication: '',
       'Content-Type': 'application/json',
-      // Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImNvdmlkMTkuY2xpbmljLmxsY0BnbWFpbC5jb20iLCJhdWQiOiJ3ZWIiLCJpYXQiOjE2MTExNzgxMzgsImV4cCI6MTYxMTIyMTMzOH0.2s0OtQVEtVtfLy6AM2YI4pXVxwBiQRN9ztYVFcRfoXghYZtgetNRWiu4ONGgiiN3u4gxZe7eIoGiDHPo_Y_BkQ`,
     }),
   };
 
@@ -37,6 +35,10 @@ export abstract class BaseService {
     return this.http
       .post<Model>(this.url, object, this.httpOptions)
       .pipe(catchError(this.handleError<Model>()));
+  }
+
+  addMultipart(object: Model, files: FileList): Observable<Model> {
+    throw Error('Not implemented');
   }
 
   update(id: number, object: Model): Observable<Model> {

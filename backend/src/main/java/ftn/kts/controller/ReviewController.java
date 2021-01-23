@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -71,14 +72,10 @@ public class ReviewController {
         return new ResponseEntity<>(reviews, HttpStatus.OK);
     }
 
-//    @PostMapping
-////    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-//    public ResponseEntity<Object> addReview(@Valid @RequestBody ReviewDTO dto) {
-//        return new ResponseEntity<>(service.create(dto), HttpStatus.CREATED);
-//    }
 
     @PostMapping
-    public ResponseEntity<Object> addReview(@Valid @RequestParam String review, @RequestParam(value = "files", required = true) MultipartFile[] files) throws JsonProcessingException {
+    @Transactional
+    public ResponseEntity<Object> addReview(@Valid @RequestParam String review, @RequestParam(value = "files", required = false) MultipartFile[] files) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         ReviewDTO dto = mapper.readValue(review, ReviewDTO.class);
         return new ResponseEntity<>(service.create(dto, files), HttpStatus.CREATED);

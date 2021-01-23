@@ -112,7 +112,7 @@ export class SingleOfferComponent implements AfterContentInit {
   openAddDialog(): void {
     this.dialog.open(ReviewDialogComponent, {
       autoFocus: false,
-      data: { id: 0, name: 'Museum of Modern Art' },
+      data: this.offer,
     });
   }
 }
