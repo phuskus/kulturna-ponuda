@@ -195,6 +195,7 @@
 
   <div class="offer-container" fxLayout="column" fxLayoutGap="2.5%">
     <mat-card
+      [id]="'offer-' + offer.id"
       class="result-card"
       *ngFor="
         let offer of offers
