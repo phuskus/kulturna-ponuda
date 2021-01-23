@@ -2,12 +2,19 @@
   <carousel [cellsToShow]="3" [images]="images" [borderRadius]="10"> </carousel>
 
   <div fxLayout="row">
-    <button mat-fab color="white" style="margin-right: 10px" (click)="goBack()" >
-      <mat-icon>arrow_back</mat-icon>
-    </button>
+    <div fxLayout="column">
+      <button
+        mat-fab
+        color="white"
+        style="margin-right: 10px; margin-top: 15px;"
+        (click)="goBack()"
+      >
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
     <div fxLayout="column">
       <div class="mat-title title-name">{{ offer.name }}</div>
-      
+
       <div class="title-address">{{ offer.address + ", " + offer.city }}</div>
     </div>
   </div>
@@ -26,12 +33,11 @@
 
   <div class="mat-subheading-2">{{ offer.categoryName }}</div>
 
-  
   <div class="mat-h4 offer-desc">
     {{ offer.description }}
   </div>
 
-  <div flexLayout="row" style="margin-bottom: 15px;">
+  <div flexLayout="row" style="margin-bottom: 15px">
     <button
       class="square-button"
       mat-raised-button
@@ -41,11 +47,16 @@
     >
       Write a review
     </button>
-    <button mat-raised-button class="sub-btn" disableRipple="true" class="square-button">
+    <button
+      mat-raised-button
+      class="sub-btn"
+      disableRipple="true"
+      class="square-button"
+    >
       Subscribe
     </button>
   </div>
-  
+
   <div class="mat-h3" style="font-weight: 550">Reviews</div>
 
   <div fxLayout="column" fxLayoutGap="5%">
