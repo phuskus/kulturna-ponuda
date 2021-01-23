@@ -5,6 +5,7 @@ import { ReviewService } from 'src/app/services/review/review.service';
 import Model from 'src/app/shared/models/Model';
 import { Review } from 'src/app/shared/models/Review';
 import { CulturalOffer } from 'src/app/shared/models/CulturalOffer';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-review-dialog',
@@ -21,6 +22,7 @@ export class ReviewDialogComponent
   constructor(
     public dialogRef: MatDialogRef<ReviewDialogComponent>,
     public service: ReviewService,
+    public userService: UserService,
     @Inject(MAT_DIALOG_DATA) public data: CulturalOffer
   ) {
     super(dialogRef, service);
@@ -28,6 +30,9 @@ export class ReviewDialogComponent
   ngOnInit(): void {
     this.newObj.culturalOfferId = this.data.id;
     this.newObj.culturalOfferName = this.data.name;
+    this.userService.getLoggedUser().subscribe((res) => {
+      this.newObj.user = res;
+    });
   }
 
   onRatingChanged(newValue: number): void {
@@ -39,8 +44,6 @@ export class ReviewDialogComponent
   }
 
   onSubmit(): void {
-    console.log(this.newObj);
-    console.log(this.filesSelected);
     this.service
       .addMultipart(this.newObj, this.filesSelected)
       .subscribe((data) => {

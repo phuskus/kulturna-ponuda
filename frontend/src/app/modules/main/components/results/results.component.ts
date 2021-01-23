@@ -10,9 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { OfferService } from 'src/app/services/offer/offer.service';
 import Page from 'src/app/shared/models/Page';
-import { AppSettings } from 'src/app/app-settings/AppSettings';
-import { Picture } from 'src/app/shared/models/Picture';
-import { ImagePathExtractorComponent } from 'src/app/shared/components/image-path-extractor/image-path-extractor.component';
+import { PathExtractionService } from 'src/app/services/path-extraction/path-extraction.service';
 
 @Component({
   selector: 'app-results',
@@ -20,7 +18,6 @@ import { ImagePathExtractorComponent } from 'src/app/shared/components/image-pat
   styleUrls: ['./results.component.scss'],
 })
 export class ResultsComponent
-  extends ImagePathExtractorComponent
   implements OnInit {
   @ViewChild(MatMenuTrigger) filterMenuTrigger: MatMenuTrigger;
 
@@ -80,9 +77,9 @@ export class ResultsComponent
   constructor(
     private route: ActivatedRoute,
     private offerService: OfferService,
+    public pathService: PathExtractionService,
     private eventBus: EventBusService
   ) {
-    super();
   }
 
   ngOnInit(): void {

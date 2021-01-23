@@ -12,8 +12,11 @@ import { Review } from 'src/app/shared/models/Review';
 import { ReviewService } from 'src/app/services/review/review.service';
 import { OfferService } from 'src/app/services/offer/offer.service';
 import { CulturalOffer } from 'src/app/shared/models/CulturalOffer';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import Dialog from 'src/app/shared/dialog/Dialog';
+import { UserService } from 'src/app/services/user/user.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { Role } from 'src/app/shared/models/Role';
 
 @Component({
   selector: 'app-single-offer',
@@ -41,6 +44,8 @@ export class SingleOfferComponent implements AfterContentInit {
     public dialog: MatDialog,
     public offerService: OfferService,
     public reviewService: ReviewService,
+    public authService: AuthService,
+    public router: Router,
     private route: ActivatedRoute
   ) {
     this.offer = offerService.createEmpty();
@@ -115,6 +120,11 @@ export class SingleOfferComponent implements AfterContentInit {
   }
 
   openAddDialog(): void {
+    if (!this.authService.getCurrentUser()) {
+      this.router.navigateByUrl('/login');
+      return;
+    }
+
     const dialogRef = this.dialog.open(ReviewDialogComponent, {
       autoFocus: false,
       data: this.offer,

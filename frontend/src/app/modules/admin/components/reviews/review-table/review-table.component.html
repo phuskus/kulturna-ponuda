@@ -82,7 +82,7 @@
         </td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
+      <tr mat-header-row *matHeaderRowDef="tableColumns; sticky: true"></tr>
       <tr mat-row *matRowDef="let row; columns: tableColumns"></tr>
     </table>
   </div>

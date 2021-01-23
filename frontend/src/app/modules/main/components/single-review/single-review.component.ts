@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AppSettings } from 'src/app/app-settings/AppSettings';
-import { ImagePathExtractorComponent } from 'src/app/shared/components/image-path-extractor/image-path-extractor.component';
+import { PathExtractionService } from 'src/app/services/path-extraction/path-extraction.service';
 import { Review } from 'src/app/shared/models/Review';
 
 @Component({
@@ -8,18 +7,14 @@ import { Review } from 'src/app/shared/models/Review';
   templateUrl: './single-review.component.html',
   styleUrls: ['./single-review.component.scss'],
 })
-export class SingleReviewComponent
-  extends ImagePathExtractorComponent
-  implements OnInit {
+export class SingleReviewComponent implements OnInit {
   @Input() public review: Review;
 
-  constructor() {
-    super();
-  }
+  constructor(public pathService: PathExtractionService) {}
 
   ngOnInit(): void {
     this.review.pictures.forEach((picture) => {
-      picture.path = super.getFullImgPath(picture);
+      picture.path = this.pathService.getFullImgPath(picture.path);
     });
   }
 
