@@ -102,8 +102,8 @@ public abstract class MockDataGenerator {
     	    { "Užice", "43.85861", "19.84878", "Western Serbia"}
 	};
 
-    private static final int CULTURAL_OFFERS_PER_SUBCATEGORY_MIN = 1;
-    private static final int CULTURAL_OFFERS_PER_SUBCATEGORY_MAX = 30;
+    private static final int CULTURAL_OFFERS_PER_SUBCATEGORY_MIN = 10;
+    private static final int CULTURAL_OFFERS_PER_SUBCATEGORY_MAX = 100;
 
     private static final int SUBSCRIPTIONS_PER_USER_MIN = 0;
     private static final int SUBSCRIPTIONS_PER_USER_MAX = 20;
@@ -243,9 +243,11 @@ public abstract class MockDataGenerator {
         return adminList;
     }
 
-    private static ArrayList<UserDTO> GenerateUsers(ApplicationContext applicationContext) {
+    private static ArrayList<UserDTO> GenerateUsers(ApplicationContext applicationContext) throws UniqueConstraintViolationException {
         UserService userService = applicationContext.getBean(UserService.class);
         ArrayList<UserDTO> userList = new ArrayList<>();
+        UserDTO staticUser = new UserDTO("User", "Useric", "yahoo@yahoo.com", "12345");
+        userList.add(userService.createConfirmed(staticUser));
         for (int i = 0; i < REGISTERED_USER_COUNT; i++) {
             while (true) {
                 try {

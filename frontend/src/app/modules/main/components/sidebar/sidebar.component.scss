@@ -1,21 +1,27 @@
 // @import '../../pages/landing-page/landing-page.component.scss'
 
+$scroll-width: 16px;
+$sidebar-width: 750px;
+
 .sidebar-drawer {
   position: absolute;
   z-index: 2;
   top: 0px;
   left: 0px;
   height: 100%;
-  min-width: 750px;
-  max-width: 750px;
+  width: calc($sidebar-width - $scroll-width);
   padding: 0px;
-  overflow-y: auto;
-  direction: rtl;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.sidebar-drawer:hover {
+  overflow-y: scroll;
+  width: $sidebar-width;
+  direction: ltr;
 }
 
 .sidebar-container {
-  padding: 20px;
-  direction: ltr;
   height: 100% !important;
 }
 

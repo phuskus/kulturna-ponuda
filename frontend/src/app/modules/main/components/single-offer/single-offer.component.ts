@@ -20,6 +20,10 @@ import {
   Router,
   NavigationEnd,
 } from '@angular/router';
+import Dialog from 'src/app/shared/dialog/Dialog';
+import { UserService } from 'src/app/services/user/user.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { Role } from 'src/app/shared/models/Role';
 import {
   EmitEvent,
   EventBusService,
@@ -66,8 +70,10 @@ export class SingleOfferComponent
     public dialog: MatDialog,
     public offerService: OfferService,
     public reviewService: ReviewService,
-    private postService: PostService,
+    public authService: AuthService,
+    public router: Router,
     private route: ActivatedRoute,
+    private postService: PostService,
     private eventBus: EventBusService,
     private router: Router
   ) {
@@ -165,14 +171,19 @@ export class SingleOfferComponent
   }
 
   subscribeToScrollEvent() {
-    const x: Element = document.getElementsByTagName('mat-drawer')[0];
-    x.addEventListener('scroll', (event: any) => {
+    const drawer = document.getElementById('drawer');
+    let header = document.getElementById('header');
+
+    drawer.addEventListener('scroll', (event: any) => {
       if (
         event.target.offsetHeight + event.target.scrollTop >=
         event.target.scrollHeight
       ) {
         this.scrolledToTheEndSoFetchNextPage();
       }
+
+      if (event.target.scrollTop > 15) header.classList.add('sticky');
+      else header.classList.remove('sticky');
     });
   }
 
@@ -181,6 +192,11 @@ export class SingleOfferComponent
   }
 
   openAddDialog(): void {
+    if (!this.authService.getCurrentUser()) {
+      this.router.navigateByUrl('/login');
+      return;
+    }
+
     const dialogRef = this.dialog.open(ReviewDialogComponent, {
       autoFocus: false,
       data: this.offer,
@@ -196,5 +212,8 @@ export class SingleOfferComponent
       }
     );
   }
-  
+    
+  isActionDisabled() {
+    return this.authService.getCurrentUserRole() == Role.ADMIN;
+  }
 }

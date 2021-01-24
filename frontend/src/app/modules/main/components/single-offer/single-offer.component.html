@@ -1,43 +1,58 @@
-<div>
-  <carousel [cellsToShow]="3" [images]="images" [borderRadius]="10"> </carousel>
+<div class="parent">
+  <div class="header" fxLayout="row" fxLayoutAlign="start center" id="header">
+    <button (click)="goBack()" mat-icon-button>
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div>{{ offer.name }}</div>
+  </div>
 
-  <div fxLayout="row">
-    <div fxLayout="column">
+  <div class="content">
+    <carousel [cellsToShow]="3" [images]="images" [borderRadius]="10">
+    </carousel>
+
+    <div class="mat-title title-name">{{ offer.name }}</div>
+
+    <div class="title-address">{{ offer.address + ", " + offer.city }}</div>
+
+    <div fxLayout="row" fxLayoutGap="2.5%">
+      <app-star-rating
+        [maxRating]="5"
+        [rating]="offer.averageRating"
+        [size]="35"
+        [readonly]="true"
+      ></app-star-rating>
+      <div class="num-reviews" fxLayout="row" fxLayoutAlign="start center">
+        {{ totalReviews }} reviews
+      </div>
+    </div>
+
+    <div class="mat-subheading-2">{{ offer.categoryName }}</div>
+
+    <div flexLayout="row">
       <button
-        mat-fab
-        color="white"
-        style="margin-right: 10px; margin-top: 15px"
-        (click)="goBack()"
+        mat-raised-button
+        (click)="openAddDialog()"
+        [disabled]="isActionDisabled()"
+        class="review-btn"
+        disableRipple="true"
       >
-        <mat-icon>arrow_back</mat-icon>
+        Write a review
+      </button>
+      <button
+        mat-raised-button
+        class="sub-btn"
+        [disabled]="isActionDisabled()"
+        disableRipple="true"
+      >
+        Subscribe
       </button>
     </div>
-    <div fxLayout="column">
-      <div class="mat-title title-name">{{ offer.name }}</div>
 
-      <div class="title-address">{{ offer.address + ", " + offer.city }}</div>
+    <div class="mat-h4 offer-desc">
+      {{ offer.description }}
     </div>
-  </div>
-
-  <div fxLayout="row" fxLayoutGap="2.5%">
-    <app-star-rating
-      [maxRating]="5"
-      [rating]="offer.averageRating"
-      [size]="35"
-      [readonly]="true"
-    ></app-star-rating>
-    <div class="num-reviews" fxLayout="row" fxLayoutAlign="start center">
-      {{ totalReviews }} reviews
-    </div>
-  </div>
-
-  <div class="mat-subheading-2">{{ offer.categoryName }}</div>
-
-  <div class="mat-h4 offer-desc">
-    {{ offer.description }}
-  </div>
-
-  <div class="mat-h3" style="font-weight: 550">Posts</div>
+    
+    <div class="mat-h3" style="font-weight: 550">Posts</div>
 
   <div fxLayout="column" fxLayoutGap="2%">
     <app-single-post
@@ -64,44 +79,26 @@
     </div>
   </div>
 
-  <div flexLayout="row" style="margin-bottom: 15px">
-    <button
-      class="square-button"
-      mat-raised-button
-      (click)="openAddDialog()"
-      class="review-btn"
-      disableRipple="true"
+    <div class="mat-h3" style="font-weight: 550">Reviews</div>
+
+    <div fxLayout="column" fxLayoutGap="5%">
+      <app-single-review
+        *ngFor="let rev of reviews"
+        [review]="rev"
+      ></app-single-review>
+    </div>
+
+    <div
+      fxLayout="row"
+      fxLayoutAlign="center"
+      *ngIf="isReviewsLoading && !isLastReviewPage"
+      style="margin-top: -100px"
     >
-      Write a review
-    </button>
-    <button
-      mat-raised-button
-      class="sub-btn"
-      disableRipple="true"
-      class="square-button"
-    >
-      Subscribe
-    </button>
-  </div>
-
-  <div class="mat-h3" style="font-weight: 550">Reviews</div>
-
-  <div fxLayout="column" fxLayoutGap="5%">
-    <app-single-review
-      *ngFor="let rev of reviews"
-      [review]="rev"
-    ></app-single-review>
-  </div>
-
-  <div
-    fxLayout="row"
-    fxLayoutAlign="center"
-    *ngIf="isReviewsLoading && !isLastReviewPage"
-    style="margin-top: -100px; z-index: 50000"
-  >
-    <mat-progress-spinner
-      mode="indeterminate"
-      diameter="100"
-    ></mat-progress-spinner>
+      <mat-progress-spinner
+        style="z-index: 100001"
+        mode="indeterminate"
+        diameter="100"
+      ></mat-progress-spinner>
+    </div>
   </div>
 </div>

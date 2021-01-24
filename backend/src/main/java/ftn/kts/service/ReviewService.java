@@ -64,7 +64,7 @@ public class ReviewService {
             try {
                 dto.getPictures().add(pictureService.add(file));
             } catch (IOException ex) {
-                System.out.println("File upload failed: " + file);
+                System.out.println("File upload failed: " + file.getName());
             }
         }
         Review review = toEntity(dto);

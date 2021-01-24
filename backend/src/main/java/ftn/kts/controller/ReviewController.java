@@ -80,6 +80,7 @@ public class ReviewController {
 
     @PostMapping
     @Transactional
+//    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<Object> addReview(@Valid @RequestParam String review, @RequestParam(value = "files", required = false) MultipartFile[] files) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         ReviewDTO dto = mapper.readValue(review, ReviewDTO.class);
@@ -95,7 +96,7 @@ public class ReviewController {
     }
 
     @DeleteMapping("/{id}")
-//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Object> deleteReview(@PathVariable("id") long id) {
         try {
             service.delete(id);
