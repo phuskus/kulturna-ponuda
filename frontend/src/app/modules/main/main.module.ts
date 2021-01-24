@@ -29,6 +29,7 @@ import { ResultsComponent } from './components/results/results.component';
 import { SingleOfferComponent } from './components/single-offer/single-offer.component';
 import { IvyCarouselModule } from 'angular-responsive-carousel';
 import { SingleReviewComponent } from './components/single-review/single-review.component';
+import { SinglePostComponent } from './components/single-post/single-post.component';
 import { SearchComponent } from './components/search/search.component';
 import { CategoryCardComponent } from './components/category-card/category-card.component';
 
@@ -48,6 +49,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     ResultsComponent,
     SingleOfferComponent,
     SingleReviewComponent,
+    SinglePostComponent,
     SearchComponent,
     CategoryCardComponent,
     ReviewDialogComponent,
