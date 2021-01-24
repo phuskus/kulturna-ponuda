@@ -105,7 +105,7 @@ export class SingleOfferComponent
     this.subscribeToScrollEvent();
 
     this.subscriptionService.getIsSubscribedToOffer(this.offerId).subscribe((data) => {
-      if (data) {
+      if (data.subscribed) {
         this.subscribeState = 'subscribed';
       } else {
         this.subscribeState = 'not subscribed';
@@ -230,7 +230,7 @@ export class SingleOfferComponent
     }
     
     this.subscribeState = 'loading';
-    this.subscriptionService.subscribeToOffer(this.offerId).subscribe((responseMessage) => {
+    this.subscriptionService.subscribeToOffer(this.offerId).subscribe(() => {
       this.subscribeState = 'subscribed';
     }, (error) => {
       console.log(error);
@@ -239,7 +239,7 @@ export class SingleOfferComponent
 
   unsubscribe() {
     this.subscribeState = 'loading';
-    this.subscriptionService.unsubscribeFromOffer(this.offerId).subscribe((responseMessage) => {
+    this.subscriptionService.unsubscribeFromOffer(this.offerId).subscribe(() => {
       this.subscribeState = 'not subscribed';
     }, (error) => {
       console.log(error);

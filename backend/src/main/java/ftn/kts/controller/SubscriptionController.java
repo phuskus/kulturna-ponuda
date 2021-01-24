@@ -58,10 +58,10 @@ public class SubscriptionController {
 
 	@GetMapping("/offer/{id}")
 	@PreAuthorize("hasAnyRole('USER')")
-	public ResponseEntity<Boolean> getSubscribedToOffer(@PathVariable("id") long offerId) {
+	public ResponseEntity<String> getSubscribedToOffer(@PathVariable("id") long offerId) {
 		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
 		String username = currentUser.getName();
-		return new ResponseEntity<>(service.isSubscribedToOffer(username, offerId), HttpStatus.OK);
+		return new ResponseEntity<>("{ \"subscribed\": " + service.isSubscribedToOffer(username, offerId) + "}", HttpStatus.OK);
 	}
 
 	@PostMapping("/subscribeOffer/{id}")
@@ -73,10 +73,10 @@ public class SubscriptionController {
 		String message;
 		try {
 			message = service.subscribeToOffer(username, offerId);
-			return new ResponseEntity<>(message, HttpStatus.OK);
+			return new ResponseEntity<>("{ \"message\": \"" + message + "\" }", HttpStatus.OK);
 		} catch (Exception e) {
 			message = e.getMessage();
-			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("{ \"message\": \"" + message + "\" }", HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -89,10 +89,50 @@ public class SubscriptionController {
 		String message;
 		try {
 			message = service.unsubscribeFromOffer(username, offerId);
-			return new ResponseEntity<>(message, HttpStatus.OK);
+			return new ResponseEntity<>("{ \"message\": \"" + message + "\" }", HttpStatus.OK);
 		} catch (Exception e) {
 			message = e.getMessage();
-			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("{ \"message\": \"" + message + "\" }", HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@GetMapping("/subcategory/{name}")
+	@PreAuthorize("hasAnyRole('USER')")
+	public ResponseEntity<String> getSubscribedToSubcategory(@PathVariable("name") String subcategoryName) {
+		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+		String username = currentUser.getName();
+		return new ResponseEntity<>("{ \"subscribed\": " + service.isSubscribedToSubcategory(username, subcategoryName) + "}", HttpStatus.OK);
+	}
+
+	@PostMapping("/subscribeSubcategory/{name}")
+	@PreAuthorize("hasAnyRole('USER')")
+	public ResponseEntity<String> subscribeToSubcategory(@PathVariable("name") String subcategoryName) {
+		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+		String username = currentUser.getName();
+
+		String message;
+		try {
+			message = service.subscribeToSubcategory(username, subcategoryName);
+			return new ResponseEntity<>("{ \"message\": \"" + message + "\" }", HttpStatus.OK);
+		} catch (Exception e) {
+			message = e.getMessage();
+			return new ResponseEntity<>("{ \"message\": \"" + message + "\" }", HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@PostMapping("/unsubscribeSubcategory/{name}")
+	@PreAuthorize("hasAnyRole('USER')")
+	public ResponseEntity<String> unsubscribeFromSubcategory(@PathVariable("name") String subcategoryName) {
+		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+		String username = currentUser.getName();
+
+		String message;
+		try {
+			message = service.unsubscribeFromSubcategory(username, subcategoryName);
+			return new ResponseEntity<>("{ \"message\": \"" + message + "\" }", HttpStatus.OK);
+		} catch (Exception e) {
+			message = e.getMessage();
+			return new ResponseEntity<>("{ \"message\": \"" + message + "\" }", HttpStatus.BAD_REQUEST);
 		}
 	}
 

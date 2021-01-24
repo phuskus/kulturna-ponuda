@@ -23,33 +23,33 @@ export class SubscriptionService extends BaseService {
         }
     }
 
-    getIsSubscribedToOffer(offerId: number) {
+    getIsSubscribedToOffer(offerId: number) : Observable<any> {
         return this.http
-            .get<boolean>(this.url + '/offer/' + offerId, this.httpOptions);
+            .get<any>(this.url + '/offer/' + offerId, this.httpOptions);
     }
 
-    getIsSubscribedToSubcategory(subcategoryName: string) {
+    subscribeToOffer(offerId: number) : Observable<any> {
         return this.http
-            .get<boolean>(this.url + '/subcategory/' + subcategoryName, this.httpOptions);
+            .post<any>(this.url + '/subscribeOffer/' + offerId, this.httpOptions);
     }
 
-    subscribeToOffer(offerId: number) : Observable<string> {
+    unsubscribeFromOffer(offerId: number) : Observable<any> {
         return this.http
-            .post<string>(this.url + '/subscribeOffer/' + offerId, this.httpOptions);
+            .post<any>(this.url + '/unsubscribeOffer/' + offerId, this.httpOptions);
     }
 
-    unsubscribeFromOffer(offerId: number) : Observable<string> {
+    getIsSubscribedToSubcategory(subcategoryName: string) : Observable<any> {
         return this.http
-            .post<string>(this.url + '/unsubscribeOffer/' + offerId, this.httpOptions);
+            .get<any>(this.url + '/subcategory/' + subcategoryName, this.httpOptions);
     }
 
-    subscribeToSubcategory(subcategoryName: string) : Observable<string> {
+    subscribeToSubcategory(subcategoryName: string) : Observable<any> {
         return this.http
-        .post<string>(this.url + '/subscribeSubcategory/' + subcategoryName, this.httpOptions);
+        .post<any>(this.url + '/subscribeSubcategory/' + subcategoryName, this.httpOptions);
     }
 
-    unsubscribeFromSubcategory(subcategoryName: string) : Observable<string> {
+    unsubscribeFromSubcategory(subcategoryName: string) : Observable<any> {
         return this.http
-            .post<string>(this.url + '/subscribeSubcategory/' + subcategoryName, this.httpOptions);
+            .post<any>(this.url + '/unsubscribeSubcategory/' + subcategoryName, this.httpOptions);
     }
 }

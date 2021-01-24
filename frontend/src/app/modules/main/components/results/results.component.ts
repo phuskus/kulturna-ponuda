@@ -122,13 +122,17 @@ export class ResultsComponent
         this.fetchOffers();
       })
     );
+    
+    this.isLoggedIn = this.authService.getCurrentUser() != undefined;
 
-    if (this.category) {
+    if (!this.isLoggedIn) {
+      this.subscribeState = 'not subscribed';
+    } else if (this.category) {
       this.subscriptionService.getIsSubscribedToSubcategory(this.category).subscribe((data) => {
-        if (data) {
-          this.subscribeState = "subscribed";
+        if (data.subscribed) {
+          this.subscribeState = 'subscribed';
         } else {
-          this.subscribeState = "not subscribed";
+          this.subscribeState = 'not subscribed';
         }
       }, (error) => {
         console.log('Failed to get isSubscribedToSubcategory');
@@ -136,7 +140,6 @@ export class ResultsComponent
       });
     }
 
-    this.isLoggedIn = this.authService.getCurrentUser() != undefined;
   }
 
   ngOnDestroy(): void {
@@ -219,7 +222,7 @@ export class ResultsComponent
     }
     
     this.subscribeState = 'loading';
-    this.subscriptionService.subscribeToSubcategory(this.category).subscribe((responseMessage) => {
+    this.subscriptionService.subscribeToSubcategory(this.category).subscribe(() => {
       this.subscribeState = 'subscribed';
     }, (error) => {
       console.log('Failed to subscribe to subcategory');
@@ -229,7 +232,7 @@ export class ResultsComponent
 
   unsubscribe() {
     this.subscribeState = 'loading';
-    this.subscriptionService.unsubscribeFromSubcategory(this.category).subscribe((responseMessage) => {
+    this.subscriptionService.unsubscribeFromSubcategory(this.category).subscribe(() => {
       this.subscribeState = 'not subscribed';
     }, (error) => {
       console.log('Failed to unsubscribe from subcategory');
