@@ -14,7 +14,7 @@ import { Role } from 'src/app/shared/models/Role';
 })
 export class AuthService {
 
-  private endpoint = "http://localhost:9001/auth/";
+  private endpoint = "auth/";
   //private readonly loginEndpoint = "http://localhost:9001/auth/login";
   //private readonly registerEndpoint = "http://localhost:9001/auth/register";
   //private readonly forgotPasswordEndpoint = "http://localhost:9001/auth/forgot-password";
@@ -28,6 +28,7 @@ export class AuthService {
       this.endpoint + 'login',
       JSON.stringify({ username, password }),
       { headers }).map((res: any) => {
+        console.log(res);
         let user: UserTokenState =  {
           id: res && res['id'],
           token: res && res['accessToken'],

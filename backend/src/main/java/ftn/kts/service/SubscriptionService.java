@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -41,6 +42,16 @@ public class SubscriptionService {
 	public SubscriptionDTO getOneDTO(long id) {
 		Subscription subscription = getOne(id);
 		return toDTO(subscription);
+	}
+
+	public boolean isSubscribedToOffer(long userId, long offerId) {
+		Subscription subscription = subscriptionRepository.findByUserAndOffer(userId, offerId);
+		return subscription != null;
+	}
+
+	public boolean isSubscribedToOffer(String username, long offerId) {
+		Subscription subscription = subscriptionRepository.findByUsernameAndOffer(username, offerId);
+		return subscription != null;
 	}
 
 	public SubscriptionDTO create(SubscriptionDTO dto) {

@@ -13,6 +13,8 @@ import { ReviewService } from 'src/app/services/review/review.service';
 import { OfferService } from 'src/app/services/offer/offer.service';
 import { CulturalOffer } from 'src/app/shared/models/CulturalOffer';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { User } from 'src/app/shared/models/User';
 
 @Component({
   selector: 'app-single-offer',
@@ -22,12 +24,14 @@ import { ActivatedRoute } from '@angular/router';
 export class SingleOfferComponent implements AfterContentInit {
   offerId: number;
   offer: CulturalOffer;
+  user: User;
   reviews: Review[] = [];
   currentReviewPage: number = 0;
   totalReviews: number = 0;
   pageSize: number = 5;
   isLastReviewPage: boolean = false;
   isReviewsLoading: boolean = false;
+  isSubscribed: boolean = true;
 
   public images: any = [
     { path: '../../assets/imgs/img1.jpg' },
@@ -40,6 +44,7 @@ export class SingleOfferComponent implements AfterContentInit {
     public dialog: MatDialog,
     public offerService: OfferService,
     public reviewService: ReviewService,
+    public authService: AuthService,
     private route: ActivatedRoute
   ) {
     this.offer = offerService.createEmpty();
@@ -59,6 +64,8 @@ export class SingleOfferComponent implements AfterContentInit {
       this.fetchOffer();
     });
     this.subscribeToScrollEvent();
+    
+    this.user = this.authService.getCurrentUser();
   }
 
   fetchOffer() {
