@@ -206,6 +206,7 @@
               }
       "
       [routerLink]="'/offers/' + offer.id"
+      [state]="{previousRoute: this.currentRoute}"
     >
       <div fxLayout="row">
         <div fxLayout="column" class="img-col">

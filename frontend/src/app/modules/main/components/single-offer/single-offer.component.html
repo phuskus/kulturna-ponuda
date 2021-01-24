@@ -1,6 +1,6 @@
 <div class="parent">
   <div class="header" fxLayout="row" fxLayoutAlign="start center" id="header">
-    <button mat-icon-button>
+    <button (click)="goBack()" mat-icon-button>
       <mat-icon>arrow_back</mat-icon>
     </button>
     <div>{{ offer.name }}</div>
@@ -51,6 +51,33 @@
     <div class="mat-h4 offer-desc">
       {{ offer.description }}
     </div>
+    
+    <div class="mat-h3" style="font-weight: 550">Posts</div>
+
+  <div fxLayout="column" fxLayoutGap="2%">
+    <app-single-post
+      *ngFor="
+        let post of posts
+          | paginate
+            : {
+                itemsPerPage: pageSizePosts,
+                currentPage: currentPostPage,
+                totalItems: totalPosts
+              }
+      "
+      [post]="post"
+    ></app-single-post>
+    <div fxLayout="row" fxLayoutAlign="center">
+      <pagination-controls
+        class="pagination-control"
+        previousLabel="Prev"
+        nextLabel="Next"
+        responsive="true"
+        (pageChange)="handlePageChange($event)"
+      >
+      </pagination-controls>
+    </div>
+  </div>
 
     <div class="mat-h3" style="font-weight: 550">Reviews</div>
 

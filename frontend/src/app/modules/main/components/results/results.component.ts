@@ -5,12 +5,19 @@ import {
 } from './../../../../services/event-bus/event-bus.service';
 import { PageParams } from '../../../../shared/models/PageParams';
 import { CulturalOffer } from '../../../../shared/models/CulturalOffer';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  NavigationStart,
+  ParamMap,
+  Router,
+} from '@angular/router';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { OfferService } from 'src/app/services/offer/offer.service';
 import Page from 'src/app/shared/models/Page';
 import { PathExtractionService } from 'src/app/services/path-extraction/path-extraction.service';
+import { Subscription } from 'rxjs/Rx';
 
 @Component({
   selector: 'app-results',
@@ -18,7 +25,7 @@ import { PathExtractionService } from 'src/app/services/path-extraction/path-ext
   styleUrls: ['./results.component.scss'],
 })
 export class ResultsComponent
-  implements OnInit {
+  implements OnInit, OnDestroy {
   @ViewChild(MatMenuTrigger) filterMenuTrigger: MatMenuTrigger;
 
   public loading: boolean = true;
@@ -72,31 +79,46 @@ export class ResultsComponent
     { name: 'Užice', checked: false },
   ].sort();
 
+
   public offers: CulturalOffer[] = [];
+  private currentRoute: string = '';
+
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private offerService: OfferService,
     public pathService: PathExtractionService,
-    private eventBus: EventBusService
+    private eventBus: EventBusService,
+    private router: Router
   ) {
+    this.subscriptions.push(
+      this.router.events
+        .filter(e => e instanceof NavigationEnd)
+        .subscribe((e: NavigationEnd) => {
+          this.currentRoute = e.url;
+          this.eventBus.emit(new EmitEvent(Events.RouteChange, e.url));
+        })
+    );
   }
 
   ngOnInit(): void {
-    this.subToParamChanges();
+    this.subscriptions.push(
+      this.route.queryParamMap.subscribe((paramMap) => {
+        const params = paramMap['params'];
+        if (params['category'] != undefined) {
+          this.category = params['category'];
+        }
+        if (params['query'] != undefined) {
+          this.query = params['query'];
+        }
+        this.fetchOffers();
+      })
+    );
   }
 
-  subToParamChanges() {
-    this.route.queryParamMap.subscribe((paramMap) => {
-      const params = paramMap['params'];
-      if (params['category'] != undefined) {
-        this.category = params['category'];
-      }
-      if (params['query'] != undefined) {
-        this.query = params['query'];
-      }
-      this.fetchOffers();
-    });
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   getPageParams(): PageParams {

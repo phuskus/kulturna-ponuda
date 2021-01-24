@@ -394,7 +394,7 @@ public abstract class MockDataGenerator {
                         Set<PictureDTO> pictureSet = new HashSet<>();
                         //int pictureRandomCount = PICTURES_PER_POST_MIN + random.nextInt(PICTURES_PER_POST_MAX - PICTURES_PER_POST_MIN);
                         //TODO: Implement picture generation
-
+                        String title = faker.book().title();
                         String postContent;
                         float randomFloat = random.nextFloat();
                         if (randomFloat < 0.33f) {
@@ -404,7 +404,7 @@ public abstract class MockDataGenerator {
                         } else {
                             postContent = faker.gameOfThrones().quote();
                         }
-                        PostDTO dto = new PostDTO(postContent,
+                        PostDTO dto = new PostDTO(title, postContent,
                                 culturalOffer.getId(),
                                 pictureSet);
                         postService.create(dto);
