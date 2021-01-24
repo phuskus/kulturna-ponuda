@@ -8,13 +8,24 @@
     </mat-card>
   </div>
   <div fxLayout="row" class="filter-row" fxLayoutAlign="space-between">
-    <div class="information mat-title" fxFlex="1 0 70%">
+    <div class="information mat-title" fxFlex="1 0 40%">
       Category: {{ this.category || "any" }}
     </div>
-    <div fxLayout="row" fxFlex="1 0 30%" fxLayoutAlign="space-between">
+    <div fxLayout="row" fxFlex="1 0 60%" fxLayoutAlign="end" fxLayoutGap="2%">
+      
+      <button *ngIf="category && subscribeState == 'subscribed'" mat-raised-button class="small-btn unsub-btn" disableRipple="true" (click)="unsubscribe()">
+        Unsubscribe
+      </button>
+  
+      <button *ngIf="category && subscribeState == 'not subscribed'" mat-raised-button class="small-btn sub-btn" disableRipple="true" (click)="subscribe()">
+        Subscribe
+      </button>
+  
+      <mat-spinner *ngIf="category && subscribeState == 'loading'" [diameter]="30" style="display: inline;"></mat-spinner>
+
       <button
-        style="width: 100px"
         mat-raised-button
+        class="small-btn"
         color="primary"
         disableRipple="true"
         [matMenuTriggerFor]="menuSort"
@@ -22,14 +33,16 @@
         Sort
       </button>
       <button
-        style="width: 100px"
         mat-raised-button
+        class="small-btn"
         color="primary"
         disableRipple="true"
         [matMenuTriggerFor]="menuFilter"
       >
         Filter
       </button>
+
+      
     </div>
   </div>
   <mat-menu #menuSort="matMenu" panelClass="filter-menu">

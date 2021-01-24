@@ -104,12 +104,15 @@ export class SingleOfferComponent
     );
     this.subscribeToScrollEvent();
 
-    this.subscriptionService.getIsSubscribed(this.offerId).subscribe((data) => {
+    this.subscriptionService.getIsSubscribedToOffer(this.offerId).subscribe((data) => {
       if (data) {
-        this.subscribeState = "subscribed";
+        this.subscribeState = 'subscribed';
       } else {
-        this.subscribeState = "not subscribed";
+        this.subscribeState = 'not subscribed';
       }
+    }, (error) => {
+      console.log('Failed to get isSubscribedToOffer')
+      console.log(error);
     });
 
     this.isLoggedIn = this.authService.getCurrentUser() != undefined
@@ -229,6 +232,8 @@ export class SingleOfferComponent
     this.subscribeState = 'loading';
     this.subscriptionService.subscribeToOffer(this.offerId).subscribe((responseMessage) => {
       this.subscribeState = 'subscribed';
+    }, (error) => {
+      console.log(error);
     });
   }
 
@@ -236,6 +241,8 @@ export class SingleOfferComponent
     this.subscribeState = 'loading';
     this.subscriptionService.unsubscribeFromOffer(this.offerId).subscribe((responseMessage) => {
       this.subscribeState = 'not subscribed';
+    }, (error) => {
+      console.log(error);
     });
   }
 }

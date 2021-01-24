@@ -18,6 +18,8 @@ import { OfferService } from 'src/app/services/offer/offer.service';
 import Page from 'src/app/shared/models/Page';
 import { PathExtractionService } from 'src/app/services/path-extraction/path-extraction.service';
 import { Subscription } from 'rxjs/Rx';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { SubscriptionService } from 'src/app/services/subscription/subscription.service';
 
 @Component({
   selector: 'app-results',
@@ -85,12 +87,17 @@ export class ResultsComponent
 
   private subscriptions: Subscription[] = [];
 
+  subscribeState: string = 'loading';
+  isLoggedIn: boolean = false;
+
   constructor(
     private route: ActivatedRoute,
     private offerService: OfferService,
     public pathService: PathExtractionService,
     private eventBus: EventBusService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService,
+    private subscriptionService: SubscriptionService
   ) {
     this.subscriptions.push(
       this.router.events
@@ -115,6 +122,21 @@ export class ResultsComponent
         this.fetchOffers();
       })
     );
+
+    if (this.category) {
+      this.subscriptionService.getIsSubscribedToSubcategory(this.category).subscribe((data) => {
+        if (data) {
+          this.subscribeState = "subscribed";
+        } else {
+          this.subscribeState = "not subscribed";
+        }
+      }, (error) => {
+        console.log('Failed to get isSubscribedToSubcategory');
+        console.log(error);
+      });
+    }
+
+    this.isLoggedIn = this.authService.getCurrentUser() != undefined;
   }
 
   ngOnDestroy(): void {
@@ -188,5 +210,30 @@ export class ResultsComponent
   handlePageChange(event): void {
     this.page = event;
     this.fetchOffers();
+  }
+
+  subscribe() {
+    if (!this.isLoggedIn) {
+      this.router.navigateByUrl('/login');
+      return;
+    }
+    
+    this.subscribeState = 'loading';
+    this.subscriptionService.subscribeToSubcategory(this.category).subscribe((responseMessage) => {
+      this.subscribeState = 'subscribed';
+    }, (error) => {
+      console.log('Failed to subscribe to subcategory');
+      console.log(error);
+    });
+  }
+
+  unsubscribe() {
+    this.subscribeState = 'loading';
+    this.subscriptionService.unsubscribeFromSubcategory(this.category).subscribe((responseMessage) => {
+      this.subscribeState = 'not subscribed';
+    }, (error) => {
+      console.log('Failed to unsubscribe from subcategory');
+      console.log(error);
+    });
   }
 }
