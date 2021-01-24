@@ -40,7 +40,7 @@ public class PostController {
 
 	@GetMapping
 	public ResponseEntity<List<PostDTO>> getAllPosts(@RequestParam(defaultValue = "0") Integer pageNo,
-													 @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
+													 @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "datePosted") String sortBy,
 													 @RequestParam(defaultValue = "true") String descending) {
 		Pageable paging;
 		if (descending.equals("true"))
@@ -54,6 +54,19 @@ public class PostController {
 	@GetMapping("/{id}")
 	public ResponseEntity<PostDTO> getPost(@PathVariable("id") long id) {
 		return new ResponseEntity<>(service.getOneDTO(id), HttpStatus.OK);
+	}
+
+	@GetMapping("/offer/{id}")
+	public ResponseEntity<Page<PostDTO>> getPostsForOffer(@PathVariable("id") long offerId, @RequestParam(defaultValue = "0") Integer pageNo,
+			 @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "datePosted") String sortBy,
+			 @RequestParam(defaultValue = "true") String descending) {
+		Pageable paging;
+		if (descending.equals("true"))
+			paging = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.DESC, sortBy));
+		else
+			paging = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, sortBy));
+		Page<PostDTO> posts = service.getForOffer(offerId, paging);
+		return new ResponseEntity<>(posts, HttpStatus.OK);
 	}
 
 	@PostMapping

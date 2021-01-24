@@ -6,7 +6,7 @@
       <button
         mat-fab
         color="white"
-        style="margin-right: 10px; margin-top: 15px;"
+        style="margin-right: 10px; margin-top: 15px"
         (click)="goBack()"
       >
         <mat-icon>arrow_back</mat-icon>
@@ -35,6 +35,33 @@
 
   <div class="mat-h4 offer-desc">
     {{ offer.description }}
+  </div>
+
+  <div class="mat-h3" style="font-weight: 550">Posts</div>
+
+  <div fxLayout="column" fxLayoutGap="2%">
+    <app-single-post
+      *ngFor="
+        let post of posts
+          | paginate
+            : {
+                itemsPerPage: pageSizePosts,
+                currentPage: currentPostPage,
+                totalItems: totalPosts
+              }
+      "
+      [post]="post"
+    ></app-single-post>
+    <div fxLayout="row" fxLayoutAlign="center">
+      <pagination-controls
+        class="pagination-control"
+        previousLabel="Prev"
+        nextLabel="Next"
+        responsive="true"
+        (pageChange)="handlePageChange($event)"
+      >
+      </pagination-controls>
+    </div>
   </div>
 
   <div flexLayout="row" style="margin-bottom: 15px">

@@ -26,6 +26,9 @@ import {
   Events,
 } from 'src/app/services/event-bus/event-bus.service';
 import Dialog from 'src/app/shared/dialog/Dialog';
+import { Post } from 'src/app/shared/models/Post';
+import { PostService } from 'src/app/services/post/post.service';
+import Page from 'src/app/shared/models/Page';
 
 @Component({
   selector: 'app-single-offer',
@@ -36,13 +39,19 @@ export class SingleOfferComponent
   implements OnInit, AfterContentInit, OnDestroy {
   offerId: number;
   offer: CulturalOffer;
+  previousRoute: string = '';
+
   reviews: Review[] = [];
   currentReviewPage: number = 0;
   totalReviews: number = 0;
-  pageSize: number = 5;
+  pageSizeReviews: number = 5;
   isLastReviewPage: boolean = false;
   isReviewsLoading: boolean = false;
-  previousRoute: string = '';
+
+  posts: Post[] = []; 
+  currentPostPage: number = 1;
+  totalPosts: number = 0;
+  pageSizePosts: number = 3;
 
   private subscriptions: Subscription[] = [];
 
@@ -57,6 +66,7 @@ export class SingleOfferComponent
     public dialog: MatDialog,
     public offerService: OfferService,
     public reviewService: ReviewService,
+    private postService: PostService,
     private route: ActivatedRoute,
     private eventBus: EventBusService,
     private router: Router
@@ -95,6 +105,7 @@ export class SingleOfferComponent
         this.currentReviewPage = 0;
         this.totalReviews = 0;
         this.fetchReviews();
+        this.fetchPosts();
         this.fetchOffer();
       })
     );
@@ -115,15 +126,22 @@ export class SingleOfferComponent
       this.eventBus.emit(new EmitEvent(Events.OfferFocused, data));
     });
   }
+  
+  fetchPosts() {
+    this.postService.getForOfferId(this.offerId, this.currentPostPage - 1, this.pageSizePosts).subscribe((data: Page<Post>) => {
+      this.posts = data.content;
+      this.totalPosts = data.totalElements;
+    });
+  }
 
   fetchReviews() {
     // increase before call so there cannot be two api calls with same page num
     this.currentReviewPage += 1;
     this.isReviewsLoading = true;
     this.reviewService
-      .getForOfferId(this.offerId, this.currentReviewPage - 1, this.pageSize)
+      .getForOfferId(this.offerId, this.currentReviewPage - 1, this.pageSizeReviews)
       .subscribe(
-        (data) => {
+        (data: Page<Review>) => {
           this.reviews = this.reviews.concat(data.content);
           this.isReviewsLoading = false;
           this.totalReviews = data.totalElements;
@@ -139,6 +157,11 @@ export class SingleOfferComponent
     console.log(error);
     this.isReviewsLoading = false;
     this.currentReviewPage -= 1;
+  }
+  
+  handlePageChange(event: number): void {
+    this.currentPostPage = event;
+    this.fetchPosts();
   }
 
   subscribeToScrollEvent() {
@@ -173,4 +196,5 @@ export class SingleOfferComponent
       }
     );
   }
+  
 }

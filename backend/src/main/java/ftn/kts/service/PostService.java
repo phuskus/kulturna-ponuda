@@ -34,6 +34,10 @@ public class PostService {
         return postRepository.findAll(pageable).map(this::toDTO);
     }
 
+	public Page<PostDTO> getForOffer(long offerId, Pageable paging) {
+		return postRepository.findByCulturalOfferId(offerId, paging).map(this::toDTO);
+	}
+
     public PostDTO getOneDTO(long id) {
         Post post = getOne(id);
         PostDTO dto = toDTO(post);
@@ -89,7 +93,7 @@ public class PostService {
     }
 
     private PostDTO toDTO(Post entity) {
-        PostDTO dto = new PostDTO(entity.getId(), entity.getContent(), entity.getCulturalOffer().getId());
+        PostDTO dto = new PostDTO(entity.getId(), entity.getTitle(), entity.getContent(), entity.getDatePosted(), entity.getCulturalOffer().getId());
         dto.setPictures(pictureService.convertToDTO(entity.getPictures()));
         return dto;
     }
@@ -97,8 +101,9 @@ public class PostService {
     private Post toEntity(PostDTO dto) {
         CulturalOffer offer = cultService.getOne(dto.getCulturalOffer());
         Set<Picture> pictures = pictureService.convertToEntity(dto.getPictures());
-        Post post = new Post(dto.getId(), dto.getContent(), offer, pictures);
+        Post post = new Post(dto.getId(), dto.getTitle(), dto.getContent(), offer, pictures);
         return post;
     }
+
 
 }
