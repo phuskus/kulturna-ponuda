@@ -30,15 +30,15 @@
     </button>
 
 
-    <button *ngIf="isSubscribed; else notSubscribed" mat-raised-button class="unsub-btn" disableRipple="true">
+    <button *ngIf="subscribeState == 'subscribed'" mat-raised-button class="unsub-btn" disableRipple="true" (click)="unsubscribe()">
       Unsubscribe
     </button>
 
-    <ng-template #notSubscribed>
-      <button mat-raised-button class="sub-btn" disableRipple="true">
-        Subscribe
-      </button>
-    </ng-template>
+    <button *ngIf="subscribeState == 'not subscribed'" mat-raised-button class="sub-btn" disableRipple="true" (click)="subscribe()">
+      Subscribe
+    </button>
+
+    <mat-spinner *ngIf="subscribeState == 'loading'" [diameter]="25" style="display: inline; margin-left: 10px;"></mat-spinner>
   </div>
 
   <div class="mat-h4 offer-desc">

@@ -64,6 +64,38 @@ public class SubscriptionController {
 		return new ResponseEntity<>(service.isSubscribedToOffer(username, offerId), HttpStatus.OK);
 	}
 
+	@PostMapping("/subscribeOffer/{id}")
+	@PreAuthorize("hasAnyRole('USER')")
+	public ResponseEntity<String> subscribeToOffer(@PathVariable("id") long offerId) {
+		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+		String username = currentUser.getName();
+
+		String message;
+		try {
+			message = service.subscribeToOffer(username, offerId);
+			return new ResponseEntity<>(message, HttpStatus.OK);
+		} catch (Exception e) {
+			message = e.getMessage();
+			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@PostMapping("/unsubscribeOffer/{id}")
+	@PreAuthorize("hasAnyRole('USER')")
+	public ResponseEntity<String> unsubscribeFromOffer(@PathVariable("id") long offerId) {
+		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+		String username = currentUser.getName();
+
+		String message;
+		try {
+			message = service.unsubscribeFromOffer(username, offerId);
+			return new ResponseEntity<>(message, HttpStatus.OK);
+		} catch (Exception e) {
+			message = e.getMessage();
+			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+		}
+	}
+
 	@PostMapping
 	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<String> addSubscription(@Valid @RequestBody SubscriptionDTO dto) {

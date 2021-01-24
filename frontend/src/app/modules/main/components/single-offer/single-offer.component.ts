@@ -13,8 +13,9 @@ import { ReviewService } from 'src/app/services/review/review.service';
 import { OfferService } from 'src/app/services/offer/offer.service';
 import { CulturalOffer } from 'src/app/shared/models/CulturalOffer';
 import { ActivatedRoute } from '@angular/router';
+import { SubscriptionService } from 'src/app/services/subscription/subscription.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { User } from 'src/app/shared/models/User';
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-single-offer',
@@ -24,14 +25,14 @@ import { User } from 'src/app/shared/models/User';
 export class SingleOfferComponent implements AfterContentInit {
   offerId: number;
   offer: CulturalOffer;
-  user: User;
   reviews: Review[] = [];
   currentReviewPage: number = 0;
   totalReviews: number = 0;
   pageSize: number = 5;
   isLastReviewPage: boolean = false;
   isReviewsLoading: boolean = false;
-  isSubscribed: boolean = true;
+  subscribeState: string = "loading";
+  isLoggedIn: boolean = false;
 
   public images: any = [
     { path: '../../assets/imgs/img1.jpg' },
@@ -44,8 +45,10 @@ export class SingleOfferComponent implements AfterContentInit {
     public dialog: MatDialog,
     public offerService: OfferService,
     public reviewService: ReviewService,
+    public subscriptionService: SubscriptionService,
     public authService: AuthService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.offer = offerService.createEmpty();
   }
@@ -64,8 +67,16 @@ export class SingleOfferComponent implements AfterContentInit {
       this.fetchOffer();
     });
     this.subscribeToScrollEvent();
-    
-    this.user = this.authService.getCurrentUser();
+
+    this.subscriptionService.getIsSubscribed(this.offerId).subscribe((data) => {
+      if (data) {
+        this.subscribeState = "subscribed";
+      } else {
+        this.subscribeState = "not subscribed";
+      }
+    });
+
+    this.isLoggedIn = this.authService.getCurrentUser() != undefined
   }
 
   fetchOffer() {
@@ -120,6 +131,25 @@ export class SingleOfferComponent implements AfterContentInit {
     this.dialog.open(ReviewDialogComponent, {
       autoFocus: false,
       data: { id: 0, name: 'Museum of Modern Art' },
+    });
+  }
+
+  subscribe() {
+    if (!this.isLoggedIn) {
+      this.router.navigateByUrl('/login');
+      return;
+    }
+    
+    this.subscribeState = 'loading';
+    this.subscriptionService.subscribeToOffer(this.offerId).subscribe((responseMessage) => {
+      this.subscribeState = 'subscribed';
+    });
+  }
+
+  unsubscribe() {
+    this.subscribeState = 'loading';
+    this.subscriptionService.unsubscribeFromOffer(this.offerId).subscribe((responseMessage) => {
+      this.subscribeState = 'not subscribed';
     });
   }
 }
