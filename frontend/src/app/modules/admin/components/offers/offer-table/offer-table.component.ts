@@ -6,6 +6,7 @@ import { AbstractDynamicPagingTable } from '../../table/AbstractDynamicPagingTab
 import { AddOfferDialogComponent } from '../offer-dialogs/add-offer-dialog/add-offer-dialog.component';
 import { DescriptionDialogComponent } from '../offer-dialogs/description-dialog/description-dialog.component';
 import { ImagesDialogComponent } from '../offer-dialogs/images-dialog/images-dialog.component';
+import { UpdateOfferDialogComponent } from '../offer-dialogs/update-offer-dialog/update-offer-dialog.component';
 
 @Component({
   selector: 'app-offer-table',
@@ -35,6 +36,10 @@ export class OfferTableComponent extends AbstractDynamicPagingTable {
 
   openAddOfferDialog() {
     this.openDialog(AddOfferDialogComponent);
+  }
+
+  openUpdateOfferDialog(row: CulturalOffer) {
+    this.openDialog(UpdateOfferDialogComponent, row);
   }
 
 }

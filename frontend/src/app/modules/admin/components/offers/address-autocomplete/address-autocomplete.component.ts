@@ -1,4 +1,5 @@
 import { HttpClient } from '@angular/common/http';
+import { Input } from '@angular/core';
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatOptionSelectionChange } from '@angular/material/core';
@@ -9,12 +10,13 @@ import { Subject, Subscription } from 'rxjs';
   templateUrl: './address-autocomplete.component.html',
   styleUrls: ['./address-autocomplete.component.scss']
 })
-export class AddressAutocompleteComponent implements OnDestroy {
+export class AddressAutocompleteComponent implements OnDestroy, OnInit {
 
   @Output() locationChange: EventEmitter<PlaceSuggestion> = new EventEmitter<PlaceSuggestion>();
+  @Input() address: string;
   searchOptions: Subject<PlaceSuggestion[]> = new Subject<PlaceSuggestion[]>();
   inputFieldFormControl: FormControl = new FormControl('', [Validators.required]);
-
+  test: string = "Jevrejska 8, Novi Sad";
   private valueChangesSub: Subscription;
   private choosenOption: PlaceSuggestion;
 
@@ -41,7 +43,13 @@ export class AddressAutocompleteComponent implements OnDestroy {
       this.userInputTimeout = window.setTimeout(() => {
         this.generateSuggestions(value);
       }, 500);
+
+     
     });
+  }
+
+  ngOnInit() {
+    this.inputFieldFormControl.setValue(this.address);
   }
 
   ngOnDestroy() {

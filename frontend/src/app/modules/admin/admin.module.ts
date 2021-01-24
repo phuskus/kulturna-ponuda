@@ -43,6 +43,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { UpdateOfferDialogComponent } from './components/offers/offer-dialogs/update-offer-dialog/update-offer-dialog.component';
 
 
 @NgModule({
@@ -63,6 +64,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     ImagesDialogComponent,
     AddOfferDialogComponent,
     AddressAutocompleteComponent,
+    UpdateOfferDialogComponent,
   ],
   imports: [
     CommonModule,

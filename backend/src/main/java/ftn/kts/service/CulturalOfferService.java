@@ -73,7 +73,7 @@ public class CulturalOfferService {
 
 	public CulturalOfferDTO update(CulturalOfferDTO dto, Long id) throws UniqueConstraintViolationException {
 		CulturalOffer offer = getOne(id);
-		dto.setId(id);
+		//dto.setId(id);
 		checkUnique(dto);
 		updateOffer(offer, dto);
 		CulturalOffer saved = offerRepository.save(offer);
@@ -174,6 +174,8 @@ public class CulturalOfferService {
 	}
 
 	private void updateOffer(CulturalOffer offer, CulturalOfferDTO dto) {
+		Subcategory subcategory = subcategoryService.findByName(dto.getCategoryName());
+		offer.setCategory(subcategory);
 		offer.setAddress(dto.getAddress());
 		offer.setCity(dto.getCity());
 		offer.setDescription(dto.getDescription());
