@@ -45,6 +45,13 @@ export class LandingPageComponent implements OnInit {
     });
   }
 
+  onEditSubscriptions(): void {
+    let currentUser = JSON.parse(localStorage['currentUser']);
+    this.userService.get(currentUser.id).subscribe( (res) => {
+      console.log(res);
+    });
+  }
+
   onChangePassword(): void {
     this.dialog.open(PasswordDialogComponent, {
       autoFocus: false,
