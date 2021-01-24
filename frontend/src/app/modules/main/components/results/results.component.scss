@@ -91,3 +91,15 @@
   @extend %base-card;
 }
 
+.sub-btn {
+  background-color: #5ed1ff;
+}
+
+.unsub-btn {
+  background-color: grey;
+}
+
+.small-btn {
+  max-width: 110px !important;
+  height: 40px !important;
+}

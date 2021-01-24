@@ -1,0 +1,22 @@
+<mat-form-field floatLabel="never" style="width: 100% !important">
+  <input
+    matInput
+    type="text"
+    [matAutocomplete]="auto"
+    [formControl]="inputFieldFormControl"
+    placeholder="Enter address here"
+  />
+
+  <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption>
+    <mat-option
+      *ngFor="let option of searchOptions | async"
+      [value]="option.shortAddress"
+      (onSelectionChange)="optionSelectionChange(option, $event)"
+      [matTooltip]="option.fullAddress"
+      matTooltipShowDelay="1000"
+    >
+      <span class="mat-body">{{ option.shortAddress }}</span>
+    </mat-option>
+  </mat-autocomplete>
+  <!--mat-error *ngIf="inputFieldFormControl.touched && inputFieldFormControl.invalid && inputFieldFormControl.errors?.required">Address is required!</mat-error-->
+</mat-form-field>

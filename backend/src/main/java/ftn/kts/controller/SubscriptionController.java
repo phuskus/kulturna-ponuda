@@ -1,6 +1,9 @@
 package ftn.kts.controller;
 
 import ftn.kts.dto.SubscriptionDTO;
+import ftn.kts.model.RegisteredUser;
+import ftn.kts.repository.RegisteredUserRepository;
+import ftn.kts.service.RegisteredUserService;
 import ftn.kts.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,10 +13,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.xml.ws.Response;
+import java.util.List;
 
 @RestController
 @Validated
@@ -21,6 +29,7 @@ import javax.validation.Valid;
 public class SubscriptionController {
 
 	private SubscriptionService service;
+	private RegisteredUserRepository registeredUserRepository;
 
 	@Autowired
 	public SubscriptionController(SubscriptionService subscriptionService) {
@@ -45,6 +54,86 @@ public class SubscriptionController {
 	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<SubscriptionDTO> getSubscription(@PathVariable("id") long id) {
 		return new ResponseEntity<>(service.getOneDTO(id), HttpStatus.OK);
+	}
+
+	@GetMapping("/offer/{id}")
+	@PreAuthorize("hasAnyRole('USER')")
+	public ResponseEntity<String> getSubscribedToOffer(@PathVariable("id") long offerId) {
+		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+		String username = currentUser.getName();
+		return new ResponseEntity<>("{ \"subscribed\": " + service.isSubscribedToOffer(username, offerId) + "}", HttpStatus.OK);
+	}
+
+	@PostMapping("/subscribeOffer/{id}")
+	@PreAuthorize("hasAnyRole('USER')")
+	public ResponseEntity<String> subscribeToOffer(@PathVariable("id") long offerId) {
+		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+		String username = currentUser.getName();
+
+		String message;
+		try {
+			message = service.subscribeToOffer(username, offerId);
+			return new ResponseEntity<>("{ \"message\": \"" + message + "\" }", HttpStatus.OK);
+		} catch (Exception e) {
+			message = e.getMessage();
+			return new ResponseEntity<>("{ \"message\": \"" + message + "\" }", HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@PostMapping("/unsubscribeOffer/{id}")
+	@PreAuthorize("hasAnyRole('USER')")
+	public ResponseEntity<String> unsubscribeFromOffer(@PathVariable("id") long offerId) {
+		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+		String username = currentUser.getName();
+
+		String message;
+		try {
+			message = service.unsubscribeFromOffer(username, offerId);
+			return new ResponseEntity<>("{ \"message\": \"" + message + "\" }", HttpStatus.OK);
+		} catch (Exception e) {
+			message = e.getMessage();
+			return new ResponseEntity<>("{ \"message\": \"" + message + "\" }", HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@GetMapping("/subcategory/{name}")
+	@PreAuthorize("hasAnyRole('USER')")
+	public ResponseEntity<String> getSubscribedToSubcategory(@PathVariable("name") String subcategoryName) {
+		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+		String username = currentUser.getName();
+		return new ResponseEntity<>("{ \"subscribed\": " + service.isSubscribedToSubcategory(username, subcategoryName) + "}", HttpStatus.OK);
+	}
+
+	@PostMapping("/subscribeSubcategory/{name}")
+	@PreAuthorize("hasAnyRole('USER')")
+	public ResponseEntity<String> subscribeToSubcategory(@PathVariable("name") String subcategoryName) {
+		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+		String username = currentUser.getName();
+
+		String message;
+		try {
+			message = service.subscribeToSubcategory(username, subcategoryName);
+			return new ResponseEntity<>("{ \"message\": \"" + message + "\" }", HttpStatus.OK);
+		} catch (Exception e) {
+			message = e.getMessage();
+			return new ResponseEntity<>("{ \"message\": \"" + message + "\" }", HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@PostMapping("/unsubscribeSubcategory/{name}")
+	@PreAuthorize("hasAnyRole('USER')")
+	public ResponseEntity<String> unsubscribeFromSubcategory(@PathVariable("name") String subcategoryName) {
+		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+		String username = currentUser.getName();
+
+		String message;
+		try {
+			message = service.unsubscribeFromSubcategory(username, subcategoryName);
+			return new ResponseEntity<>("{ \"message\": \"" + message + "\" }", HttpStatus.OK);
+		} catch (Exception e) {
+			message = e.getMessage();
+			return new ResponseEntity<>("{ \"message\": \"" + message + "\" }", HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	@PostMapping

@@ -28,6 +28,7 @@ export class AuthService {
       this.endpoint + 'login',
       JSON.stringify({ username, password }),
       { headers }).map((res: any) => {
+        console.log(res);
         let user: UserTokenState =  {
           id: res && res['id'],
           token: res && res['accessToken'],

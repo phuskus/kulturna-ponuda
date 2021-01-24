@@ -50,6 +50,6 @@ export abstract class BaseDynamicPagingService extends BaseService {
   }
 
   getAll(): Observable<Model[]> {
-    throw new Error('Dyanmic Paging does not implement method getAll');
+    throw new Error('Dynamic Paging does not implement method getAll');
   }
 }
