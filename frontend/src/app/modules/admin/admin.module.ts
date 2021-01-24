@@ -30,6 +30,10 @@ import { CategoryTableComponent } from './components/categories/category-table/c
 import { AddCategoryDialogComponent } from './components/categories/category-dialogs/add-category-dialog/add-category-dialog.component';
 import { DeleteCategoryDialogComponent } from './components/categories/category-dialogs/delete-category-dialog/delete-category-dialog.component';
 import { UpdateCategoryDialogComponent } from './components/categories/category-dialogs/update-category-dialog/update-category-dialog.component';
+import { AddSubcategoryDialogComponent } from './components/subcategories/subcategory-dialogs/add-subcategory-dialog/add-subcategory-dialog.component';
+import { EditSubcategoryDialogComponent } from './components/subcategories/subcategory-dialogs/edit-subcategory-dialog/edit-subcategory-dialog.component';
+import { DeleteSubcategoryDialogComponent } from './components/subcategories/subcategory-dialogs/delete-subcategory-dialog/delete-subcategory-dialog.component';
+import { UpdateSubcategoryDialogComponent } from './components/subcategories/subcategory-dialogs/update-subcategory-dialog/update-subcategory-dialog.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +48,10 @@ import { UpdateCategoryDialogComponent } from './components/categories/category-
     AddCategoryDialogComponent,
     DeleteCategoryDialogComponent,
     UpdateCategoryDialogComponent,
+    AddSubcategoryDialogComponent,
+    EditSubcategoryDialogComponent,
+    DeleteSubcategoryDialogComponent,
+    UpdateSubcategoryDialogComponent,
   ],
   imports: [
     CommonModule,

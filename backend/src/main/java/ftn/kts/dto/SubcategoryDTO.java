@@ -14,6 +14,7 @@ public class SubcategoryDTO {
     @NotNull(message = "Icon must be selected!")
     private PictureDTO icon;
     private boolean containsOffers;
+    private String categoryName;
     
     
     // TODO: Sets of cultural offers and subscriptions?
@@ -28,6 +29,7 @@ public class SubcategoryDTO {
         this.categoryId = category.getId();
         this.icon = icon;
         this.setContainsOffers(containsOffers);
+        this.setCategoryName(category.getName());
     }
     
     public SubcategoryDTO(String name, Long categoryId, PictureDTO icon) {
@@ -74,6 +76,20 @@ public class SubcategoryDTO {
 
 	public void setContainsOffers(boolean containsOffers) {
 		this.containsOffers = containsOffers;
+	}
+
+	/**
+	 * @return the categoryName
+	 */
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	/**
+	 * @param categoryName the categoryName to set
+	 */
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
 	}
 
 	@Override
