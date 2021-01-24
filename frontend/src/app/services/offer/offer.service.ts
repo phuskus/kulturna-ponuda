@@ -57,4 +57,16 @@ export class OfferService extends BaseDynamicPagingService {
       .get<Page<CulturalOffer>>(this.url + '/search', options)
       .pipe(catchError(this.handleError<Page<CulturalOffer>>()));
   }
+
+  addMultipart(offer: CulturalOffer, files: FileList): Observable<CulturalOffer> {
+    const formData = new FormData();
+    for (let i = 0; i < files?.length || 0; i++)
+      formData.append('files', files[i]);
+
+    formData.append('offer', JSON.stringify(offer));
+
+    return this.http
+      .post<CulturalOffer>(this.url, formData)
+      .pipe(catchError(this.handleError<CulturalOffer>()));
+  }
 }

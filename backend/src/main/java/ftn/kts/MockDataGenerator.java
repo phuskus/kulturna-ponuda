@@ -130,12 +130,12 @@ public abstract class MockDataGenerator {
 
     public static void GenerateMockData(ApplicationContext applicationContext) throws UniqueConstraintViolationException {
         System.out.println("-!!!- Mock data generation initiated. This will DELETE ALL DATA FROM THE DATABASE! Proceeed? ('n' to abort, anything else to proceed) -!!!-");
-        Scanner scanner = new Scanner(System.in);
+        /*Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
         if (input.equalsIgnoreCase("n")) {
             System.out.println("Mock data generation aborted, no worries, data is safu.");
             return;
-        }
+        }*/
         System.out.println("Proceeding with mock data generation");
 
 
@@ -214,12 +214,11 @@ public abstract class MockDataGenerator {
     }
 
     private static void generateAuthorities(ApplicationContext applicationContext) {
-        AuthorityService authorityService = applicationContext.getBean(AuthorityService.class);
-        ArrayList<Authority> authorities = new ArrayList<>();
-
-        for (int i = 0; i < ROLES.length; i++) {
-            authorityService.create(ROLES[i]);
-        }
+    	AuthorityService authorityService = applicationContext.getBean(AuthorityService.class);
+    
+    	for (int i = 0; i < ROLES.length; i++) {
+    		authorityService.create(ROLES[i]);
+    	}    	
     }
 
     private static ArrayList<AdminDTO> GenerateAdmins(ApplicationContext applicationContext) {
@@ -332,12 +331,13 @@ public abstract class MockDataGenerator {
                                 location[0],
                                 location[3],
                                 adminList.get(0).getId(),
-                                subcategory.getId());
+                                subcategory.getId(),
+                                subcategory.getName());
                         dto.setAverageRating(-1d);
                         Set<PictureDTO> pictures = new HashSet<>();
                         pictures.add(icons.get(iconCounter));
                         dto.setPictures(pictures);
-                        culturalOfferList.add(culturalOfferService.create(dto));
+                        culturalOfferList.add(culturalOfferService.create(dto, null));
                         break;
                     } catch (Exception e) {
                         System.out.println("Faker cultural offer create failed, probably duplicate, trying again...");

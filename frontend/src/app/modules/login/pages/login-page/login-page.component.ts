@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { FormValidationService } from 'src/app/services/validation/form-validation.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MessageService } from 'src/app/services/message/message.service';
+import { MessageService, SnackbarColors } from 'src/app/services/message/message.service';
 
 @Component({
   selector: 'app-login-page',
@@ -60,7 +60,7 @@ export class LoginPageComponent implements OnInit {
         }, error => {
           if (error.status == 401) {
             //account not activated
-            this.messageService.openSnackBar(this.snackBar, error.error.message, 'End', 5000);
+            this.messageService.openSnackBar(this.snackBar, error.error.message, 'End', 5000, SnackbarColors.ERROR);
             this.formValidationService.clearFormAndValidators(this.loginForm);
           }  else {
             //username not exists or incorrect password
@@ -80,10 +80,10 @@ export class LoginPageComponent implements OnInit {
     let key = this.activatedRoute.snapshot.params.key;
     if(key) {
       this.authService.activateAccount(key).subscribe( () => {
-        this.messageService.openSnackBar(this.snackBar, 'Successfully activated account!', 'End', 5000);
+        this.messageService.openSnackBar(this.snackBar, 'Successfully activated account!', 'End', 5000, SnackbarColors.SUCCESS);
       }, error => {
         console.log(error.errors);
-        this.messageService.openSnackBar(this.snackBar, error.errors, 'End', 5000);
+        this.messageService.openSnackBar(this.snackBar, error.errors, 'End', 5000, SnackbarColors.ERROR);
       })
       
     }

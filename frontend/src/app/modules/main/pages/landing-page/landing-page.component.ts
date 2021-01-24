@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Router } from '@angular/router';
-import { MessageService } from 'src/app/services/message/message.service';
+import { MessageService, SnackbarColors } from 'src/app/services/message/message.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProfileDialogComponent } from '../../components/account/profile-dialog/profile-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -32,7 +32,7 @@ export class LandingPageComponent implements OnInit {
     this.isLoggedIn = false;
     this.authService.logout();
     this.router.navigateByUrl('/', { skipLocationChange: true });
-    this.messageService.openSnackBar(this.snackBar, 'Successfully logged out!', 'End', 5000);
+    this.messageService.openSnackBar(this.snackBar, 'Successfully logged out!', 'End', 5000, SnackbarColors.SUCCESS);
   }
 
   onEditProfile(): void {

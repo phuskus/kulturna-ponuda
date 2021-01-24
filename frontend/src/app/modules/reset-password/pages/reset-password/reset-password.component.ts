@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { MessageService } from 'src/app/services/message/message.service';
+import { MessageService, SnackbarColors } from 'src/app/services/message/message.service';
 import { FormValidationService } from 'src/app/services/validation/form-validation.service';
 
 @Component({
@@ -45,12 +45,12 @@ export class ResetPasswordComponent implements OnInit {
     let newPassword = this.resetForm.value['newPassword'];
     let resetKey = this.activatedRoute.snapshot.params.key;
     this.authService.resetPassword(newPassword, resetKey).subscribe(() => {
-      this.messageService.openSnackBar(this.snackBar, 'Successfully recovered account!', 'End', 6000);
+      this.messageService.openSnackBar(this.snackBar, 'Successfully recovered account!', 'End', 6000, SnackbarColors.SUCCESS);
       this.router.navigate(['/']);
       console.log(localStorage['currentUser']);
     }, error => {
       console.log(error);
-      this.messageService.openSnackBar(this.snackBar, error.error.message, 'End', 6000);
+      this.messageService.openSnackBar(this.snackBar, error.error.message, 'End', 6000, SnackbarColors.ERROR);
       this.router.navigate(['/login']);
     })
   }
