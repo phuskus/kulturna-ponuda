@@ -5,12 +5,13 @@ import { catchError, delay } from 'rxjs/operators';
 import Page from 'src/app/shared/models/Page';
 import { Review } from '../../shared/models/Review';
 import { BaseDynamicPagingService } from '../base/base-dynamic-paging.service';
+import { UserService } from '../user/user.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ReviewService extends BaseDynamicPagingService {
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient, private userService: UserService) {
     super('reviews', http);
   }
 
@@ -20,13 +21,7 @@ export class ReviewService extends BaseDynamicPagingService {
       rating: 0,
       content: '',
       datePosted: new Date(),
-      user: {
-        id: 11,
-        name: 'Justin',
-        surname: 'Block',
-        username: 'lorenza.labadie@hotmail.com',
-        password: '',
-      },
+      user: this.userService.createEmpty(),
       culturalOfferId: -1,
       culturalOfferName: '',
       pictures: [],

@@ -206,10 +206,11 @@
               }
       "
       [routerLink]="'/offers/' + offer.id"
+      [state]="{previousRoute: this.currentRoute}"
     >
       <div fxLayout="row">
         <div fxLayout="column" class="img-col">
-          <img [src]="getFullImgPath(offer.pictures[0])" />
+          <img [src]="pathService.getFullImgPath(offer.pictures[0].path)" />
         </div>
 
         <div

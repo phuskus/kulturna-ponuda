@@ -82,6 +82,10 @@ public abstract class User implements UserDetails {
 		this.surname = surname;
 	}
 
+	public String getFullName(){
+		return this.name + " " + this.surname;
+	}
+
 	public String getUsername() {
 		return username;
 	}

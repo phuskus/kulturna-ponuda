@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AppSettings } from 'src/app/app-settings/AppSettings';
-import { ImagePathExtractorComponent } from 'src/app/shared/components/image-path-extractor/image-path-extractor.component';
+import { PathExtractionService } from 'src/app/services/path-extraction/path-extraction.service';
 import { Category } from 'src/app/shared/models/Category';
 import { Picture } from 'src/app/shared/models/Picture';
 import { Subcategory } from 'src/app/shared/models/Subcategory';
@@ -10,18 +9,14 @@ import { Subcategory } from 'src/app/shared/models/Subcategory';
   templateUrl: './category-card.component.html',
   styleUrls: ['./category-card.component.scss'],
 })
-export class CategoryCardComponent
-  extends ImagePathExtractorComponent
-  implements OnInit {
+export class CategoryCardComponent implements OnInit {
   @Input() category: Category;
 
   public containsOffers: boolean = true;
 
   public subcategories: Subcategory[];
 
-  constructor() {
-    super();
-  }
+  constructor(public pathService: PathExtractionService) {}
 
   ngOnInit(): void {
     if (this.category.subcategories.length === 0) {

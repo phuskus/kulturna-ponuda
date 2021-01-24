@@ -59,6 +59,16 @@ public class ReviewDTO {
         this.pictures = new HashSet<>();
     }
 
+    public ReviewDTO(Long rating, String content, UserDTO user, Long offerId, String culturalOfferName, Date date) {
+        this.rating = rating;
+        this.content = content;
+        this.user = user;
+        this.culturalOfferId = offerId;
+        this.culturalOfferName = culturalOfferName;
+        this.datePosted = date;
+        this.pictures = new HashSet<>();
+    }
+
     public ReviewDTO(Long id, Long rating, String content, User user, Long offerId, String culturalOfferName) {
         this.id = id;
         this.rating = rating;

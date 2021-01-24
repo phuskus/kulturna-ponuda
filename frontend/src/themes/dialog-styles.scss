@@ -18,6 +18,10 @@
   }
 }
 
+.example-full-width {
+  width: 100%;
+}
+
 .add-dialog {
   @extend %base-dialog;
   padding: 0 12px;

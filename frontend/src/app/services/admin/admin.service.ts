@@ -18,7 +18,7 @@ export class AdminService extends BaseService {
       name: '',
       surname: '',
       username: '',
-      password: '',
+      password: 'ttxxtt',
     };
   }
 }

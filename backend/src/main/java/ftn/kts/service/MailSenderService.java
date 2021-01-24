@@ -2,6 +2,7 @@ package ftn.kts.service;
 
 import java.util.concurrent.Future;
 
+import ftn.kts.model.Admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -54,6 +55,15 @@ public class MailSenderService {
     			"Please follow this link to reset your password:\n" + recoveryLink + "/" + key;
     	return sendEmail(username, username + ", we've made it easy to get back on CultYourself", content);
     			
+    }
+
+    @Async
+    public Future<SimpleMailMessage> setPasswordForAdmin(Admin admin, String key) {
+        String content = "Dear " + admin.getFullName() + "!" + "\n\nYou've been added as an administrator for CultYourself." +
+                "\n\nWe can help you get straight back into your account by setting your new password.\n\n" +
+                "Please follow this link to set your password:\n" + recoveryLink + "/" + key;
+        return sendEmail(admin.getUsername(),  "Welcome to CultYourself", content);
+
     }
 
 }
