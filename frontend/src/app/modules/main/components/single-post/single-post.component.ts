@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ImagePathExtractorComponent } from 'src/app/shared/components/image-path-extractor/image-path-extractor.component';
+import { PathExtractionService } from 'src/app/services/path-extraction/path-extraction.service';
 import { Picture } from 'src/app/shared/models/Picture';
 import { Post } from 'src/app/shared/models/Post';
 
@@ -9,17 +9,15 @@ import { Post } from 'src/app/shared/models/Post';
   styleUrls: ['./single-post.component.scss'],
 })
 export class SinglePostComponent
-  extends ImagePathExtractorComponent
   implements OnInit {
   @Input() public post: Post;
 
-  constructor() {
-    super();
+  constructor(public pathService: PathExtractionService) {
   }
 
   ngOnInit(): void {
     this.post.pictures.forEach((picture) => {
-      picture.path = super.getFullImgPath(picture);
+      picture.path = this.pathService.getFullImgPath(picture.path);
     });
   }
 

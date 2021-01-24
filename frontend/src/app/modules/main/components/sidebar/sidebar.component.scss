@@ -1,15 +1,12 @@
 // @import '../../pages/landing-page/landing-page.component.scss'
 
-$scroll-width: 16px;
-$sidebar-width: 750px;
-
 .sidebar-drawer {
   position: absolute;
   z-index: 2;
   top: 0px;
   left: 0px;
   height: 100%;
-  width: calc($sidebar-width - $scroll-width);
+  width: 734px;
   padding: 0px;
   margin: 0 auto;
   overflow: hidden;
@@ -17,7 +14,7 @@ $sidebar-width: 750px;
 
 .sidebar-drawer:hover {
   overflow-y: scroll;
-  width: $sidebar-width;
+  width: 750px;
   direction: ltr;
 }
 

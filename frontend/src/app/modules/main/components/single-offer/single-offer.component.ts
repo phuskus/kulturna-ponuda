@@ -1,27 +1,12 @@
 import { Subscription } from 'rxjs';
-import {
-  AfterContentChecked,
-  AfterContentInit,
-  AfterViewInit,
-  Component,
-  HostListener,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { AfterContentInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { ReviewDialogComponent } from './review-dialog/review-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Review } from 'src/app/shared/models/Review';
 import { ReviewService } from 'src/app/services/review/review.service';
 import { OfferService } from 'src/app/services/offer/offer.service';
 import { CulturalOffer } from 'src/app/shared/models/CulturalOffer';
-import {
-  ActivatedRoute,
-  NavigationStart,
-  Router,
-  NavigationEnd,
-} from '@angular/router';
-import Dialog from 'src/app/shared/dialog/Dialog';
-import { UserService } from 'src/app/services/user/user.service';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Role } from 'src/app/shared/models/Role';
 import {
@@ -29,7 +14,6 @@ import {
   EventBusService,
   Events,
 } from 'src/app/services/event-bus/event-bus.service';
-import Dialog from 'src/app/shared/dialog/Dialog';
 import { Post } from 'src/app/shared/models/Post';
 import { PostService } from 'src/app/services/post/post.service';
 import Page from 'src/app/shared/models/Page';
@@ -52,7 +36,7 @@ export class SingleOfferComponent
   isLastReviewPage: boolean = false;
   isReviewsLoading: boolean = false;
 
-  posts: Post[] = []; 
+  posts: Post[] = [];
   currentPostPage: number = 1;
   totalPosts: number = 0;
   pageSizePosts: number = 3;
@@ -74,8 +58,7 @@ export class SingleOfferComponent
     public router: Router,
     private route: ActivatedRoute,
     private postService: PostService,
-    private eventBus: EventBusService,
-    private router: Router
+    private eventBus: EventBusService
   ) {
     this.offer = offerService.createEmpty();
     this.subscriptions.push(
@@ -132,12 +115,14 @@ export class SingleOfferComponent
       this.eventBus.emit(new EmitEvent(Events.OfferFocused, data));
     });
   }
-  
+
   fetchPosts() {
-    this.postService.getForOfferId(this.offerId, this.currentPostPage - 1, this.pageSizePosts).subscribe((data: Page<Post>) => {
-      this.posts = data.content;
-      this.totalPosts = data.totalElements;
-    });
+    this.postService
+      .getForOfferId(this.offerId, this.currentPostPage - 1, this.pageSizePosts)
+      .subscribe((data: Page<Post>) => {
+        this.posts = data.content;
+        this.totalPosts = data.totalElements;
+      });
   }
 
   fetchReviews() {
@@ -145,7 +130,11 @@ export class SingleOfferComponent
     this.currentReviewPage += 1;
     this.isReviewsLoading = true;
     this.reviewService
-      .getForOfferId(this.offerId, this.currentReviewPage - 1, this.pageSizeReviews)
+      .getForOfferId(
+        this.offerId,
+        this.currentReviewPage - 1,
+        this.pageSizeReviews
+      )
       .subscribe(
         (data: Page<Review>) => {
           this.reviews = this.reviews.concat(data.content);
@@ -164,7 +153,7 @@ export class SingleOfferComponent
     this.isReviewsLoading = false;
     this.currentReviewPage -= 1;
   }
-  
+
   handlePageChange(event: number): void {
     this.currentPostPage = event;
     this.fetchPosts();
@@ -212,7 +201,7 @@ export class SingleOfferComponent
       }
     );
   }
-    
+
   isActionDisabled() {
     return this.authService.getCurrentUserRole() == Role.ADMIN;
   }

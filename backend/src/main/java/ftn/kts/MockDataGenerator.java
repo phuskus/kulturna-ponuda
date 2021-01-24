@@ -117,7 +117,7 @@ public abstract class MockDataGenerator {
     private static final int PICTURES_PER_POST_MAX = 5;
 
     private static final int REVIEWS_PER_USER_MIN = 0;
-    private static final int REVIEWS_PER_USER_MAX = 20;
+    private static final int REVIEWS_PER_USER_MAX = 50;
 
     private static final float LONGITUDE_MIN = 0.0f;
     private static final float LONGITUDE_MAX = 180.0f;
