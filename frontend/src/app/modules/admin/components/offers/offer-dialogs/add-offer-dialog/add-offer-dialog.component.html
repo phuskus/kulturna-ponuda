@@ -1,74 +1,83 @@
 <div class="add-dialog">
-    <h1 mat-dialog-title>Add Cultural Offer</h1>
-    <form [formGroup]="cultForm">
-      <div mat-dialog-content fxLayout="column">
-        <mat-form-field class="example-full-width">
-          <mat-label>Name</mat-label>
-          <input matInput 
-            [formControlName]="'name'"
-            name="name" />
-            <!--mat-error *ngIf="f.name.touched && f.name?.errors?.required">Name is required</mat-error-->
-        </mat-form-field>
-    
-        <mat-form-field class="example-full-width">
-          <mat-label>Description</mat-label>
-          <textarea  
-            matInput 
-            [formControlName]="'description'" 
-            name="description" ></textarea>
-            <!--mat-error *ngIf="f.description.touched && f.description?.errors?.required">Description is required</mat-error-->
-        </mat-form-field>
+  <h1 mat-dialog-title>Add Cultural Offer</h1>
+  <form [formGroup]="cultForm">
+    <div mat-dialog-content fxLayout="column">
+      <mat-form-field class="example-full-width">
+        <mat-label>Name</mat-label>
+        <input matInput [formControlName]="'name'" name="name" />
+        <!--mat-error *ngIf="f.name.touched && f.name?.errors?.required">Name is required</mat-error-->
+      </mat-form-field>
 
-        <mat-form-field>
-          <input type="text"
-                 placeholder="Pick Category"
-                 aria-label="Category"
-                 matInput
-                 [formControlName]="'category'"
-                 [matAutocomplete]="subcategory">
-          <mat-autocomplete #subcategory="matAutocomplete">
-            <mat-option *ngFor="let sub of filteredSubcategories | async" [value]="sub">
-              {{sub}}
-            </mat-option>
-          </mat-autocomplete>
-          <!--mat-error *ngIf="f.category.errors?.requireMatchCategory">Category needs to match available options</mat-error-->
-        </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Description</mat-label>
+        <textarea
+          matInput
+          [formControlName]="'description'"
+          name="description"
+        ></textarea>
+        <!--mat-error *ngIf="f.description.touched && f.description?.errors?.required">Description is required</mat-error-->
+      </mat-form-field>
 
-        <mat-form-field>
-          <input type="text"
-                 placeholder="Pick Region"
-                 aria-label="Region"
-                 matInput
-                 [formControlName]="'region'"
-                 [matAutocomplete]="region">
-          <mat-autocomplete #region="matAutocomplete">
-            <mat-option *ngFor="let reg of filteredRegions | async" [value]="reg">
-              {{reg}}
-            </mat-option>
-          </mat-autocomplete>
-          <!--mat-error *ngIf="f.region.errors?.requireMatchRegion">Region needs to match available options</mat-error-->
-        </mat-form-field>
+      <mat-form-field>
+        <input
+          type="text"
+          placeholder="Pick Category"
+          aria-label="Category"
+          matInput
+          [formControlName]="'category'"
+          [matAutocomplete]="subcategory"
+        />
+        <mat-autocomplete #subcategory="matAutocomplete">
+          <mat-option
+            *ngFor="let sub of filteredSubcategories | async"
+            [value]="sub"
+          >
+            {{ sub }}
+          </mat-option>
+        </mat-autocomplete>
+        <!--mat-error *ngIf="f.category.errors?.requireMatchCategory">Category needs to match available options</mat-error-->
+      </mat-form-field>
 
-        <app-address-autocomplete style="width: 100%;" (locationChange)="autocompleteChanged($event)"></app-address-autocomplete>
-  
-        <app-image-selector
-          [multiple]="true"
-          (newFilesEvent)="onFilesSelected($event)"
-        ></app-image-selector>
+      <mat-form-field>
+        <input
+          type="text"
+          placeholder="Pick Region"
+          aria-label="Region"
+          matInput
+          [formControlName]="'region'"
+          [matAutocomplete]="region"
+        />
+        <mat-autocomplete #region="matAutocomplete">
+          <mat-option *ngFor="let reg of filteredRegions | async" [value]="reg">
+            {{ reg }}
+          </mat-option>
+        </mat-autocomplete>
+        <!--mat-error *ngIf="f.region.errors?.requireMatchRegion">Region needs to match available options</mat-error-->
+      </mat-form-field>
 
-      </div>
-      <div fxLayout="row" fxLayoutAlign="end" mat-dialog-actions>
-        <button mat-button class="button-option-alt" mat-dialog-close>
-          Cancel
-        </button>
-        <button 
-          mat-button 
-          class="button-option-main" 
-          type="submit"
-          (click)="onSubmit()"
-          [disabled]="cultForm.invalid">
-          Add
-        </button>
-      </div>
-    </form>
-  </div>
+      <app-address-autocomplete
+        style="width: 100%"
+        (locationChange)="autocompleteChanged($event)"
+      ></app-address-autocomplete>
+
+      <app-image-selector
+        [multiple]="true"
+        (newFilesEvent)="onFilesSelected($event)"
+      ></app-image-selector>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="end" mat-dialog-actions>
+      <button mat-button class="button-option-alt" mat-dialog-close>
+        Cancel
+      </button>
+      <button
+        mat-button
+        class="button-option-main"
+        type="submit"
+        (click)="onSubmit()"
+        [disabled]="cultForm.invalid"
+      >
+        Add
+      </button>
+    </div>
+  </form>
+</div>

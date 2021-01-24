@@ -1,8 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { MessageService } from 'src/app/services/message/message.service';
@@ -17,15 +21,19 @@ import { UtilOffer } from '../Util';
 @Component({
   selector: 'app-add-offer-dialog',
   templateUrl: './add-offer-dialog.component.html',
-  styleUrls: ['./add-offer-dialog.component.scss']
+  styleUrls: ['./add-offer-dialog.component.scss'],
 })
-export class AddOfferDialogComponent extends AddDialog<AddOfferDialogComponent> 
- {
-  
+export class AddOfferDialogComponent extends AddDialog<AddOfferDialogComponent> {
   newObj: CulturalOffer;
   cultForm: FormGroup;
   filesSelected: FileList;
-  regions: string[] = ['Vojvodina', 'Central Serbia', 'Eastern Serbia', 'Western Serbia', 'Southern Serbia'];
+  regions: string[] = [
+    'Vojvodina',
+    'Central Serbia',
+    'Eastern Serbia',
+    'Western Serbia',
+    'Southern Serbia',
+  ];
   categories: string[] = [];
   filteredRegions: Observable<string[]>;
   filteredSubcategories: Observable<string[]>;
@@ -44,28 +52,35 @@ export class AddOfferDialogComponent extends AddDialog<AddOfferDialogComponent>
     this.cultForm = this.fb.group({
       name: ['', [Validators.required]],
       description: ['', [Validators.required]],
-      category: ['', [Validators.required, this.requireMatchCategory.bind(this)]],
-      region: ['', [Validators.required, this.requireMatchRegion.bind(this)]]
-    })
-   }
+      category: [
+        '',
+        [Validators.required, this.requireMatchCategory.bind(this)],
+      ],
+      region: ['', [Validators.required, this.requireMatchRegion.bind(this)]],
+    });
+  }
 
   ngOnInit(): void {
     this.subcatService.getAll().subscribe((res: Subcategory[]) => {
-      res.map(r => {
+      res.map((r) => {
         this.categories.push(r.name);
-        this.filteredSubcategories = this.f.category.valueChanges
-          .pipe(startWith(''), map(value => this.utilOffer.filter(value, this.categories)));
-      })
+        this.filteredSubcategories = this.f.category.valueChanges.pipe(
+          startWith(''),
+          map((value) => this.utilOffer.filter(value, this.categories))
+        );
+      });
     });
-    this.filteredRegions = this.f.region.valueChanges
-      .pipe(startWith(''), map(value => this.utilOffer.filter(value, this.regions)));
+    this.filteredRegions = this.f.region.valueChanges.pipe(
+      startWith(''),
+      map((value) => this.utilOffer.filter(value, this.regions))
+    );
   }
 
   get f() {
     return this.cultForm.controls;
   }
 
-   onFilesSelected(files: FileList): void {
+  onFilesSelected(files: FileList): void {
     this.filesSelected = files;
   }
 
@@ -78,21 +93,30 @@ export class AddOfferDialogComponent extends AddDialog<AddOfferDialogComponent>
     this.newObj.region = this.cultForm.value['region'];
 
     if (!this.newObj.latitude || !this.newObj.longitude) {
-      this.messageService.openSnackBar(this.snackbar, 'Please check the address!', 'End', 5000);
+      this.messageService.openSnackBar(
+        this.snackbar,
+        'Please check the address!',
+        'End',
+        5000
+      );
       return;
     }
-    
+
     this.service
       .addMultipart(this.newObj, this.filesSelected)
       .subscribe((data) => {
         if (!data) {
-          this.messageService.openSnackBar(this.snackbar, 'The name of the cultural offer should be unique!', 'End', 5000);
+          this.messageService.openSnackBar(
+            this.snackbar,
+            'The name of the cultural offer should be unique!',
+            'End',
+            5000
+          );
           return;
         }
         this.onSubscriptionCallBack.emit(data);
-        this.dialogRef.close();  
+        this.dialogRef.close();
       });
-      
   }
 
   autocompleteChanged($event: any) {
@@ -100,11 +124,10 @@ export class AddOfferDialogComponent extends AddDialog<AddOfferDialogComponent>
   }
 
   private requireMatchRegion(control: FormControl) {
-    return this.utilOffer.requireMatch(control, this.regions, "region");
+    return this.utilOffer.requireMatch(control, this.regions, 'region');
   }
 
   private requireMatchCategory(control: FormControl) {
-    return this.utilOffer.requireMatch(control, this.categories, "category");
+    return this.utilOffer.requireMatch(control, this.categories, 'category');
   }
-  
 }

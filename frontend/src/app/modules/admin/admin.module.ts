@@ -44,6 +44,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { UpdateOfferDialogComponent } from './components/offers/offer-dialogs/update-offer-dialog/update-offer-dialog.component';
+import { DeleteOfferDialogComponent } from './components/offers/offer-dialogs/delete-offer-dialog/delete-offer-dialog.component';
 
 
 @NgModule({
@@ -65,6 +66,7 @@ import { UpdateOfferDialogComponent } from './components/offers/offer-dialogs/up
     AddOfferDialogComponent,
     AddressAutocompleteComponent,
     UpdateOfferDialogComponent,
+    DeleteOfferDialogComponent,
   ],
   imports: [
     CommonModule,

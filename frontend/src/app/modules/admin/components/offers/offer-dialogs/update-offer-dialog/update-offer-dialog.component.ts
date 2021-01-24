@@ -1,5 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
@@ -15,13 +20,18 @@ import { UtilOffer } from '../Util';
 @Component({
   selector: 'app-update-offer-dialog',
   templateUrl: './update-offer-dialog.component.html',
-  styleUrls: ['./update-offer-dialog.component.scss']
+  styleUrls: ['./update-offer-dialog.component.scss'],
 })
 export class UpdateOfferDialogComponent extends UpdateDialog<UpdateOfferDialogComponent> {
-  
   newObj: CulturalOffer;
   cultForm: FormGroup;
-  regions: string[] = ['Vojvodina', 'Central Serbia', 'Eastern Serbia', 'Western Serbia', 'Southern Serbia'];
+  regions: string[] = [
+    'Vojvodina',
+    'Central Serbia',
+    'Eastern Serbia',
+    'Western Serbia',
+    'Southern Serbia',
+  ];
   categories: string[] = [];
   filteredRegions: Observable<string[]>;
   filteredSubcategories: Observable<string[]>;
@@ -41,21 +51,28 @@ export class UpdateOfferDialogComponent extends UpdateDialog<UpdateOfferDialogCo
     this.cultForm = this.fb.group({
       name: [this.newObj.name, [Validators.required]],
       description: [this.newObj.description, [Validators.required]],
-      category: [this.newObj.categoryName, [this.requireMatchCategory.bind(this)]],
-      region: [this.newObj.region, [this.requireMatchRegion.bind(this)]]
-    })
-   }
+      category: [
+        this.newObj.categoryName,
+        [this.requireMatchCategory.bind(this)],
+      ],
+      region: [this.newObj.region, [this.requireMatchRegion.bind(this)]],
+    });
+  }
 
   ngOnInit(): void {
     this.subcatService.getAll().subscribe((res: Subcategory[]) => {
-      res.map(r => {
+      res.map((r) => {
         this.categories.push(r.name);
-        this.filteredSubcategories = this.f.category.valueChanges
-          .pipe(startWith(''), map(value => this.utilOffer.filter(value, this.categories)));
-      })
+        this.filteredSubcategories = this.f.category.valueChanges.pipe(
+          startWith(''),
+          map((value) => this.utilOffer.filter(value, this.categories))
+        );
+      });
     });
-    this.filteredRegions = this.f.region.valueChanges
-      .pipe(startWith(''), map(value => this.utilOffer.filter(value, this.regions)));
+    this.filteredRegions = this.f.region.valueChanges.pipe(
+      startWith(''),
+      map((value) => this.utilOffer.filter(value, this.regions))
+    );
     this.address = this.newObj.address + ', ' + this.newObj.city;
   }
 
@@ -72,40 +89,52 @@ export class UpdateOfferDialogComponent extends UpdateDialog<UpdateOfferDialogCo
     this.newObj.region = this.cultForm.value['region'];
 
     if (!this.newObj.latitude || !this.newObj.longitude || !this.valid()) {
-      this.messageService.openSnackBar(this.snackbar, "Admin, you're smart! Check this again!", 'End', 5000);
+      this.messageService.openSnackBar(
+        this.snackbar,
+        "Admin, you're smart! Check this again!",
+        'End',
+        5000
+      );
       return;
     }
 
-    this.service
-      .update(this.newObj.id, this.newObj)
-      .subscribe((data) => {
-        if (!data) {
-          this.messageService.openSnackBar(this.snackbar, 'The name of the cultural offer should be unique!', 'End', 5000);
-          return;
-        }
-        this.onSubscriptionCallBack.emit(data);
-        this.dialogRef.close();  
-      });
+    this.service.update(this.newObj.id, this.newObj).subscribe((data) => {
+      if (!data) {
+        this.messageService.openSnackBar(
+          this.snackbar,
+          'The name of the cultural offer should be unique!',
+          'End',
+          5000
+        );
+        return;
+      }
+      this.onSubscriptionCallBack.emit(data);
+      this.dialogRef.close();
+    });
   }
 
   autocompleteChanged($event: any) {
     this.utilOffer.addressAutocompleteChanged($event, this.newObj);
   }
 
-  private requireMatchRegion(control: FormControl) { 
-    return this.utilOffer.requireMatch(control, this.regions, "region");
+  private requireMatchRegion(control: FormControl) {
+    return this.utilOffer.requireMatch(control, this.regions, 'region');
   }
 
   private requireMatchCategory(control: FormControl) {
-      return this.utilOffer.requireMatch(control, this.categories, "category");
+    return this.utilOffer.requireMatch(control, this.categories, 'category');
   }
 
   private valid() {
-    if (!this.cultForm.controls['name'].valid || !this.cultForm.controls['name'].valid || !this.cultForm.controls['description'].valid ||
-    !this.cultForm.controls['category'].valid || !this.cultForm.controls['region'].valid) {
+    if (
+      !this.cultForm.controls['name'].valid ||
+      !this.cultForm.controls['name'].valid ||
+      !this.cultForm.controls['description'].valid ||
+      !this.cultForm.controls['category'].valid ||
+      !this.cultForm.controls['region'].valid
+    ) {
       return false;
     }
     return true;
   }
-  
 }

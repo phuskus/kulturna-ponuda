@@ -7,22 +7,18 @@ import { CulturalOffer } from 'src/app/shared/models/CulturalOffer';
 @Component({
   selector: 'app-description-dialog',
   templateUrl: './description-dialog.component.html',
-  styleUrls: ['./description-dialog.component.scss']
+  styleUrls: ['./description-dialog.component.scss'],
 })
 export class DescriptionDialogComponent<T> extends Dialog<T> {
-
   constructor(
     public dialogRef: MatDialogRef<T>,
     public service: OfferService,
     @Inject(MAT_DIALOG_DATA) public data: CulturalOffer
   ) {
     super(dialogRef, service);
-   }
-  
-   onSubmit() {
-     console.log('submit');
-   }
+  }
 
-  
-
+  onSubmit() {
+    console.log('submit');
+  }
 }

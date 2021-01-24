@@ -4,6 +4,7 @@ import { OfferService } from 'src/app/services/offer/offer.service';
 import { CulturalOffer } from 'src/app/shared/models/CulturalOffer';
 import { AbstractDynamicPagingTable } from '../../table/AbstractDynamicPagingTable';
 import { AddOfferDialogComponent } from '../offer-dialogs/add-offer-dialog/add-offer-dialog.component';
+import { DeleteOfferDialogComponent } from '../offer-dialogs/delete-offer-dialog/delete-offer-dialog.component';
 import { DescriptionDialogComponent } from '../offer-dialogs/description-dialog/description-dialog.component';
 import { ImagesDialogComponent } from '../offer-dialogs/images-dialog/images-dialog.component';
 import { UpdateOfferDialogComponent } from '../offer-dialogs/update-offer-dialog/update-offer-dialog.component';
@@ -11,20 +12,26 @@ import { UpdateOfferDialogComponent } from '../offer-dialogs/update-offer-dialog
 @Component({
   selector: 'app-offer-table',
   templateUrl: './offer-table.component.html',
-  styleUrls: ['./offer-table.component.scss']
+  styleUrls: ['./offer-table.component.scss'],
 })
 export class OfferTableComponent extends AbstractDynamicPagingTable {
-
-  constructor(
-    public service: OfferService,
-    public dialog: MatDialog
-  ) { 
+  constructor(public service: OfferService, public dialog: MatDialog) {
     super(service, dialog);
-    this.tableColumns = ['name', 'category', 'region', 'city', 'address', 'avrageRating', 'description', 'pictures', 'post', 'actions'];
+    this.tableColumns = [
+      'name',
+      'category',
+      'region',
+      'city',
+      'address',
+      'avrageRating',
+      'description',
+      'pictures',
+      'post',
+      'actions',
+    ];
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   openDescriptionDialog(row: CulturalOffer): void {
     this.openDialog(DescriptionDialogComponent, row);
@@ -42,4 +49,7 @@ export class OfferTableComponent extends AbstractDynamicPagingTable {
     this.openDialog(UpdateOfferDialogComponent, row);
   }
 
+  openDeleteDialog(row: CulturalOffer): void {
+    this.openDialog(DeleteOfferDialogComponent, row);
+  }
 }
