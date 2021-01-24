@@ -246,7 +246,7 @@ public abstract class MockDataGenerator {
     private static ArrayList<UserDTO> GenerateUsers(ApplicationContext applicationContext) throws UniqueConstraintViolationException {
         UserService userService = applicationContext.getBean(UserService.class);
         ArrayList<UserDTO> userList = new ArrayList<>();
-        UserDTO staticUser = new UserDTO("User", "Useric", "user@gmail.com", "12345");
+        UserDTO staticUser = new UserDTO("User", "Useric", "yahoo@yahoo.com", "12345");
         userList.add(userService.createConfirmed(staticUser));
         for (int i = 0; i < REGISTERED_USER_COUNT; i++) {
             while (true) {

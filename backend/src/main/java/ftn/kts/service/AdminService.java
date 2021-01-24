@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import ftn.kts.utils.RandomUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +20,16 @@ public class AdminService {
     private AdminRepository adminRepository;
     private AuthorityService authService;
     private CustomUserDetailsService userDetailsService;
+    private MailSenderService mailService;
+    private UserService userService;
 
     @Autowired
-    public AdminService(AdminRepository adminRepository, UserService userService, AuthorityService authService, CustomUserDetailsService userDetailsService) {
+    public AdminService(AdminRepository adminRepository, UserService userService, AuthorityService authService, CustomUserDetailsService userDetailsService, MailSenderService mailService) {
         this.adminRepository = adminRepository;
         this.authService = authService;
         this.userDetailsService = userDetailsService;
+        this.userService = userService;
+        this.mailService = mailService;
     }
 
     public List<AdminDTO> getAllDTO() {
@@ -42,7 +47,7 @@ public class AdminService {
         return dto;
     }
 
-    public AdminDTO create(AdminDTO dto) {
+    public AdminDTO create2(AdminDTO dto) {
         Admin admin = toEntity(dto);
         admin.setPassword(userDetailsService.encodePassword(dto.getPassword()));
         ArrayList<Authority> auth = new ArrayList<>();
@@ -52,7 +57,21 @@ public class AdminService {
         AdminDTO saved = toDTO(adminRepository.save(admin));
         return saved;
     }
-    
+
+    public AdminDTO create(AdminDTO dto) {
+        Admin admin = toEntity(dto);
+        userService.createUserAuthority(admin, "ROLE_ADMIN");
+        admin.setEnabled(true);
+        sendConfirmation(admin);
+        return toDTO(adminRepository.save(admin));
+    }
+
+    private void sendConfirmation(Admin admin) {
+        String generatedKey = RandomUtil.buildAuthString(30);
+        admin.setResetKey(generatedKey);
+        mailService.setPasswordForAdmin(admin, generatedKey);
+    }
+
     public AdminDTO update(AdminDTO dto, Long id) {
         Admin admin = adminRepository.findById(id).get();
         adminRepository.save(updateAdmin(admin, dto));
