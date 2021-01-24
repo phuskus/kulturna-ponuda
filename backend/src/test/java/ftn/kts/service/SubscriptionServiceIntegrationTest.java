@@ -92,4 +92,14 @@ public class SubscriptionServiceIntegrationTest {
         SubscriptionDTO dto = subscriptionService.getOneDTO(DB_EXISTING_SUBSCRIPTION_ID_1);
         //assertThrows(Exception.class, () -> subscriptionService.create(dto));
     }
+
+    @Test
+    public void isSubscribed_ReturnsTrue() {
+        // TODO: Write this test
+    }
+
+    @Test
+    public void isSubscribed_ReturnsFalse() {
+        // TODO: Write this test
+    }
 }

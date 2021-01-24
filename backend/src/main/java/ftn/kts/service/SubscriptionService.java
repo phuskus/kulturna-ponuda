@@ -5,15 +5,14 @@ import ftn.kts.model.CulturalOffer;
 import ftn.kts.model.RegisteredUser;
 import ftn.kts.model.Subscription;
 import ftn.kts.model.Subcategory;
+import ftn.kts.repository.RegisteredUserRepository;
 import ftn.kts.repository.SubscriptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,16 +21,16 @@ public class SubscriptionService {
 	private SubscriptionRepository subscriptionRepository;
 	private CulturalOfferService culturalOfferService;
 	private SubcategoryService subcategoryService;
-	private RegisteredUserService registeredUserService;
+	private RegisteredUserRepository registeredUserRepository;
 
 	@Autowired
 	public SubscriptionService(SubscriptionRepository subscriptionRepository,
 			CulturalOfferService culturalOfferService, SubcategoryService subcategoryService,
-			RegisteredUserService registeredUserService) {
+			RegisteredUserRepository registeredUserRepository) {
 		this.subscriptionRepository = subscriptionRepository;
 		this.culturalOfferService = culturalOfferService;
 		this.subcategoryService = subcategoryService;
-		this.registeredUserService = registeredUserService;
+		this.registeredUserRepository = registeredUserRepository;
 	}
 
 	public Page<SubscriptionDTO> getAllDTO(Pageable pageable) {
@@ -41,6 +40,58 @@ public class SubscriptionService {
 	public SubscriptionDTO getOneDTO(long id) {
 		Subscription subscription = getOne(id);
 		return toDTO(subscription);
+	}
+
+	public boolean isSubscribedToOffer(long userId, long offerId) {
+		Subscription subscription = subscriptionRepository.findByUserAndOffer(userId, offerId);
+		return subscription != null;
+	}
+
+	public boolean isSubscribedToOffer(String username, long offerId) {
+		Subscription subscription = subscriptionRepository.findByUsernameAndOffer(username, offerId);
+		return subscription != null;
+	}
+
+	public String subscribeToOffer(String username, long offerId) throws Exception {
+		if (isSubscribedToOffer(username, offerId)) {
+			return "User " + username + " is already subscribed to offer " + offerId;
+		}
+
+		RegisteredUser user = registeredUserRepository.findByUsername(username);
+		if (user == null) {
+			throw new Exception("User " + username + " doesn't exist!");
+		}
+
+		CulturalOffer culturalOffer = culturalOfferService.getOne(offerId);
+		if (culturalOffer == null) {
+			throw new Exception("Cultural offer " + offerId + " doesn't exist!");
+		}
+
+		Subscription subscription = new Subscription(new Date(), null, culturalOffer, user);
+		subscriptionRepository.save(subscription);
+
+		return "Successfully subscribed user " + username + " to offer " + offerId;
+	}
+
+	public String unsubscribeFromOffer(String username, long offerId) throws Exception {
+		RegisteredUser user = registeredUserRepository.findByUsername(username);
+		if (user == null) {
+			throw new Exception("User " + username + " doesn't exist!");
+		}
+
+		CulturalOffer culturalOffer = culturalOfferService.getOne(offerId);
+		if (culturalOffer == null) {
+			throw new Exception("Cultural offer " + offerId + " doesn't exist!");
+		}
+
+		Subscription subscription = subscriptionRepository.findByUserAndOffer(user.getId(), offerId);
+		if (subscription == null) {
+			throw new Exception("User " + username + " is not subscribed to offer " + offerId);
+		}
+
+		subscriptionRepository.delete(subscription);
+
+		return "Successfully unsubscribed user " + username + " from offer " + offerId;
 	}
 
 	public SubscriptionDTO create(SubscriptionDTO dto) {
@@ -82,7 +133,7 @@ public class SubscriptionService {
 		if (dto.getCulturalOfferId() != null) {
 			culturalOffer = culturalOfferService.getOne(dto.getCulturalOfferId());
 		}
-		RegisteredUser registeredUser = registeredUserService.getOne(dto.getRegisteredUserId());
+		RegisteredUser registeredUser = registeredUserRepository.getOne(dto.getRegisteredUserId());
 		return new Subscription(dto.getId(), dto.getDateOfSubscription(), subCategory, culturalOffer, registeredUser);
 	}
 
@@ -93,7 +144,7 @@ public class SubscriptionService {
 
 	private void updateSubscription(Subscription subscription, SubscriptionDTO dto) throws Exception{
 		subscription.setDateOfSubscription(dto.getDateOfSubscription());
-		subscription.setUser(registeredUserService.getOne(dto.getRegisteredUserId()));
+		subscription.setUser(registeredUserRepository.getOne(dto.getRegisteredUserId()));
 
 		if (dto.getCulturalOfferId() != null) {
 
