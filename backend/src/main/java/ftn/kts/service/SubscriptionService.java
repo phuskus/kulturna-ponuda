@@ -6,6 +6,7 @@ import ftn.kts.model.RegisteredUser;
 import ftn.kts.model.Subscription;
 import ftn.kts.model.Subcategory;
 import ftn.kts.repository.RegisteredUserRepository;
+import ftn.kts.repository.SubcategoryRepository;
 import ftn.kts.repository.SubscriptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,15 +23,17 @@ public class SubscriptionService {
 	private CulturalOfferService culturalOfferService;
 	private SubcategoryService subcategoryService;
 	private RegisteredUserRepository registeredUserRepository;
+	private SubcategoryRepository subcategoryRepository;
 
 	@Autowired
 	public SubscriptionService(SubscriptionRepository subscriptionRepository,
 			CulturalOfferService culturalOfferService, SubcategoryService subcategoryService,
-			RegisteredUserRepository registeredUserRepository) {
+			RegisteredUserRepository registeredUserRepository, SubcategoryRepository subcategoryRepository) {
 		this.subscriptionRepository = subscriptionRepository;
 		this.culturalOfferService = culturalOfferService;
 		this.subcategoryService = subcategoryService;
 		this.registeredUserRepository = registeredUserRepository;
+		this.subcategoryRepository = subcategoryRepository;
 	}
 
 	public Page<SubscriptionDTO> getAllDTO(Pageable pageable) {
@@ -49,6 +52,11 @@ public class SubscriptionService {
 
 	public boolean isSubscribedToOffer(String username, long offerId) {
 		Subscription subscription = subscriptionRepository.findByUsernameAndOffer(username, offerId);
+		return subscription != null;
+	}
+
+	public boolean isSubscribedToSubcategory(String username, String subcategoryName) {
+		Subscription subscription = subscriptionRepository.findByUsernameAndSubcategory(username, subcategoryName);
 		return subscription != null;
 	}
 
@@ -92,6 +100,48 @@ public class SubscriptionService {
 		subscriptionRepository.delete(subscription);
 
 		return "Successfully unsubscribed user " + username + " from offer " + offerId;
+	}
+
+	public String subscribeToSubcategory(String username, String subcategoryName) throws Exception {
+		if (isSubscribedToSubcategory(username, subcategoryName)) {
+			return "User " + username + " is already subscribed to subcategory " + subcategoryName;
+		}
+
+		RegisteredUser user = registeredUserRepository.findByUsername(username);
+		if (user == null) {
+			throw new Exception("User " + username + " doesn't exist!");
+		}
+
+		Subcategory subcategory = subcategoryRepository.findByNameIgnoringCase(subcategoryName);
+		if (subcategory == null) {
+			throw new Exception("Subcategory " + subcategoryName + " doesn't exist!");
+		}
+
+		Subscription subscription = new Subscription(new Date(), subcategory, null, user);
+		subscriptionRepository.save(subscription);
+
+		return "Successfully subscribed user " + username + " to subcategory " + subcategoryName;
+	}
+
+	public String unsubscribeFromSubcategory(String username, String subcategoryName) throws Exception {
+		RegisteredUser user = registeredUserRepository.findByUsername(username);
+		if (user == null) {
+			throw new Exception("User " + username + " doesn't exist!");
+		}
+
+		Subcategory subcategory = subcategoryRepository.findByNameIgnoringCase(subcategoryName);
+		if (subcategory == null) {
+			throw new Exception("Subcategory " + subcategoryName + " doesn't exist!");
+		}
+
+		Subscription subscription = subscriptionRepository.findByUsernameAndSubcategory(username, subcategoryName);
+		if (subscription == null) {
+			throw new Exception("User " + username + " is not subscribed to subcategory " + subcategoryName);
+		}
+
+		subscriptionRepository.delete(subscription);
+
+		return "Successfully unsubscribed user " + username + " from subcategory " + subcategoryName;
 	}
 
 	public SubscriptionDTO create(SubscriptionDTO dto) {

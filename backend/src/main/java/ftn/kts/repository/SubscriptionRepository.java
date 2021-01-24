@@ -22,4 +22,7 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
 
     @Query("SELECT s FROM Subscription s WHERE s.user.username = ?1 and s.culturalOffer.id = ?2")
     Subscription findByUsernameAndOffer(String username, long offerId);
+
+    @Query("SELECT s FROM Subscription s WHERE s.user.username = ?1 and LOWER(s.subcategory.name) = LOWER(?2)")
+    Subscription findByUsernameAndSubcategory(String username, String subcategoryName);
 }

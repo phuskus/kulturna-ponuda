@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Subscription } from "src/app/shared/models/Subscription";
 import { BaseService } from "../base/base.service";
 import { catchError } from 'rxjs/operators';
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
 
 @Injectable({
     providedIn: 'root',
@@ -23,33 +23,33 @@ export class SubscriptionService extends BaseService {
         }
     }
 
-    getIsSubscribed(offerId: number) {
+    getIsSubscribedToOffer(offerId: number) : Observable<any> {
         return this.http
-            .get<boolean>(this.url + '/offer/' + offerId, this.httpOptions)
-            .pipe(catchError(this.handleError<boolean>()));
+            .get<any>(this.url + '/offer/' + offerId, this.httpOptions);
     }
 
-    subscribeToOffer(offerId: number) : Observable<string> {
+    subscribeToOffer(offerId: number) : Observable<any> {
         return this.http
-            .post<string>(this.url + '/subscribeOffer/' + offerId, this.httpOptions)
-            .pipe(catchError(this.handleError<string>()));
+            .post<any>(this.url + '/subscribeOffer/' + offerId, this.httpOptions);
     }
 
-    unsubscribeFromOffer(offerId: number) : Observable<string> {
+    unsubscribeFromOffer(offerId: number) : Observable<any> {
         return this.http
-            .post<string>(this.url + '/unsubscribeOffer/' + offerId, this.httpOptions)
-            .pipe(catchError(this.handleError<string>()));
+            .post<any>(this.url + '/unsubscribeOffer/' + offerId, this.httpOptions);
     }
 
-    subscribeToSubcategory(offerId: number) : Observable<string> {
+    getIsSubscribedToSubcategory(subcategoryName: string) : Observable<any> {
         return this.http
-        .post<string>(this.url + '/subscribeSubcategory/' + offerId, this.httpOptions)
-        .pipe(catchError(this.handleError<string>()));
+            .get<any>(this.url + '/subcategory/' + subcategoryName, this.httpOptions);
     }
 
-    unsubscribeFromSubcategory(offerId: number) : Observable<string> {
+    subscribeToSubcategory(subcategoryName: string) : Observable<any> {
         return this.http
-            .post<string>(this.url + '/subscribeSubcategory/' + offerId, this.httpOptions)
-            .pipe(catchError(this.handleError<string>()));
+        .post<any>(this.url + '/subscribeSubcategory/' + subcategoryName, this.httpOptions);
+    }
+
+    unsubscribeFromSubcategory(subcategoryName: string) : Observable<any> {
+        return this.http
+            .post<any>(this.url + '/unsubscribeSubcategory/' + subcategoryName, this.httpOptions);
     }
 }
