@@ -7,7 +7,7 @@
           <input matInput 
             [formControlName]="'name'"
             name="name" />
-            <mat-error *ngIf="f.name.touched && f.name?.errors?.required">Name is required</mat-error>
+            <!--mat-error *ngIf="f.name.touched && f.name?.errors?.required">Name is required</mat-error-->
         </mat-form-field>
     
         <mat-form-field class="example-full-width">
@@ -16,7 +16,7 @@
             matInput 
             [formControlName]="'description'" 
             name="description" ></textarea>
-            <mat-error *ngIf="f.description.touched && f.description?.errors?.required">Description is required</mat-error>
+            <!--mat-error *ngIf="f.description.touched && f.description?.errors?.required">Description is required</mat-error-->
         </mat-form-field>
 
         <mat-form-field>
@@ -31,7 +31,7 @@
               {{sub}}
             </mat-option>
           </mat-autocomplete>
-          <mat-error *ngIf="f.category.errors?.requireMatchCategory">Category needs to match available options</mat-error>
+          <!--mat-error *ngIf="f.category.errors?.requireMatchCategory">Category needs to match available options</mat-error-->
         </mat-form-field>
 
         <mat-form-field>
@@ -46,7 +46,7 @@
               {{reg}}
             </mat-option>
           </mat-autocomplete>
-          <mat-error *ngIf="f.region.touched && f.region.errors?.requireMatchRegion">Region needs to match available options</mat-error>
+          <!--mat-error *ngIf="f.region.touched && f.region.errors?.requireMatchRegion">Region needs to match available options</mat-error-->
         </mat-form-field>
 
         <app-address-autocomplete [address]="address" style="width: 100%;" (locationChange)="autocompleteChanged($event)"></app-address-autocomplete>

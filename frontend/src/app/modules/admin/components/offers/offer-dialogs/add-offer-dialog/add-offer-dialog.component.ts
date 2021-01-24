@@ -12,6 +12,7 @@ import { FormValidationService } from 'src/app/services/validation/form-validati
 import AddDialog from 'src/app/shared/dialog/AddDialog';
 import { CulturalOffer } from 'src/app/shared/models/CulturalOffer';
 import { Subcategory } from 'src/app/shared/models/Subcategory';
+import { UtilOffer } from '../Util';
 
 @Component({
   selector: 'app-add-offer-dialog',
@@ -36,7 +37,8 @@ export class AddOfferDialogComponent extends AddDialog<AddOfferDialogComponent>
     public subcatService: SubcategoryService,
     public snackbar: MatSnackBar,
     public messageService: MessageService,
-    public formValidationService: FormValidationService
+    public formValidationService: FormValidationService,
+    public utilOffer: UtilOffer
   ) {
     super(dialogRef, service);
     this.cultForm = this.fb.group({
@@ -47,23 +49,21 @@ export class AddOfferDialogComponent extends AddDialog<AddOfferDialogComponent>
     })
    }
 
-  
-   get f() {
-     return this.cultForm.controls;
-   }
-
-  ngOnInit() {
+  ngOnInit(): void {
     this.subcatService.getAll().subscribe((res: Subcategory[]) => {
       res.map(r => {
         this.categories.push(r.name);
         this.filteredSubcategories = this.f.category.valueChanges
-          .pipe(startWith(''), map(value => this.filter(value, this.categories)));
+          .pipe(startWith(''), map(value => this.utilOffer.filter(value, this.categories)));
       })
     });
     this.filteredRegions = this.f.region.valueChanges
-      .pipe(startWith(''), map(value => this.filter(value, this.regions)));
+      .pipe(startWith(''), map(value => this.utilOffer.filter(value, this.regions)));
   }
 
+  get f() {
+    return this.cultForm.controls;
+  }
 
    onFilesSelected(files: FileList): void {
     this.filesSelected = files;
@@ -96,35 +96,15 @@ export class AddOfferDialogComponent extends AddDialog<AddOfferDialogComponent>
   }
 
   autocompleteChanged($event: any) {
-    this.newObj.address = $event.data.housenumber ? $event.data.street + ' ' + $event.data.housenumber : $event.data.street;
-    this.newObj.latitude = $event.data.lat;
-    this.newObj.longitude = $event.data.lon;
-    this.newObj.city = $event.data.city;
+    this.utilOffer.addressAutocompleteChanged($event, this.newObj);
   }
 
-  private requireMatchRegion(control: FormControl):
-    ValidationErrors | null {
-      const selection: any = control.value;
-      if (this.regions && this.regions.indexOf(selection) < 0) {
-        return { requireMatchRegion: true };
-      }
-      return null; 
+  private requireMatchRegion(control: FormControl) {
+    return this.utilOffer.requireMatch(control, this.regions, "region");
   }
 
-  private requireMatchCategory(control: FormControl):
-    ValidationErrors | null {
-      const selection: any = control.value;
-      if (this.categories && this.categories.indexOf(selection) < 0) {
-        return { requireMatchCategory: true };
-      }
-      return null; 
+  private requireMatchCategory(control: FormControl) {
+    return this.utilOffer.requireMatch(control, this.categories, "category");
   }
-
-    
-  private filter(value: string, options: string[]) {
-    const filterValue = value.toLowerCase();
-    return options.filter(option => 
-      option.toLowerCase().includes(filterValue));
-  }
-
+  
 }

@@ -94,11 +94,10 @@ export class UpdateOfferDialogComponent extends UpdateDialog<UpdateOfferDialogCo
 
   private requireMatchRegion(control: FormControl) { 
     return this.utilOffer.requireMatch(control, this.regions, "region");
-    
   }
 
   private requireMatchCategory(control: FormControl) {
-      return this.utilOffer.requireMatch(control, this.categories, "category")
+      return this.utilOffer.requireMatch(control, this.categories, "category");
   }
 
   private valid() {
