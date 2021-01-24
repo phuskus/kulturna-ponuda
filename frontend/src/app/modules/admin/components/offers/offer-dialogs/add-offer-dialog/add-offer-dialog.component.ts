@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { MessageService } from 'src/app/services/message/message.service';
 import { OfferService } from 'src/app/services/offer/offer.service';
 import { SubcategoryService } from 'src/app/services/subcategory/subcategory.service';
+import { FormValidationService } from 'src/app/services/validation/form-validation.service';
 import AddDialog from 'src/app/shared/dialog/AddDialog';
 import { CulturalOffer } from 'src/app/shared/models/CulturalOffer';
 import { Subcategory } from 'src/app/shared/models/Subcategory';
@@ -30,7 +33,10 @@ export class AddOfferDialogComponent extends AddDialog<AddOfferDialogComponent>
     private readonly fb: FormBuilder,
     public dialogRef: MatDialogRef<AddOfferDialogComponent>,
     public service: OfferService,
-    public subcatService: SubcategoryService
+    public subcatService: SubcategoryService,
+    public snackbar: MatSnackBar,
+    public messageService: MessageService,
+    public formValidationService: FormValidationService
   ) {
     super(dialogRef, service);
     this.cultForm = this.fb.group({
@@ -72,16 +78,21 @@ export class AddOfferDialogComponent extends AddDialog<AddOfferDialogComponent>
     this.newObj.region = this.cultForm.value['region'];
 
     if (!this.newObj.latitude || !this.newObj.longitude) {
-      alert('Please check address again!');
+      this.messageService.openSnackBar(this.snackbar, 'Please check the address!', 'End', 5000);
       return;
     }
-
+    
     this.service
       .addMultipart(this.newObj, this.filesSelected)
       .subscribe((data) => {
+        if (!data) {
+          this.messageService.openSnackBar(this.snackbar, 'The name of the cultural offer should be unique!', 'End', 5000);
+          return;
+        }
         this.onSubscriptionCallBack.emit(data);
+        this.dialogRef.close();  
       });
-    this.dialogRef.close();
+      
   }
 
   autocompleteChanged($event: any) {

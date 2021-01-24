@@ -42,6 +42,7 @@ import { AddressAutocompleteComponent } from './components/offers/address-autoco
 import { HttpClientModule } from '@angular/common/http';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 @NgModule({
@@ -92,6 +93,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     HttpClientModule,
     MatFormFieldModule,
     MatTooltipModule,
+    MatSnackBarModule
   ],
 })
 export class AdminModule {}
