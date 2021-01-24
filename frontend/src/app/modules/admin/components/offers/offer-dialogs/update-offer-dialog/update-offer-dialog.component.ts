@@ -9,7 +9,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
-import { MessageService } from 'src/app/services/message/message.service';
+import { MessageService, SnackbarColors } from 'src/app/services/message/message.service';
 import { OfferService } from 'src/app/services/offer/offer.service';
 import { SubcategoryService } from 'src/app/services/subcategory/subcategory.service';
 import UpdateDialog from 'src/app/shared/dialog/UpdateDialog';
@@ -68,6 +68,7 @@ export class UpdateOfferDialogComponent extends UpdateDialog<UpdateOfferDialogCo
           map((value) => this.utilOffer.filter(value, this.categories))
         );
       });
+      this.cultForm.controls['category'].updateValueAndValidity();
     });
     this.filteredRegions = this.f.region.valueChanges.pipe(
       startWith(''),
@@ -93,7 +94,8 @@ export class UpdateOfferDialogComponent extends UpdateDialog<UpdateOfferDialogCo
         this.snackbar,
         "Admin, you're smart! Check this again!",
         'End',
-        5000
+        5000,
+        SnackbarColors.ERROR
       );
       return;
     }
@@ -104,7 +106,8 @@ export class UpdateOfferDialogComponent extends UpdateDialog<UpdateOfferDialogCo
           this.snackbar,
           'The name of the cultural offer should be unique!',
           'End',
-          5000
+          5000,
+          SnackbarColors.ERROR
         );
         return;
       }
@@ -127,7 +130,6 @@ export class UpdateOfferDialogComponent extends UpdateDialog<UpdateOfferDialogCo
 
   private valid() {
     if (
-      !this.cultForm.controls['name'].valid ||
       !this.cultForm.controls['name'].valid ||
       !this.cultForm.controls['description'].valid ||
       !this.cultForm.controls['category'].valid ||

@@ -9,7 +9,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { MessageService } from 'src/app/services/message/message.service';
+import { MessageService, SnackbarColors } from 'src/app/services/message/message.service';
 import { OfferService } from 'src/app/services/offer/offer.service';
 import { SubcategoryService } from 'src/app/services/subcategory/subcategory.service';
 import { FormValidationService } from 'src/app/services/validation/form-validation.service';
@@ -97,7 +97,8 @@ export class AddOfferDialogComponent extends AddDialog<AddOfferDialogComponent> 
         this.snackbar,
         'Please check the address!',
         'End',
-        5000
+        5000,
+        SnackbarColors.ERROR
       );
       return;
     }
@@ -110,7 +111,8 @@ export class AddOfferDialogComponent extends AddDialog<AddOfferDialogComponent> 
             this.snackbar,
             'The name of the cultural offer should be unique!',
             'End',
-            5000
+            5000,
+            SnackbarColors.ERROR
           );
           return;
         }

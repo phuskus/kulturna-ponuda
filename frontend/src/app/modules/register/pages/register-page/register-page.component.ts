@@ -4,7 +4,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { Router } from '@angular/router';
 import { FormValidationService } from 'src/app/services/validation/form-validation.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MessageService } from 'src/app/services/message/message.service';
+import { MessageService, SnackbarColors } from 'src/app/services/message/message.service';
 
 
 @Component({
@@ -56,7 +56,7 @@ export class RegisterPageComponent implements OnInit {
       this.registerForm.value['password']
     ).subscribe(
       () => {
-        this.messageService.openSnackBar(this.snackBar, 'Successfully registered! Please check your email and activate your account!', 'End', 5000);
+        this.messageService.openSnackBar(this.snackBar, 'Successfully registered! Please check your email and activate your account!', 'End', 5000, SnackbarColors.SUCCESS);
         //this.router.navigate(['/login']);
       }, error => {
         //username already exists
