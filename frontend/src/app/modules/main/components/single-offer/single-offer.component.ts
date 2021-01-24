@@ -146,5 +146,7 @@ export class SingleOfferComponent implements AfterContentInit {
     );
   }
 
-  shouldMakeHeaderSticky() {}
+  isActionDisabled() {
+    return this.authService.getCurrentUserRole() == Role.ADMIN;
+  }
 }

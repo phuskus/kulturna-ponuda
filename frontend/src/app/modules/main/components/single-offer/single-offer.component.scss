@@ -1,3 +1,5 @@
+
+
 .header {
   background-color: rgb(26, 115, 232);
   color: white;
@@ -18,7 +20,11 @@
 .sticky {
   position: fixed;
   top: 0;
-  width: 750px;
+  width: 734px;
+}
+
+.parent:hover .sticky {
+  width: 750px !important;
 }
 
 .sticky + .content {
