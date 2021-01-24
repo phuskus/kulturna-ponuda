@@ -72,6 +72,7 @@ public class ReviewService {
         return toDTO(reviewRepository.save(review));
     }
 
+
     public ReviewDTO update(ReviewDTO dto, Long id) {
         Review review = getOne(id);
         reviewRepository.save(updateCategory(review, dto));
@@ -121,6 +122,21 @@ public class ReviewService {
         review.setUser(userService.getOne(dto.getUser().getId()));
 
         return review;
+    }
+
+    public ReviewDTO createMock(ReviewDTO dto, MultipartFile[] files){
+        if (files == null)
+            files = new MultipartFile[]{};
+
+        for (MultipartFile file : files) {
+            try {
+                dto.getPictures().add(pictureService.add(file));
+            } catch (IOException ex) {
+                System.out.println("File upload failed: " + file.getName());
+            }
+        }
+        Review review = toEntity(dto);
+        return toDTO(reviewRepository.save(review));
     }
 
     @Autowired
