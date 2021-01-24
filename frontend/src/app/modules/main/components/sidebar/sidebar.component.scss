@@ -6,16 +6,18 @@
   top: 0px;
   left: 0px;
   height: 100%;
-  min-width: 750px;
-  max-width: 750px;
+  width: 734px;
   padding: 0px;
-  overflow-y: auto;
-  direction: rtl;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.sidebar-drawer:hover {
+  overflow-y: scroll;
+  width: 750px;
 }
 
 .sidebar-container {
-  padding: 20px;
-  direction: ltr;
   height: 100% !important;
 }
 

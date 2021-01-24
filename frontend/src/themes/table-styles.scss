@@ -55,6 +55,33 @@ table {
 }
 
 .search-field {
-  max-width: 400px;
-  margin-right: 1.5%;
+  max-width: 300px;
+  margin-right: 2.5%;
+
+  ::ng-deep .mat-focused .mat-form-field-label {
+    /*change color of label*/
+    color: white !important;
+  }
+
+  ::ng-deep.mat-form-field-underline {
+    /*change color of underline*/
+    background-color: white !important;
+  }
+
+  ::ng-deep.mat-form-field-ripple {
+    /*change color of underline when focused*/
+    background-color: white !important;
+  }
+
+  .mat-input-placeholder {
+    color: white;
+  }
+
+  .placeholder {
+    color: white;
+  }
+
+  .mat-focused .placeholder {
+    color: white;
+  }
 }

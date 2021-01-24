@@ -104,14 +104,19 @@ export class SingleOfferComponent implements AfterContentInit {
   }
 
   subscribeToScrollEvent() {
-    const x: Element = document.getElementsByTagName('mat-drawer')[0];
-    x.addEventListener('scroll', (event: any) => {
+    const drawer = document.getElementById('drawer');
+    let header = document.getElementById('header');
+
+    drawer.addEventListener('scroll', (event: any) => {
       if (
         event.target.offsetHeight + event.target.scrollTop >=
         event.target.scrollHeight
       ) {
         this.scrolledToTheEndSoFetchNextPage();
       }
+
+      if (event.target.scrollTop > 15) header.classList.add('sticky');
+      else header.classList.remove('sticky');
     });
   }
 
@@ -140,4 +145,6 @@ export class SingleOfferComponent implements AfterContentInit {
       }
     );
   }
+
+  shouldMakeHeaderSticky() {}
 }
