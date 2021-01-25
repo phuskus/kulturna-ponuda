@@ -1,0 +1,18 @@
+<div class="delete-dialog">
+    <h1 mat-dialog-title>Delete Subcategory</h1>
+    <div mat-dialog-content>
+      <p>
+        Deleting Subcategory <span class="bold">{{data.name}}</span> will permanently remove it from the database. <br>
+        Be careful because this operation is irreversible.
+      </p>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="end" mat-dialog-actions>
+      <button mat-button class="button-option-alt" mat-dialog-close>
+        Cancel
+      </button>
+      <button mat-button class="button-option-main" (click)="onSubmit()">
+        Delete
+      </button>
+    </div>
+  </div>
+  

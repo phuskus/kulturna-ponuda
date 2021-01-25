@@ -65,6 +65,12 @@ public class CulturalOfferService {
                 System.out.println("File upload failed: " + file);
             }
         }
+        
+        if(dto.getPictures().size() == 0) {
+        	Subcategory sub = subcategoryService.findByName(dto.getCategoryName());
+        	PictureDTO picDTO = pictureService.convertToDTO(sub.getIcon());
+        	dto.getPictures().add(picDTO);
+        }
 		
 		CulturalOffer offer = toEntity(dto);
 		CulturalOffer saved = offerRepository.save(offer);

@@ -34,4 +34,5 @@ export enum Events {
   OfferListChange,
   OfferFocused,
   RouteChange,
+  PostAdd
 }

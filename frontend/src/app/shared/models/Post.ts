@@ -6,6 +6,7 @@ export class Post extends Model{
     title: string;
     content: string;
     culturalOffer: number;
+    offerName: string;
     datePosted: Date;
     pictures: Picture[];
   }

@@ -17,17 +17,19 @@ public class PostDTO {
 	@NotNull(message = "Cultural offer is required")
 	private Long culturalOffer;
     private Date datePosted;
+    private String offerName;
 	private Set<PictureDTO> pictures;
 
 	public PostDTO() {
 	}
 
-	public PostDTO(Long id, String title, String content, Date datePosted, Long culturalOffer) {
+	public PostDTO(Long id, String title, String content, Date datePosted, Long culturalOffer, String offerName) {
 		this.id = id;
 		this.title = title;
 		this.content = content;
 		this.datePosted = datePosted;
 		this.culturalOffer = culturalOffer;
+		this.offerName = offerName;
 		this.pictures = new HashSet<>();
 	}
 
@@ -39,10 +41,11 @@ public class PostDTO {
 		this.pictures = pictures;
 	}
 	
-	public PostDTO(String title, String content, Long culturalOffer, Set<PictureDTO> pictures) {
+	public PostDTO(String title, String content, Long culturalOffer, String offerName, Set<PictureDTO> pictures) {
 		this.title = title;
 		this.content = content;
 		this.culturalOffer = culturalOffer;
+		this.offerName = offerName;
 		this.pictures = pictures;
 	}
 	
@@ -97,5 +100,13 @@ public class PostDTO {
 
 	public void setPictures(Set<PictureDTO> pictures) {
 		this.pictures = pictures;
+	}
+	
+	public String getOfferName() {
+		return offerName;
+	}
+
+	public void setOfferName(String offerName) {
+		this.offerName = offerName;
 	}
 }

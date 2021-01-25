@@ -298,7 +298,7 @@ public abstract class MockDataGenerator {
             for (int j = 0; j < subcategories[i].length; j++) {
                 PictureDTO icon = iconList.get(iconCounter);
                 SubcategoryDTO dto = new SubcategoryDTO(subcategories[i][j], category.getId(), icon);
-                subcategoryList.add(subcategoryService.create(dto));
+                subcategoryList.add(subcategoryService.save(dto));
                 iconCounter++;
             }
         }
@@ -405,8 +405,9 @@ public abstract class MockDataGenerator {
                         postContent = postContent.substring(0, Math.min(postContent.length(), 254));
                         PostDTO dto = new PostDTO(title, postContent,
                                 culturalOffer.getId(),
+                                culturalOffer.getName(),
                                 pictureSet);
-                        postService.create(dto);
+                        postService.create(dto, null);
                         break;
                     } catch (Exception e) {
                         System.out.println("Faker post create failed, probably duplicate, trying again...");

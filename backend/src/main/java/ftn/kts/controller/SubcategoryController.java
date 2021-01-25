@@ -1,14 +1,18 @@
 package ftn.kts.controller;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,8 +20,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import ftn.kts.dto.ReviewDTO;
 import ftn.kts.dto.SubcategoryDTO;
 import ftn.kts.exceptions.UniqueConstraintViolationException;
 import ftn.kts.service.SubcategoryService;
@@ -32,20 +42,6 @@ public class SubcategoryController {
 		this.service = service;
 	}
 
-	/*@GetMapping
-	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-	public ResponseEntity<Page<SubcategoryDTO>> getAllSubcategories(@RequestParam(defaultValue = "0") Integer pageNo,
-			@RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
-			@RequestParam(defaultValue = "true") String descending) {
-		Pageable paging;
-		if (descending.equals("true"))
-			paging = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.DESC, sortBy));
-		else
-			paging = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, sortBy));
-		Page<SubcategoryDTO> subcategories = service.getAllDTO(paging);
-		return new ResponseEntity<>(subcategories, HttpStatus.OK);
-	}*/
-	
 	@GetMapping
 	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<Set<SubcategoryDTO>> getAllSubcategories() {
@@ -61,10 +57,13 @@ public class SubcategoryController {
 
 	@PostMapping
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<String> addSubcategory(@Valid @RequestBody SubcategoryDTO dto)
-			throws UniqueConstraintViolationException {
-		service.create(dto);
-		return new ResponseEntity<>("Successfully added subcategory!", HttpStatus.CREATED);
+	public ResponseEntity<SubcategoryDTO> addSubcategory(@Valid @RequestParam String subcat,
+			@RequestParam(value = "files", required = false) MultipartFile[] files)
+			throws JsonProcessingException, UniqueConstraintViolationException, MethodArgumentNotValidException {
+		ObjectMapper mapper = new ObjectMapper();
+		SubcategoryDTO dto = mapper.readValue(subcat, SubcategoryDTO.class);
+		SubcategoryDTO created = service.create(dto, files);
+		return new ResponseEntity<>(created, HttpStatus.CREATED);
 	}
 
 	@PutMapping("/{id}")

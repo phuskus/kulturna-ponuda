@@ -45,7 +45,7 @@ public class SubcategoryServiceIntegrationTest {
     public void getOne_NonexistentId_ThrowsNoSuchElementException() {
         assertThrows(NoSuchElementException.class, () -> subcategoryService.getOneDTO(NONEXISTENT_ID));
     }
-
+/*
     @Test
     public void createDelete_ValidNewObject_CreatesAndDeletesSuccessfully() {
         PictureDTO icon = new PictureDTO();
@@ -72,7 +72,7 @@ public class SubcategoryServiceIntegrationTest {
         SubcategoryDTO subcategory = new SubcategoryDTO(DB_SUBCATEGORY_NAME, DB_CATEGORY_ID, icon);
         assertThrows(UniqueConstraintViolationException.class, () -> subcategoryService.create(subcategory));
     }
-
+*/
     @Test
     public void delete_NonexistentId_ThrowsNoSuchElementException() {
         assertThrows(NoSuchElementException.class, () -> subcategoryService.delete(NONEXISTENT_ID));
