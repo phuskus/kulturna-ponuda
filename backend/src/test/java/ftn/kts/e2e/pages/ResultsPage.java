@@ -19,13 +19,16 @@ public class ResultsPage {
 	@FindBy(id = "no-results")
 	private WebElement noResultsMessage;
 
+	@FindBy(id = "back-button")
+	private WebElement backButton;
+
 	@FindBy(className = "result-card")
 	private List<WebElement> offerList;
 
 	@FindBy(css = "leaflet-marker-icon")
 	private List<WebElement> markerList;
 
-	@FindBy(id = "pagination-control")
+	@FindBy(className = "pagination-control")
 	private WebElement paginationControl;
 
 	public ResultsPage() {
@@ -39,19 +42,15 @@ public class ResultsPage {
 		(new WebDriverWait(driver, 30)).until(ExpectedConditions.visibilityOfElementLocated(By.id("search-bar")));
 	}
 
+	public void ensureIsNotVisibleSearchBar() {
+		(new WebDriverWait(driver, 30)).until(ExpectedConditions.invisibilityOfElementLocated(By.id("search-bar")));
+	}
+
 	public void ensureIsVisibleNoResults() {
 		(new WebDriverWait(driver, 30)).until(ExpectedConditions.visibilityOfElementLocated(By.id("no-results")));
 	}
 
 	public void ensureIsNotVisibleNoResults() {
-		(new WebDriverWait(driver, 30)).until(ExpectedConditions.invisibilityOfElementLocated(By.id("no-results")));
-	}
-
-	public void ensureIsVisibleFirstResult() {
-		(new WebDriverWait(driver, 30)).until(ExpectedConditions.visibilityOfElementLocated(By.id("no-results")));
-	}
-
-	public void ensureIsNotVisibleFirstResult() {
 		(new WebDriverWait(driver, 30)).until(ExpectedConditions.invisibilityOfElementLocated(By.id("no-results")));
 	}
 
@@ -69,7 +68,6 @@ public class ResultsPage {
 		(new WebDriverWait(driver, 30))
 				.until(ExpectedConditions.visibilityOfElementLocated(By.className("result-card")));
 	}
-	
 
 	public void ensureIsNotVisibleOfferList() {
 		(new WebDriverWait(driver, 30))
@@ -78,12 +76,16 @@ public class ResultsPage {
 
 	public void ensureIsVisiblePaginationControl() {
 		(new WebDriverWait(driver, 30))
-				.until(ExpectedConditions.visibilityOfElementLocated(By.id("pagionation-control")));
+				.until(ExpectedConditions.visibilityOfElementLocated(By.className("pagination-control")));
 	}
 
 	public void ensureIsNotVisiblePaginationControl() {
 		(new WebDriverWait(driver, 30))
 				.until(ExpectedConditions.invisibilityOfElementLocated(By.id("pagionation-control")));
+	}
+
+	public WebElement getBackButton() {
+		return backButton;
 	}
 
 	public WebElement getNoResultsMessage() {
@@ -101,4 +103,5 @@ public class ResultsPage {
 	public List<WebElement> getMarkerList() {
 		return markerList;
 	}
+
 }
