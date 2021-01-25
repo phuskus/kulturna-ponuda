@@ -5,7 +5,6 @@ import { catchError, delay, map, startWith, switchMap } from 'rxjs/operators';
 import { BaseDynamicPagingService } from 'src/app/services/base/base-dynamic-paging.service';
 import Model from 'src/app/shared/models/Model';
 import { MatDialog } from '@angular/material/dialog';
-import * as _ from 'underscore';
 import Page from 'src/app/shared/models/Page';
 
 @Component({

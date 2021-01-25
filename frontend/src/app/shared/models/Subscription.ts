@@ -5,4 +5,6 @@ export class Subscription extends Model {
     culturalOfferId: number;
     subcategoryId: number;
     dateOfSubscription: string;
+    culturalOfferName: string;
+    subcategoryName: string;
   }
