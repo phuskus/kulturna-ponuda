@@ -93,7 +93,8 @@ public class PostService {
     }
 
     private PostDTO toDTO(Post entity) {
-        PostDTO dto = new PostDTO(entity.getId(), entity.getTitle(), entity.getContent(), entity.getDatePosted(), entity.getCulturalOffer().getId());
+ 
+        PostDTO dto = new PostDTO(entity.getId(), entity.getTitle(), entity.getContent(), entity.getDatePosted(), entity.getCulturalOffer().getId(), entity.getCulturalOffer().getName());
         dto.setPictures(pictureService.convertToDTO(entity.getPictures()));
         return dto;
     }

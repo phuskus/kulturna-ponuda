@@ -94,8 +94,8 @@
         <td mat-cell *matCellDef="let row">
           <button
             mat-icon-button
-            (click)="openImagesDialog(row)"
-            [disabled]="row.pictures === undefined"
+            (click)="openPicturesDialog(row)"
+            [disabled]="row.pictures.length === 0"
           >
             <mat-icon>photo</mat-icon>
           </button>

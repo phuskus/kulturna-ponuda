@@ -405,6 +405,7 @@ public abstract class MockDataGenerator {
                         postContent = postContent.substring(0, Math.min(postContent.length(), 254));
                         PostDTO dto = new PostDTO(title, postContent,
                                 culturalOffer.getId(),
+                                culturalOffer.getName(),
                                 pictureSet);
                         postService.create(dto);
                         break;

@@ -39,7 +39,7 @@ public class PostController {
 	}
 
 	@GetMapping
-	public ResponseEntity<List<PostDTO>> getAllPosts(@RequestParam(defaultValue = "0") Integer pageNo,
+	public ResponseEntity<Page<PostDTO>> getAllPosts(@RequestParam(defaultValue = "0") Integer pageNo,
 													 @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "datePosted") String sortBy,
 													 @RequestParam(defaultValue = "true") String descending) {
 		Pageable paging;
@@ -48,7 +48,7 @@ public class PostController {
 		else
 			paging = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, sortBy));
 		Page<PostDTO> posts = service.getAllDTO(paging);
-		return new ResponseEntity<>(posts.getContent(), HttpStatus.OK);
+		return new ResponseEntity<>(posts, HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")

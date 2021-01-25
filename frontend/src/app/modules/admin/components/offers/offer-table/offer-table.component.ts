@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { OfferService } from 'src/app/services/offer/offer.service';
 import { CulturalOffer } from 'src/app/shared/models/CulturalOffer';
+import { PicturesComponent } from '../../pictures/pictures.component';
 import { AbstractDynamicPagingTable } from '../../table/AbstractDynamicPagingTable';
 import { AddOfferDialogComponent } from '../offer-dialogs/add-offer-dialog/add-offer-dialog.component';
 import { DeleteOfferDialogComponent } from '../offer-dialogs/delete-offer-dialog/delete-offer-dialog.component';
 import { DescriptionDialogComponent } from '../offer-dialogs/description-dialog/description-dialog.component';
-import { ImagesDialogComponent } from '../offer-dialogs/images-dialog/images-dialog.component';
 import { UpdateOfferDialogComponent } from '../offer-dialogs/update-offer-dialog/update-offer-dialog.component';
 
 @Component({
@@ -37,8 +37,8 @@ export class OfferTableComponent extends AbstractDynamicPagingTable {
     this.openDialog(DescriptionDialogComponent, row);
   }
 
-  openImagesDialog(row: CulturalOffer): void {
-    this.openDialog(ImagesDialogComponent, row);
+  openPicturesDialog(row: CulturalOffer): void {
+    this.openDialog(PicturesComponent, row);
   }
 
   openAddOfferDialog() {

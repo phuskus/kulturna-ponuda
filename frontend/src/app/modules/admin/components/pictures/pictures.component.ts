@@ -3,19 +3,19 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AppSettings } from 'src/app/app-settings/AppSettings';
 import { OfferService } from 'src/app/services/offer/offer.service';
 import Dialog from 'src/app/shared/dialog/Dialog';
-import { CulturalOffer } from 'src/app/shared/models/CulturalOffer';
+import Model from 'src/app/shared/models/Model';
 import { Picture } from 'src/app/shared/models/Picture';
 
 @Component({
-  selector: 'app-images-dialog',
-  templateUrl: './images-dialog.component.html',
-  styleUrls: ['./images-dialog.component.scss'],
+  selector: 'app-pictures',
+  templateUrl: './pictures.component.html',
+  styleUrls: ['./pictures.component.scss'],
 })
-export class ImagesDialogComponent<T> extends Dialog<T> {
+export class PicturesComponent<T> extends Dialog<T> {
   constructor(
     public dialogRef: MatDialogRef<T>,
     public service: OfferService,
-    @Inject(MAT_DIALOG_DATA) public data: CulturalOffer
+    @Inject(MAT_DIALOG_DATA) public data: Model
   ) {
     super(dialogRef, service);
   }

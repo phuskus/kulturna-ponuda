@@ -32,7 +32,6 @@ import { DeleteCategoryDialogComponent } from './components/categories/category-
 import { UpdateCategoryDialogComponent } from './components/categories/category-dialogs/update-category-dialog/update-category-dialog.component';
 import { OfferTableComponent } from './components/offers/offer-table/offer-table.component';
 import { DescriptionDialogComponent } from './components/offers/offer-dialogs/description-dialog/description-dialog.component';
-import { ImagesDialogComponent } from './components/offers/offer-dialogs/images-dialog/images-dialog.component';
 import { AddOfferDialogComponent } from './components/offers/offer-dialogs/add-offer-dialog/add-offer-dialog.component';
 import { IvyCarouselModule } from 'angular-responsive-carousel';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -45,6 +44,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { UpdateOfferDialogComponent } from './components/offers/offer-dialogs/update-offer-dialog/update-offer-dialog.component';
 import { DeleteOfferDialogComponent } from './components/offers/offer-dialogs/delete-offer-dialog/delete-offer-dialog.component';
+import { PostTableComponent } from './components/posts/post-table/post-table.component';
+import { ContentDialogComponent } from './components/posts/post-dialogs/content-dialog/content-dialog.component';
+import { PicturesComponent } from './components/pictures/pictures.component';
 
 
 @NgModule({
@@ -62,11 +64,13 @@ import { DeleteOfferDialogComponent } from './components/offers/offer-dialogs/de
     UpdateCategoryDialogComponent,
     OfferTableComponent,
     DescriptionDialogComponent,
-    ImagesDialogComponent,
     AddOfferDialogComponent,
     AddressAutocompleteComponent,
     UpdateOfferDialogComponent,
     DeleteOfferDialogComponent,
+    PostTableComponent,
+    ContentDialogComponent,
+    PicturesComponent,
   ],
   imports: [
     CommonModule,

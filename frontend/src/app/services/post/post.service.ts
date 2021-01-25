@@ -20,6 +20,7 @@ export class PostService extends BaseDynamicPagingService {
       title: '',
       content: '',
       culturalOffer: -1,
+      offerName: '',
       datePosted: new Date(),
       pictures: []
     }
