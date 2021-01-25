@@ -39,6 +39,10 @@ import { AvatarModule } from 'ngx-avatar';
 import { ProfileDialogComponent } from './components/account/profile-dialog/profile-dialog.component';
 import { PasswordDialogComponent } from './components/account/password-dialog/password-dialog.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { SubscriptionsTableComponent } from './components/subscriptions-table/subscriptions-table.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+
 
 @NgModule({
   declarations: [
@@ -54,7 +58,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     CategoryCardComponent,
     ReviewDialogComponent,
     ProfileDialogComponent,
-    PasswordDialogComponent
+    PasswordDialogComponent,
+    SubscriptionsTableComponent
   ],
   imports: [
     CommonModule,
@@ -81,7 +86,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     MatDividerModule,
     MatSnackBarModule,
     MatPaginatorModule,
-
+    MatTableModule,
+    MatSortModule,
     NgxPaginationModule,
 
     MainRoutingModule,

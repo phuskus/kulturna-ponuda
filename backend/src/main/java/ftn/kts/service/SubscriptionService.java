@@ -45,6 +45,10 @@ public class SubscriptionService {
 		return toDTO(subscription);
 	}
 
+	public Page<SubscriptionDTO> getAllDTOForUsername(String username, Pageable pageable) {
+		return subscriptionRepository.findByUsername(username, pageable).map(this::toDTO);
+	}
+
 	public boolean isSubscribedToOffer(long userId, long offerId) {
 		Subscription subscription = subscriptionRepository.findByUserAndOffer(userId, offerId);
 		return subscription != null;

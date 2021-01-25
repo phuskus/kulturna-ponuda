@@ -24,6 +24,7 @@
     "@angular/router": "~11.0.3",
     "angular-responsive-carousel": "^2.0.1",
     "leaflet": "^1.7.1",
+    "moment": "^2.29.1",
     "ng-validate-equal": "^1.0.4",
     "ngx-avatar": "^4.0.0",
     "ngx-pagination": "^5.0.0",

@@ -18,6 +18,8 @@ import { Post } from 'src/app/shared/models/Post';
 import { PostService } from 'src/app/services/post/post.service';
 import Page from 'src/app/shared/models/Page';
 import { SubscriptionService } from 'src/app/services/subscription/subscription.service';
+import { SubscriptionResponse } from 'src/app/shared/models/SubscriptionResponse';
+import { IsSubscribedResponse } from 'src/app/shared/models/IsSubscribedResponse';
 
 @Component({
   selector: 'app-single-offer',
@@ -104,7 +106,7 @@ export class SingleOfferComponent
     );
     this.subscribeToScrollEvent();
 
-    this.subscriptionService.getIsSubscribedToOffer(this.offerId).subscribe((data) => {
+    this.subscriptionService.getIsSubscribedToOffer(this.offerId).subscribe((data: IsSubscribedResponse) => {
       if (data.subscribed) {
         this.subscribeState = 'subscribed';
       } else {
@@ -230,7 +232,7 @@ export class SingleOfferComponent
     }
     
     this.subscribeState = 'loading';
-    this.subscriptionService.subscribeToOffer(this.offerId).subscribe(() => {
+    this.subscriptionService.subscribeToOffer(this.offerId).subscribe((response: SubscriptionResponse) => {
       this.subscribeState = 'subscribed';
     }, (error) => {
       console.log(error);
@@ -239,7 +241,7 @@ export class SingleOfferComponent
 
   unsubscribe() {
     this.subscribeState = 'loading';
-    this.subscriptionService.unsubscribeFromOffer(this.offerId).subscribe(() => {
+    this.subscriptionService.unsubscribeFromOffer(this.offerId).subscribe((response: SubscriptionResponse) => {
       this.subscribeState = 'not subscribed';
     }, (error) => {
       console.log(error);
