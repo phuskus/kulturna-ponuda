@@ -37,6 +37,13 @@ public class Subscription {
 		this.user = registeredUser;
 	}
 
+	public Subscription(Date dateOfSubscription, Subcategory subcategory, CulturalOffer culturalOffer, RegisteredUser registeredUser) {
+		this.dateOfSubscription = dateOfSubscription;
+		this.subcategory = subcategory;
+		this.culturalOffer = culturalOffer;
+		this.user = registeredUser;
+	}
+
 	public Long getId() {
 		return id;
 	}

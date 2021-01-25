@@ -17,6 +17,7 @@ import {
 import { Post } from 'src/app/shared/models/Post';
 import { PostService } from 'src/app/services/post/post.service';
 import Page from 'src/app/shared/models/Page';
+import { SubscriptionService } from 'src/app/services/subscription/subscription.service';
 
 @Component({
   selector: 'app-single-offer',
@@ -35,6 +36,8 @@ export class SingleOfferComponent
   pageSizeReviews: number = 5;
   isLastReviewPage: boolean = false;
   isReviewsLoading: boolean = false;
+  subscribeState: string = "loading";
+  isLoggedIn: boolean = false;
 
   posts: Post[] = [];
   currentPostPage: number = 1;
@@ -58,7 +61,8 @@ export class SingleOfferComponent
     public router: Router,
     private route: ActivatedRoute,
     private postService: PostService,
-    private eventBus: EventBusService
+    private eventBus: EventBusService,
+    public subscriptionService: SubscriptionService
   ) {
     this.offer = offerService.createEmpty();
     this.subscriptions.push(
@@ -99,6 +103,19 @@ export class SingleOfferComponent
       })
     );
     this.subscribeToScrollEvent();
+
+    this.subscriptionService.getIsSubscribedToOffer(this.offerId).subscribe((data) => {
+      if (data.subscribed) {
+        this.subscribeState = 'subscribed';
+      } else {
+        this.subscribeState = 'not subscribed';
+      }
+    }, (error) => {
+      console.log('Failed to get isSubscribedToOffer')
+      console.log(error);
+    });
+
+    this.isLoggedIn = this.authService.getCurrentUser() != undefined
   }
 
   resetFields() {
@@ -204,5 +221,28 @@ export class SingleOfferComponent
 
   isActionDisabled() {
     return this.authService.getCurrentUserRole() == Role.ADMIN;
+  }
+
+  subscribe() {
+    if (!this.isLoggedIn) {
+      this.router.navigateByUrl('/login');
+      return;
+    }
+    
+    this.subscribeState = 'loading';
+    this.subscriptionService.subscribeToOffer(this.offerId).subscribe(() => {
+      this.subscribeState = 'subscribed';
+    }, (error) => {
+      console.log(error);
+    });
+  }
+
+  unsubscribe() {
+    this.subscribeState = 'loading';
+    this.subscriptionService.unsubscribeFromOffer(this.offerId).subscribe(() => {
+      this.subscribeState = 'not subscribed';
+    }, (error) => {
+      console.log(error);
+    });
   }
 }

@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { MessageService } from 'src/app/services/message/message.service';
+import { MessageService, SnackbarColors } from 'src/app/services/message/message.service';
 import { UserService } from 'src/app/services/user/user.service';
 import UpdateDialog from 'src/app/shared/dialog/UpdateDialog';
 
@@ -46,10 +46,10 @@ export class PasswordDialogComponent extends UpdateDialog<PasswordDialogComponen
     this.authService.changePassword(
       this.resetForm.value['oldPassword'], 
       this.resetForm.value['newPassword']).subscribe( () => {
-        this.messageService.openSnackBar(this.snack, 'Successfully changed password!', 'End', 5000);
+        this.messageService.openSnackBar(this.snack, 'Successfully changed password!', 'End', 5000, SnackbarColors.SUCCESS);
         this.dialogRef.close();
       }, error => {
-        this.messageService.openSnackBar(this.snack, 'Please check your old password!', 'End', 5000);
+        this.messageService.openSnackBar(this.snack, 'Please check your old password!', 'End', 5000, SnackbarColors.ERROR);
       })
   }
 

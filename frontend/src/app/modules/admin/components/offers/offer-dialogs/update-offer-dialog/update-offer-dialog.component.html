@@ -30,9 +30,9 @@
           aria-label="Category"
           matInput
           [formControlName]="'category'"
-          [matAutocomplete]="subcategory"
+          [matAutocomplete]="category"
         />
-        <mat-autocomplete #subcategory="matAutocomplete">
+        <mat-autocomplete #category="matAutocomplete">
           <mat-option
             *ngFor="let sub of filteredSubcategories | async"
             [value]="sub"

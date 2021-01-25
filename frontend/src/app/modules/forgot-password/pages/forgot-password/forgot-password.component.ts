@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { MessageService } from 'src/app/services/message/message.service';
+import { MessageService, SnackbarColors } from 'src/app/services/message/message.service';
 import { FormValidationService } from 'src/app/services/validation/form-validation.service';
 
 @Component({
@@ -47,12 +47,12 @@ export class ForgotPasswordComponent implements OnInit {
       this.forgotPasswordForm.value['username']
     ).subscribe( () => {
       this.router.navigate(['/login'])
-      this.messageService.openSnackBar(this.snackBar, 'We sent an email with a link to get back into your account.', 'End', 7000);
+      this.messageService.openSnackBar(this.snackBar, 'We sent an email with a link to get back into your account.', 'End', 7000, SnackbarColors.INFO);
     }, error => {
       console.log(error);
       if (error.status == 401) {
         //account not activated
-        this.messageService.openSnackBar(this.snackBar, error.error.message, 'End', 5000);
+        this.messageService.openSnackBar(this.snackBar, error.error.message, 'End', 5000, SnackbarColors.ERROR);
         this.formValidationService.clearFormAndValidators(this.forgotPasswordForm);
       } else {
         //username not exists

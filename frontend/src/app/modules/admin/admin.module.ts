@@ -30,6 +30,9 @@ import { CategoryTableComponent } from './components/categories/category-table/c
 import { AddCategoryDialogComponent } from './components/categories/category-dialogs/add-category-dialog/add-category-dialog.component';
 import { DeleteCategoryDialogComponent } from './components/categories/category-dialogs/delete-category-dialog/delete-category-dialog.component';
 import { UpdateCategoryDialogComponent } from './components/categories/category-dialogs/update-category-dialog/update-category-dialog.component';
+import { AddSubcategoryDialogComponent } from './components/subcategories/subcategory-dialogs/add-subcategory-dialog/add-subcategory-dialog.component';
+import { DeleteSubcategoryDialogComponent } from './components/subcategories/subcategory-dialogs/delete-subcategory-dialog/delete-subcategory-dialog.component';
+import { UpdateSubcategoryDialogComponent } from './components/subcategories/subcategory-dialogs/update-subcategory-dialog/update-subcategory-dialog.component';
 import { OfferTableComponent } from './components/offers/offer-table/offer-table.component';
 import { DescriptionDialogComponent } from './components/offers/offer-dialogs/description-dialog/description-dialog.component';
 import { AddOfferDialogComponent } from './components/offers/offer-dialogs/add-offer-dialog/add-offer-dialog.component';
@@ -50,6 +53,7 @@ import { PicturesComponent } from './components/pictures/pictures.component';
 import { UpdatePostDialogComponent } from './components/posts/post-dialogs/update-post-dialog/update-post-dialog.component';
 import { DeletePostDialogComponent } from './components/posts/post-dialogs/delete-post-dialog/delete-post-dialog.component';
 import { AddPostDialogComponent } from './components/posts/post-dialogs/add-post-dialog/add-post-dialog.component';
+import { SubcategoryTableComponent } from './components/subcategories/subcategory-table/subcategory-table.component';
 
 
 @NgModule({
@@ -65,6 +69,10 @@ import { AddPostDialogComponent } from './components/posts/post-dialogs/add-post
     AddCategoryDialogComponent,
     DeleteCategoryDialogComponent,
     UpdateCategoryDialogComponent,
+    SubcategoryTableComponent,
+    AddSubcategoryDialogComponent,
+    DeleteSubcategoryDialogComponent,
+    UpdateSubcategoryDialogComponent,
     OfferTableComponent,
     DescriptionDialogComponent,
     AddOfferDialogComponent,

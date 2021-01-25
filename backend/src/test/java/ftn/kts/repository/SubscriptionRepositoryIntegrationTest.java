@@ -35,10 +35,9 @@ public class SubscriptionRepositoryIntegrationTest {
     @Test
     public void findByUser_ExistingUser_ReturnsSubscriptions()
     {
-        Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
         RegisteredUser registeredUser = subscriptionRepository.findById(DB_EXISTING_SUBSCRIPTION_ID_1).get().getUser();
-        Page<Subscription> subscriptions = subscriptionRepository.findByUser(registeredUser, pageable);
-        assertEquals(NUM_OF_SUBS_FOR_USER_1, subscriptions.getNumberOfElements());
+        List<Subscription> subscriptions = subscriptionRepository.findByUser(registeredUser);
+        assertEquals(NUM_OF_SUBS_FOR_USER_1, subscriptions.size());
     }
 
     @Test
