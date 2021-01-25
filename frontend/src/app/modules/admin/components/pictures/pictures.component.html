@@ -1,11 +1,11 @@
 <div>
-  <h1>Images</h1>
+  <h1>Pictures</h1>
   <carousel
     [cellsToShow]="1"
     [borderRadius]="10"
     style="width: 700px !important; max-height: 500px !important"
   >
-    <ng-container *ngFor="let pic of data.pictures">
+    <ng-container *ngFor="let pic of data['pictures']">
       <div class="carousel-cell">
         <img [src]="getFullImgPath(pic)" />
       </div>

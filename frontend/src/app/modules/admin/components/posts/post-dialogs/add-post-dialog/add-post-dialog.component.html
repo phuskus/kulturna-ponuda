@@ -1,0 +1,40 @@
+<div class="add-dialog" style="width: 500px">
+  <h1 mat-dialog-title>Add Post</h1>
+  <form [formGroup]="postForm">
+    <div mat-dialog-content fxLayout="column">
+      <mat-form-field class="example-full-width">
+        <mat-label>Title</mat-label>
+        <input matInput [formControlName]="'title'" />
+        <mat-error *ngIf="f.title.touched && f.title?.errors?.required"
+          >Title is required</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Content</mat-label>
+        <textarea matInput [formControlName]="'content'"></textarea>
+        <mat-error *ngIf="f.content.touched && f.content?.errors?.required"
+          >Content is required</mat-error
+        >
+      </mat-form-field>
+
+      <app-image-selector
+        [multiple]="true"
+        (newFilesEvent)="onFilesSelected($event)"
+      ></app-image-selector>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="end" mat-dialog-actions>
+      <button mat-button class="button-option-alt" mat-dialog-close>
+        Cancel
+      </button>
+      <button
+        mat-button
+        class="button-option-main"
+        type="submit"
+        (click)="onSubmit()"
+        [disabled]="postForm.invalid"
+      >
+        Add
+      </button>
+    </div>
+  </form>
+</div>

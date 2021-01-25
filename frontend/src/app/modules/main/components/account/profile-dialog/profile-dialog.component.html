@@ -19,7 +19,7 @@
                     name="name"
                     [(ngModel)]="newObj.name"
                 />
-                <mat-hint 
+                <mat-hint
                     *ngIf="f.name.touched && f.name.invalid && f.name.errors.required"
                     class="error"
                 >

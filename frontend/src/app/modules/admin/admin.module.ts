@@ -35,7 +35,6 @@ import { DeleteSubcategoryDialogComponent } from './components/subcategories/sub
 import { UpdateSubcategoryDialogComponent } from './components/subcategories/subcategory-dialogs/update-subcategory-dialog/update-subcategory-dialog.component';
 import { OfferTableComponent } from './components/offers/offer-table/offer-table.component';
 import { DescriptionDialogComponent } from './components/offers/offer-dialogs/description-dialog/description-dialog.component';
-import { ImagesDialogComponent } from './components/offers/offer-dialogs/images-dialog/images-dialog.component';
 import { AddOfferDialogComponent } from './components/offers/offer-dialogs/add-offer-dialog/add-offer-dialog.component';
 import { IvyCarouselModule } from 'angular-responsive-carousel';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -48,6 +47,12 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { UpdateOfferDialogComponent } from './components/offers/offer-dialogs/update-offer-dialog/update-offer-dialog.component';
 import { DeleteOfferDialogComponent } from './components/offers/offer-dialogs/delete-offer-dialog/delete-offer-dialog.component';
+import { PostTableComponent } from './components/posts/post-table/post-table.component';
+import { ContentDialogComponent } from './components/posts/post-dialogs/content-dialog/content-dialog.component';
+import { PicturesComponent } from './components/pictures/pictures.component';
+import { UpdatePostDialogComponent } from './components/posts/post-dialogs/update-post-dialog/update-post-dialog.component';
+import { DeletePostDialogComponent } from './components/posts/post-dialogs/delete-post-dialog/delete-post-dialog.component';
+import { AddPostDialogComponent } from './components/posts/post-dialogs/add-post-dialog/add-post-dialog.component';
 import { SubcategoryTableComponent } from './components/subcategories/subcategory-table/subcategory-table.component';
 
 
@@ -70,11 +75,16 @@ import { SubcategoryTableComponent } from './components/subcategories/subcategor
     UpdateSubcategoryDialogComponent,
     OfferTableComponent,
     DescriptionDialogComponent,
-    ImagesDialogComponent,
     AddOfferDialogComponent,
     AddressAutocompleteComponent,
     UpdateOfferDialogComponent,
     DeleteOfferDialogComponent,
+    PostTableComponent,
+    ContentDialogComponent,
+    PicturesComponent,
+    UpdatePostDialogComponent,
+    DeletePostDialogComponent,
+    AddPostDialogComponent
   ],
   imports: [
     CommonModule,
