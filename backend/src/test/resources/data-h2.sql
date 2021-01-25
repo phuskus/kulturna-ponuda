@@ -31,9 +31,9 @@ insert into cultural_offers (address, city, description, latitude, longitude, na
 insert into cultural_offers_pictures (cultural_offer_id, pictures_id) values (1, 1);
 insert into cultural_offers_pictures (cultural_offer_id, pictures_id) values (2, 2);
 
-insert into posts (content, cultural_offer_id, title, date_posted) values ('test1_offer1', 1,'', '2020-12-15 13:27:00.508-07');
-insert into posts (content, cultural_offer_id, title, date_posted) values ('test2_offer1', 1,'', '2020-12-15 13:27:00.508-07');
-insert into posts (content, cultural_offer_id, title, date_posted) values ('test3_offer2', 2,'', '2020-12-15 13:27:00.508-07');
+insert into posts (content, cultural_offer_id, title, date_posted) values ('test1_offer1', 1, 'title1', '2020-12-15 13:27:00.508-07');
+insert into posts (content, cultural_offer_id, title, date_posted) values ('test2_offer1', 1, 'title2', '2020-12-15 13:27:00.508-07');
+insert into posts (content, cultural_offer_id, title, date_posted) values ('test3_offer2', 2, 'title3', '2020-12-15 13:27:00.508-07');
 
 insert into posts_pictures (post_id, pictures_id) values (1, 1);
 insert into posts_pictures (post_id, pictures_id) values (2, 1);
