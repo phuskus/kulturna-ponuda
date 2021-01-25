@@ -105,7 +105,14 @@ export class SingleOfferComponent
       })
     );
     this.subscribeToScrollEvent();
+    
+    this.isLoggedIn = this.authService.getCurrentUser() != undefined
 
+    if (!this.isLoggedIn) {
+      this.subscribeState = 'not subscribed';
+      return;
+    }
+    
     this.subscriptionService.getIsSubscribedToOffer(this.offerId).subscribe((data: IsSubscribedResponse) => {
       if (data.subscribed) {
         this.subscribeState = 'subscribed';
@@ -117,7 +124,6 @@ export class SingleOfferComponent
       console.log(error);
     });
 
-    this.isLoggedIn = this.authService.getCurrentUser() != undefined
   }
 
   resetFields() {
