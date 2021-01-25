@@ -38,7 +38,7 @@ public class SubscriptionController {
 
 	@GetMapping
 	@PreAuthorize("hasAnyRole('USER')")
-	public ResponseEntity<Page<SubscriptionDTO>> getAllSubscriptions(@RequestParam(defaultValue = "0") Integer pageNo,
+	public ResponseEntity<Page<SubscriptionDTO>> getMySubscriptions(@RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
 			@RequestParam(defaultValue = "true") String descending) {
 		Pageable paging;
@@ -49,7 +49,8 @@ public class SubscriptionController {
 		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
 		String username = currentUser.getName();
 		Page<SubscriptionDTO> subscriptions = service.getAllDTOForUsername(username, paging);
-		return new ResponseEntity<>(subscriptions, HttpStatus.OK);
+		ResponseEntity<Page<SubscriptionDTO>> responseEntity = new ResponseEntity<>(subscriptions, HttpStatus.OK);
+		return responseEntity;
 	}
 
 	@GetMapping("/{id}")
