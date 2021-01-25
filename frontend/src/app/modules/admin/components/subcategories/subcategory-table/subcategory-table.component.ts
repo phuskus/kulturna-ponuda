@@ -23,10 +23,6 @@ export class SubcategoryTableComponent extends AbstractTable {
     this.openDialog(AddSubcategoryDialogComponent);
   }
 
-  openUpdateDialog(row: Subcategory): void {
-    this.openDialog(UpdateSubcategoryDialogComponent, row);
-  }
-
   openDeleteDialog(row: Subcategory): void {
     this.openDialog(DeleteSubcategoryDialogComponent, row);
   }
