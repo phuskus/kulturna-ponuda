@@ -90,7 +90,7 @@ public class CulturalOfferDTO {
 	}
 
 	public CulturalOfferDTO(String name, String description, float latitude, float longitude, String address,
-			String city, String region, Long admin, Long category) {
+			String city, String region, Long admin, Long category, String categoryName) {
 		this.name = name;
 		this.description = description;
 		this.latitude = latitude;
@@ -103,6 +103,7 @@ public class CulturalOfferDTO {
 		this.reviews = new HashSet<>();
 		this.posts = new HashSet<>();
 		this.pictures = new HashSet<>();
+		this.categoryName = categoryName;
 	}
 
 	public Long getId() {

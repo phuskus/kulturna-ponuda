@@ -1,34 +1,29 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { catchError, delay } from 'rxjs/operators';
 import Page from 'src/app/shared/models/Page';
 import { Review } from '../../shared/models/Review';
 import { BaseDynamicPagingService } from '../base/base-dynamic-paging.service';
+import { UserService } from '../user/user.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ReviewService extends BaseDynamicPagingService {
-  constructor(public http: HttpClient) {
-    super('http://localhost:9001/reviews', http);
+  constructor(public http: HttpClient, private userService: UserService) {
+    super('reviews', http);
   }
 
   createEmpty(): Review {
     return {
-      id: 392,
-      rating: 1,
-      content:
-        'Et consequat sunt sit irure culpa non amet ad et officia. Magna ipsum consectetur qui exercitation culpa ut cupidatat culpa proident in minim minim incididunt. Cupidatat ut eu ipsum do ullamco irure eu do aliquip aute id ut.\r\n',
-      user: {
-        id: 279,
-        name: 'Celia',
-        surname: 'James',
-        username: 'Marian',
-        password: '',
-      },
-      culturalOfferId: 314,
-      culturalOfferName: 'Acruex',
+      id: -1,
+      rating: 0,
+      content: '',
+      datePosted: new Date(),
+      user: this.userService.createEmpty(),
+      culturalOfferId: -1,
+      culturalOfferName: '',
       pictures: [],
     };
   }
@@ -38,12 +33,27 @@ export class ReviewService extends BaseDynamicPagingService {
     pageNumber: number,
     pageSize: number
   ): Observable<Page<Review>> {
-    const delayInMiliseconds = pageNumber > 0 ? 500: 0;
+    const delayInMiliseconds = pageNumber > 0 ? 500 : 0;
     return this.http
       .get<Page<Review>>(
         `${this.url}/offer/${id}?pageNo=${pageNumber}&pageSize=${pageSize}`,
         this.httpOptions
       )
-      .pipe(catchError(this.handleError<Page<Review>>()), delay(delayInMiliseconds));
+      .pipe(
+        catchError(this.handleError<Page<Review>>()),
+        delay(delayInMiliseconds)
+      );
+  }
+
+  addMultipart(review: Review, files: FileList): Observable<Review> {
+    const formData = new FormData();
+    for (let i = 0; i < files?.length || 0; i++)
+      formData.append('files', files[i]);
+
+    formData.append('review', JSON.stringify(review));
+
+    return this.http
+      .post<Review>(this.url, formData)
+      .pipe(catchError(this.handleError<Review>()));
   }
 }

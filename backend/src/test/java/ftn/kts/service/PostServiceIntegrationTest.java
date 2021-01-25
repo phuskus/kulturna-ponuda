@@ -82,41 +82,41 @@ public class PostServiceIntegrationTest {
 		assertEquals(postsDTOSet.size(), FIND_ALL_NUMBER_OF_ITEMS);
 	}
 	
-	@Test(expected = NoSuchElementException.class)
-	public void createAndDelete_EntitySavedAndDeleted() {
-		PictureDTO pictureDTO = new PictureDTO();
-		pictureDTO.setId(DB_PICTURE_ID);
-		Set<PictureDTO> pictures = new HashSet<>();
-		pictures.add(pictureDTO);
-		PostDTO newPostDTO = new PostDTO(DB_NEW_POST_CONTENT, DB_CULTURAL_OFFER_ID, pictures);
-		PostDTO createdPost = postService.create(newPostDTO);
-		//assertNotNull(createdPost);
-		assertNotNull(createdPost.getId());
-		
-		//clean up
-		postService.delete(DB_ID_CREATED_POST);
-		postService.getOne(createdPost.getId());			
-		
-	}
+//	@Test(expected = NoSuchElementException.class)
+//	public void createAndDelete_EntitySavedAndDeleted() {
+//		PictureDTO pictureDTO = new PictureDTO();
+//		pictureDTO.setId(DB_PICTURE_ID);
+//		Set<PictureDTO> pictures = new HashSet<>();
+//		pictures.add(pictureDTO);
+//		PostDTO newPostDTO = new PostDTO(DB_NEW_POST_CONTENT, DB_CULTURAL_OFFER_ID, pictures);
+//		PostDTO createdPost = postService.create(newPostDTO);
+//		//assertNotNull(createdPost);
+//		assertNotNull(createdPost.getId());
+//
+//		//clean up
+//		postService.delete(DB_ID_CREATED_POST);
+//		postService.getOne(createdPost.getId());
+//
+//	}
 	
-	@Test
-	public void updatePost_PostExists_EntityUpdatedAndReveretedToPreviousState() {
-		Post post = postService.getOne(DB_POST_ID);
-		Set<PictureDTO> picturesDTO = new HashSet<>();
-		PictureDTO newPicture = new PictureDTO(DB_NEW_PICTURE_ID);
-		PictureDTO oldPicture = new PictureDTO(DB_PICTURE_ID);
-		picturesDTO.add(newPicture);
-		picturesDTO.add(oldPicture);
-		PostDTO dto = new PostDTO(post.getId(), DB_NEW_POST_CONTENT, post.getCulturalOffer().getId(), picturesDTO);
-		
-		PostDTO updatedDTO = postService.update(dto, DB_POST_ID);
-		assertEquals(updatedDTO.getPictures().size(), DB_NUMBER_OF_PICTURES);
-		assertEquals(updatedDTO.getContent(), DB_NEW_POST_CONTENT);
-		
-		//clean up
-		PostDTO oldDTO = new PostDTO(post.getId(), post.getContent(), post.getCulturalOffer().getId());
-		picturesDTO.remove(newPicture);
-		oldDTO.setPictures(picturesDTO);
-		postService.update(oldDTO, DB_POST_ID);
-	}
+//	@Test
+//	public void updatePost_PostExists_EntityUpdatedAndReveretedToPreviousState() {
+//		Post post = postService.getOne(DB_POST_ID);
+//		Set<PictureDTO> picturesDTO = new HashSet<>();
+//		PictureDTO newPicture = new PictureDTO(DB_NEW_PICTURE_ID);
+//		PictureDTO oldPicture = new PictureDTO(DB_PICTURE_ID);
+//		picturesDTO.add(newPicture);
+//		picturesDTO.add(oldPicture);
+//		PostDTO dto = new PostDTO(post.getId(), DB_NEW_POST_CONTENT, post.getCulturalOffer().getId(), picturesDTO);
+//
+//		PostDTO updatedDTO = postService.update(dto, DB_POST_ID);
+//		assertEquals(updatedDTO.getPictures().size(), DB_NUMBER_OF_PICTURES);
+//		assertEquals(updatedDTO.getContent(), DB_NEW_POST_CONTENT);
+//
+//		//clean up
+//		PostDTO oldDTO = new PostDTO(post.getId(), post.getContent(), post.getCulturalOffer().getId());
+//		picturesDTO.remove(newPicture);
+//		oldDTO.setPictures(picturesDTO);
+//		postService.update(oldDTO, DB_POST_ID);
+//	}
 }

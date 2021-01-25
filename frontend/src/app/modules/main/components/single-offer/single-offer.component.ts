@@ -1,56 +1,145 @@
-import { AfterContentChecked, AfterContentInit, AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { AfterContentInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { ReviewDialogComponent } from './review-dialog/review-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Review } from 'src/app/shared/models/Review';
 import { ReviewService } from 'src/app/services/review/review.service';
 import { OfferService } from 'src/app/services/offer/offer.service';
 import { CulturalOffer } from 'src/app/shared/models/CulturalOffer';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { Role } from 'src/app/shared/models/Role';
+import {
+  EmitEvent,
+  EventBusService,
+  Events,
+} from 'src/app/services/event-bus/event-bus.service';
+import { Post } from 'src/app/shared/models/Post';
+import { PostService } from 'src/app/services/post/post.service';
+import Page from 'src/app/shared/models/Page';
+import { SubscriptionService } from 'src/app/services/subscription/subscription.service';
 
 @Component({
   selector: 'app-single-offer',
   templateUrl: './single-offer.component.html',
   styleUrls: ['./single-offer.component.scss'],
 })
-export class SingleOfferComponent implements AfterContentInit  {
+export class SingleOfferComponent
+  implements OnInit, AfterContentInit, OnDestroy {
   offerId: number;
   offer: CulturalOffer;
+  previousRoute: string = '';
+
   reviews: Review[] = [];
   currentReviewPage: number = 0;
   totalReviews: number = 0;
-  pageSize: number = 5;
+  pageSizeReviews: number = 5;
   isLastReviewPage: boolean = false;
   isReviewsLoading: boolean = false;
+  subscribeState: string = "loading";
+  isLoggedIn: boolean = false;
+
+  posts: Post[] = [];
+  currentPostPage: number = 1;
+  totalPosts: number = 0;
+  pageSizePosts: number = 3;
+
+  private subscriptions: Subscription[] = [];
+
+  public images: any = [
+    { path: '../../assets/imgs/img1.jpg' },
+    { path: '../../assets/imgs/img2.jpg' },
+    { path: '../../assets/imgs/img3.jpg' },
+    { path: '../../assets/imgs/img-1.jpg' },
+  ];
 
   constructor(
     public dialog: MatDialog,
     public offerService: OfferService,
     public reviewService: ReviewService,
-    private route: ActivatedRoute
+    public authService: AuthService,
+    public router: Router,
+    private route: ActivatedRoute,
+    private postService: PostService,
+    private eventBus: EventBusService,
+    public subscriptionService: SubscriptionService
   ) {
     this.offer = offerService.createEmpty();
+    this.subscriptions.push(
+      this.router.events
+        .filter((e) => e instanceof NavigationEnd)
+        .subscribe((e: NavigationEnd) => {
+          const navigation = this.router.getCurrentNavigation();
+          this.previousRoute = navigation.extras.state
+            ? navigation.extras.state.previousRoute
+            : this.previousRoute;
+        })
+    );
+  }
+  ngOnInit(): void {}
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
-  ngAfterContentInit (): void {
-    this.route.params.subscribe(params => {
-      this.offerId = params.offerId;
-      if (this.offerId === NaN) {
-        // should redirect to 404
-        throw new Error('Error 404, invalid id');
-      }
-      this.reviews = [];
-      this.currentReviewPage = 0;
-      this.totalReviews = 0;
-      this.fetchReviews();
-      this.fetchOffer();
-    });
+  goBack(): void {
+    this.router.navigateByUrl(this.previousRoute);
+  }
+
+  ngAfterContentInit(): void {
+    this.subscriptions.push(
+      this.route.params.subscribe((params) => {
+        this.offerId = params.offerId;
+        if (this.offerId === NaN) {
+          // should redirect to 404
+          throw new Error('Error 404, invalid id');
+        }
+        this.reviews = [];
+        this.currentReviewPage = 0;
+        this.totalReviews = 0;
+        this.fetchReviews();
+        this.fetchPosts();
+        this.fetchOffer();
+      })
+    );
     this.subscribeToScrollEvent();
+
+    this.subscriptionService.getIsSubscribedToOffer(this.offerId).subscribe((data) => {
+      if (data.subscribed) {
+        this.subscribeState = 'subscribed';
+      } else {
+        this.subscribeState = 'not subscribed';
+      }
+    }, (error) => {
+      console.log('Failed to get isSubscribedToOffer')
+      console.log(error);
+    });
+
+    this.isLoggedIn = this.authService.getCurrentUser() != undefined
+  }
+
+  resetFields() {
+    this.reviews = [];
+    this.isLastReviewPage = false;
+    this.isReviewsLoading = false;
+    this.currentReviewPage = 0;
+    this.totalReviews = 0;
   }
 
   fetchOffer() {
-    this.offerService.get(this.offerId).subscribe((data) => {
-      this.offer = data as CulturalOffer;
+    this.offerService.get(this.offerId).subscribe((data: CulturalOffer) => {
+      this.offer = data;
+      this.eventBus.emit(new EmitEvent(Events.OfferFocused, data));
     });
+  }
+
+  fetchPosts() {
+    this.postService
+      .getForOfferId(this.offerId, this.currentPostPage - 1, this.pageSizePosts)
+      .subscribe((data: Page<Post>) => {
+        this.posts = data.content;
+        this.totalPosts = data.totalElements;
+      });
   }
 
   fetchReviews() {
@@ -58,12 +147,16 @@ export class SingleOfferComponent implements AfterContentInit  {
     this.currentReviewPage += 1;
     this.isReviewsLoading = true;
     this.reviewService
-      .getForOfferId(this.offerId, this.currentReviewPage - 1, this.pageSize)
+      .getForOfferId(
+        this.offerId,
+        this.currentReviewPage - 1,
+        this.pageSizeReviews
+      )
       .subscribe(
-        (data) => {
+        (data: Page<Review>) => {
           this.reviews = this.reviews.concat(data.content);
           this.isReviewsLoading = false;
-          this.totalReviews = data.totalElements; 
+          this.totalReviews = data.totalElements;
           if (data.totalPages == this.currentReviewPage) {
             this.isLastReviewPage = true;
           }
@@ -78,16 +171,25 @@ export class SingleOfferComponent implements AfterContentInit  {
     this.currentReviewPage -= 1;
   }
 
+  handlePageChange(event: number): void {
+    this.currentPostPage = event;
+    this.fetchPosts();
+  }
+
   subscribeToScrollEvent() {
-    const x: Element = document.getElementsByTagName('mat-drawer')[0];
-    x.addEventListener('scroll', (event: any) => {
+    const drawer = document.getElementById('drawer');
+    let header = document.getElementById('header');
+
+    drawer.addEventListener('scroll', (event: any) => {
       if (
         event.target.offsetHeight + event.target.scrollTop >=
         event.target.scrollHeight
       ) {
         this.scrolledToTheEndSoFetchNextPage();
-      } else {
       }
+
+      if (event.target.scrollTop > 15) header.classList.add('sticky');
+      else header.classList.remove('sticky');
     });
   }
 
@@ -96,16 +198,51 @@ export class SingleOfferComponent implements AfterContentInit  {
   }
 
   openAddDialog(): void {
-    this.dialog.open(ReviewDialogComponent, {
+    if (!this.authService.getCurrentUser()) {
+      this.router.navigateByUrl('/login');
+      return;
+    }
+
+    const dialogRef = this.dialog.open(ReviewDialogComponent, {
       autoFocus: false,
-      data: { id: 0, name: 'Museum of Modern Art' },
+      data: this.offer,
+    });
+
+    const sub = (dialogRef.componentInstance as ReviewDialogComponent).onSubscriptionCallBack.subscribe(
+      (data) => {
+        this.resetFields();
+        this.fetchReviews();
+
+        // since dialog is now closed, you can unsubscribe from its events
+        sub.unsubscribe();
+      }
+    );
+  }
+
+  isActionDisabled() {
+    return this.authService.getCurrentUserRole() == Role.ADMIN;
+  }
+
+  subscribe() {
+    if (!this.isLoggedIn) {
+      this.router.navigateByUrl('/login');
+      return;
+    }
+    
+    this.subscribeState = 'loading';
+    this.subscriptionService.subscribeToOffer(this.offerId).subscribe(() => {
+      this.subscribeState = 'subscribed';
+    }, (error) => {
+      console.log(error);
     });
   }
 
-  public images: any = [
-    { path: '../../assets/imgs/img1.jpg' },
-    { path: '../../assets/imgs/img2.jpg' },
-    { path: '../../assets/imgs/img3.jpg' },
-    { path: '../../assets/imgs/img-1.jpg' },
-  ];
+  unsubscribe() {
+    this.subscribeState = 'loading';
+    this.subscriptionService.unsubscribeFromOffer(this.offerId).subscribe(() => {
+      this.subscribeState = 'not subscribed';
+    }, (error) => {
+      console.log(error);
+    });
+  }
 }

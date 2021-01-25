@@ -30,6 +30,26 @@ import { CategoryTableComponent } from './components/categories/category-table/c
 import { AddCategoryDialogComponent } from './components/categories/category-dialogs/add-category-dialog/add-category-dialog.component';
 import { DeleteCategoryDialogComponent } from './components/categories/category-dialogs/delete-category-dialog/delete-category-dialog.component';
 import { UpdateCategoryDialogComponent } from './components/categories/category-dialogs/update-category-dialog/update-category-dialog.component';
+import { AddSubcategoryDialogComponent } from './components/subcategories/subcategory-dialogs/add-subcategory-dialog/add-subcategory-dialog.component';
+import { DeleteSubcategoryDialogComponent } from './components/subcategories/subcategory-dialogs/delete-subcategory-dialog/delete-subcategory-dialog.component';
+import { UpdateSubcategoryDialogComponent } from './components/subcategories/subcategory-dialogs/update-subcategory-dialog/update-subcategory-dialog.component';
+import { OfferTableComponent } from './components/offers/offer-table/offer-table.component';
+import { DescriptionDialogComponent } from './components/offers/offer-dialogs/description-dialog/description-dialog.component';
+import { ImagesDialogComponent } from './components/offers/offer-dialogs/images-dialog/images-dialog.component';
+import { AddOfferDialogComponent } from './components/offers/offer-dialogs/add-offer-dialog/add-offer-dialog.component';
+import { IvyCarouselModule } from 'angular-responsive-carousel';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSelectModule } from '@angular/material/select';
+import { AddressAutocompleteComponent } from './components/offers/address-autocomplete/address-autocomplete.component';
+import { HttpClientModule } from '@angular/common/http';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { UpdateOfferDialogComponent } from './components/offers/offer-dialogs/update-offer-dialog/update-offer-dialog.component';
+import { DeleteOfferDialogComponent } from './components/offers/offer-dialogs/delete-offer-dialog/delete-offer-dialog.component';
+import { SubcategoryTableComponent } from './components/subcategories/subcategory-table/subcategory-table.component';
+
 
 @NgModule({
   declarations: [
@@ -44,6 +64,17 @@ import { UpdateCategoryDialogComponent } from './components/categories/category-
     AddCategoryDialogComponent,
     DeleteCategoryDialogComponent,
     UpdateCategoryDialogComponent,
+    SubcategoryTableComponent,
+    AddSubcategoryDialogComponent,
+    DeleteSubcategoryDialogComponent,
+    UpdateSubcategoryDialogComponent,
+    OfferTableComponent,
+    DescriptionDialogComponent,
+    ImagesDialogComponent,
+    AddOfferDialogComponent,
+    AddressAutocompleteComponent,
+    UpdateOfferDialogComponent,
+    DeleteOfferDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -67,6 +98,14 @@ import { UpdateCategoryDialogComponent } from './components/categories/category-
     MatProgressSpinnerModule,
     MatPaginatorModule,
     MatMenuModule,
+    IvyCarouselModule,
+    ReactiveFormsModule,
+    MatAutocompleteModule,
+    MatSelectModule,
+    HttpClientModule,
+    MatFormFieldModule,
+    MatTooltipModule,
+    MatSnackBarModule
   ],
 })
 export class AdminModule {}

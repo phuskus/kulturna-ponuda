@@ -21,8 +21,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ftn.kts.dto.CulturalOfferDTO;
+import ftn.kts.dto.ReviewDTO;
 import ftn.kts.exceptions.UniqueConstraintViolationException;
 import ftn.kts.service.CulturalOfferService;
 
@@ -127,9 +132,10 @@ public class CulturalOfferController {
 	
 	@PostMapping
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<CulturalOfferDTO> addOffer(@Valid @RequestBody CulturalOfferDTO dto)
-			throws UniqueConstraintViolationException {
-		CulturalOfferDTO created = service.create(dto);
+	public ResponseEntity<CulturalOfferDTO> addOffer(@Valid @RequestParam String offer, @RequestParam(value = "files", required = false) MultipartFile[] files) throws JsonProcessingException, UniqueConstraintViolationException {
+        ObjectMapper mapper = new ObjectMapper();
+		CulturalOfferDTO dto = mapper.readValue(offer, CulturalOfferDTO.class);	 
+		CulturalOfferDTO created = service.create(dto, files);
 		return new ResponseEntity<>(created, HttpStatus.CREATED);
 	}
 

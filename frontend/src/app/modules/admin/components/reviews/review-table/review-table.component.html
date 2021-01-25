@@ -17,12 +17,9 @@
     <div>Reviews</div>
 
     <mat-form-field class="search-field">
-      <input
-        matInput
-        (keyup)="applyFilter($event)"
-        placeholder="Search"
-        #input
-      />
+      <input matInput (keyup)="applyFilter($event)" #input />
+      <mat-placeholder class="placeholder">Search</mat-placeholder>
+      <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
   </div>
 
@@ -82,7 +79,7 @@
         </td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
+      <tr mat-header-row *matHeaderRowDef="tableColumns; sticky: true"></tr>
       <tr mat-row *matRowDef="let row; columns: tableColumns"></tr>
     </table>
   </div>

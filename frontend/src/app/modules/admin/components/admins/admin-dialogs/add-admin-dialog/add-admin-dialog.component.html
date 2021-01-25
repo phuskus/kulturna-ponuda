@@ -1,13 +1,20 @@
 <div class="add-dialog">
   <h1 mat-dialog-title>Add Admin</h1>
   <div mat-dialog-content fxLayout="column">
-    <mat-form-field class="example-full-width">
-      <mat-label>Name</mat-label>
-      <input matInput [(ngModel)]="newObj.name" name="name" />
-    </mat-form-field>
+    <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="5%" style="width: 100%">
+      <mat-form-field class="example-full-width">
+        <mat-label>First Name</mat-label>
+        <input matInput [(ngModel)]="newObj.name" name="name" />
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Last Name</mat-label>
+        <input matInput [(ngModel)]="newObj.surname" name="surname" />
+      </mat-form-field>
+    </div>
 
     <mat-form-field class="example-full-width">
-      <mat-label>Username</mat-label>
+      <mat-label>Email</mat-label>
       <input matInput [(ngModel)]="newObj.username" name="username" />
     </mat-form-field>
   </div>

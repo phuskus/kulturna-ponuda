@@ -83,3 +83,12 @@
     flex: 100%;
   }
 }
+
+.flex-cult-table {
+  width: 100%;
+  padding: 1%;
+  flex: 0 1 calc(100% - 2%);
+  @media only screen and (max-width: 1279px) {
+    flex: 100%;
+  }
+}

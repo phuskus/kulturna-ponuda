@@ -9,19 +9,21 @@ import { JwtTokenService } from '../jwt-token.service';
 
 @Injectable()
 export class TokenInterceptorService implements HttpInterceptor {
+  constructor(
+    private inj: Injector,
+    private jwtTokenService: JwtTokenService
+  ) {}
 
-  constructor(private inj: Injector, private jwtTokenService : JwtTokenService) { }
-
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(
+    req: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
     const token = this.jwtTokenService.getToken();
-    if (token) {
       req = req.clone({
         setHeaders: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token || ''}`,
+        },
       });
-    }
     return next.handle(req);
   }
-
 }
