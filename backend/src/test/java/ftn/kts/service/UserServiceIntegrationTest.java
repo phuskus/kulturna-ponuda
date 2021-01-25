@@ -94,12 +94,7 @@ public class UserServiceIntegrationTest {
 	public void getLoggedIn_AccountDisabled_DisabledExceptionThrown() throws DisabledException, PasswordNotChangedException, MethodArgumentNotValidException, UserException {
 		userService.getLoggedIn(DB_USER_USERNAME_DISABLED, DB_USER_PASSWORD_DISABLED);
 	}
-	
-	@Test(expected = PasswordNotChangedException.class)
-	public void getLoggedIn_AdminAccountPasswordNotChanged_PasswordNotChangedExceptionThrown() throws DisabledException, PasswordNotChangedException, MethodArgumentNotValidException, UserException {
-		userService.getLoggedIn(DB_ADMIN_USERNAME_FAILED, DB_ADMIN_PASSWORD_FAILED);
-	}
-	
+		
 	@Test
 	public void confirmRegistration_AccountExistsNotEnabled_AccountEnabled() {
 		UserDTO userDTO = userService.confirmRegistration(DB_REGISTRATION_KEY);

@@ -79,26 +79,28 @@ public class CulturalOfferServiceUnitTest {
 
 		given(offerRepository.save(offerToBeChanged)).willReturn(changedOffer);
 	}
-//
-//	@Test
-//	public void updateOffer_UniqueConstaintNotViolated_TestPasses() throws Exception {
-//		CulturalOfferDTO dto = new CulturalOfferDTO(UNIT_TEST_NAME_CHANGED, UNIT_TEST_DESCRIPTION, 0F, 0F,
-//				UNIT_TEST_ADDRESS, UNIT_TEST_CITY, UNIT_TEST_REGION, 1L, 1L);
-//		CulturalOfferDTO updated = offerService.update(dto, UNIT_TEST_ID_SECOND);
-//
-//		verify(offerRepository, times(1)).findById(UNIT_TEST_ID_SECOND);
-//		verify(offerRepository, times(1)).findByNameIgnoringCase(UNIT_TEST_NAME_CHANGED);
-//		verify(offerRepository, times(1)).save(offerToBeChanged);
-//
-//		assertEquals(UNIT_TEST_NAME_CHANGED, updated.getName());
-//	}
-//
-//	@Test(expected = UniqueConstraintViolationException.class)
-//	public void updateOffer_UniqueConstaintViolated_ExceptionThrown() throws Exception {
-//		// tries to set second to first name, so it violates unique constraint
-//		CulturalOfferDTO dto = new CulturalOfferDTO(UNIT_TEST_NAME_FIRST, UNIT_TEST_DESCRIPTION, 0F, 0F,
-//				UNIT_TEST_ADDRESS, UNIT_TEST_CITY, UNIT_TEST_REGION, 1L, 1L);
-//		offerService.update(dto, UNIT_TEST_ID_SECOND);
-//	}
+
+	@Test
+	public void updateOffer_UniqueConstaintNotViolated_TestPasses() throws Exception {
+		CulturalOfferDTO dto = new CulturalOfferDTO(UNIT_TEST_NAME_CHANGED, UNIT_TEST_DESCRIPTION, 0F, 0F,
+				UNIT_TEST_ADDRESS, UNIT_TEST_CITY, UNIT_TEST_REGION, 1L, 1L, "Festival");
+		dto.setAverageRating(-1d);
+		CulturalOfferDTO updated = offerService.update(dto, UNIT_TEST_ID_SECOND);
+
+		verify(offerRepository, times(1)).findById(UNIT_TEST_ID_SECOND);
+		verify(offerRepository, times(1)).findByNameIgnoringCase(UNIT_TEST_NAME_CHANGED);
+		verify(offerRepository, times(1)).save(offerToBeChanged);
+
+		assertEquals(UNIT_TEST_NAME_CHANGED, updated.getName());
+	}
+
+	@Test(expected = UniqueConstraintViolationException.class)
+	public void updateOffer_UniqueConstaintViolated_ExceptionThrown() throws Exception {
+		// tries to set second to first name, so it violates unique constraint
+		CulturalOfferDTO dto = new CulturalOfferDTO(UNIT_TEST_NAME_FIRST, UNIT_TEST_DESCRIPTION, 0F, 0F,
+				UNIT_TEST_ADDRESS, UNIT_TEST_CITY, UNIT_TEST_REGION, 1L, 1L, "Festival");
+		dto.setAverageRating(-1d);
+		offerService.update(dto, UNIT_TEST_ID_SECOND);
+	}
 
 }

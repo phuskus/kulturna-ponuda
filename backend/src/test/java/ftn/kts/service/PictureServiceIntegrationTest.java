@@ -8,6 +8,7 @@ import static ftn.kts.constants.PictureConstants.GET_NULL_ID;
 import static ftn.kts.constants.PictureConstants.GET_ONE_ID;
 import static ftn.kts.constants.PictureConstants.GET_TWO_ID;
 import static ftn.kts.constants.PictureConstants.PROJECT_FOLDER;
+import static ftn.kts.constants.PictureConstants.FILE_FOLDER;
 import static org.junit.Assert.assertEquals;
 
 import java.io.FileNotFoundException;
@@ -61,7 +62,7 @@ public class PictureServiceIntegrationTest {
         PictureDTO picture = pictureService.add(file);
         
 		String fullPath = picture.getPath();
-		Path path = Paths.get(PROJECT_FOLDER + fullPath);
+		Path path = Paths.get(PROJECT_FOLDER + FILE_FOLDER + fullPath);
 		String found = Files.lines(path).reduce("", String::concat);
         
         assertEquals(DB_INSERT_FILE_CONTENT, found);

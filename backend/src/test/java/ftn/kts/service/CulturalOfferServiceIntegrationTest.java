@@ -56,28 +56,28 @@ public class CulturalOfferServiceIntegrationTest {
 	public void getOneDTO_OfferNotExists_NoSuchElementExceptionThrown() {
 		cultOfferService.getOneDTO(DB_NO_CULTURAL_OFFER_ID);
 	}
-//	
-//	@Test(expected = NoSuchElementException.class)
-//	public void createAndDelete_EntitySavedAndDeleted() throws UniqueConstraintViolationException {
-//		CulturalOfferDTO newOfferDTO = new CulturalOfferDTO(CREATE_NAME, CREATE_DESCRIPTION,
-//				CREATE_LATITUDE, CREATE_LONGITUDE, CREATE_ADRESS, CREATE_CITY, CREATE_REGION,
-//				ADMIN_ID, CATEGORY_ID);
-//		CulturalOfferDTO createdOffer = cultOfferService.create(newOfferDTO);
-//		assertNotNull(createdOffer.getId());
-//		
-//		//clean up
-//		cultOfferService.delete(createdOffer.getId());
-//		cultOfferService.getOne(createdOffer.getId());
-//	}
-//	
-//	@Test(expected = UniqueConstraintViolationException.class)
-//	public void createAndDelete_NameExists_UniqueConstraintViolationExceptionThrown() throws UniqueConstraintViolationException {
-//		CulturalOfferDTO newOfferDTO = new CulturalOfferDTO(DB_CULTURAL_OFFER_NAME, CREATE_DESCRIPTION,
-//				CREATE_LATITUDE, CREATE_LONGITUDE, CREATE_ADRESS, CREATE_CITY, CREATE_REGION,
-//				ADMIN_ID, CATEGORY_ID);
-//		cultOfferService.create(newOfferDTO);
-//	}
-//	
+	
+	@Test(expected = NoSuchElementException.class)
+	public void createAndDelete_EntitySavedAndDeleted() throws UniqueConstraintViolationException {
+		CulturalOfferDTO newOfferDTO = new CulturalOfferDTO(CREATE_NAME, CREATE_DESCRIPTION,
+				CREATE_LATITUDE, CREATE_LONGITUDE, CREATE_ADRESS, CREATE_CITY, CREATE_REGION,
+				ADMIN_ID, CATEGORY_ID, "Festival");
+		CulturalOfferDTO createdOffer = cultOfferService.create(newOfferDTO, null);
+		assertNotNull(createdOffer.getId());
+		
+		//clean up
+		cultOfferService.delete(createdOffer.getId());
+		cultOfferService.getOne(createdOffer.getId());
+	}
+	
+	@Test(expected = UniqueConstraintViolationException.class)
+	public void createAndDelete_NameExists_UniqueConstraintViolationExceptionThrown() throws UniqueConstraintViolationException {
+		CulturalOfferDTO newOfferDTO = new CulturalOfferDTO(DB_CULTURAL_OFFER_NAME, CREATE_DESCRIPTION,
+				CREATE_LATITUDE, CREATE_LONGITUDE, CREATE_ADRESS, CREATE_CITY, CREATE_REGION,
+				ADMIN_ID, CATEGORY_ID, "Festival");
+		cultOfferService.create(newOfferDTO, null);
+	}
+	
 	@Test(expected = NoSuchElementException.class)
 	public void delete_OfferNotExists_NoSuchElementExceptionThrown() {
 		cultOfferService.delete(DB_NO_CULTURAL_OFFER_ID);
@@ -107,6 +107,7 @@ public class CulturalOfferServiceIntegrationTest {
 				  cultOffer.getLatitude(), cultOffer.getLongitude(), cultOffer.getAddress(), cultOffer.getCity(),
 				  cultOffer.getRegion(), cultOffer.getAdmin().getId(), cultOffer.getCategory(), reviewsDTO,
 				  postsDTO, picturesDTO);
+		dto.setAverageRating(-1d);
 		CulturalOfferDTO updatedDTO = cultOfferService.update(dto, DB_CULTURAL_OFFER_ID);
 		assertEquals(updatedDTO.getName(), CREATE_NAME);
 		assertEquals(updatedDTO.getDescription(), CREATE_DESCRIPTION);

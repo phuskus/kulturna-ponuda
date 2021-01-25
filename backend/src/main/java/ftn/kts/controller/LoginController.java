@@ -57,7 +57,7 @@ public class LoginController {
 
     @PostMapping("/login")
     public ResponseEntity<UserTokenStateDTO> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest,
-                                                                       HttpServletResponse response) throws PasswordNotChangedException, DisabledException, UserException {
+                                                                       HttpServletResponse response) throws DisabledException, UserException {
         String username = authenticationRequest.getUsername();
         String password = authenticationRequest.getPassword();
         UserTokenStateDTO token = userService.getLoggedIn(username, password);

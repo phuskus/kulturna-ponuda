@@ -86,6 +86,11 @@ public class SubcategoryService {
 	public void delete(Long id) {
 		Subcategory subcategory = getOne(id);
 		subcategoryRepository.delete(subcategory);
+		try {
+			pictureService.delete(subcategory.getIcon().getId());
+		} catch (IOException e) {
+			System.err.println("Failed to delete subcat icon");
+		}
 	}
 
 	public Subcategory getOne(long id) {

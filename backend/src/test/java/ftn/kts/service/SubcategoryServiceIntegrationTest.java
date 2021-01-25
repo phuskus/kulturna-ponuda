@@ -10,8 +10,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -45,7 +47,7 @@ public class SubcategoryServiceIntegrationTest {
     public void getOne_NonexistentId_ThrowsNoSuchElementException() {
         assertThrows(NoSuchElementException.class, () -> subcategoryService.getOneDTO(NONEXISTENT_ID));
     }
-/*
+
     @Test
     public void createDelete_ValidNewObject_CreatesAndDeletesSuccessfully() {
         PictureDTO icon = new PictureDTO();
@@ -53,7 +55,9 @@ public class SubcategoryServiceIntegrationTest {
     	SubcategoryDTO subcategory = new SubcategoryDTO(DB_NONEXISTENT_SUBCATEGORY_NAME, DB_CATEGORY_ID, icon);
 
         try {
-            SubcategoryDTO createdSubcategory = subcategoryService.create(subcategory);
+        	MockMultipartFile mockFile = new MockMultipartFile("name", "ogFileName.jpg", "jpg", "content".getBytes());
+        	MockMultipartFile[] files = {mockFile};
+            SubcategoryDTO createdSubcategory = subcategoryService.create(subcategory, files);
             assertEquals(subcategory, createdSubcategory);
 
             //clean up
@@ -62,7 +66,10 @@ public class SubcategoryServiceIntegrationTest {
         } catch (UniqueConstraintViolationException e) {
             e.printStackTrace();
             fail("Subcategory name not unique");
-        }
+        } catch (MethodArgumentNotValidException e) {
+			e.printStackTrace();
+			fail("Metho arguments not valid");
+		}
     }
 
     @Test
@@ -70,9 +77,9 @@ public class SubcategoryServiceIntegrationTest {
         PictureDTO icon = new PictureDTO();
         icon.setId(1L);
         SubcategoryDTO subcategory = new SubcategoryDTO(DB_SUBCATEGORY_NAME, DB_CATEGORY_ID, icon);
-        assertThrows(UniqueConstraintViolationException.class, () -> subcategoryService.create(subcategory));
+        assertThrows(UniqueConstraintViolationException.class, () -> subcategoryService.create(subcategory, null));
     }
-*/
+
     @Test
     public void delete_NonexistentId_ThrowsNoSuchElementException() {
         assertThrows(NoSuchElementException.class, () -> subcategoryService.delete(NONEXISTENT_ID));
