@@ -6,7 +6,7 @@
                 <div *ngFor="let subcat of subcategories" class="content-column">
                     <div *ngIf="subcat.containsOffers">
                         <button [routerLink]="'offers/search'" [queryParams]="{ category: subcat.name }" mat-button
-                            disableRipple="true">
+                            disableRipple="true" class="category-button" [name]="subcat.name">
                             <img [src]="pathService.getFullImgPath(subcat.icon.path)" />
                             <p>{{ subcat.name }}</p>
                         </button>

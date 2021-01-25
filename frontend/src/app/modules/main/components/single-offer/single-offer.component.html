@@ -39,11 +39,11 @@
         Write a review
       </button>
 
-      <button *ngIf="subscribeState == 'subscribed'" [disabled]="isActionDisabled()" mat-raised-button class="unsub-btn" disableRipple="true" (click)="unsubscribe()">
+      <button id="unsubscribe-button" *ngIf="subscribeState == 'subscribed'" [disabled]="isActionDisabled()" mat-raised-button class="unsub-btn" disableRipple="true" (click)="unsubscribe()">
         Unsubscribe
       </button>
   
-      <button *ngIf="subscribeState == 'not subscribed'" [disabled]="isActionDisabled()" mat-raised-button class="sub-btn" disableRipple="true" (click)="subscribe()">
+      <button id="subscribe-button" *ngIf="subscribeState == 'not subscribed'" [disabled]="isActionDisabled()" mat-raised-button class="sub-btn" disableRipple="true" (click)="subscribe()">
         Subscribe
       </button>
   

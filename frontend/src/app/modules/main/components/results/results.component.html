@@ -1,6 +1,6 @@
 <div class="result-component">
   <div fxLayout="row" style="margin-bottom: 20px">
-    <button mat-fab color="white" style="margin-right: 10px" [routerLink]="'/'">
+    <button id="back-button" mat-fab color="white" style="margin-right: 10px" [routerLink]="'/'">
       <mat-icon>arrow_back</mat-icon>
     </button>
     <mat-card class="search-comp" fxFlex="1 0 80%">
@@ -13,11 +13,11 @@
     </div>
     <div fxLayout="row" fxFlex="1 0 60%" fxLayoutAlign="end" fxLayoutGap="2%">
       
-      <button *ngIf="category && subscribeState == 'subscribed'" mat-raised-button class="small-btn unsub-btn" disableRipple="true" (click)="unsubscribe()">
+      <button id="unsubscribe-button" *ngIf="category && subscribeState == 'subscribed'" mat-raised-button class="small-btn unsub-btn" disableRipple="true" (click)="unsubscribe()">
         Unsubscribe
       </button>
   
-      <button *ngIf="category && subscribeState == 'not subscribed'" mat-raised-button class="small-btn sub-btn" disableRipple="true" (click)="subscribe()">
+      <button id="subscribe-button" *ngIf="category && subscribeState == 'not subscribed'" mat-raised-button class="small-btn sub-btn" disableRipple="true" (click)="subscribe()">
         Subscribe
       </button>
   
@@ -203,7 +203,7 @@
   </div>
 
   <div *ngIf="count === 0 && !loading">
-    <div class="no-results mat-title">No results available for your query!</div>
+    <div class="no-results mat-title" id="no-results">No results available for your query!</div>
   </div>
 
   <div class="offer-container" fxLayout="column" fxLayoutGap="2.5%">
@@ -220,6 +220,7 @@
       "
       [routerLink]="'/offers/' + offer.id"
       [state]="{previousRoute: this.currentRoute}"
+      [name]="offer.id"
     >
       <div fxLayout="row">
         <div fxLayout="column" class="img-col">
@@ -266,7 +267,6 @@
       class="pagination-control"
       previousLabel="Prev"
       nextLabel="Next"
-      responsive="true"
       (pageChange)="handlePageChange($event)"
     >
     </pagination-controls>

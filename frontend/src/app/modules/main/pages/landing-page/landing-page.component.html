@@ -3,6 +3,7 @@
   <router-outlet></router-outlet>
   <div  *ngIf="!isLoggedIn">
     <button
+      id="login-button"
       mat-raised-button
       color="primary"
       class="mgl-map-overlay-right"
@@ -14,6 +15,7 @@
   </div>
   <div *ngIf="isLoggedIn" class="mgl-map-overlay-right">
     <button
+        id="profile-button"
         class="item"
         mat-mini-fab 
         color="primary"
@@ -36,7 +38,7 @@
         <span>Edit subscriptions</span>
       </button>
       <mat-divider></mat-divider>
-      <button mat-menu-item (click)="logout()">
+      <button id="logout-button" mat-menu-item (click)="logout()">
         <mat-icon>exit_to_app</mat-icon>
         <span>Logout</span>
       </button>

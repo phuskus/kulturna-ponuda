@@ -18,7 +18,10 @@ export default abstract class DeleteDialog<T> extends Dialog<T> {
   }
 
   onSubmit() {
-    this.service.delete(this.data.id).subscribe(data => this.onSubscriptionCallBack.emit(data));;
-    this.dialogRef.close();
+    this.service.delete(this.data.id).subscribe((data) => {
+      this.onSubscriptionCallBack.emit(data);
+      this.dialogRef.close();
+    });
+    // this.dialogRef.close();
   }
 }
