@@ -57,7 +57,7 @@ public class MainPageE2ETests {
     	
         assertEquals(BASE_URL + "/offers/search?query=" + query.replaceAll(" ", "%20"), driver.getCurrentUrl());
         
-        mainPage.ensureIsNotDisplayedSubcategory();
+        mainPage.ensureIsNotDisplayedSubcategoryList();
         
         resultsPage.ensureIsDisplayedSearchBar();
         
@@ -84,7 +84,7 @@ public class MainPageE2ETests {
     	
         assertEquals(BASE_URL + "/offers/search?query=" + query.replaceAll(" ", "%20"), driver.getCurrentUrl());
         
-        mainPage.ensureIsNotDisplayedSubcategory();
+        mainPage.ensureIsNotDisplayedSubcategoryList();
         
         resultsPage.ensureIsDisplayedSearchBar();
         
@@ -111,7 +111,7 @@ public class MainPageE2ETests {
     	
         assertEquals(BASE_URL + "/offers/search?category=" + firstCatName.replaceAll(" ", "%20"), driver.getCurrentUrl());
         
-        mainPage.ensureIsNotDisplayedSubcategory();
+        mainPage.ensureIsNotDisplayedSubcategoryList();
         
         resultsPage.ensureIsDisplayedSearchBar();
         

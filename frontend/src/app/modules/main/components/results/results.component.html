@@ -1,6 +1,6 @@
 <div class="result-component">
   <div fxLayout="row" style="margin-bottom: 20px">
-    <button mat-fab color="white" style="margin-right: 10px" [routerLink]="'/'">
+    <button id="back-button" mat-fab color="white" style="margin-right: 10px" [routerLink]="'/'">
       <mat-icon>arrow_back</mat-icon>
     </button>
     <mat-card class="search-comp" fxFlex="1 0 80%">
@@ -220,6 +220,7 @@
       "
       [routerLink]="'/offers/' + offer.id"
       [state]="{previousRoute: this.currentRoute}"
+      [name]="offer.id"
     >
       <div fxLayout="row">
         <div fxLayout="column" class="img-col">
@@ -263,11 +264,9 @@
     fxLayoutAlign="center end"
   >
     <pagination-controls
-      id="pagionation-control"
       class="pagination-control"
       previousLabel="Prev"
       nextLabel="Next"
-      responsive="true"
       (pageChange)="handlePageChange($event)"
     >
     </pagination-controls>
