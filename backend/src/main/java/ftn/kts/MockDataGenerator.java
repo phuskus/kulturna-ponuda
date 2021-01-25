@@ -298,7 +298,7 @@ public abstract class MockDataGenerator {
             for (int j = 0; j < subcategories[i].length; j++) {
                 PictureDTO icon = iconList.get(iconCounter);
                 SubcategoryDTO dto = new SubcategoryDTO(subcategories[i][j], category.getId(), icon);
-                subcategoryList.add(subcategoryService.create(dto));
+                subcategoryList.add(subcategoryService.save(dto));
                 iconCounter++;
             }
         }

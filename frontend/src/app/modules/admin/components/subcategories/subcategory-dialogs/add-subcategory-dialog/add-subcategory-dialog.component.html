@@ -1,0 +1,50 @@
+<div class="add-dialog">
+  <h1 mat-dialog-title>Add Subcategory</h1>
+  <form [formGroup]="form">
+    <div mat-dialog-content fxLayout="column">
+      <mat-form-field class="example-full-width">
+        <mat-label>Name</mat-label>
+        <input matInput [formControlName]="'name'" name="name" />
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          type="text"
+          placeholder="Pick Category"
+          aria-label="Category"
+          matInput
+          [formControlName]="'category'"
+          [matAutocomplete]="category"
+        />
+        <mat-autocomplete #category="matAutocomplete" [displayWith]="displayFn">
+          <mat-option
+            *ngFor="let cat of filteredCategories | async"
+            [value]="cat"
+          >
+            {{ cat.name }}
+          </mat-option>
+        </mat-autocomplete>
+        <!--mat-error *ngIf="f.category.errors?.requireMatchCategory">Category needs to match available options</mat-error-->
+      </mat-form-field>
+
+      <app-image-selector
+        [multiple]="false"
+        (newFilesEvent)="onFileSelected($event)"
+      ></app-image-selector>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="end" mat-dialog-actions>
+      <button mat-button class="button-option-alt" mat-dialog-close>
+        Cancel
+      </button>
+      <button
+        mat-button
+        class="button-option-main"
+        [disabled]="form.invalid"
+        type="submit"
+        (click)="onSubmit()"
+      >
+        Add
+      </button>
+    </div>
+  </form>
+</div>

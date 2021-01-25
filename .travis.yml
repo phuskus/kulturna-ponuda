@@ -9,17 +9,17 @@ matrix:
         sonarcloud:
           organization: "ftn-kts-nvt-2020"
           token:
-            secure: "T1KykGWXO/s8WqyBFYQEVAH/FnTD0OX5zpCp93+R+3vTSyvUIQxibKcxTjnQMYHby7Mtv6T3mKdXiTAJqeIXyJTBDInZ86NnXxWFT+VP0jGA9N1pO/2bgMndq1/WpVHFR+sP7C0wud0gHHNd+uzVCX/HjstHDn6oSL3T1u1fOFPKxFc7WKQuyJJ2pZp6nAaPS1A4Bj/UtgKBRG6/6xVkoLAReEJZk1WDrtoK8w25wrJPWXBgGuev7umIjFn9gmNkyBdlQhYLSilKduqEbqL2BEM7k2l5pj+K4ZhNR3UIrIq1AfdOz6Dd1cSe4sX+qINIoclJOBsPSyo+VnLaCSlfJKXjVIP6Gi9pQpsFZAL+CoiLsDUBMx8GentvWdIp3EWNxmQ1dWzu5KPfneieF7uNvCRCma8BZhXz9NIJtZ7Xe/IhdMGDu6OJeA2DgYUqJwXHxa1GRIvJWXYs04A25x97a1FA4bZNZh8swYzPzxpmYS6jXJextw3X4lVu/dq11mreeoVzuI1h5LdfUJYH7QDzf6oW/KzX3g1OHeA9ECOvengsgT8wuboFX3lunFtcdtQyFYrvGZJkS55U+If4ghSwjBD9AwF9ucUilU0M2CbBL7A//EG82lOjILro3Vh68DQE6eDVzl4mDUlWDDle3wv+dPzPUy7ubzE6UyWB1tFshk4=" # encrypted value of your token
+            secure: "fWYg/vqd8RguGHm4Uf1++mRekcoZfQM0dc5h7m/TXRgVM+XpJDvDmkuYBr8g3gnZH4BhH7XpAz8baiX8UHCzh9jWM2fqZtYxi+N/Pa0QSt2iZX8RnzkvpcScw/Lo+uGaMpR0gABWMO1Ka4/M8INKDFNqB25yZv3UD8nr1wY8xjC4kaH3qW45kwkD7xv/EEz5NZgian1KyuTQiJzxsJOy2ugIFxsRoTBYfxf7mwiL8Wfb/IBBeHMHzySh00G6u2Ij3CDjBOasyRuQG83PPY8iNVUJbewYSPoGiOceP6HesdyH+9d4XGfC7tjy44JSwt1iPggTSzUuuxzSzcQgCg0E0865XIGXhVKOlcyMp7ZtnYJwgHSQkDWAiyWlCz26jDaeytHgQV11OVeeLj1RfeaPOVhQpJ8wOcFRvfq7ukhkufNCn20f27hK1sqWuyCiJzBDcgvhYA9ojaItDWNZPYdm2JZnFYHuPYP0zN5v21ifgasRPLziSqFT0/CkxmeEdsDrRDWEzv59bAgE+NX1lrueoOWunjozNqAfsvI6O0d/6+WAxg2gUH2mBtsO9yZmcOPiLwLNTdXS/1iLc9H/VP0v6ZSNRV4GfAM5htQ939dawPfrs9mVqtHLQ0H3dVI/Sx3MsEYn2c0iv9UDHHZLKgTNv5OD3X2y3QGEZNrPiINy/6s="
       before_script:
         - psql -c 'create database cultism;' -U postgres
       before_install:
         - cd backend
       install:
         - mvn -N io.takari:maven:wrapper
-        - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+        - ./mvnw install -DskipTests=false -Dmaven.javadoc.skip=true -B -V
       script:
         - ./mvnw clean install
-        - ./mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=phuskus_kulturna-ponuda
+        - ./mvnw clean verify sonar:sonar -Pcoverage -Dsonar.projectKey=phuskus_kulturna-ponuda -Dsonar.login=c1b10c9e696ea3f68a99b4d2ccc990806f9cb8e0
       deploy:
         provider: heroku
         api_key: 5f905c71-937c-47a5-b3f2-7611aa2dd7c1
@@ -31,15 +31,16 @@ matrix:
         - node
       addons:
         sonarcloud:
-        organization: "ftn-kts-nvt-2020"
-        token:
-           secure: "T1KykGWXO/s8WqyBFYQEVAH/FnTD0OX5zpCp93+R+3vTSyvUIQxibKcxTjnQMYHby7Mtv6T3mKdXiTAJqeIXyJTBDInZ86NnXxWFT+VP0jGA9N1pO/2bgMndq1/WpVHFR+sP7C0wud0gHHNd+uzVCX/HjstHDn6oSL3T1u1fOFPKxFc7WKQuyJJ2pZp6nAaPS1A4Bj/UtgKBRG6/6xVkoLAReEJZk1WDrtoK8w25wrJPWXBgGuev7umIjFn9gmNkyBdlQhYLSilKduqEbqL2BEM7k2l5pj+K4ZhNR3UIrIq1AfdOz6Dd1cSe4sX+qINIoclJOBsPSyo+VnLaCSlfJKXjVIP6Gi9pQpsFZAL+CoiLsDUBMx8GentvWdIp3EWNxmQ1dWzu5KPfneieF7uNvCRCma8BZhXz9NIJtZ7Xe/IhdMGDu6OJeA2DgYUqJwXHxa1GRIvJWXYs04A25x97a1FA4bZNZh8swYzPzxpmYS6jXJextw3X4lVu/dq11mreeoVzuI1h5LdfUJYH7QDzf6oW/KzX3g1OHeA9ECOvengsgT8wuboFX3lunFtcdtQyFYrvGZJkS55U+If4ghSwjBD9AwF9ucUilU0M2CbBL7A//EG82lOjILro3Vh68DQE6eDVzl4mDUlWDDle3wv+dPzPUy7ubzE6UyWB1tFshk4="
+          organization: "ftn-kts-nvt-2020"
+          token:
+            secure: "fWYg/vqd8RguGHm4Uf1++mRekcoZfQM0dc5h7m/TXRgVM+XpJDvDmkuYBr8g3gnZH4BhH7XpAz8baiX8UHCzh9jWM2fqZtYxi+N/Pa0QSt2iZX8RnzkvpcScw/Lo+uGaMpR0gABWMO1Ka4/M8INKDFNqB25yZv3UD8nr1wY8xjC4kaH3qW45kwkD7xv/EEz5NZgian1KyuTQiJzxsJOy2ugIFxsRoTBYfxf7mwiL8Wfb/IBBeHMHzySh00G6u2Ij3CDjBOasyRuQG83PPY8iNVUJbewYSPoGiOceP6HesdyH+9d4XGfC7tjy44JSwt1iPggTSzUuuxzSzcQgCg0E0865XIGXhVKOlcyMp7ZtnYJwgHSQkDWAiyWlCz26jDaeytHgQV11OVeeLj1RfeaPOVhQpJ8wOcFRvfq7ukhkufNCn20f27hK1sqWuyCiJzBDcgvhYA9ojaItDWNZPYdm2JZnFYHuPYP0zN5v21ifgasRPLziSqFT0/CkxmeEdsDrRDWEzv59bAgE+NX1lrueoOWunjozNqAfsvI6O0d/6+WAxg2gUH2mBtsO9yZmcOPiLwLNTdXS/1iLc9H/VP0v6ZSNRV4GfAM5htQ939dawPfrs9mVqtHLQ0H3dVI/Sx3MsEYn2c0iv9UDHHZLKgTNv5OD3X2y3QGEZNrPiINy/6s="
       before_install:
         - cd frontend
       install:
         - npm install
       script:
         - npm run build
+        - cd ..
         - sonar-scanner
       deploy:
         provider: heroku

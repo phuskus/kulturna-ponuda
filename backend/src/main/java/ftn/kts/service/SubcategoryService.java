@@ -1,19 +1,28 @@
 package ftn.kts.service;
 
-import ftn.kts.dto.PictureDTO;
-import ftn.kts.dto.SubcategoryDTO;
-import ftn.kts.exceptions.UniqueConstraintViolationException;
-import ftn.kts.model.*;
-import ftn.kts.repository.SubcategoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
+import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.DirectFieldBindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.multipart.MultipartFile;
+
+import ftn.kts.dto.PictureDTO;
+import ftn.kts.dto.SubcategoryDTO;
+import ftn.kts.exceptions.UniqueConstraintViolationException;
+import ftn.kts.model.Category;
+import ftn.kts.model.Picture;
+import ftn.kts.model.Subcategory;
+import ftn.kts.repository.SubcategoryRepository;
 
 @Service
 public class SubcategoryService {
@@ -42,11 +51,28 @@ public class SubcategoryService {
 		return subcategoryRepository.findByNameIgnoringCase(categoryName);
 	}
 
-	public SubcategoryDTO create(SubcategoryDTO dto) throws UniqueConstraintViolationException {
+	public SubcategoryDTO create(SubcategoryDTO dto, MultipartFile[] files) throws UniqueConstraintViolationException, MethodArgumentNotValidException {
 		checkUnique(dto);
-		Subcategory subcategory = toEntity(dto);
+		if (files.length != 1) {
+			FieldError error = new FieldError("subcategory", "icon", "Subcategory must have exactly one picture as an icon!");
+			DirectFieldBindingResult errors = new DirectFieldBindingResult(null, "subcategory");
+			errors.addError(error);
+			throw new MethodArgumentNotValidException(null, errors);
+		}
+		PictureDTO icon = null;
+		try {
+			icon = pictureService.add(files[0]);
+		} catch (IOException e) {
+			System.out.println("File upload failed");
+		}
+		dto.setIcon(icon);
+		return save(dto);
+	}
+	
+	public SubcategoryDTO save(SubcategoryDTO subcat) {
+		Subcategory subcategory = toEntity(subcat);
 		subcategoryRepository.save(subcategory);
-		return toDTO(subcategoryRepository.findById(subcategory.getId()).get());
+		return toDTO(subcategory);
 	}
 
 	public SubcategoryDTO update(SubcategoryDTO dto, Long id) throws UniqueConstraintViolationException {

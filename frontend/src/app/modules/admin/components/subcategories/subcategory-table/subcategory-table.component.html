@@ -1,0 +1,70 @@
+<div class="example-container mat-elevation-z8">
+    <div
+      class="card-header"
+      fxLayout="row"
+      fxLayoutAlign="space-between center"
+      fxLayoutGap="5%"
+    >
+      <div>Subcategories</div>
+  
+      <mat-form-field class="search-field">
+        <input matInput (keyup)="applyFilter($event)" #input />
+        <mat-placeholder class="placeholder">Search</mat-placeholder>
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
+  
+    <button class="new-item-btn" mat-button (click)="openAddDialog()">
+      NEW SUBCATEGORY
+    </button>
+    <div class="example-table-container">
+      <table mat-table [dataSource]="dataSource" class="example-table" matSort>
+        <!-- Name Row -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+          <td mat-cell *matCellDef="let row">
+            {{ row.name }}
+          </td>
+        </ng-container>
+  
+        <!-- Category Row -->
+        <ng-container matColumnDef="category">
+          <th mat-header-cell *matHeaderCellDef>Category</th>
+          <td mat-cell *matCellDef="let row">
+            {{ row.categoryName }}
+          </td>
+        </ng-container>
+        
+        <!-- Category Row -->
+        <ng-container matColumnDef="icon">
+            <th mat-header-cell *matHeaderCellDef>Icon</th>
+            <td mat-cell *matCellDef="let row">
+              <img [src]="pathExtractionService.getFullImgPath(row.icon.path)" class="icon" />
+            </td>
+          </ng-container>
+  
+        <!-- Actions Row -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let row">
+            <button
+              mat-icon-button
+              (click)="openDeleteDialog(row)"
+              disableRipple="true"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+  
+        <tr mat-header-row *matHeaderRowDef="tableColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: tableColumns"></tr>
+      </table>
+    </div>
+  
+    <mat-paginator
+      class="paginator"
+      [pageSizeOptions]="[10, 15, 20]"
+    ></mat-paginator>
+  </div>
+  
