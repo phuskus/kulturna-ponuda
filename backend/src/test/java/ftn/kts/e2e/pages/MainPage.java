@@ -33,12 +33,12 @@ public class MainPage {
     	(new WebDriverWait(driver, 30)).until(ExpectedConditions.visibilityOfElementLocated(By.id("search-bar")));
     }
 
-    public void ensureIsDisplayedSubcategory() {
-    	(new WebDriverWait(driver, 30)).until(ExpectedConditions.visibilityOfElementLocated(By.id("subcat-1")));
+    public void ensureIsDisplayedSubcategoryList() {
+    	(new WebDriverWait(driver, 30)).until(ExpectedConditions.visibilityOfElementLocated(By.className("category-button")));
     }
 
-    public void ensureIsNotDisplayedSubcategory() {
-    	(new WebDriverWait(driver, 30)).until(ExpectedConditions.invisibilityOfElementLocated(By.id("subcat-1")));
+    public void ensureIsNotDisplayedSubcategoryList() {
+    	(new WebDriverWait(driver, 30)).until(ExpectedConditions.invisibilityOfElementLocated(By.className("category-button")));
     }
 
     public void ensureIsDisplayedLoginButton() {
