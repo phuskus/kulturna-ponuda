@@ -1,5 +1,7 @@
 package ftn.kts.e2e.pages;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -11,14 +13,14 @@ public class MainPage {
 
     private WebDriver driver;
 
-    @FindBy(xpath = "//*[@id=\"search-bar\"]")
+    @FindBy(id = "search-bar")
     private WebElement searchBar;
 
-    @FindBy(xpath = "//*[@id=\"login-button\"]")
+    @FindBy(id = "login-button")
     private WebElement loginButton;
 
-    @FindBy(xpath = "//*[@id=\"subcat-1\"]")
-    private WebElement subcatButton;
+    @FindBy(className = "category-button")
+    private List<WebElement> subcatButtons;
     
     public MainPage() {
     }
@@ -35,6 +37,10 @@ public class MainPage {
     	(new WebDriverWait(driver, 30)).until(ExpectedConditions.visibilityOfElementLocated(By.id("subcat-1")));
     }
 
+    public void ensureIsNotDisplayedSubcategory() {
+    	(new WebDriverWait(driver, 30)).until(ExpectedConditions.invisibilityOfElementLocated(By.id("subcat-1")));
+    }
+
     public void ensureIsDisplayedLoginButton() {
         (new WebDriverWait(driver, 30)).until(ExpectedConditions.visibilityOfElementLocated(By.id("login-button")));
     }
@@ -47,24 +53,14 @@ public class MainPage {
 		return searchBar;
 	}
 
-	public void setSearchBar(WebElement searchBar) {
-		this.searchBar = searchBar;
-	}
-
 	public WebElement getLoginButton() {
 		return loginButton;
 	}
 
-	public void setLoginButton(WebElement loginButton) {
-		this.loginButton = loginButton;
+
+	public List<WebElement> getSubcatButtons() {
+		return subcatButtons;
 	}
 
-	public WebElement getSubcatButton() {
-		return subcatButton;
-	}
-
-	public void setSubcatButton(WebElement subcatButton) {
-		this.subcatButton = subcatButton;
-	}
 
 }

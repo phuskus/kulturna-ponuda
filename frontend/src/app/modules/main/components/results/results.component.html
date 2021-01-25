@@ -203,12 +203,11 @@
   </div>
 
   <div *ngIf="count === 0 && !loading">
-    <div class="no-results mat-title">No results available for your query!</div>
+    <div class="no-results mat-title" id="no-results">No results available for your query!</div>
   </div>
 
   <div class="offer-container" fxLayout="column" fxLayoutGap="2.5%">
     <mat-card
-      [id]="'offer-' + offer.id"
       class="result-card"
       *ngFor="
         let offer of offers
@@ -264,6 +263,7 @@
     fxLayoutAlign="center end"
   >
     <pagination-controls
+      id="pagionation-control"
       class="pagination-control"
       previousLabel="Prev"
       nextLabel="Next"
