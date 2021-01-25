@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { OfferService } from 'src/app/services/offer/offer.service';
 import { CulturalOffer } from 'src/app/shared/models/CulturalOffer';
 import { PicturesComponent } from '../../pictures/pictures.component';
+import { AddPostDialogComponent } from '../../posts/post-dialogs/add-post-dialog/add-post-dialog.component';
 import { AbstractDynamicPagingTable } from '../../table/AbstractDynamicPagingTable';
 import { AddOfferDialogComponent } from '../offer-dialogs/add-offer-dialog/add-offer-dialog.component';
 import { DeleteOfferDialogComponent } from '../offer-dialogs/delete-offer-dialog/delete-offer-dialog.component';
@@ -32,6 +33,10 @@ export class OfferTableComponent extends AbstractDynamicPagingTable {
   }
 
   ngOnInit(): void {}
+
+  openAddPost(row: CulturalOffer): void {
+    this.openDialog(AddPostDialogComponent, row);
+  }
 
   openDescriptionDialog(row: CulturalOffer): void {
     this.openDialog(DescriptionDialogComponent, row);

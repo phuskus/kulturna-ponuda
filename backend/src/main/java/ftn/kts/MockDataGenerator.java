@@ -407,7 +407,7 @@ public abstract class MockDataGenerator {
                                 culturalOffer.getId(),
                                 culturalOffer.getName(),
                                 pictureSet);
-                        postService.create(dto);
+                        postService.create(dto, null);
                         break;
                     } catch (Exception e) {
                         System.out.println("Faker post create failed, probably duplicate, trying again...");

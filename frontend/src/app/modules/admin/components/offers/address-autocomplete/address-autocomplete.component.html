@@ -18,5 +18,5 @@
       <span class="mat-body">{{ option.shortAddress }}</span>
     </mat-option>
   </mat-autocomplete>
-  <!--mat-error *ngIf="inputFieldFormControl.touched && inputFieldFormControl.invalid && inputFieldFormControl.errors?.required">Address is required!</mat-error-->
+  <mat-error *ngIf="inputFieldFormControl.touched && inputFieldFormControl.invalid && inputFieldFormControl.errors?.required">Address is required!</mat-error>
 </mat-form-field>

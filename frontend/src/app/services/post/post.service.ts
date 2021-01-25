@@ -40,4 +40,18 @@ export class PostService extends BaseDynamicPagingService {
         catchError(this.handleError<Page<Post>>()),
       );
   }
+
+  addMultipart(post: Post, files: FileList): Observable<Post> {
+    const formData = new FormData();
+    for (let i = 0; i < files?.length || 0; i++)
+      formData.append('files', files[i]);
+
+    formData.append('post', JSON.stringify(post));
+
+    return this.http
+      .post<Post>(this.url, formData)
+      .pipe(catchError(this.handleError<Post>()));
+  }
+
+  
 }

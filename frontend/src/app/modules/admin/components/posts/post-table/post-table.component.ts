@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { EventBusService, Events } from 'src/app/services/event-bus/event-bus.service';
 import { PostService } from 'src/app/services/post/post.service';
 import { Post } from 'src/app/shared/models/Post';
 import { PicturesComponent } from '../../pictures/pictures.component';
@@ -15,7 +16,9 @@ import { UpdatePostDialogComponent } from '../post-dialogs/update-post-dialog/up
 })
 export class PostTableComponent extends AbstractDynamicPagingTable {
 
-  constructor(public service: PostService, public dialog: MatDialog) {
+  constructor(public service: PostService, 
+    public dialog: MatDialog,
+    private eventBus: EventBusService) {
     super(service, dialog);
     this.tableColumns = [
       'offerName',
@@ -28,6 +31,10 @@ export class PostTableComponent extends AbstractDynamicPagingTable {
   }
 
   ngOnInit(): void {
+    this.eventBus.on(Events.PostAdd, (post: Post) => {
+      console.log(post);
+      this.updateTable();
+    })
   }
 
   openContentDialog(row: Post): void {
