@@ -1,8 +1,5 @@
 package ftn.kts.e2e.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.util.List;
 
 import org.junit.After;
@@ -17,6 +14,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.test.annotation.Rollback;
 
 import static ftn.kts.e2e.constants.AppConstants.BASE_URL;
+import static org.junit.Assert.*;
+
 import ftn.kts.e2e.pages.MainPage;
 import ftn.kts.e2e.pages.ResultsPage;
 import ftn.kts.util.E2EUtil;
@@ -143,5 +142,44 @@ public class MainPageE2ETests {
         (new WebDriverWait(driver, 1)).until(ExpectedConditions.elementToBeClickable(logoutButton)).click();
 
         mainPage.ensureIsDisplayedLoginButton();
+    }
+
+    @Test
+    @Rollback
+    public void subscribeUnsubscribeSubcategory_ChangeButtonState() {
+        E2EUtil.loginUser(driver);
+
+        driver.navigate().to(BASE_URL);
+
+        MainPage mainPage = PageFactory.initElements(driver, MainPage.class);
+
+        List<WebElement> categoryButtons = mainPage.getSubcatButtons();
+
+        assertTrue(categoryButtons.size() != 0);
+
+        WebElement firstCategory = categoryButtons.get(0);
+
+        firstCategory.click();
+
+        ResultsPage resultsPage = PageFactory.initElements(driver, ResultsPage.class);
+
+        WebElement subscribeButton = resultsPage.getSubscribeButton();
+        assertNotNull(subscribeButton);
+
+        resultsPage.ensureIsVisibleSubscribeButton();
+
+        (new WebDriverWait(driver, 3)).until(ExpectedConditions.elementToBeClickable(subscribeButton)).click();
+
+        resultsPage.ensureIsVisibleUnsubscribeButton();
+
+        WebElement unsubscribeButton = resultsPage.getUnsubscribeButton();
+        assertNotNull(unsubscribeButton);
+
+        (new WebDriverWait(driver, 3)).until(ExpectedConditions.elementToBeClickable(unsubscribeButton)).click();
+
+        resultsPage.ensureIsVisibleSubscribeButton();
+
+        subscribeButton = resultsPage.getSubscribeButton();
+        assertNotNull(subscribeButton);
     }
 }

@@ -13,11 +13,11 @@
     </div>
     <div fxLayout="row" fxFlex="1 0 60%" fxLayoutAlign="end" fxLayoutGap="2%">
       
-      <button *ngIf="category && subscribeState == 'subscribed'" mat-raised-button class="small-btn unsub-btn" disableRipple="true" (click)="unsubscribe()">
+      <button id="unsubscribe-button" *ngIf="category && subscribeState == 'subscribed'" mat-raised-button class="small-btn unsub-btn" disableRipple="true" (click)="unsubscribe()">
         Unsubscribe
       </button>
   
-      <button *ngIf="category && subscribeState == 'not subscribed'" mat-raised-button class="small-btn sub-btn" disableRipple="true" (click)="subscribe()">
+      <button id="subscribe-button" *ngIf="category && subscribeState == 'not subscribed'" mat-raised-button class="small-btn sub-btn" disableRipple="true" (click)="subscribe()">
         Subscribe
       </button>
   

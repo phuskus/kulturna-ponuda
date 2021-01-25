@@ -31,6 +31,12 @@ public class ResultsPage {
 	@FindBy(className = "pagination-control")
 	private WebElement paginationControl;
 
+	@FindBy(id = "subscribe-button")
+	private WebElement subscribeButton;
+
+	@FindBy(id = "unsubscribe-button")
+	private WebElement unsubscribeButton;
+
 	public ResultsPage() {
 	}
 
@@ -104,4 +110,19 @@ public class ResultsPage {
 		return markerList;
 	}
 
+    public WebElement getSubscribeButton() {
+		return subscribeButton;
+    }
+
+	public WebElement getUnsubscribeButton() {
+		return unsubscribeButton;
+	}
+
+	public void ensureIsVisibleSubscribeButton() {
+		(new WebDriverWait(driver, 2)).until(ExpectedConditions.visibilityOfElementLocated(By.id("subscribe-button")));
+	}
+
+	public void ensureIsVisibleUnsubscribeButton() {
+		(new WebDriverWait(driver, 2)).until(ExpectedConditions.visibilityOfElementLocated(By.id("unsubscribe-button")));
+	}
 }
