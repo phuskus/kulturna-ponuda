@@ -87,6 +87,7 @@ public class PostService {
     private void updatePost(Post post, PostDTO dto) {
         CulturalOffer offer = cultService.getOne(dto.getCulturalOffer());
         post.setContent(dto.getContent());
+        post.setTitle(dto.getTitle());
         post.setCulturalOffer(offer);
         Set<Picture> pictures = pictureService.convertToEntity(dto.getPictures());
         post.setPictures(pictures);

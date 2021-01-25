@@ -47,6 +47,7 @@ import { DeleteOfferDialogComponent } from './components/offers/offer-dialogs/de
 import { PostTableComponent } from './components/posts/post-table/post-table.component';
 import { ContentDialogComponent } from './components/posts/post-dialogs/content-dialog/content-dialog.component';
 import { PicturesComponent } from './components/pictures/pictures.component';
+import { UpdatePostDialogComponent } from './components/posts/post-dialogs/update-post-dialog/update-post-dialog.component';
 
 
 @NgModule({
@@ -71,6 +72,7 @@ import { PicturesComponent } from './components/pictures/pictures.component';
     PostTableComponent,
     ContentDialogComponent,
     PicturesComponent,
+    UpdatePostDialogComponent,
   ],
   imports: [
     CommonModule,
