@@ -2,6 +2,7 @@ import { Subcategory } from 'src/app/shared/models/Subcategory';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import DeleteDialog from 'src/app/shared/dialog/DeleteDialog';
+import { SubcategoryService } from 'src/app/services/subcategory/subcategory.service';
 
 @Component({
   selector: 'app-delete-subcategory-dialog',
