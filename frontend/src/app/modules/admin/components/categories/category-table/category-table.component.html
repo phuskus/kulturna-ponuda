@@ -8,12 +8,9 @@
     <div>Categories</div>
 
     <mat-form-field class="search-field">
-      <input
-        matInput
-        (keyup)="applyFilter($event)"
-        placeholder="Search"
-        #input
-      />
+      <input matInput (keyup)="applyFilter($event)" #input />
+      <mat-placeholder class="placeholder">Search</mat-placeholder>
+      <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
   </div>
 

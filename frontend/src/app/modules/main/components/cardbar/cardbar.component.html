@@ -1,12 +1,7 @@
-<!-- <mat-card class="example-card mgl-map-overlay-top" tabindex="0">
-  <mat-card-subtitle>Search</mat-card-subtitle>
-</mat-card> -->
-
 <div class="landing-page-container">
-    <mat-card class="example-card mgl-map-overlay-stack" tabindex="0">
-      <app-search></app-search>
-    </mat-card>
-    <app-category-card *ngFor="let category of categories" 
-    [category]="category">
+  <mat-card class="example-card mgl-map-overlay-stack" tabindex="0">
+    <app-search></app-search>
+  </mat-card>
+  <app-category-card *ngFor="let category of categories" [category]="category">
   </app-category-card>
 </div>

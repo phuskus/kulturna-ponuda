@@ -39,7 +39,7 @@ public class PictureController {
 	}
 
 	@GetMapping("/{id}")
-	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+//	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<PictureDTO> getPicture(@PathVariable("id") long id) throws FileNotFoundException, IOException {
 		return new ResponseEntity<>(service.getOneDTO(id), HttpStatus.OK);
 	}

@@ -7,9 +7,11 @@ import ftn.kts.dto.UserTokenStateDTO;
 import ftn.kts.exceptions.UserException;
 import ftn.kts.exceptions.PasswordNotChangedException;
 import ftn.kts.exceptions.UniqueConstraintViolationException;
+import ftn.kts.model.Admin;
 import ftn.kts.model.Authority;
 import ftn.kts.model.RegisteredUser;
 import ftn.kts.model.User;
+import ftn.kts.repository.AdminRepository;
 import ftn.kts.repository.UserRepository;
 import ftn.kts.security.CustomUserDetailsService;
 import ftn.kts.security.TokenUtils;
@@ -55,12 +57,12 @@ public class UserService {
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
-    
+
     public AccountDTO getAccount(Long id) {
-		User user = userRepository.findById(id).get();
-		AccountDTO dto = new AccountDTO(user.getId(), user.getName(), user.getSurname(), user.getUsername());
-		return dto;
-	}
+        User user = userRepository.findById(id).get();
+        AccountDTO dto = new AccountDTO(user.getId(), user.getName(), user.getSurname(), user.getUsername());
+        return dto;
+    }
 
     public User findByKey(String key) {
         return userRepository.findByKey(key);
@@ -74,7 +76,7 @@ public class UserService {
         save(user);
         return toDTO(user);
     }
-    
+
     public UserDTO createConfirmed(UserDTO dto) throws UniqueConstraintViolationException {
         checkUnique(dto);
         RegisteredUser user = toEntity(dto);
@@ -84,52 +86,52 @@ public class UserService {
         return toDTO(user);
     }
 
-    public void createUserAuthority(User user, String role){
+    public void createUserAuthority(User user, String role) {
         user.setPassword(userDetailsService.encodePassword(user.getPassword()));
         ArrayList<Authority> auth = new ArrayList<>();
         auth.add(authorityService.findByName(role));
         user.setAuthorities(auth);
     }
-    
+
     public void createUserKey(User user) {
         String generatedKey = RandomUtil.buildAuthString(30);
         user.setKey(generatedKey);
         mailSenderService.confirmRegistration(user.getUsername(), generatedKey);
     }
-        
+
     public User save(User user) {
-    	return userRepository.save(user);    		
+        return userRepository.save(user);
     }
-    
+
     public void delete(String username) throws NoSuchElementException {
-		User user = getOne(username);
-		userRepository.delete(user);    		
-	}
+        User user = getOne(username);
+        userRepository.delete(user);
+    }
 
     public UserTokenStateDTO getLoggedIn(String username, String password) throws DisabledException, PasswordNotChangedException, UserException {
         User existUser = null;
         try {
-        	existUser = getOne(username);        	        	
+            existUser = getOne(username);
         } catch (NoSuchElementException e) {
-        	throw new UserException("No such element!", "username", "User with this username doesn't exist.");
+            throw new UserException("No such element!", "username", "User with this username doesn't exist.");
         }
-       
+
         if (!existUser.isEnabled()) {
             throw new DisabledException("Your account hasn't been activated yet. Please check your email!");
         }
-        
+
         UserTokenStateDTO token = generateToken(username, password);
         return token;
-        
+
     }
-    
+
     public UserTokenStateDTO generateToken(String username, String password) throws UserException {
-    	Authentication authentication = null;
+        Authentication authentication = null;
         try {
             authentication =
-            	authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+                    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (BadCredentialsException e) {
-        	throw new UserException("Bad credentials exception!", "password", "Incorrect password.");
+            throw new UserException("Bad credentials exception!", "password", "Incorrect password.");
         }
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -147,19 +149,19 @@ public class UserService {
         userDTO.setUsername(user);
         return userDTO;
     }
-    
+
     public UserTokenStateDTO resetPassword(ResetPasswordDTO dto) throws UserException {
-		User user = userRepository.findByResetKey(dto.getResetKey());
-		if (user == null) {
+        User user = userRepository.findByResetKey(dto.getResetKey());
+        if (user == null) {
             throw new NoSuchElementException("The password is already reset or the link is invalid!");
         }
-		userDetailsService.changePasswordUtil(user, dto.getNewPassword());
-		user.setResetKey(null);
-		save(user);
-		
-		UserTokenStateDTO token = generateToken(user.getUsername(), dto.getNewPassword());
+        userDetailsService.changePasswordUtil(user, dto.getNewPassword());
+        user.setResetKey(null);
+        save(user);
+
+        UserTokenStateDTO token = generateToken(user.getUsername(), dto.getNewPassword());
         return token;
-	}
+    }
 
     public UserDTO confirmRegistration(String key) throws NoSuchElementException {
         User user = userRepository.findByKey(key);
@@ -171,23 +173,23 @@ public class UserService {
         save(user);
         return toDTO(user);
     }
-    
+
     public void forgotPassword(String username) {
-    	User user = getOne(username);
-    	if (!user.isEnabled()) {
+        User user = getOne(username);
+        if (!user.isEnabled()) {
             throw new DisabledException("Your account hasn't been activated yet. Please check your email first!");
         }
-    	String generatedKey = RandomUtil.buildAuthString(30);
-    	user.setResetKey(generatedKey);
-    	mailSenderService.forgotPassword(user.getUsername(), generatedKey);
-    	save(user);
+        String generatedKey = RandomUtil.buildAuthString(30);
+        user.setResetKey(generatedKey);
+        mailSenderService.forgotPassword(user.getUsername(), generatedKey);
+        save(user);
     }
-    
+
     public void update(Long id, AccountDTO dto) {
-    	User user = userRepository.findById(id).get();
-    	user.setName(dto.getName());
-    	user.setSurname(dto.getSurname());
-    	save(user);
+        User user = userRepository.findById(id).get();
+        user.setName(dto.getName());
+        user.setSurname(dto.getSurname());
+        save(user);
     }
 
     public User getOne(String username) throws NoSuchElementException {
@@ -202,14 +204,14 @@ public class UserService {
         RegisteredUser user = new RegisteredUser(dto.getName(), dto.getSurname(), dto.getUsername(), dto.getPassword());
         return user;
     }
-    
+
     private UserDTO toDTO(User user) {
-    	UserDTO dto = new UserDTO();
-    	dto.setId(user.getId());
-    	dto.setUsername(user.getUsername());
-    	dto.setName(user.getName());
-    	dto.setSurname(user.getSurname());
-    	return dto;
+        UserDTO dto = new UserDTO();
+        dto.setId(user.getId());
+        dto.setUsername(user.getUsername());
+        dto.setName(user.getName());
+        dto.setSurname(user.getSurname());
+        return dto;
     }
 
     private User checkUnique(UserDTO dto) throws UniqueConstraintViolationException {
@@ -218,14 +220,14 @@ public class UserService {
             // register
             if (dto.getId() == null) {
                 throw new UniqueConstraintViolationException("Unique key constraint violated!", "username",
-                        "User with this username already exists!"); 
+                        "User with this username already exists!");
             } else {
                 // update profile
                 if (!user.getId().equals(dto.getId())) {
                     throw new UniqueConstraintViolationException("Unique key constraint violated!", "username",
                             "User with this username already exists!");
                 } else {
-                	return user;
+                    return user;
                 }
             }
         }

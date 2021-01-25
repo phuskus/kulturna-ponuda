@@ -6,6 +6,9 @@
 
 $primary-color: #1a73e8;
 
+$scroll-width: 16px;
+$sidebar-width: 750px;
+
 html,
 body {
   height: 100%;
@@ -66,4 +69,32 @@ body {
 
 app-results {
   height: 100%;
+}
+/*
+::ng-deep .mat-snack-bar-container{
+  color: #033f11 !important;
+  background-color: #54f777 !important;
+  border-color: #03ff3d !important;
+}
+*/
+::ng-deep .mat-simple-snackbar-action {
+  color: white;
+}
+%snackbar {
+  color: white;
+}
+
+.success-snackbar {
+  @extend %snackbar;
+  background-color: #4CAF50;
+}
+
+.error-snackbar {
+  @extend %snackbar;
+  background-color: #FF5252;
+}
+
+.info-snackbar {
+  @extend %snackbar;
+  background-color: #2196F3;
 }

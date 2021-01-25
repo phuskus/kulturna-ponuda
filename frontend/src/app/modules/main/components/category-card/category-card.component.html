@@ -7,7 +7,7 @@
                     <div *ngIf="subcat.containsOffers">
                         <button [routerLink]="'offers/search'" [queryParams]="{ category: subcat.name }" mat-button
                             disableRipple="true">
-                            <img [src]="subcat.icon.image" />
+                            <img [src]="pathService.getFullImgPath(subcat.icon.path)" />
                             <p>{{ subcat.name }}</p>
                         </button>
                     </div>

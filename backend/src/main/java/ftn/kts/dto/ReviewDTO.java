@@ -6,6 +6,7 @@ import ftn.kts.model.User;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,6 +22,7 @@ public class ReviewDTO {
     private UserDTO user;
     private Long culturalOfferId;
     private String culturalOfferName;
+    private Date datePosted;
 
     private Set<PictureDTO> pictures;
 
@@ -54,6 +56,16 @@ public class ReviewDTO {
         this.user = user;
         this.culturalOfferId = offerId;
         this.culturalOfferName = culturalOfferName;
+        this.pictures = new HashSet<>();
+    }
+
+    public ReviewDTO(Long rating, String content, UserDTO user, Long offerId, String culturalOfferName, Date date) {
+        this.rating = rating;
+        this.content = content;
+        this.user = user;
+        this.culturalOfferId = offerId;
+        this.culturalOfferName = culturalOfferName;
+        this.datePosted = date;
         this.pictures = new HashSet<>();
     }
 
@@ -143,5 +155,13 @@ public class ReviewDTO {
 
     public void setPictures(Set<PictureDTO> pictures) {
         this.pictures = pictures;
+    }
+
+    public Date getDatePosted() {
+        return datePosted;
+    }
+
+    public void setDatePosted(Date datePosted) {
+        this.datePosted = datePosted;
     }
 }

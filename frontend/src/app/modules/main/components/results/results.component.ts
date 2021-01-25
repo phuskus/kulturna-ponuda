@@ -1,18 +1,33 @@
-import { EmitEvent, EventBusService, Events } from './../../../../services/event-bus/event-bus.service';
+import {
+  EmitEvent,
+  EventBusService,
+  Events,
+} from './../../../../services/event-bus/event-bus.service';
 import { PageParams } from '../../../../shared/models/PageParams';
 import { CulturalOffer } from '../../../../shared/models/CulturalOffer';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  NavigationStart,
+  ParamMap,
+  Router,
+} from '@angular/router';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { OfferService } from 'src/app/services/offer/offer.service';
 import Page from 'src/app/shared/models/Page';
+import { PathExtractionService } from 'src/app/services/path-extraction/path-extraction.service';
+import { Subscription } from 'rxjs/Rx';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { SubscriptionService } from 'src/app/services/subscription/subscription.service';
 
 @Component({
   selector: 'app-results',
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.scss'],
 })
-export class ResultsComponent implements OnInit {
+export class ResultsComponent
+  implements OnInit, OnDestroy {
   @ViewChild(MatMenuTrigger) filterMenuTrigger: MatMenuTrigger;
 
   public loading: boolean = true;
@@ -66,29 +81,69 @@ export class ResultsComponent implements OnInit {
     { name: 'Užice', checked: false },
   ].sort();
 
+
   public offers: CulturalOffer[] = [];
+  private currentRoute: string = '';
+
+  private subscriptions: Subscription[] = [];
+
+  subscribeState: string = 'loading';
+  isLoggedIn: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     private offerService: OfferService,
-    private eventBus: EventBusService
-  ) {}
-
-  ngOnInit(): void {
-    this.subToParamChanges();
+    public pathService: PathExtractionService,
+    private eventBus: EventBusService,
+    private router: Router,
+    private authService: AuthService,
+    private subscriptionService: SubscriptionService
+  ) {
+    this.subscriptions.push(
+      this.router.events
+        .filter(e => e instanceof NavigationEnd)
+        .subscribe((e: NavigationEnd) => {
+          this.currentRoute = e.url;
+          this.eventBus.emit(new EmitEvent(Events.RouteChange, e.url));
+        })
+    );
   }
 
-  subToParamChanges() {
-    this.route.queryParamMap.subscribe((paramMap) => {
-      const params = paramMap['params'];
-      if (params['category'] != undefined) {
-        this.category = params['category'];
-      }
-      if (params['query'] != undefined) {
-        this.query = params['query'];
-      }
-      this.fetchOffers();
-    });
+  ngOnInit(): void {
+    this.subscriptions.push(
+      this.route.queryParamMap.subscribe((paramMap) => {
+        const params = paramMap['params'];
+        if (params['category'] != undefined) {
+          this.category = params['category'];
+        }
+        if (params['query'] != undefined) {
+          this.query = params['query'];
+        }
+        this.fetchOffers();
+      })
+    );
+    
+    this.isLoggedIn = this.authService.getCurrentUser() != undefined;
+
+    if (!this.isLoggedIn) {
+      this.subscribeState = 'not subscribed';
+    } else if (this.category) {
+      this.subscriptionService.getIsSubscribedToSubcategory(this.category).subscribe((data) => {
+        if (data.subscribed) {
+          this.subscribeState = 'subscribed';
+        } else {
+          this.subscribeState = 'not subscribed';
+        }
+      }, (error) => {
+        console.log('Failed to get isSubscribedToSubcategory');
+        console.log(error);
+      });
+    }
+
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   getPageParams(): PageParams {
@@ -158,5 +213,30 @@ export class ResultsComponent implements OnInit {
   handlePageChange(event): void {
     this.page = event;
     this.fetchOffers();
+  }
+
+  subscribe() {
+    if (!this.isLoggedIn) {
+      this.router.navigateByUrl('/login');
+      return;
+    }
+    
+    this.subscribeState = 'loading';
+    this.subscriptionService.subscribeToSubcategory(this.category).subscribe(() => {
+      this.subscribeState = 'subscribed';
+    }, (error) => {
+      console.log('Failed to subscribe to subcategory');
+      console.log(error);
+    });
+  }
+
+  unsubscribe() {
+    this.subscribeState = 'loading';
+    this.subscriptionService.unsubscribeFromSubcategory(this.category).subscribe(() => {
+      this.subscribeState = 'not subscribed';
+    }, (error) => {
+      console.log('Failed to unsubscribe from subcategory');
+      console.log(error);
+    });
   }
 }

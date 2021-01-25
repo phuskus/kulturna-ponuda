@@ -1,7 +1,9 @@
 package ftn.kts.service;
 
+import ftn.kts.dto.PictureDTO;
 import ftn.kts.dto.ReviewDTO;
 import ftn.kts.model.CulturalOffer;
+import ftn.kts.model.Picture;
 import ftn.kts.model.RegisteredUser;
 import ftn.kts.model.Review;
 import ftn.kts.repository.ReviewRepository;
@@ -9,8 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.sql.SQLOutput;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -51,10 +56,22 @@ public class ReviewService {
         return reviewRepository.search(query.toLowerCase(), pageable).map(this::toDTO);
     }
 
-    public ReviewDTO create(ReviewDTO dto) {
+    public ReviewDTO create(ReviewDTO dto, MultipartFile[] files) {
+        if (files == null)
+            files = new MultipartFile[]{};
+
+        for (MultipartFile file : files) {
+            try {
+                dto.getPictures().add(pictureService.add(file));
+            } catch (IOException ex) {
+                System.out.println("File upload failed: " + file.getName());
+            }
+        }
         Review review = toEntity(dto);
+        review.setDatePosted(new Date());
         return toDTO(reviewRepository.save(review));
     }
+
 
     public ReviewDTO update(ReviewDTO dto, Long id) {
         Review review = getOne(id);
@@ -82,13 +99,19 @@ public class ReviewService {
     private Review toEntity(ReviewDTO dto) {
         RegisteredUser user = userService.getOne(dto.getUser().getId());
         CulturalOffer offer = offerService.getOne(dto.getCulturalOfferId());
-        return new Review(dto.getId(), dto.getRating(), dto.getContent(), user, offer);
+        Review review = new Review(dto.getId(), dto.getRating(), dto.getContent(), user, offer);
+        if (dto.getDatePosted() != null)
+            review.setDatePosted(dto.getDatePosted());
+        if (dto.getPictures().size() > 0)
+            review.setPictures(pictureService.convertToEntity(dto.getPictures()));
+        return review;
     }
 
     private ReviewDTO toDTO(Review review) {
         ReviewDTO dto = new ReviewDTO(review.getId(), review.getRating(), review.getContent(), review.getUser(),
                 review.getCulturalOffer());
         dto.setPictures(pictureService.convertToDTO(review.getPictures()));
+        dto.setDatePosted(review.getDatePosted());
         return dto;
     }
 
@@ -99,6 +122,21 @@ public class ReviewService {
         review.setUser(userService.getOne(dto.getUser().getId()));
 
         return review;
+    }
+
+    public ReviewDTO createMock(ReviewDTO dto, MultipartFile[] files){
+        if (files == null)
+            files = new MultipartFile[]{};
+
+        for (MultipartFile file : files) {
+            try {
+                dto.getPictures().add(pictureService.add(file));
+            } catch (IOException ex) {
+                System.out.println("File upload failed: " + file.getName());
+            }
+        }
+        Review review = toEntity(dto);
+        return toDTO(reviewRepository.save(review));
     }
 
     @Autowired

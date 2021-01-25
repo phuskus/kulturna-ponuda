@@ -1,0 +1,16 @@
+<div class="post" fxLayout="row" fxLayoutAlign="space-between">
+    <div>
+        <div class="mat-title title">
+            {{post.title}}
+        </div>
+        <div class="date-field">
+            {{post.datePosted | date}}
+        </div>
+        <div class="content">
+            {{post.content}}
+        </div>
+    </div>
+    <div class="carousel" *ngIf="post.pictures.length">
+        <carousel [cellsToShow]="1" [images]="post.pictures" [borderRadius]="10" [width]="150" [height]="100"> </carousel>
+    </div>
+</div>

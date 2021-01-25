@@ -9,7 +9,7 @@ import { BaseService } from '../base/base.service';
 })
 export class AdminService extends BaseService {
   constructor(public http: HttpClient) {
-    super("http://localhost:9001/admins", http);
+    super("admins", http);
   }
 
   createEmpty(): Admin {
@@ -18,7 +18,7 @@ export class AdminService extends BaseService {
       name: '',
       surname: '',
       username: '',
-      password: '',
+      password: 'ttxxtt',
     };
   }
 }
