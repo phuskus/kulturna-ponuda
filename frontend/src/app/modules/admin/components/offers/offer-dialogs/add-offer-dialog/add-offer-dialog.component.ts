@@ -16,7 +16,7 @@ import { FormValidationService } from 'src/app/services/validation/form-validati
 import AddDialog from 'src/app/shared/dialog/AddDialog';
 import { CulturalOffer } from 'src/app/shared/models/CulturalOffer';
 import { Subcategory } from 'src/app/shared/models/Subcategory';
-import { UtilOffer } from '../Util';
+import { UtilOffer } from '../util';
 
 @Component({
   selector: 'app-add-offer-dialog',

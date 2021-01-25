@@ -15,7 +15,7 @@ import { SubcategoryService } from 'src/app/services/subcategory/subcategory.ser
 import UpdateDialog from 'src/app/shared/dialog/UpdateDialog';
 import { CulturalOffer } from 'src/app/shared/models/CulturalOffer';
 import { Subcategory } from 'src/app/shared/models/Subcategory';
-import { UtilOffer } from '../Util';
+import { UtilOffer } from '../util';
 
 @Component({
   selector: 'app-update-offer-dialog',
