@@ -5,6 +5,7 @@ import { Post } from 'src/app/shared/models/Post';
 import { PicturesComponent } from '../../pictures/pictures.component';
 import { AbstractDynamicPagingTable } from '../../table/AbstractDynamicPagingTable';
 import { ContentDialogComponent } from '../post-dialogs/content-dialog/content-dialog.component';
+import { DeletePostDialogComponent } from '../post-dialogs/delete-post-dialog/delete-post-dialog.component';
 import { UpdatePostDialogComponent } from '../post-dialogs/update-post-dialog/update-post-dialog.component';
 
 @Component({
@@ -42,7 +43,7 @@ export class PostTableComponent extends AbstractDynamicPagingTable {
   }
 
   openDeleteDialog(row: Post): void {
-    console.log(row);
+    this.openDialog(DeletePostDialogComponent, row);
   }
 
 }
