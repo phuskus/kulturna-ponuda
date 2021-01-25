@@ -57,12 +57,12 @@ public class ResultsPage {
 
 	public void ensureIsVisibleMarkerList() {
 		(new WebDriverWait(driver, 30))
-				.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".leaflet-marker-icon")));
+				.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("img.leaflet-marker-icon")));
 	}
 
 	public void ensureIsNotVisibleMarkerList() {
 		(new WebDriverWait(driver, 30))
-				.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".leaflet-marker-icon")));
+				.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("img.leaflet-marker-icon")));
 	}
 
 	public void ensureIsVisibleOfferList() {
