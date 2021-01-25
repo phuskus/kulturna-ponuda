@@ -1,5 +1,6 @@
 package ftn.kts.util;
 
+import ftn.kts.e2e.pages.MainPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

@@ -12,6 +12,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.test.annotation.Rollback;
 
 import static ftn.kts.e2e.constants.AppConstants.BASE_URL;
@@ -124,5 +126,22 @@ public class MainPageE2ETests {
         //resultsPage.ensureIsVisibleMarkerList();
     }
     
-    
+    @Test
+    @Rollback
+    public void logout_ShowProfileMenuAndLoginButton() {
+        E2EUtil.loginUser(driver);
+
+        driver.navigate().to(BASE_URL);
+
+        MainPage mainPage = PageFactory.initElements(driver, MainPage.class);
+        WebElement profileButton = mainPage.getProfileButton();
+        profileButton.click();
+
+        mainPage.ensureIsDisplayedProfileMenu();
+
+        WebElement logoutButton = mainPage.getLogoutButton();
+        (new WebDriverWait(driver, 1)).until(ExpectedConditions.elementToBeClickable(logoutButton)).click();
+
+        mainPage.ensureIsDisplayedLoginButton();
+    }
 }

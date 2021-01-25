@@ -19,6 +19,12 @@ public class MainPage {
     @FindBy(id = "login-button")
     private WebElement loginButton;
 
+    @FindBy(id = "profile-button")
+    private WebElement profileButton;
+
+    @FindBy(id = "logout-button")
+    private WebElement logoutButton;
+
     @FindBy(className = "category-button")
     private List<WebElement> subcatButtons;
     
@@ -63,4 +69,15 @@ public class MainPage {
 	}
 
 
+    public WebElement getProfileButton() {
+        return profileButton;
+    }
+
+    public void ensureIsDisplayedProfileMenu() {
+        (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOfElementLocated(By.id("logout-button")));
+    }
+
+    public WebElement getLogoutButton() {
+        return logoutButton;
+    }
 }
