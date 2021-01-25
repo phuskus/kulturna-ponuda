@@ -23,7 +23,14 @@ export class SubscriptionsTableComponent extends AbstractDynamicPagingTable {
   ngOnInit(): void {}
 
   unsubscribe(subscription: Subscription) {
-
+    this.service.delete(subscription.id).subscribe(subscription => {
+      console.log('Deleted subscription ' + subscription.id);
+      this.updateTable();
+    }, error => {
+      console.log('Delete subscription failed!');
+      console.log(error);
+      this.updateTable();
+    });
   }
 
   toMomentDate(isoDate: string) {

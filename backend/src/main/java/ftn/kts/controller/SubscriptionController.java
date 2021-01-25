@@ -143,7 +143,7 @@ public class SubscriptionController {
 	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<String> addSubscription(@Valid @RequestBody SubscriptionDTO dto) {
 		service.create(dto);
-		return new ResponseEntity<>("Successfully added subscription!", HttpStatus.CREATED);
+		return new ResponseEntity<>("{ \"message\": \"" + "Successfully added subscription!" + "}", HttpStatus.CREATED);
 	}
 
 	@PutMapping("/{id}")
@@ -160,8 +160,12 @@ public class SubscriptionController {
 
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<String> deleteSubscription(@PathVariable("id") long id) {
+	public ResponseEntity<SubscriptionDTO> deleteSubscription(@PathVariable("id") long id) {
+		SubscriptionDTO dto = service.getOneDTO(id);
+		if (dto == null) {
+			return new ResponseEntity<SubscriptionDTO>(dto, HttpStatus.NOT_FOUND);
+		}
 		service.delete(id);
-		return new ResponseEntity<>("Successfully deleted subscription!", HttpStatus.OK);
+		return new ResponseEntity<>(dto, HttpStatus.OK);
 	}
 }
