@@ -37,34 +37,5 @@ public class ResultsE2ETests {
     public void tearDown() {
         driver.quit();
     }
-/*
-    @Test
-    public void CreateCategoryTestSuccess() throws InterruptedException {
 
-        categoryPage.ensureIsDisplayedName();
-
-        categoryPage.getName().sendKeys("Manifestacija");
-
-        categoryPage.getSubmitButton().click();
-
-        categoryPage.ensureIsNotVisibleSubmitButton();
-
-        assertEquals(BASE_URL+ "/success", driver.getCurrentUrl());
-    }
-
-    @Test
-    @Rollback
-    public void CreateCategoryTestError() throws InterruptedException {
-
-        categoryPage.ensureIsDisplayedName();
-
-        categoryPage.getName().sendKeys("Institucija");
-
-        categoryPage.getSubmitButton().click();
-
-        categoryPage.ensureIsNotVisibleSubmitButton();
-
-        assertEquals("http://localhost:4200/error", driver.getCurrentUrl());
-    }
-    */
 }

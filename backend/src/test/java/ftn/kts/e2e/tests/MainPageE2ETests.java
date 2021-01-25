@@ -63,9 +63,13 @@ public class MainPageE2ETests {
         
         resultsPage.ensureIsVisibleNoResults();
         
-        List<WebElement> offers = resultsPage.getOfferList();
+        resultsPage.ensureIsNotVisiblePaginationControl();
         
-        assertTrue(offers.size() == 0);
+        List<WebElement> offers = resultsPage.getOfferList();
+
+        resultsPage.ensureIsNotVisibleOfferList();
+        
+        resultsPage.ensureIsNotVisibleMarkerList();
     }
     
     @Test
@@ -85,10 +89,10 @@ public class MainPageE2ETests {
         resultsPage.ensureIsDisplayedSearchBar();
         
         resultsPage.ensureIsNotVisibleNoResults();
+
+        resultsPage.ensureIsVisibleOfferList();
         
-        List<WebElement> offers = resultsPage.getOfferList();
-        
-        assertTrue(offers.size() != 0);
+        resultsPage.ensureIsVisibleMarkerList();
     }
     
 
@@ -113,9 +117,11 @@ public class MainPageE2ETests {
         
         resultsPage.ensureIsNotVisibleNoResults();
         
-        List<WebElement> offers = resultsPage.getOfferList();
-        System.out.println(offers.size());
-        assertTrue(offers.size() != 0);
+        resultsPage.ensureIsVisiblePaginationControl();
+                
+        resultsPage.ensureIsVisibleOfferList();
+        
+        resultsPage.ensureIsVisibleMarkerList();
     }
     
     

@@ -13,26 +13,21 @@ public class ResultsPage {
 
 	private WebDriver driver;
 
-	@FindBy(xpath = "//*[@id=\"search-bar\"]")
+	@FindBy(id = "search-bar")
 	private WebElement searchBar;
 
-	@FindBy(xpath = "//*[@id=\"no-results\"]")
+	@FindBy(id = "no-results")
 	private WebElement noResultsMessage;
 
 	@FindBy(className = "result-card")
 	private List<WebElement> offerList;
 
-	@FindBy(xpath = "//*[@id=\"pagionation-control\"]")
+	@FindBy(css = "leaflet-marker-icon")
+	private List<WebElement> markerList;
+
+	@FindBy(id = "pagination-control")
 	private WebElement paginationControl;
 
-	/*
-	 * @FindBy(xpath = "//*[@id=\"category-h3\"]") private WebElement categoryP;
-	 * 
-	 * @FindBy(xpath = "//*[@id=\"name\"]") private WebElement name;
-	 * 
-	 * @FindBy(xpath = "//*[@id=\"submit-button\"]") private WebElement
-	 * submitButton;
-	 */
 	public ResultsPage() {
 	}
 
@@ -60,6 +55,27 @@ public class ResultsPage {
 		(new WebDriverWait(driver, 30)).until(ExpectedConditions.invisibilityOfElementLocated(By.id("no-results")));
 	}
 
+	public void ensureIsVisibleMarkerList() {
+		(new WebDriverWait(driver, 30))
+				.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".leaflet-marker-icon")));
+	}
+
+	public void ensureIsNotVisibleMarkerList() {
+		(new WebDriverWait(driver, 30))
+				.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".leaflet-marker-icon")));
+	}
+
+	public void ensureIsVisibleOfferList() {
+		(new WebDriverWait(driver, 30))
+				.until(ExpectedConditions.visibilityOfElementLocated(By.className("result-card")));
+	}
+	
+
+	public void ensureIsNotVisibleOfferList() {
+		(new WebDriverWait(driver, 30))
+				.until(ExpectedConditions.invisibilityOfElementLocated(By.className("result-card")));
+	}
+
 	public void ensureIsVisiblePaginationControl() {
 		(new WebDriverWait(driver, 30))
 				.until(ExpectedConditions.visibilityOfElementLocated(By.id("pagionation-control")));
@@ -70,25 +86,9 @@ public class ResultsPage {
 				.until(ExpectedConditions.invisibilityOfElementLocated(By.id("pagionation-control")));
 	}
 
-	/*
-	 * public void ensureIsDisplayedName() { (new WebDriverWait(driver,
-	 * 30)).until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))); }
-	 * 
-	 * public void ensureIsNotVisibleSubmitButton() { (new WebDriverWait(driver,
-	 * 10)).until(ExpectedConditions.invisibilityOfElementLocated(By.id(
-	 * "submit-button"))); }
-	 * 
-	 */
 	public WebElement getNoResultsMessage() {
 		return noResultsMessage;
 	}
-	/*
-	 * public WebElement getCategoryP() { return categoryP; }
-	 * 
-	 * public WebElement getName() { return name; }
-	 * 
-	 * public WebElement getSubmitButton() { return submitButton; }
-	 */
 
 	public List<WebElement> getOfferList() {
 		return offerList;
@@ -96,5 +96,9 @@ public class ResultsPage {
 
 	public WebElement getPaginationControl() {
 		return paginationControl;
+	}
+
+	public List<WebElement> getMarkerList() {
+		return markerList;
 	}
 }
