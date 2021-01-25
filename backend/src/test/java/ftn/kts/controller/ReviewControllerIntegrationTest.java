@@ -1,7 +1,12 @@
 package ftn.kts.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import ftn.kts.dto.RegisteredUserDTO;
 import ftn.kts.dto.ReviewDTO;
 import ftn.kts.dto.UserDTO;
+import ftn.kts.model.RegisteredUser;
+import ftn.kts.pages.ReviewPage;
 import ftn.kts.service.ReviewService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,18 +14,31 @@ import org.junit.runner.RunWith;
 import static ftn.kts.util.ControllerUtil.getAuthHeadersAdmin;
 import static ftn.kts.util.ControllerUtil.getAuthHeadersUser;
 import static org.junit.Assert.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.*;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 import static ftn.kts.constants.ReviewConstants.*;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -33,26 +51,30 @@ public class ReviewControllerIntegrationTest {
     @Autowired
     private ReviewService reviewService;
 
+    @Autowired
+    private WebApplicationContext webApplicationContext;
+
+
     @Test
     public void getAll_ReturnsAllReviews() {
+        int NUM_ITEMS = reviewService.getAll().size();
         HttpEntity<Object> httpEntity = new HttpEntity<>(getAuthHeadersUser(restTemplate));
-        ResponseEntity<ReviewDTO[]> responseEntity = restTemplate
-                .exchange("/reviews?pageNo=0&pageSize=" + NUM_ITEMS, HttpMethod.GET, httpEntity, ReviewDTO[].class);
-        ReviewDTO[] reviews = responseEntity.getBody();
+        ResponseEntity<ReviewPage> responseEntity = restTemplate
+                .exchange("/reviews?pageNo=0&pageSize=" + NUM_ITEMS, HttpMethod.GET, httpEntity, ReviewPage.class);
 
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(NUM_ITEMS, reviews.length);
+        List<ReviewDTO> reviews = responseEntity.getBody().getContent();
+        assertEquals(NUM_ITEMS, reviews.size());
     }
 
     @Test
     public void getAll_FirstReview_ReturnsAllReviews() {
         HttpEntity<Object> httpEntity = new HttpEntity<>(getAuthHeadersUser(restTemplate));
-        ResponseEntity<ReviewDTO[]> responseEntity = restTemplate
-                .exchange("/reviews?pageNo=0&pageSize=1", HttpMethod.GET, httpEntity, ReviewDTO[].class);
-        ReviewDTO[] reviews = responseEntity.getBody();
+        ResponseEntity<ReviewPage> responseEntity = restTemplate
+                .exchange("/reviews?pageNo=0&pageSize=1", HttpMethod.GET, httpEntity, ReviewPage.class);
+        List<ReviewDTO> reviews = responseEntity.getBody().getContent();
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(1, reviews.length);
+        assertEquals(1, reviews.size());
     }
 
     @Test
@@ -76,20 +98,29 @@ public class ReviewControllerIntegrationTest {
     }
 
     @Test
-    public void add_ValidReview_ReturnsOkAndReview() {
+    public void add_ValidReview_ReturnsOkAndReview() throws Exception {
         int size = reviewService.getAll().size();
-        UserDTO user = new UserDTO(1L, "name",  "surname", "user", "pass");
-        ReviewDTO dto = new ReviewDTO(3L, "Content", user, 2L, "name");
-        HttpEntity<Object> httpEntity = new HttpEntity<>(dto, getAuthHeadersAdmin(restTemplate));
-        ResponseEntity<ReviewDTO> responseEntity = restTemplate
-                .exchange("/reviews", HttpMethod.POST, httpEntity, ReviewDTO.class);
+        UserDTO user = new UserDTO(1L, "name", "surname", "user", "pass");
+        String content = "content";
+        ReviewDTO dto = new ReviewDTO(3L, content, user, 2L, "name");
 
-        ReviewDTO review = responseEntity.getBody();
-        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonDTO = mapper.writeValueAsString(dto);
+
+        HttpHeaders headers = getAuthHeadersUser(restTemplate);
+        MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).apply(springSecurity()).build();
+        MvcResult result = mockMvc.perform(post("/reviews")
+                .param("review", jsonDTO).headers(headers)
+        ).andExpect(status().isCreated()).andReturn();
+
+
+        MockHttpServletResponse resp = result.getResponse();
+        ReviewDTO newReview = mapper.readValue(resp.getContentAsString(), ReviewDTO.class);
+        assertEquals(newReview.getContent(), content);
         assertEquals(size + 1, reviewService.getAll().size());
 
-        // delete admin
-        reviewService.delete(review.getId());
+        // delete review
+        reviewService.delete(newReview.getId());
     }
 
 
@@ -104,41 +135,19 @@ public class ReviewControllerIntegrationTest {
         assertEquals(size, reviewService.getAll().size());
     }
 
-    @Test
-    public void update_ValidNewObject_ReturnsOk() {
-        ReviewDTO oldReview = reviewService.getOneDTO(EXISTENT_ID);
-        assertEquals(CONTENT, oldReview.getContent());
-        oldReview.setContent(NEW_CONTENT);
-
-        HttpEntity<Object> httpEntity = new HttpEntity<>(oldReview, getAuthHeadersAdmin(restTemplate));
-        ResponseEntity<ReviewDTO> responseEntity = restTemplate
-                .exchange("/reviews/" + EXISTENT_ID, HttpMethod.PUT, httpEntity, ReviewDTO.class);
-
-        ReviewDTO newReview = responseEntity.getBody();
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(NEW_CONTENT, newReview.getContent());
-
-        // update to old name
-        newReview.setContent(CONTENT);
-
-        httpEntity = new HttpEntity<>(newReview, getAuthHeadersAdmin(restTemplate));
-        restTemplate
-                .exchange("/reviews/" + EXISTENT_ID, HttpMethod.PUT, httpEntity, ReviewDTO.class);
-    }
-
 
     @Test
     public void delete_ExistentId_ReturnsOk() {
         ReviewDTO review = reviewService.getOneDTO(EXISTENT_ID);
-        HttpEntity<Object> httpEntity = new HttpEntity<>(getAuthHeadersAdmin(restTemplate));
+        HttpHeaders headers = getAuthHeadersAdmin(restTemplate);
+        HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
         ResponseEntity<Void> responseEntity = restTemplate
                 .exchange("/reviews/" + EXISTENT_ID, HttpMethod.DELETE, httpEntity, Void.class);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 
         // add back to db
-        httpEntity = new HttpEntity<>(review, getAuthHeadersAdmin(restTemplate));
-        restTemplate.exchange("/reviews", HttpMethod.POST, httpEntity, ReviewDTO.class);
+        reviewService.create(review, new MultipartFile[]{});
     }
 
 

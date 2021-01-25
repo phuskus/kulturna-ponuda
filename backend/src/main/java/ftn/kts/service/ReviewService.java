@@ -73,12 +73,6 @@ public class ReviewService {
     }
 
 
-    public ReviewDTO update(ReviewDTO dto, Long id) {
-        Review review = getOne(id);
-        reviewRepository.save(updateCategory(review, dto));
-        return toDTO(review);
-    }
-
     public void delete(Long id) {
         reviewRepository.deleteById(id);
     }
@@ -113,15 +107,6 @@ public class ReviewService {
         dto.setPictures(pictureService.convertToDTO(review.getPictures()));
         dto.setDatePosted(review.getDatePosted());
         return dto;
-    }
-
-    private Review updateCategory(Review review, ReviewDTO dto) {
-        review.setRating(dto.getRating());
-        review.setContent(dto.getContent());
-        review.setCulturalOffer(offerService.getOne(dto.getCulturalOfferId()));
-        review.setUser(userService.getOne(dto.getUser().getId()));
-
-        return review;
     }
 
     public ReviewDTO createMock(ReviewDTO dto, MultipartFile[] files){

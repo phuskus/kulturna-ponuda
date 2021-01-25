@@ -12,11 +12,8 @@ import ftn.kts.controller.LoginControllerIntegrationTest;
 import ftn.kts.controller.PictureControllerIntegrationTest;
 import ftn.kts.controller.PostControllerIntegrationTest;
 import ftn.kts.controller.ReviewControllerIntegrationTest;
-import ftn.kts.repository.AdminRepositoryIntegrationTest;
 import ftn.kts.repository.AuthorityRepositoryIntegrationTest;
-import ftn.kts.repository.CategoryRepositoryIntegrationTest;
 import ftn.kts.repository.CulturalOfferRepositoryIntegrationTest;
-import ftn.kts.repository.ReviewRepositoryIntegrationTest;
 import ftn.kts.repository.SubcategoryRepositoryIntegrationTest;
 import ftn.kts.repository.SubscriptionRepositoryIntegrationTest;
 import ftn.kts.repository.UserRepositoryIntegrationTest;
@@ -48,14 +45,11 @@ import ftn.kts.service.UserServiceUnitTest;
         CulturalOfferServiceIntegrationTest.class,
         CulturalOfferControllerIntegrationTest.class,
         CulturalOfferServiceUnitTest.class,
-        AdminRepositoryIntegrationTest.class,
         AdminServiceIntegrationTest.class,
         AdminControllerIntegrationTest.class,
-        CategoryRepositoryIntegrationTest.class,
         CategoryServiceIntegrationTest.class,
         CategoryControllerIntegrationTest.class,
         CategoryServiceUnitTest.class,
-        ReviewRepositoryIntegrationTest.class,
         ReviewServiceIntegrationTest.class,
         ReviewControllerIntegrationTest.class,
         LoginControllerIntegrationTest.class,

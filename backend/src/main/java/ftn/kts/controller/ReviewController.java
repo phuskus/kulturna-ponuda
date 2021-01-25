@@ -88,13 +88,6 @@ public class ReviewController {
     }
 
 
-    @PutMapping("/{id}")
-//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<Object> updateReview(@Valid @RequestBody ReviewDTO dto, @PathVariable long id) {
-        ReviewDTO updated = service.update(dto, id);
-        return new ResponseEntity<>(updated, HttpStatus.OK);
-    }
-
     @DeleteMapping("/{id}")
 //    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Object> deleteReview(@PathVariable("id") long id) {
