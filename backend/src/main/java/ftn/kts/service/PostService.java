@@ -1,5 +1,6 @@
 package ftn.kts.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -9,12 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import ftn.kts.dto.PostDTO;
 import ftn.kts.model.CulturalOffer;
 import ftn.kts.model.Picture;
 import ftn.kts.model.Post;
 import ftn.kts.repository.PostRepository;
+import ftn.kts.repository.specifications.PostSpecification;
 
 @Service
 public class PostService {
@@ -44,8 +47,19 @@ public class PostService {
         return dto;
     }
 
-    public PostDTO create(PostDTO dto) {
-        Post post = toEntity(dto);
+    public PostDTO create(PostDTO dto, MultipartFile[] files) {
+    	if (files == null)
+            files = new MultipartFile[]{};
+
+        for (MultipartFile file : files) {
+            try {
+                dto.getPictures().add(pictureService.add(file));
+            } catch (IOException ex) {
+                System.out.println("File upload failed: " + file);
+            }
+        }
+    	
+    	Post post = toEntity(dto);
         try {
         	dto = save(post);        	        	        	
         } catch (Exception e) {
@@ -71,6 +85,11 @@ public class PostService {
         postRepository.delete(post);
     }
     
+    public Page<PostDTO> filter(String query, Pageable paging) {
+    	PostSpecification spec = new PostSpecification(query);
+    	return postRepository.findAll(spec, paging).map(this::toDTO);
+    }
+    
 	public Post getOne(long id) {
 		return postRepository.findById(id)
 				.orElseThrow(() -> new NoSuchElementException("Post with id " + id + " doesn't exist!"));
@@ -87,13 +106,15 @@ public class PostService {
     private void updatePost(Post post, PostDTO dto) {
         CulturalOffer offer = cultService.getOne(dto.getCulturalOffer());
         post.setContent(dto.getContent());
+        post.setTitle(dto.getTitle());
         post.setCulturalOffer(offer);
         Set<Picture> pictures = pictureService.convertToEntity(dto.getPictures());
         post.setPictures(pictures);
     }
 
     private PostDTO toDTO(Post entity) {
-        PostDTO dto = new PostDTO(entity.getId(), entity.getTitle(), entity.getContent(), entity.getDatePosted(), entity.getCulturalOffer().getId());
+ 
+        PostDTO dto = new PostDTO(entity.getId(), entity.getTitle(), entity.getContent(), entity.getDatePosted(), entity.getCulturalOffer().getId(), entity.getCulturalOffer().getName());
         dto.setPictures(pictureService.convertToDTO(entity.getPictures()));
         return dto;
     }
