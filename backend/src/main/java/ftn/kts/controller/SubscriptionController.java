@@ -57,7 +57,7 @@ public class SubscriptionController {
 	}
 
 	@GetMapping("/offer/{id}")
-	@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<String> getSubscribedToOffer(@PathVariable("id") long offerId) {
 		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
 		String username = currentUser.getName();
@@ -65,7 +65,7 @@ public class SubscriptionController {
 	}
 
 	@PostMapping("/subscribeOffer/{id}")
-	@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<String> subscribeToOffer(@PathVariable("id") long offerId) {
 		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
 		String username = currentUser.getName();
@@ -81,7 +81,7 @@ public class SubscriptionController {
 	}
 
 	@PostMapping("/unsubscribeOffer/{id}")
-	@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<String> unsubscribeFromOffer(@PathVariable("id") long offerId) {
 		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
 		String username = currentUser.getName();
@@ -97,7 +97,7 @@ public class SubscriptionController {
 	}
 
 	@GetMapping("/subcategory/{name}")
-	@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<String> getSubscribedToSubcategory(@PathVariable("name") String subcategoryName) {
 		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
 		String username = currentUser.getName();
@@ -105,7 +105,7 @@ public class SubscriptionController {
 	}
 
 	@PostMapping("/subscribeSubcategory/{name}")
-	@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<String> subscribeToSubcategory(@PathVariable("name") String subcategoryName) {
 		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
 		String username = currentUser.getName();
@@ -121,7 +121,7 @@ public class SubscriptionController {
 	}
 
 	@PostMapping("/unsubscribeSubcategory/{name}")
-	@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<String> unsubscribeFromSubcategory(@PathVariable("name") String subcategoryName) {
 		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
 		String username = currentUser.getName();
@@ -137,14 +137,14 @@ public class SubscriptionController {
 	}
 
 	@PostMapping
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<String> addSubscription(@Valid @RequestBody SubscriptionDTO dto) {
 		service.create(dto);
 		return new ResponseEntity<>("Successfully added subscription!", HttpStatus.CREATED);
 	}
 
 	@PutMapping("/{id}")
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<? extends Object> updateSubscription(@Valid @RequestBody SubscriptionDTO dto,
 			@PathVariable long id) {
 		try {
@@ -156,7 +156,7 @@ public class SubscriptionController {
 	}
 
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<String> deleteSubscription(@PathVariable("id") long id) {
 		service.delete(id);
 		return new ResponseEntity<>("Successfully deleted subscription!", HttpStatus.OK);
