@@ -3,11 +3,15 @@ package ftn.kts.e2e.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import ftn.kts.dto.ReviewDTO;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
+
+import static ftn.kts.e2e.constants.AppConstants.REVIEW_STAR_NO_COLOR;
 
 public class OfferPage {
     private WebDriver driver;
@@ -40,56 +44,72 @@ public class OfferPage {
         this.driver = driver;
     }
 
-    public void clickWriteReview(){
+    public void clickWriteReview() {
         reviewButton.click();
         ensureDialogIsDisplayed();
     }
 
-    public void confirmReview(){
+    public void confirmReview() {
         this.clickReviewDialogButton("button-option-main");
     }
 
-    public void cancelReview(){
+    public void cancelReview() {
         this.clickReviewDialogButton("button-option-alt");
     }
 
-    private void clickReviewDialogButton(String buttonClass){
+    private void clickReviewDialogButton(String buttonClass) {
         dialog.findElement(By.className(buttonClass)).click();
         ensureDialogIsNotDisplayed();
     }
 
-    public WebElement getTopReview(){
-        return reviews.get(0);
+    public WebElement getReview(int index) {
+        WebElement element = driver.findElements(By.tagName("app-single-review")).get(index);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+        return element;
     }
 
-    public int getTopReviewRating() {
+    public WebElement getTopReview() {
+        return getReview(0);
+    }
+
+    public int getReviewRating(WebElement review) {
         int rating = 0;
-        List<WebElement> stars = getTopReview().findElements(By.tagName("mat-icon"));
-        for(WebElement star : stars){
-            if(star.getCssValue("color").equals("grey"))
-                rating++;
+        List<WebElement> stars = review.findElements(By.tagName("mat-icon"));
+        for (WebElement star : stars) {
+            if (star.getCssValue("color").equals(REVIEW_STAR_NO_COLOR))
+                break;
+            rating++;
         }
         return rating;
     }
 
-    public String getTopReviewContent() {
-        return getTopReview().findElement(By.className("review-content")).getText();
+    public String getReviewContent(WebElement review) {
+        return review.findElement(By.className("review-content")).getText();
     }
 
-    public String getTopReviewUser() {
-        return getTopReview().findElement(By.className("review-user")).getText();
+    public String getReviewUser(WebElement review) {
+        return review.findElement(By.cssSelector(".review-data span")).getText();
     }
 
-    public void setNewReviewRating(int rating){
+    public void setNewReviewRating(int rating) {
         dialog.findElements(By.tagName("mat-icon")).get(rating - 1).click();
     }
 
-    public void setReviewContent(String content){
+    public void setReviewContent(String content) {
         reviewContent.sendKeys(content);
     }
 
-    public int getNumberOfReviews(){
+    public int getNumberOfReviews() {
         return driver.findElements(By.tagName("app-single-review")).size();
+    }
+
+    public int getNumberOfPicturesForReview(WebElement review){
+        return review.findElements(By.tagName("img")).size();
+    }
+
+    public void uploadImage(String path){
+        WebElement inputFile = dialog.findElement(By.id("image-upload-input"));
+        inputFile.sendKeys(path);
     }
 
     public void ensureReviewButtonIsDisplayed() {
@@ -99,6 +119,11 @@ public class OfferPage {
     public void ensureDialogIsDisplayed() {
         (new WebDriverWait(driver, 30)).until(ExpectedConditions
                 .visibilityOfElementLocated(By.tagName("mat-dialog-container")));
+    }
+
+    public void ensureOfferContentIsDisplayed() {
+        (new WebDriverWait(driver, 30)).until(ExpectedConditions
+                .visibilityOfElementLocated(By.id("main-content")));
     }
 
     public void ensureDialogIsNotDisplayed() {
@@ -126,7 +151,9 @@ public class OfferPage {
         return unsubscribeButton;
     }
 
-    public WebElement getReviewButton() { return reviewButton; }
+    public WebElement getReviewButton() {
+        return reviewButton;
+    }
 
     public WebElement getDialog() { return dialog; }
 

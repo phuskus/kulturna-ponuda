@@ -11,6 +11,9 @@ public class AppConstants {
     public static final String NONEXISTENT_CATEGORY = "FLKJD:Ldf;sal";
     public static final String EXISTENT_CATEOGORY = "Institution";
 
+    public static final String NONEXISTENT_SUBCATEGORY = "Ne postoji, sine";
+    public static final String EXISTENT_SUBCATEGORY = "Gallery";
+
     public static final String EXISTENT_USER_MAIL = "yahoo@yahoo.com";
     public static final String EXISTENT_USER_PASS = "12345";
     public static final String EXISTENT_USER_NAME = "User Useric";
@@ -22,5 +25,8 @@ public class AppConstants {
     public static final String NEW_POST_TITLE = "New post title wee";
     public static final String NEW_POST_DESCRIPTION = "New post descirption!";
     
+
+    public static final String EXISTENT_IMAGE_PATH = "src/test/resources/test_image.jpg";
+    public static final String REVIEW_STAR_NO_COLOR = "rgba(128, 128, 128, 1)";
 
 }
