@@ -27,6 +27,12 @@ public class MainPage {
 
     @FindBy(className = "category-button")
     private List<WebElement> subcatButtons;
+
+    @FindBy(id = "edit-subscriptions-button")
+    private WebElement editSubscriptionsButton;
+
+    @FindBy(className = "delete-subscription-button")
+    private List<WebElement> deleteButtons;
     
     public MainPage() {
     }
@@ -129,5 +135,21 @@ public class MainPage {
 
     public WebElement getLogoutButton() {
         return logoutButton;
+    }
+
+    public WebElement getEditSubscriptionsButton() {
+        return editSubscriptionsButton;
+    }
+
+    public void ensureIsDisplayedEditSubscriptions() {
+        (new WebDriverWait(driver, 3)).until(ExpectedConditions.visibilityOfElementLocated(By.className("subscription-table-row")));
+    }
+
+    public List<WebElement> getDeleteSubscriptionButtons() {
+        return deleteButtons;
+    }
+
+    public void ensureIsNotDisplayed(WebElement element) {
+        (new WebDriverWait(driver, 3)).until(ExpectedConditions.invisibilityOf(element));
     }
 }

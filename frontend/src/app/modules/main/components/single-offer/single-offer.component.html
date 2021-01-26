@@ -1,4 +1,4 @@
-<div class="parent">
+<div class="parent" id="offer-parent">
   <div class="header" fxLayout="row" fxLayoutAlign="start center" id="header">
     <button (click)="goBack()" mat-icon-button>
       <mat-icon>arrow_back</mat-icon>
@@ -6,7 +6,7 @@
     <div>{{ offer.name }}</div>
   </div>
 
-  <div class="content">
+  <div *ngIf="offerExists; else notFound" class="content" id="main-content">
     <carousel [cellsToShow]="3" [images]="images" [borderRadius]="10">
     </carousel>
 
@@ -103,4 +103,9 @@
       ></mat-progress-spinner>
     </div>
   </div>
+
+
+  <ng-template class="content" #notFound>
+    Saaaaawy
+  </ng-template>
 </div>
