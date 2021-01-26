@@ -361,6 +361,12 @@ public abstract class MockDataGenerator {
         SubscriptionService subscriptionService = applicationContext.getBean(SubscriptionService.class);
         for (UserDTO user : userList) {
             int randomCount = random.nextInt(SUBSCRIPTIONS_PER_USER_MAX - SUBSCRIPTIONS_PER_USER_MIN);
+
+            // This hardcoded user must have some subscriptions
+            if (user.getUsername().equals("yahoo@yahoo.com")) {
+                randomCount = 5;
+            }
+
             int subscriptionsRandomCount = SUBSCRIPTIONS_PER_USER_MIN + randomCount;
 
             for (int i = 0; i < subscriptionsRandomCount; i++) {
