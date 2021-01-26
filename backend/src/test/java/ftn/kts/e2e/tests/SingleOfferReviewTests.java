@@ -1,11 +1,11 @@
 package ftn.kts.e2e.tests;
 
-import ftn.kts.e2e.pages.DashboardPage;
 import ftn.kts.e2e.pages.OfferPage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
 
@@ -13,8 +13,7 @@ import static ftn.kts.e2e.constants.AppConstants.EXISTENT_USER_NAME;
 import static ftn.kts.e2e.constants.AppConstants.SINGLE_OFFER_URL;
 import static ftn.kts.util.E2EUtil.loginAdmin;
 import static ftn.kts.util.E2EUtil.loginUser;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class SingleOfferReviewTests {
 
@@ -51,6 +50,20 @@ public class SingleOfferReviewTests {
     }
 
     @Test
+    public void ScrollToLastReview_MoreReviewsLoad() throws InterruptedException {
+        setUpUser();
+
+        int totalElements = page.getNumberOfReviews();
+        if (totalElements == 0)
+            fail("Offer has no reviews");
+
+        WebElement lastReview = page.getReview(totalElements - 1);
+        // wait for new data to load
+        Thread.sleep(1000);
+        assertTrue(page.getNumberOfReviews() > totalElements);
+    }
+
+    @Test
     public void AddReviewUser_OnlyRating_ReviewAddedToTop() {
         setUpUser();
 
@@ -60,19 +73,27 @@ public class SingleOfferReviewTests {
 
         page.confirmReview();
 
-//        assertEquals(page.getTopReviewUser(), EXISTENT_USER_NAME);
-//        assertEquals(page.getTopReviewRating(), 3);
+        WebElement review = page.getTopReview();
+        assertEquals(EXISTENT_USER_NAME, page.getReviewUser(review));
+        assertEquals(rating, page.getReviewRating(review));
     }
 
     @Test
     public void AddReviewUser_RatingAndContent_ReviewAddedToTop() {
         setUpUser();
 
+        int rating = 2;
+        String content = "Some Random Content";
         page.clickWriteReview();
-        page.setNewReviewRating(3);
-        page.setReviewContent("Some Random Content");
+        page.setNewReviewRating(rating);
+        page.setReviewContent(content);
 
         page.confirmReview();
+
+        WebElement review = page.getTopReview();
+        assertEquals(EXISTENT_USER_NAME, page.getReviewUser(review));
+        assertEquals(rating, page.getReviewRating(review));
+        assertEquals(content, page.getReviewContent(review));
     }
 
 }

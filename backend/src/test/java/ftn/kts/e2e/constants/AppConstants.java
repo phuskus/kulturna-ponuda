@@ -23,5 +23,6 @@ public class AppConstants {
     public static final String NONEXISTENT_ADMIN_MAIL = "abvgddjezz@gmail.com";
 
     public static final String EXISTENT_IMAGE_PATH = "src/test/resources/test_image.jpg";
+    public static final String REVIEW_STAR_NO_COLOR = "rgba(128, 128, 128, 1)";
 
 }
