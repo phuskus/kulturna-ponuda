@@ -19,4 +19,6 @@ public class AppConstants {
     public static final String EXISTENT_ADMIN_PASS = "12345";
     public static final String NONEXISTENT_ADMIN_MAIL = "abvgddjezz@gmail.com";
 
+    public static final String REVIEW_STAR_NO_COLOR = "rgba(128, 128, 128, 1)";
+
 }
