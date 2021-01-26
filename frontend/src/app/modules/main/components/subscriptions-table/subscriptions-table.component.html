@@ -49,14 +49,14 @@
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let row">
-            <button mat-icon-button (click)="unsubscribe(row)">
+            <button class="delete-subscription-button" mat-icon-button (click)="unsubscribe(row)">
               <mat-icon>delete</mat-icon>
             </button>
           </td>
         </ng-container>
   
         <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: tableColumns"></tr>
+        <tr mat-row class="subscription-table-row" *matRowDef="let row; columns: tableColumns"></tr>
       </table>
     </div>
   
