@@ -49,7 +49,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public abstract class MockDataGenerator {
 
-    private static final int ADMIN_COUNT = 5;
+    private static final int ADMIN_COUNT = 50;
     private static final int REGISTERED_USER_COUNT = 500;
 
     private static final String[] ROLES = {
@@ -214,11 +214,15 @@ public abstract class MockDataGenerator {
     }
 
     private static void generateAuthorities(ApplicationContext applicationContext) {
-    	AuthorityService authorityService = applicationContext.getBean(AuthorityService.class);
-    
-    	for (int i = 0; i < ROLES.length; i++) {
-    		authorityService.create(ROLES[i]);
-    	}    	
+        AuthorityService authorityService = applicationContext.getBean(AuthorityService.class);
+
+        for (int i = 0; i < ROLES.length; i++) {
+            try {
+                authorityService.create(ROLES[i]);
+            } catch (Exception e) {
+                System.out.println("Auth already added! Be careful");
+            }
+        }
     }
 
     private static ArrayList<AdminDTO> GenerateAdmins(ApplicationContext applicationContext) {
@@ -245,6 +249,8 @@ public abstract class MockDataGenerator {
         UserService userService = applicationContext.getBean(UserService.class);
         ArrayList<UserDTO> userList = new ArrayList<>();
         UserDTO staticUser = new UserDTO("User", "Useric", "yahoo@yahoo.com", "12345");
+        UserDTO disabledUser = new UserDTO("User1", "Useric1", "yahoo1@yahoo.com", "12345");
+        userList.add(userService.create(disabledUser));
         userList.add(userService.createConfirmed(staticUser));
         for (int i = 0; i < REGISTERED_USER_COUNT; i++) {
             while (true) {
