@@ -12,7 +12,6 @@ import java.util.concurrent.TimeUnit;
 public class Table {
 
     private String name;
-
     private WebDriver driver;
 
     public Table(WebDriver driver, String name) {
@@ -20,16 +19,11 @@ public class Table {
         this.driver = driver;
     }
 
-    public String getName() {
-        return name;
-    }
-
     private WebElement findTable() {
         return driver.findElement(By.id(name + "-table"));
     }
 
     public int getTotalElements() {
-        WebElement table = findTable();
         String length = findTable()
                 .findElement(By.className("mat-paginator-range-label"))
                 .getText();
@@ -37,9 +31,8 @@ public class Table {
         return Integer.valueOf(tokens[tokens.length - 1]);
     }
 
-    public WebElement getSearchField(){
-        return findTable().findElement(By.className("search-field"))
-                .findElement(By.tagName("input"));
+    public WebElement getSearchField() {
+        return findTable().findElement(By.cssSelector(".search-field input"));
     }
 
     public void writeToSearch(String query) {
@@ -58,10 +51,12 @@ public class Table {
     }
 
     public WebElement getNewButton() {
-        return findTable().findElement(By.cssSelector(".new-item-btn"));
+
+        return findTable().findElement(By.className("new-item-btn"));
     }
 
     public WebElement getRow(int index) {
+
         return findTable().findElements(By.cssSelector("tbody tr")).get(index);
     }
 
@@ -77,6 +72,10 @@ public class Table {
     public WebElement getActions(int rowIndex) {
         List<WebElement> tds = getRow(rowIndex).findElements(By.tagName("td"));
         return tds.get(tds.size() - 1);
+    }
+
+    public String getName() {
+        return name;
     }
 
     private void sleep(int milis) {
