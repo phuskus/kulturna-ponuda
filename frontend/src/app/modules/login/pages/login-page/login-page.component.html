@@ -27,6 +27,7 @@
                     <mat-hint 
                         *ngIf="usernameErr"
                         class="error"
+                        id="usernameNotExists"
                     >
                         {{errMsg}}
                     </mat-hint>
@@ -55,7 +56,8 @@
                     </mat-hint>
                     <mat-hint 
                         *ngIf="passwordErr"
-                        class="error"  
+                        class="error"
+                        id="invalidPassword" 
                     >
                         {{errMsg}}
                     </mat-hint>

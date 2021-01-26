@@ -18,6 +18,7 @@ import { SubscriptionsTableComponent } from '../../components/subscriptions-tabl
 })
 export class LandingPageComponent implements OnInit {
   isLoggedIn : boolean;
+  isAdmin: boolean;
   constructor(
     private router: Router, 
     private authService: AuthService,
@@ -25,10 +26,11 @@ export class LandingPageComponent implements OnInit {
     private messageService: MessageService,
     private subscriptionService: SubscriptionService,
     private snackBar: MatSnackBar,
-    private dialog: MatDialog,) { }
+    private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.isLoggedIn = (localStorage['currentUser'] !== undefined);
+    this.isAdmin = this.authService.checkIfAdmin();
   }
 
   logout(): void {
@@ -66,5 +68,8 @@ export class LandingPageComponent implements OnInit {
     })
   }
 
+  toAdminDashboard(): void {
+    this.router.navigate(["/admin"]);
+  }
 
 }
