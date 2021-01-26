@@ -1,5 +1,10 @@
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+  HttpResponse,
+} from '@angular/common/http';
+import { Injectable, Optional } from '@angular/core';
 import { NgModelGroup } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -18,8 +23,8 @@ export abstract class BaseService {
 
   public url: string;
 
-  constructor(public path: string, public http: HttpClient) {
-    this.url = AppSettings.API_ENDPOINT + path;
+  constructor(public http: HttpClient, @Optional() public path?: string) {
+    if (path) this.url = AppSettings.API_ENDPOINT + path;
   }
 
   abstract createEmpty(): Model;
@@ -27,19 +32,19 @@ export abstract class BaseService {
   getAll(): Observable<Model[]> {
     return this.http
       .get<Model[]>(this.url, this.httpOptions)
-      .pipe(catchError(this.handleError<Model[]>()));
+      .pipe(catchError(this.handleError<Model[]>('getAll')));
   }
 
   get(id: number): Observable<Model> {
     return this.http
       .get<Model>(this.url + '/' + id, this.httpOptions)
-      .pipe(catchError(this.handleError<Model>()));
+      .pipe(catchError(this.handleError<Model>('get')));
   }
 
   add(object: Model): Observable<Model> {
     return this.http
       .post<Model>(this.url, object, this.httpOptions)
-      .pipe(catchError(this.handleError<Model>()));
+      .pipe(catchError(this.handleError<Model>('add')));
   }
 
   addMultipart(object: Model, files: FileList): Observable<Model> {
@@ -49,19 +54,25 @@ export abstract class BaseService {
   update(id: number, object: Model): Observable<Model> {
     return this.http
       .put<Model>(this.url + '/' + id, object, this.httpOptions)
-      .pipe(catchError(this.handleError<Model>()));
+      .pipe(catchError(this.handleError<Model>('update')));
   }
 
   delete(id: number): Observable<Model> {
     return this.http
       .delete<Model>(this.url + '/' + id, this.httpOptions)
-      .pipe(catchError(this.handleError<Model>()));
+      .pipe(catchError(this.handleError<Model>('delete')));
   }
 
-  handleError<P>(result?: P) {
-    return (error: any): Observable<P> => {
-      console.error(error);
-      return of(result as P);
+  public handleError<T>(operation = 'operation') {
+    return (error: HttpErrorResponse): Observable<T> => {
+      console.error(error); // log to console instead
+
+      const message =
+        error.error instanceof ErrorEvent
+          ? error.error.message
+          : `server returned code ${error.status} with body "${error.error}"`;
+
+      throw new Error(`${operation} failed: ${message}`);
     };
   }
 }

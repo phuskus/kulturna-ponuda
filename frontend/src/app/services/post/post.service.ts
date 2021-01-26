@@ -11,7 +11,7 @@ import { BaseDynamicPagingService } from '../base/base-dynamic-paging.service';
 })
 export class PostService extends BaseDynamicPagingService {
   constructor(public http: HttpClient) {
-    super('posts', http);
+    super(http, 'posts');
   }
 
   createEmpty(): Post {
@@ -37,7 +37,7 @@ export class PostService extends BaseDynamicPagingService {
         this.httpOptions
       )
       .pipe(
-        catchError(this.handleError<Page<Post>>()),
+        catchError(this.handleError<Page<Post>>('getOfferForIdPost')),
       );
   }
 
@@ -50,7 +50,7 @@ export class PostService extends BaseDynamicPagingService {
 
     return this.http
       .post<Post>(this.url, formData)
-      .pipe(catchError(this.handleError<Post>()));
+      .pipe(catchError(this.handleError<Post>('addMultipartPost')));
   }
 
   

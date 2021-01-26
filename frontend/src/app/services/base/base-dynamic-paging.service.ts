@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Optional } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError, delay } from 'rxjs/operators';
 import Model from 'src/app/shared/models/Model';
@@ -10,8 +10,8 @@ import { BaseService } from './base.service';
   providedIn: 'root',
 })
 export abstract class BaseDynamicPagingService extends BaseService {
-  constructor(public path: string, public http: HttpClient) {
-    super(path, http);
+  constructor(public http: HttpClient, @Optional() public path?: string) {
+    super(http, path);
   }
 
   getPage(
@@ -27,7 +27,7 @@ export abstract class BaseDynamicPagingService extends BaseService {
         }&descending=${descending}`,
         this.httpOptions
       )
-      .pipe(catchError(this.handleError<Page<Model>>()), delay(250));
+      .pipe(catchError(this.handleError<Page<Model>>('getPage')), delay(250));
   }
 
   search(
@@ -46,7 +46,7 @@ export abstract class BaseDynamicPagingService extends BaseService {
         }&descending=${descending}`,
         this.httpOptions
       )
-      .pipe(catchError(this.handleError<Page<Model>>()), delay(250));
+      .pipe(catchError(this.handleError<Page<Model>>('search')), delay(250));
   }
 
   getAll(): Observable<Model[]> {

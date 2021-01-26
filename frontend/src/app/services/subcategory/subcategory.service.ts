@@ -11,7 +11,7 @@ import { catchError } from 'rxjs/operators';
 export class SubcategoryService extends BaseService {
   
   constructor(public http: HttpClient) {
-    super('subcategories', http);
+    super(http, 'subcategories');
    }
 
    createEmpty(): Subcategory {
@@ -39,6 +39,6 @@ export class SubcategoryService extends BaseService {
 
     return this.http
       .post<Subcategory>(this.url, formData)
-      .pipe(catchError(this.handleError<Subcategory>()));
+      .pipe(catchError(this.handleError<Subcategory>('addMultipartSubcategory')));
   }
 }

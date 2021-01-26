@@ -10,7 +10,7 @@ import { Observable, of } from "rxjs";
 })
 export class SubscriptionService extends BaseService {
     constructor(public http: HttpClient) {
-        super('subscriptions', http);
+        super(http, 'subscriptions');
     }
 
     createEmpty(): Subscription {
