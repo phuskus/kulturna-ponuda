@@ -7,11 +7,9 @@ import ftn.kts.dto.UserTokenStateDTO;
 import ftn.kts.exceptions.UserException;
 import ftn.kts.exceptions.PasswordNotChangedException;
 import ftn.kts.exceptions.UniqueConstraintViolationException;
-import ftn.kts.model.Admin;
 import ftn.kts.model.Authority;
 import ftn.kts.model.RegisteredUser;
 import ftn.kts.model.User;
-import ftn.kts.repository.AdminRepository;
 import ftn.kts.repository.UserRepository;
 import ftn.kts.security.CustomUserDetailsService;
 import ftn.kts.security.TokenUtils;
@@ -24,13 +22,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
-
-import javax.validation.Valid;
 
 @Service
 public class UserService {

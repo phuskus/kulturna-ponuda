@@ -16,9 +16,18 @@ public class LoginPage {
 	@FindBy(id = "mat-input-1")
 	WebElement passwordField;
 
-
 	@FindBy(css = "button[type=\"submit\"]")
 	WebElement loginButton;
+	
+	@FindBy(id="forgotPassword")
+	WebElement forgotPasswordLink;
+	
+	@FindBy(id="register")
+	WebElement registerLink;
+	
+	@FindBy(css = "mat-simple-snackbar")
+	WebElement activationMessage;
+	
 	
 	public LoginPage(WebDriver driver) {
 		this.driver = driver;
@@ -36,8 +45,24 @@ public class LoginPage {
 		return loginButton;
 	}
 	
+	public WebElement getForgotPasswordLink() {
+		return forgotPasswordLink;
+	}
+	
+	public WebElement getRegisterLink() {
+		return registerLink;
+	}
+	
 	public void clickLogInButton() {
 		loginButton.click();
+	}
+	
+	public void clickRegisterLink() {
+		registerLink.click();
+	}
+	
+	public void clickForgotPasswordLink() {
+		forgotPasswordLink.click();
 	}
 	
 	public void setUsername(String username) {
@@ -81,6 +106,21 @@ public class LoginPage {
 	public void ensureInvalidPasswordIsShowed() {
 		(new WebDriverWait(driver, 30)).until(
 				ExpectedConditions.visibilityOfElementLocated(By.id("invalidPassword")));
+	}
+	
+	public void ensureForgotPasswordFormIsShowed() {
+		(new WebDriverWait(driver, 30)).until(
+				ExpectedConditions.visibilityOfElementLocated(By.tagName("app-forgot-password")));
+	}
+	
+	public void ensureRegistrationFormIsShowed() {
+		(new WebDriverWait(driver, 30)).until(
+				ExpectedConditions.visibilityOfElementLocated(By.tagName("app-register-page")));
+	}
+	
+	public void ensureActivationMessageIsShowed() {
+		(new WebDriverWait(driver, 30)).until(
+				ExpectedConditions.visibilityOfElementLocated(By.className("mat-simple-snackbar")));
 	}
 	
 }

@@ -31,12 +31,7 @@ public class LoginE2ETests {
 	
 	@Test
 	public void loginUser_ValidCredentials_RedirectsToMainPage() {
-		String username = "yahoo@yahoo.com";
-		String password = "12345";
-		
-		page.setUsername(username);
-		page.setPassword(password);
-		page.clickLogInButton();
+		login("yahoo@yahoo.com", "12345");
 		
 		page.ensureMainPageIsDisplayed();
 		page.ensureProfileButtonIsDisplayed();
@@ -46,12 +41,7 @@ public class LoginE2ETests {
 	
 	@Test
 	public void loginAdmin_ValidCredentials_RedirectsToMainPage() {
-		String username = "covid19.clinic.llc@gmail.com";
-		String password = "12345";
-		
-		page.setUsername(username);
-		page.setPassword(password);
-		page.clickLogInButton();
+		login("covid19.clinic.llc@gmail.com", "12345");
 		
 		page.ensureMainPageIsDisplayed();
 		page.ensureProfileButtonIsDisplayed();
@@ -60,12 +50,7 @@ public class LoginE2ETests {
 	
 	@Test
 	public void loginUser_UsernameNotExists_ErrorMessage() {
-		String username = "hello@yahoo.com";
-		String password = "12345";
-		
-		page.setUsername(username);
-		page.setPassword(password);
-		page.clickLogInButton();
+		login("hello@yahoo.com", "12345");
 		
 		page.ensureUsernameNotExistsIsShowed();
 		page.ensureMainPageIsNotDisplayed();
@@ -73,15 +58,39 @@ public class LoginE2ETests {
 	
 	@Test
 	public void loginUser_InvalidPassword_ErrorMessage() {
-		String username = "yahoo@yahoo.com";
-		String password = "hehehe";
-		
-		page.setUsername(username);
-		page.setPassword(password);
-		page.clickLogInButton();
+		login("yahoo@yahoo.com", "hehehe");
 		
 		page.ensureInvalidPasswordIsShowed();
 		page.ensureMainPageIsNotDisplayed();		
 	}
+	
+	@Test
+	public void forgotPassword_RedirectForgotPasswordForm() {
+		page.clickForgotPasswordLink();
+		page.ensureForgotPasswordFormIsShowed();
+	}
+	
+	@Test
+	public void register_RedirectRegisterForm() {
+		page.clickRegisterLink();
+		page.ensureRegistrationFormIsShowed();
+	}
+	
+	@Test
+	public void loginUser_NotEnabledAccount_ErrorMessage() {
+		login("yahoo1@yahoo.com", "12345");
+		
+		page.ensureActivationMessageIsShowed();
+		page.ensureMainPageIsNotDisplayed();
+	}
+	
+	
+	
+	private void login(String username, String password) {
+		page.setUsername(username);
+		page.setPassword(password);
+		page.clickLogInButton();
+	}
+	
 	
 }
