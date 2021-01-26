@@ -6,6 +6,8 @@ public class AppConstants {
     public static final String SINGLE_OFFER_URL = BASE_URL + "/offers/";
     public static final String LOGIN_URL = BASE_URL + "/login";
     public static final String REGISTER_URL = BASE_URL + "/register";
+    public static final String FORGOT_PASSWORD_URL = BASE_URL + "/forgot-password";
+    
     public static final String DASHBOARD_URL = BASE_URL + "/admin";
 
     public static final String NONEXISTENT_CATEGORY = "FLKJD:Ldf;sal";
