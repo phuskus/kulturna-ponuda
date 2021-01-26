@@ -18,6 +18,7 @@ import org.springframework.test.annotation.Rollback;
 import static ftn.kts.e2e.constants.AppConstants.BASE_URL;
 import static org.junit.Assert.*;
 
+
 import ftn.kts.e2e.pages.MainPage;
 import ftn.kts.e2e.pages.ResultsPage;
 import ftn.kts.util.E2EUtil;

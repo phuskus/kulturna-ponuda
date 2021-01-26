@@ -22,8 +22,35 @@ public class ResultsPage {
 	@FindBy(id = "back-button")
 	private WebElement backButton;
 
+	
+	@FindBy(id = "sort-button")
+	private WebElement sortButton;
+
+	@FindBy(css = "mat-radio-button")
+	private List<WebElement> sortOptions;
+
+	@FindBy(id = "sort-confirm")
+	private WebElement sortConfirm;
+	
+	@FindBy(id = "sort-direction-button")
+	private WebElement sortDirectionButton;
+	
+	
+	@FindBy(id = "filter-button")
+	private WebElement filterButton;
+
+	@FindBy(css = "mat-checkbox")
+	private List<WebElement> filterOptions;
+
+	@FindBy(id = "filter-confirm")
+	private WebElement filterConfirm;
+	
+	
 	@FindBy(className = "result-card")
 	private List<WebElement> offerList;
+	
+	@FindBy(css = "div[name='result-location']")
+	private List<WebElement> locationList;
 
 	@FindBy(css = "leaflet-marker-icon")
 	private List<WebElement> markerList;
@@ -90,6 +117,10 @@ public class ResultsPage {
 				.until(ExpectedConditions.invisibilityOfElementLocated(By.id("pagionation-control")));
 	}
 
+	public WebElement getSearchBar() {
+		return searchBar;
+	}
+
 	public WebElement getBackButton() {
 		return backButton;
 	}
@@ -118,11 +149,67 @@ public class ResultsPage {
 		return unsubscribeButton;
 	}
 
+	public WebElement getSortButton() {
+		return sortButton;
+	}
+
+	public WebElement getFilterButton() {
+		return filterButton;
+	}
+
+	public List<WebElement> getSortOptions() {
+		return sortOptions;
+	}
+
+	public WebElement getSortConfirm() {
+		return sortConfirm;
+	}
+
+	public List<WebElement> getFilterOptions() {
+		return filterOptions;
+	}
+
+	public WebElement getFilterConfirm() {
+		return filterConfirm;
+	}
+
+	public List<WebElement> getLocationList() {
+		return locationList;
+	}
+
+	public WebElement getSortDirectionButton() {
+		return sortDirectionButton;
+	}
+
+	public void ensureAreVisibleSortOptions() {
+		(new WebDriverWait(driver, 2)).until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("mat-radio-button")));
+	}
+
+	public void ensureAreVisibleFilterOptions() {
+		(new WebDriverWait(driver, 2)).until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("mat-checkbox")));
+	}
+	
 	public void ensureIsVisibleSubscribeButton() {
 		(new WebDriverWait(driver, 2)).until(ExpectedConditions.visibilityOfElementLocated(By.id("subscribe-button")));
 	}
 
 	public void ensureIsVisibleUnsubscribeButton() {
 		(new WebDriverWait(driver, 2)).until(ExpectedConditions.visibilityOfElementLocated(By.id("unsubscribe-button")));
+	}
+
+	public void ensureIsDisplayedFilterApply() {
+		(new WebDriverWait(driver, 2)).until(ExpectedConditions.visibilityOfElementLocated(By.id("filter-confirm")));
+	}
+
+	public void ensureIsNotDisplayedFilterApply() {
+		(new WebDriverWait(driver, 2)).until(ExpectedConditions.invisibilityOfElementLocated(By.id("filter-confirm")));
+	}
+
+	public void ensureIsDisplayedSortApply() {
+		(new WebDriverWait(driver, 2)).until(ExpectedConditions.visibilityOfElementLocated(By.id("sort-confirm")));
+	}
+
+	public void ensureIsNotDisplayedSortApply() {
+		(new WebDriverWait(driver, 2)).until(ExpectedConditions.invisibilityOfElementLocated(By.id("sort-confirm")));
 	}
 }
