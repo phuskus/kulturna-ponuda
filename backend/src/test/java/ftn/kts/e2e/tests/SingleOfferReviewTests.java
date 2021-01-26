@@ -9,8 +9,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
 
-import static ftn.kts.e2e.constants.AppConstants.EXISTENT_USER_NAME;
-import static ftn.kts.e2e.constants.AppConstants.SINGLE_OFFER_URL;
+import java.io.File;
+
+import static ftn.kts.e2e.constants.AppConstants.*;
 import static ftn.kts.util.E2EUtil.loginAdmin;
 import static ftn.kts.util.E2EUtil.loginUser;
 import static org.junit.Assert.*;
@@ -41,6 +42,7 @@ public class SingleOfferReviewTests {
     public void finishSetUp() {
         driver.navigate().to(SINGLE_OFFER_URL + "5");
         driver.manage().window().maximize();
+        page.ensureOfferContentIsDisplayed();
     }
 
 
@@ -50,7 +52,7 @@ public class SingleOfferReviewTests {
     }
 
     @Test
-    public void ScrollToLastReview_MoreReviewsLoad() throws InterruptedException {
+    public void ScrollToLastReview_ReviewNotNull() {
         setUpUser();
 
         int totalElements = page.getNumberOfReviews();
@@ -58,9 +60,9 @@ public class SingleOfferReviewTests {
             fail("Offer has no reviews");
 
         WebElement lastReview = page.getReview(totalElements - 1);
-        // wait for new data to load
-        Thread.sleep(1000);
-        assertTrue(page.getNumberOfReviews() > totalElements);
+
+        assertNotNull(page.getReviewUser(lastReview));
+        assertNotNull(page.getReviewContent(lastReview));
     }
 
     @Test
@@ -68,9 +70,9 @@ public class SingleOfferReviewTests {
         setUpUser();
 
         int rating = 3;
+
         page.clickWriteReview();
         page.setNewReviewRating(rating);
-
         page.confirmReview();
 
         WebElement review = page.getTopReview();
@@ -84,9 +86,32 @@ public class SingleOfferReviewTests {
 
         int rating = 2;
         String content = "Some Random Content";
+
         page.clickWriteReview();
         page.setNewReviewRating(rating);
         page.setReviewContent(content);
+        page.confirmReview();
+
+        WebElement review = page.getTopReview();
+        assertEquals(EXISTENT_USER_NAME, page.getReviewUser(review));
+        assertEquals(rating, page.getReviewRating(review));
+        assertEquals(content, page.getReviewContent(review));
+    }
+
+
+    @Test
+    public void AddReviewUser_RatingContentAndImage_ReviewAddedToTop() {
+        setUpUser();
+
+        int rating = 2;
+        String content = "Some Random Content";
+
+        page.clickWriteReview();
+        page.setNewReviewRating(rating);
+        page.setReviewContent(content);
+
+        File file = new File(EXISTENT_IMAGE_PATH);
+        page.uploadImage(file.getAbsolutePath());
 
         page.confirmReview();
 
@@ -94,6 +119,14 @@ public class SingleOfferReviewTests {
         assertEquals(EXISTENT_USER_NAME, page.getReviewUser(review));
         assertEquals(rating, page.getReviewRating(review));
         assertEquals(content, page.getReviewContent(review));
+        assertEquals(1, page.getNumberOfPicturesForReview(review));
+    }
+
+    @Test
+    public void AddReviewAdmin_ButtonDisabled() {
+        setUpAdmin();
+
+        assertFalse(page.getReviewButton().isEnabled());
     }
 
 }

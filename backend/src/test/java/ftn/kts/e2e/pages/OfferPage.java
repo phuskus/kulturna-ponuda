@@ -94,6 +94,15 @@ public class OfferPage {
         return driver.findElements(By.tagName("app-single-review")).size();
     }
 
+    public int getNumberOfPicturesForReview(WebElement review){
+        return review.findElements(By.tagName("img")).size();
+    }
+
+    public void uploadImage(String path){
+        WebElement inputFile = dialog.findElement(By.id("image-upload-input"));
+        inputFile.sendKeys(path);
+    }
+
     public void ensureReviewButtonIsDisplayed() {
         (new WebDriverWait(driver, 2)).until(ExpectedConditions.visibilityOfElementLocated(By.className("review-btn")));
     }
@@ -101,6 +110,11 @@ public class OfferPage {
     public void ensureDialogIsDisplayed() {
         (new WebDriverWait(driver, 30)).until(ExpectedConditions
                 .visibilityOfElementLocated(By.tagName("mat-dialog-container")));
+    }
+
+    public void ensureOfferContentIsDisplayed() {
+        (new WebDriverWait(driver, 30)).until(ExpectedConditions
+                .visibilityOfElementLocated(By.id("main-content")));
     }
 
     public void ensureDialogIsNotDisplayed() {
