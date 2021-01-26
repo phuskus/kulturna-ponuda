@@ -12,6 +12,7 @@
                         <input 
                             matInput
                             [formControlName]="'name'"
+                            id="name"
                         />
                         <mat-hint 
                             *ngIf="f.name.touched && f.name?.errors?.required"
@@ -25,6 +26,7 @@
                         <input 
                             matInput 
                             [formControlName]="'surname'"
+                            id="surname"
                         />
                         <mat-hint 
                             *ngIf="f.surname.touched && f.surname?.errors?.required"
@@ -39,6 +41,7 @@
                     <input 
                         matInput 
                         [formControlName]="'username'"
+                        id="username"
                         (ngModelChange)="onTouchField('username', usernameErr)"
                     />
                     <mat-hint 
@@ -67,6 +70,7 @@
                         matInput
                         [type]="hidePassword ? 'password' : 'text'" 
                         [formControlName]="'password'"
+                        id="password"
                         />
                     <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
                         <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
@@ -90,6 +94,7 @@
                         matInput 
                         [type]="hideConfirmPassword ? 'password' : 'text'" 
                         [formControlName]="'confirmPassword'"
+                        id="confirmPassword"
                         ngValidateEqual="password"
                         />
                     <button type="button" mat-icon-button matSuffix (click)="hideConfirmPassword = !hideConfirmPassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirmPassword">

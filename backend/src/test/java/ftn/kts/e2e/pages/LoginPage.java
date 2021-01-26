@@ -10,10 +10,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class LoginPage {
 	private WebDriver driver;
 	
-	@FindBy(id = "mat-input-0")
+	@FindBy(id = "username")
 	WebElement usernameField;
 
-	@FindBy(id = "mat-input-1")
+	@FindBy(id = "password")
 	WebElement passwordField;
 
 	@FindBy(css = "button[type=\"submit\"]")
@@ -73,31 +73,7 @@ public class LoginPage {
 		passwordField.sendKeys(password);
 	}
 	
-	public void ensureMainPageIsDisplayed() {
-		(new WebDriverWait(driver, 30)).until(
-				ExpectedConditions.visibilityOfElementLocated(By.tagName("app-landing-page")));
-	}
-	
-	public void ensureMainPageIsNotDisplayed() {
-		(new WebDriverWait(driver, 30)).until(ExpectedConditions
-                .invisibilityOfElementLocated(By.tagName("app-landing-page")));
-	}
-	
-	public void ensureProfileButtonIsDisplayed() {
-		(new WebDriverWait(driver, 30)).until(
-				ExpectedConditions.visibilityOfElementLocated(By.id("profile-button")));
-	}
-	
-	public void ensureAdminButtonIsDisplayed() {
-		(new WebDriverWait(driver, 30)).until(
-				ExpectedConditions.visibilityOfElementLocated(By.id("admin-button")));
-	}
-	
-	public void ensureAdminButtonIsNotDisplayed() {
-		(new WebDriverWait(driver, 30)).until(ExpectedConditions
-                .invisibilityOfElementLocated(By.id("admin-button")));
-	}
-	
+
 	public void ensureUsernameNotExistsIsShowed() {
 		(new WebDriverWait(driver, 30)).until(
 				ExpectedConditions.visibilityOfElementLocated(By.id("usernameNotExists")));
@@ -108,19 +84,29 @@ public class LoginPage {
 				ExpectedConditions.visibilityOfElementLocated(By.id("invalidPassword")));
 	}
 	
-	public void ensureForgotPasswordFormIsShowed() {
-		(new WebDriverWait(driver, 30)).until(
-				ExpectedConditions.visibilityOfElementLocated(By.tagName("app-forgot-password")));
-	}
 	
-	public void ensureRegistrationFormIsShowed() {
+	public void ensureLoginFormIsShowed() {
 		(new WebDriverWait(driver, 30)).until(
-				ExpectedConditions.visibilityOfElementLocated(By.tagName("app-register-page")));
+				ExpectedConditions.visibilityOfElementLocated(By.tagName("app-login-page")));
 	}
 	
 	public void ensureActivationMessageIsShowed() {
 		(new WebDriverWait(driver, 30)).until(
 				ExpectedConditions.visibilityOfElementLocated(By.className("mat-simple-snackbar")));
+	}
+	
+	public void ensureUsernameFieldIsShowed() {
+		(new WebDriverWait(driver, 30)).until(
+				ExpectedConditions.visibilityOfElementLocated(By.id("username")));
+	}
+	
+	public void ensurePasswordFieldIsShowed() {
+		(new WebDriverWait(driver, 30)).until(
+				ExpectedConditions.visibilityOfElementLocated(By.id("password")));
+	}
+	
+	public void clearPassword() {
+		passwordField.clear();
 	}
 	
 }

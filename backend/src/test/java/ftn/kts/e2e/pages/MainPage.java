@@ -35,10 +35,33 @@ public class MainPage {
         this.driver = driver;
     }
     
+    public void clickProfileButton() {
+    	profileButton.click();
+    }
+    
+    public void clickLogoutButton() {
+    	logoutButton.click();
+    }
+    
+    public void clickLoginButton() {
+    	loginButton.click();
+    }
+    
+    public void ensureMainPageIsDisplayed() {
+		(new WebDriverWait(driver, 30)).until(
+				ExpectedConditions.visibilityOfElementLocated(By.tagName("app-landing-page")));
+	}
+	
+	public void ensureMainPageIsNotDisplayed() {
+		(new WebDriverWait(driver, 30)).until(ExpectedConditions
+                .invisibilityOfElementLocated(By.tagName("app-landing-page")));
+	}
+	
+    
     public void ensureIsDisplayedSearchBar() {
     	(new WebDriverWait(driver, 30)).until(ExpectedConditions.visibilityOfElementLocated(By.id("search-bar")));
     }
-
+    
     public void ensureIsDisplayedSubcategoryList() {
     	(new WebDriverWait(driver, 30)).until(ExpectedConditions.visibilityOfElementLocated(By.className("category-button")));
     }
@@ -54,7 +77,36 @@ public class MainPage {
     public void ensureIsNotVisibleLoginButton() {
         (new WebDriverWait(driver, 10)).until(ExpectedConditions.invisibilityOfElementLocated(By.id("login-button")));
     }
-
+    
+    public void ensureLoginFormIsDisplayed() {
+		(new WebDriverWait(driver, 30)).until(
+				ExpectedConditions.visibilityOfElementLocated(By.tagName("app-login-page")));
+	}
+    
+    public void ensureLogoutButtonIsDisplayed() {
+    	(new WebDriverWait(driver, 30)).until(ExpectedConditions.visibilityOfElementLocated(By.id("logout-button")));
+    }
+    
+    public void ensureLogoutMessageIsShowed() {
+		(new WebDriverWait(driver, 30)).until(
+				ExpectedConditions.visibilityOfElementLocated(By.className("mat-simple-snackbar")));
+	}
+    
+    public void ensureProfileButtonIsDisplayed() {
+		(new WebDriverWait(driver, 30)).until(
+				ExpectedConditions.visibilityOfElementLocated(By.id("profile-button")));
+    }
+    
+    public void ensureAdminButtonIsDisplayed() {
+		(new WebDriverWait(driver, 30)).until(
+				ExpectedConditions.visibilityOfElementLocated(By.id("admin-button")));
+	}
+    
+    public void ensureAdminButtonIsNotDisplayed() {
+		(new WebDriverWait(driver, 30)).until(
+				ExpectedConditions.invisibilityOfElementLocated(By.id("admin-button")));
+	}
+      
 	public WebElement getSearchBar() {
 		return searchBar;
 	}
@@ -73,9 +125,7 @@ public class MainPage {
         return profileButton;
     }
 
-    public void ensureIsDisplayedProfileMenu() {
-        (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOfElementLocated(By.id("logout-button")));
-    }
+    
 
     public WebElement getLogoutButton() {
         return logoutButton;

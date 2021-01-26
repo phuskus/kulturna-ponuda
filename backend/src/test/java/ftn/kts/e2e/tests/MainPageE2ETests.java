@@ -138,7 +138,7 @@ public class MainPageE2ETests {
         WebElement profileButton = mainPage.getProfileButton();
         profileButton.click();
 
-        mainPage.ensureIsDisplayedProfileMenu();
+        mainPage.ensureLogoutButtonIsDisplayed();
 
         WebElement logoutButton = mainPage.getLogoutButton();
         (new WebDriverWait(driver, 1)).until(ExpectedConditions.elementToBeClickable(logoutButton)).click();

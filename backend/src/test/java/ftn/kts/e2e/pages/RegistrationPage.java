@@ -10,19 +10,19 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class RegistrationPage {
 	private WebDriver driver;
 	
-	@FindBy(id = "mat-input-0")
+	@FindBy(id = "name")
 	WebElement nameField;
 	
-	@FindBy(id = "mat-input-1")
+	@FindBy(id = "surname")
 	WebElement surnameField;
 	
-	@FindBy(id = "mat-input-2")
+	@FindBy(id = "username")
 	WebElement usernameField;
 	
-	@FindBy(id = "mat-input-3")
+	@FindBy(id = "password")
 	WebElement passwordField;
 	
-	@FindBy(id = "mat-input-4")
+	@FindBy(id = "confirmPassword")
 	WebElement confirmPasswordField;
 	
 	@FindBy(css = "button[type=\"submit\"]")
@@ -87,19 +87,19 @@ public class RegistrationPage {
 		loginLink.click();
 	}
 	
-	public void ensureActivationMessageIsShowed() {
+	public void ensureActivationMessageIsDisplayed() {
 		(new WebDriverWait(driver, 50)).until(
 				ExpectedConditions.visibilityOfElementLocated(By.className("mat-simple-snackbar")));
 	}
 	
-	public void ensureUsernameExistsIsShowed() {
+	public void ensureUsernameExistsIsDisplayed() {
 		(new WebDriverWait(driver, 30)).until(
 				ExpectedConditions.visibilityOfElementLocated(By.id("usernameExists")));
 	}
 	
-	public void ensureLoginFormIsShowed() {
+	public void ensureRegistrationFormIsDisplayed() {
 		(new WebDriverWait(driver, 30)).until(
-				ExpectedConditions.visibilityOfElementLocated(By.tagName("app-login-page")));
+				ExpectedConditions.visibilityOfElementLocated(By.tagName("app-register-page")));
 	}
 	
 }

@@ -11,6 +11,7 @@
                     <input 
                         matInput 
                         [formControlName]="'username'"
+                        id="username"
                         (ngModelChange)="onTouchField('username', usernameErr)"/>
                     <mat-hint 
                         *ngIf="f.username.touched && f.username.invalid && f.username.errors.required"
@@ -38,6 +39,7 @@
                         matInput 
                         [type]="hide ? 'password' : 'text'" 
                         [formControlName]="'password'"
+                        id="password"
                         (ngModelChange)="onTouchField('password', passwordErr)"/>
                     <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                         <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>

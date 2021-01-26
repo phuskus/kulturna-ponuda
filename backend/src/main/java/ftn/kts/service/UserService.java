@@ -79,6 +79,16 @@ public class UserService {
         save(user);
         return toDTO(user);
     }
+    
+    public UserDTO createWithResetKey(UserDTO dto) throws UniqueConstraintViolationException {
+    	checkUnique(dto);
+    	RegisteredUser user = toEntity(dto);
+    	createUserAuthority(user, "ROLE_USER");
+    	user.setEnabled(true);
+    	user.setResetKey("test-key");
+    	save(user);
+    	return toDTO(user);
+    }
 
     public void createUserAuthority(User user, String role) {
         user.setPassword(userDetailsService.encodePassword(user.getPassword()));
