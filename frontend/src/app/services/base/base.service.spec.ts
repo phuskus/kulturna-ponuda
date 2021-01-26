@@ -53,96 +53,141 @@ describe('BaseService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should return expected models', fakeAsync(() => {
-    const expectedData: MockModel[] = [
-      { id: 0, name: '' },
-      { id: 1, name: '' },
-      { id: 2, name: '' },
-      { id: 3, name: '' },
-    ];
+  describe('#getAllMockModel', () => {
+    let expectedData: MockModel[];
 
-    let actualData: MockModel[] = [];
+    beforeEach(() => {
+      expectedData = [
+        { id: 0, name: 'Peter' },
+        { id: 1, name: 'John' },
+        { id: 2, name: 'Michael' },
+        { id: 3, name: 'CHAD' },
+      ];
+    });
 
-    service.getAll().subscribe((data) => (actualData = data as MockModel[]));
+    it('should return expected models', fakeAsync(() => {
+      service
+        .getAll()
+        .subscribe((data) => expect(data).toEqual(expectedData), fail);
 
-    const req = httpMock.expectOne(service.url);
-    expect(req.request.method).toBe('GET');
-    req.flush(expectedData);
+      const req = httpMock.expectOne(service.url);
+      expect(req.request.method).toBe('GET');
+      req.flush(expectedData);
+    }));
 
-    tick();
+    it('should be OK returning no items', fakeAsync(() => {
+      service
+        .getAll()
+        .subscribe((data) => expect(data.length).toEqual(0), fail);
 
-    expect(actualData).toEqual(expectedData, 'expected data');
-  }));
+      const req = httpMock.expectOne(service.url);
+      expect(req.request.method).toBe('GET');
+      req.flush([]);
+    }));
 
-  it('should return model with given id', fakeAsync(() => {
+    it('should turn 404 into error message', fakeAsync(() => {
+      const msg = 'Deliberate 404';
+      service.getAll().subscribe(
+        (data) => fail('Expected to fail'),
+        (err) => expect(err.message).toContain(msg)
+      );
+
+      const req = httpMock.expectOne(service.url);
+      req.flush(msg, { status: 404, statusText: 'Not Found' });
+    }));
+  });
+
+  describe('#getMockModelById', () => {
     const givenId = 1;
-    const expectedData: MockModel = { id: givenId, name: 'Peter' };
+    let expectedData: MockModel;
 
-    let actualData: MockModel = service.createEmpty();
+    beforeEach(() => {
+      expectedData = { id: givenId, name: 'Peter' };
+    });
 
-    service.get(givenId).subscribe((data) => (actualData = data as MockModel));
+    it('should return mock model with given id', fakeAsync(() => {
+      service.get(givenId).subscribe((data) => {
+        expect(data).toEqual(expectedData);
+        expect(givenId).toEqual(data.id);
+      }, fail);
 
-    const req = httpMock.expectOne(service.url + '/' + givenId);
-    expect(req.request.method).toBe('GET');
-    req.flush(expectedData);
+      const req = httpMock.expectOne(service.url + '/' + givenId);
+      expect(req.request.method).toBe('GET');
+      req.flush(expectedData);
+    }));
 
-    tick();
+    it('should turn 404 into nice error message', fakeAsync(() => {
+      const msg = 'Deliberate 404';
+      service.get(givenId).subscribe(
+        (data) => fail('Expected to fail'),
+        (err) => expect(err.message).toContain(msg)
+      );
 
-    expect(actualData).toEqual(expectedData);
-    expect(givenId).toEqual(expectedData.id);
-  }));
+      const req = httpMock.expectOne(service.url + '/' + givenId);
+      req.flush(msg, { status: 404, statusText: 'Not Found' });
+    }));
+  });
 
-  it('should add new model and set its id', fakeAsync(() => {
-    const expectedData: MockModel = { id: 1, name: 'Peter' };
+  describe('#addMockModel', () => {
+    let expectedData: MockModel;
 
-    let actualData: MockModel = service.createEmpty();
-    expect(actualData.id).toBeNull();
+    beforeEach(() => {
+      expectedData = { id: 1, name: 'Peter' };
+    });
 
-    service
-      .add(actualData)
-      .subscribe((data) => (actualData = data as MockModel));
+    it('should add new mock model and set its id', fakeAsync(() => {
+      let actualData: MockModel = service.createEmpty();
+      expect(actualData.id).toBeNull();
 
-    const req = httpMock.expectOne(service.url);
-    expect(req.request.method).toBe('POST');
-    req.flush(expectedData);
+      service.add(actualData).subscribe((data) => {
+        expect(data).toBeDefined();
+        expect(data.id).toBeDefined();
+        expect(data).toEqual(expectedData);
+      }, fail);
 
-    tick();
+      const req = httpMock.expectOne(service.url);
+      expect(req.request.method).toBe('POST');
+      req.flush(expectedData);
+    }));
+  });
 
-    expect(actualData).toBeDefined();
-    expect(actualData.id).toBeDefined();
-    expect(actualData).toEqual(expectedData);
-  }));
-
-  it('should update old data with new attributes', fakeAsync(() => {
+  describe('#updateMockModel', () => {
     const givenId = 1;
-    let oldData: MockModel = { id: givenId, name: 'Peter' };
-    let updatedData: MockModel = Object.assign({}, oldData);
+    let oldData: MockModel;
 
-    expect(oldData).toEqual(updatedData);
+    beforeEach(() => {
+      oldData = { id: givenId, name: 'Peter' };
+    });
 
-    updatedData.name = 'Not Peter';
-    expect(oldData).not.toEqual(updatedData);
+    it('should update mock model and return it', fakeAsync(() => {
+      let updatedData: MockModel = Object.assign({}, oldData);
 
-    service
-      .update(givenId, updatedData)
-      .subscribe((data) => (oldData = data as MockModel));
+      expect(oldData).toEqual(updatedData);
 
-    const req = httpMock.expectOne(service.url + '/' + givenId);
-    expect(req.request.method).toBe('PUT');
-    req.flush(updatedData);
+      updatedData.name = 'Not Peter';
+      expect(oldData).not.toEqual(updatedData);
 
-    tick();
+      service.update(givenId, updatedData).subscribe((data) => {
+        expect(data).toBeDefined();
+        expect(data).toEqual(updatedData);
+      }, fail);
 
-    expect(oldData).toBeDefined();
-    expect(oldData).toEqual(updatedData);
-  }));
+      const req = httpMock.expectOne(service.url + '/' + givenId);
+      expect(req.request.method).toBe('PUT');
+      req.flush(updatedData);
+    }));
+  });
 
-  it('should delete data', fakeAsync(() => {
-    const givenId = 1;
-    service.delete(givenId).subscribe((res) => {});
+  describe('#deleteMockModel', () => {
+    beforeEach(() => {});
 
-    const req = httpMock.expectOne(service.url + '/' + givenId);
-    expect(req.request.method).toBe('DELETE');
-    req.flush({});
-  }));
+    it('should delete mock model', fakeAsync(() => {
+      const givenId = 1;
+      service.delete(givenId).subscribe((res) => {}, fail);
+
+      const req = httpMock.expectOne(service.url + '/' + givenId);
+      expect(req.request.method).toBe('DELETE');
+      req.flush({});
+    }));
+  });
 });
