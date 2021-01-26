@@ -53,10 +53,6 @@ describe('BaseService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('rand', fakeAsync(() => {
-    expect(service).toBeTruthy();
-  }));
-
   it('should return expected models', fakeAsync(() => {
     const expectedData: MockModel[] = [
       { id: 0, name: '' },
@@ -120,16 +116,15 @@ describe('BaseService', () => {
   it('should update old data with new attributes', fakeAsync(() => {
     const givenId = 1;
     let oldData: MockModel = { id: givenId, name: 'Peter' };
-    let updatedData: MockModel = service.createEmpty();
-    Object.assign(updatedData, oldData);
+    let updatedData: MockModel = Object.assign({}, oldData);
 
     expect(oldData).toEqual(updatedData);
 
-    updatedData.name = 'Not Pera';
+    updatedData.name = 'Not Peter';
     expect(oldData).not.toEqual(updatedData);
 
     service
-      .update(updatedData.id, updatedData)
+      .update(givenId, updatedData)
       .subscribe((data) => (oldData = data as MockModel));
 
     const req = httpMock.expectOne(service.url + '/' + givenId);
