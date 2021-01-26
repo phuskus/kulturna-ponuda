@@ -237,7 +237,7 @@ public class MainPageE2ETests {
         WebElement profileButton = mainPage.getProfileButton();
         profileButton.click();
 
-        mainPage.ensureIsDisplayedProfileMenu();
+        mainPage.ensureLogoutButtonIsDisplayed();
 
         WebElement editSubscriptionsButton = mainPage.getEditSubscriptionsButton();
         (new WebDriverWait(driver, 3)).until(ExpectedConditions.elementToBeClickable(editSubscriptionsButton)).click();
