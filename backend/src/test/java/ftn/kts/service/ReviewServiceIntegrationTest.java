@@ -71,20 +71,4 @@ public class ReviewServiceIntegrationTest {
         assertThrows(EmptyResultDataAccessException.class, () -> reviewService.delete(NONEXISTENT_ID));
     }
 
-    @Test
-    public void update_SetNewContent_ContentChanged() {
-        ReviewDTO oldReview = reviewService.getOneDTO(EXISTENT_ID);
-        assertEquals(CONTENT, oldReview.getContent());
-
-        oldReview.setContent(NEW_CONTENT);
-        reviewService.update(oldReview, oldReview.getId());
-
-        ReviewDTO newReview = reviewService.getOneDTO(EXISTENT_ID);
-        assertEquals(NEW_CONTENT, newReview.getContent());
-
-        // return to old value
-        newReview.setContent(CONTENT);
-        reviewService.update(newReview, newReview.getId());
-        assertEquals(CONTENT, reviewService.getOneDTO(EXISTENT_ID).getContent());
-    }
 }

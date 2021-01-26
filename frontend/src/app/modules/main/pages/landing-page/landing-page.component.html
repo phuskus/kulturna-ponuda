@@ -15,6 +15,7 @@
   </div>
   <div *ngIf="isLoggedIn" class="mgl-map-overlay-right">
     <button
+        id="profile-button"
         class="item"
         mat-mini-fab 
         color="primary"
@@ -32,12 +33,12 @@
         <mat-icon>lock</mat-icon>
         <span>Change password</span>
       </button>
-      <button mat-menu-item>
+      <button mat-menu-item (click)="onEditSubscriptions()">
         <mat-icon>comment</mat-icon>
         <span>Edit subscriptions</span>
       </button>
       <mat-divider></mat-divider>
-      <button mat-menu-item (click)="logout()">
+      <button id="logout-button" mat-menu-item (click)="logout()">
         <mat-icon>exit_to_app</mat-icon>
         <span>Logout</span>
       </button>

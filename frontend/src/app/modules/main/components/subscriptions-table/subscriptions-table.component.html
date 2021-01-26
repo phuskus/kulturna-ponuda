@@ -1,0 +1,69 @@
+<div class="example-container mat-elevation-z8" style="height: 100% !important">
+    <div class="example-loading-shade" *ngIf="isLoadingResults">
+      <mat-progress-spinner
+        *ngIf="isLoadingResults"
+        mode="indeterminate"
+        diameter="100"
+      ></mat-progress-spinner>
+    </div>
+  
+    <div
+      class="card-header"
+      fxLayout="row"
+      fxLayoutAlign="space-between center"
+      fxLayoutGap="5%"
+    >
+      <div>Subscriptions</div>
+    </div>
+  
+    <div class="example-table-container">
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        class="example-table"
+        matSort
+        matSortDisableClear
+        matSortDirection="desc"
+      >
+        <!-- name -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-header>Name</th>
+          <td mat-cell *matCellDef="let row">
+            <span *ngIf="row.culturalOfferId">
+              {{ row.culturalOfferName }}
+            </span>
+
+            <span *ngIf="row.subcategoryId">
+              {{ row.subcategoryName }}
+            </span>
+          </td>
+        </ng-container>
+  
+        <!-- date -->
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef mat-header>Date Subscribed</th>
+          <td mat-cell *matCellDef="let row">{{ toMomentDate(row.dateOfSubscription) }}</td>
+        </ng-container>
+  
+        <!-- actions -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let row">
+            <button mat-icon-button (click)="unsubscribe(row)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+  
+        <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: tableColumns"></tr>
+      </table>
+    </div>
+  
+    <mat-paginator
+      class="paginator"
+      [length]="resultsLength"
+      [pageSizeOptions]="[10, 15, 20]"
+    ></mat-paginator>
+  </div>
+  
