@@ -1,6 +1,7 @@
 package ftn.kts.e2e.components;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -28,41 +29,62 @@ public class Table {
     }
 
     public int getTotalElements() {
-        String length = findTable().findElement(By.tagName("mat-paginator"))
-                .getAttribute("ng-reflect-length");
-        return Integer.valueOf(length);
+        WebElement table = findTable();
+        String length = findTable()
+                .findElement(By.className("mat-paginator-range-label"))
+                .getText();
+        String[] tokens = length.split(" ");
+        return Integer.valueOf(tokens[tokens.length - 1]);
+    }
+
+    public WebElement getSearchField(){
+        return findTable().findElement(By.className("search-field"))
+                .findElement(By.tagName("input"));
     }
 
     public void writeToSearch(String query) {
-        findTable().findElement(By.tagName("input")).sendKeys(query);
+        getSearchField().sendKeys(query);
 
         // explicitly wait for request to be sent
-        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+        sleep(2000);
     }
 
-    public void getNewButton() {
-        findTable().findElement(By.cssSelector(".new-item-btn"));
+    public void clearSearch() {
+        WebElement search = getSearchField();
+        search.clear();
+        search.sendKeys(Keys.BACK_SPACE);
+        // explicitly wait for request to be sent
+        sleep(2000);
     }
 
-    public List<WebElement> getRows() {
+    public WebElement getNewButton() {
+        return findTable().findElement(By.cssSelector(".new-item-btn"));
+    }
+
+    public WebElement getRow(int index) {
+        return findTable().findElements(By.cssSelector("tbody tr")).get(index);
+    }
+
+    public String getRowColumnText(int rowIndex, int columnIndex) {
+        return getRow(rowIndex)
+                .findElements(By.tagName("td")).get(columnIndex).getText();
+    }
+
+    public List<WebElement> getAllRows() {
         return findTable().findElements(By.cssSelector("tbody tr"));
     }
 
     public WebElement getActions(int rowIndex) {
-        List<WebElement> rows = getRows();
-        List<WebElement> tds = rows.get(rowIndex).findElements(By.tagName("td"));
+        List<WebElement> tds = getRow(rowIndex).findElements(By.tagName("td"));
         return tds.get(tds.size() - 1);
     }
 
-    public WebElement getDialog() {
-        return driver.findElement(By.className("mat-dialog-container"));
+    private void sleep(int milis) {
+        try {
+            Thread.sleep(milis);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
-    public WebElement getConfirmDialog() {
-        return getDialog().findElement(By.className("button-option-main"));
-    }
-
-    public WebElement getCancelDialog() {
-        return getDialog().findElement(By.className("button-option-alt"));
-    }
 }

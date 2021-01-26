@@ -16,6 +16,43 @@ public class DashboardPage {
         this.driver = driver;
     }
 
+
+    public WebElement getDialog() {
+        return driver.findElement(By.className("mat-dialog-container"));
+    }
+
+    // index 0 for edit, 1 for update if both available
+    // else delete is 0
+    public void openActionDialog(int rowIndex, int actionIndex) {
+        WebElement button = table.getActions(rowIndex)
+                .findElements(By.tagName("button")).get(actionIndex);
+        button.click();
+        ensureDialogIsDisplayed();
+    }
+
+    public void openNewItemDialog(){
+        table.getNewButton().click();
+        ensureDialogIsDisplayed();
+    }
+
+    public void writeToDialogInput(String inputName, String value) {
+        getDialog().findElement(By.name(inputName)).sendKeys(value);
+    }
+
+    public void clickConfirmDialog() {
+        this.clickDialogButton("button-option-main");
+    }
+
+    public void clickCancelDialog() {
+        this.clickDialogButton("button-option-alt");
+    }
+
+    private void clickDialogButton(String buttonClass) {
+        WebElement btn = getDialog().findElement(By.className(buttonClass));
+        btn.click();
+        ensureDialogIsNotDisplayed();
+    }
+
     public void ensureTableIsDisplayed() {
         (new WebDriverWait(driver, 30)).until(ExpectedConditions
                 .visibilityOfElementLocated(By.id(table.getName() + "-table")));
@@ -35,7 +72,7 @@ public class DashboardPage {
         return table;
     }
 
-    public void setTable(String name){
-        this.table = new Table(this.driver,  name);
+    public void setTable(String name) {
+        this.table = new Table(this.driver, name);
     }
 }
