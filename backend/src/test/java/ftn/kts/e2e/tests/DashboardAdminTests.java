@@ -30,7 +30,7 @@ public class DashboardAdminTests extends AbstractDashboard {
     }
 
     @Test
-    public void AddSearchDelete_NotSelfNonexistentMail_Success() {
+    public void AddSearchDelete_NotSelfAndNonexistentMail_Success() {
         int totalElements = page.getTable().getTotalElements();
 
         if (totalElements == 1) {

@@ -1,7 +1,7 @@
 <div style="height: 100vh; width: 100%">
   <app-map></app-map>
   <router-outlet></router-outlet>
-  <div  *ngIf="!isLoggedIn">
+  <div *ngIf="!isLoggedIn">
     <button
       id="login-button"
       mat-raised-button
@@ -14,35 +14,49 @@
     </button>
   </div>
   <div *ngIf="isLoggedIn" class="mgl-map-overlay-right">
-    <button
-        id="profile-button"
+    <div class="button-container">
+      <button
+        *ngIf="isAdmin"
         class="item"
-        mat-mini-fab 
+        mat-mini-fab
         color="primary"
         disableRipple="true"
-        [matMenuTriggerFor]="menu">
-      <mat-icon>account_circle</mat-icon>
-    </button>
-  <div>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item (click)="onEditProfile()">
+        id="admin-button"
+        (click)="toAdminDashboard()"
+      >
+        <mat-icon>build_circle</mat-icon>
+      </button>
+      <button
+        class="item"
+        mat-mini-fab
+        color="primary"
+        disableRipple="true"
+        id="profile-button"
+        [matMenuTriggerFor]="menu"
+      >
         <mat-icon>account_circle</mat-icon>
-        <span>Edit profile</span>
       </button>
-      <button mat-menu-item (click)="onChangePassword()">
-        <mat-icon>lock</mat-icon>
-        <span>Change password</span>
-      </button>
-      <button mat-menu-item (click)="onEditSubscriptions()">
-        <mat-icon>comment</mat-icon>
-        <span>Edit subscriptions</span>
-      </button>
-      <mat-divider></mat-divider>
-      <button id="logout-button" mat-menu-item (click)="logout()">
-        <mat-icon>exit_to_app</mat-icon>
-        <span>Logout</span>
-      </button>
-    </mat-menu>
+    </div>
+    <div>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="onEditProfile()">
+          <mat-icon>account_circle</mat-icon>
+          <span>Edit profile</span>
+        </button>
+        <button mat-menu-item (click)="onChangePassword()">
+          <mat-icon>lock</mat-icon>
+          <span>Change password</span>
+        </button>
+        <button id="edit-subscriptions-button" mat-menu-item (click)="onEditSubscriptions()">
+          <mat-icon>comment</mat-icon>
+          <span>Edit subscriptions</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button id="logout-button" mat-menu-item (click)="logout()">
+          <mat-icon>exit_to_app</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+    </div>
   </div>
 </div>
-

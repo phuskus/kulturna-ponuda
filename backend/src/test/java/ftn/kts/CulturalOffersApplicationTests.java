@@ -9,7 +9,6 @@ import ftn.kts.controller.AdminControllerIntegrationTest;
 import ftn.kts.controller.CategoryControllerIntegrationTest;
 import ftn.kts.controller.CulturalOfferControllerIntegrationTest;
 import ftn.kts.controller.LoginControllerIntegrationTest;
-import ftn.kts.controller.PictureControllerIntegrationTest;
 import ftn.kts.controller.PostControllerIntegrationTest;
 import ftn.kts.controller.ReviewControllerIntegrationTest;
 import ftn.kts.repository.AuthorityRepositoryIntegrationTest;
@@ -40,7 +39,6 @@ import ftn.kts.service.UserServiceUnitTest;
         UserServiceIntegrationTest.class,
         UserServiceUnitTest.class,
         PictureServiceIntegrationTest.class,
-        PictureControllerIntegrationTest.class,
         CulturalOfferRepositoryIntegrationTest.class,
         CulturalOfferServiceIntegrationTest.class,
         CulturalOfferControllerIntegrationTest.class,

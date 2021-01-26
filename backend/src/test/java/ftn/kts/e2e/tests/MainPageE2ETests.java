@@ -226,4 +226,37 @@ public class MainPageE2ETests {
 
         offerPage.ensureIsVisibleSubscribeButton();
     }
+
+    @Test
+    @Rollback
+    public void editSubscriptions_ShowTableRemoveSubscription() throws InterruptedException {
+        E2EUtil.loginUser(driver);
+
+        driver.navigate().to(BASE_URL);
+
+        MainPage mainPage = PageFactory.initElements(driver, MainPage.class);
+        WebElement profileButton = mainPage.getProfileButton();
+        profileButton.click();
+
+        mainPage.ensureIsDisplayedProfileMenu();
+
+        WebElement editSubscriptionsButton = mainPage.getEditSubscriptionsButton();
+        (new WebDriverWait(driver, 3)).until(ExpectedConditions.elementToBeClickable(editSubscriptionsButton)).click();
+
+        mainPage.ensureIsDisplayedEditSubscriptions();
+
+        List<WebElement> deleteButtons = mainPage.getDeleteSubscriptionButtons();
+        int numberOfRows = deleteButtons.size();
+        assertTrue(numberOfRows != 0);
+
+        WebElement firstButton = deleteButtons.get(0);
+
+        (new WebDriverWait(driver, 3)).until(ExpectedConditions.elementToBeClickable(firstButton)).click();
+
+        mainPage.ensureIsNotDisplayed(firstButton);
+
+        deleteButtons = mainPage.getDeleteSubscriptionButtons();
+
+        assertEquals(deleteButtons.size(), numberOfRows - 1);
+    }
 }

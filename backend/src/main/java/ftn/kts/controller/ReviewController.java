@@ -80,7 +80,7 @@ public class ReviewController {
 
     @PostMapping
     @Transactional
-//    @PreAuthorize("hasAnyRole('USER')")
+    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<Object> addReview(@Valid @RequestParam String review, @RequestParam(value = "files", required = false) MultipartFile[] files) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         ReviewDTO dto = mapper.readValue(review, ReviewDTO.class);
