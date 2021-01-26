@@ -6,7 +6,9 @@
     ></ngx-avatar>
   </div>
   <div fxLayout="column" fxLayoutAlign="center start">
-    {{ review.user.name + " " + review.user.surname }}
+    <span class="review-user">
+      {{ review.user.name + " " + review.user.surname }}
+    </span>
 
     <div fxLayout="row" fxLayoutAlign="start center">
       <app-star-rating
@@ -20,7 +22,7 @@
   </div>
 </div>
 
-<p style="margin-top: 8px">
+<p class="review-content" style="margin-top: 8px">
   {{ review.content }}
 </p>
 

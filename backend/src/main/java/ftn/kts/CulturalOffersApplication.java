@@ -34,7 +34,7 @@ public class CulturalOffersApplication implements WebMvcConfigurer {
 
 		// Uncomment to populate database with test data
 		// Configure by changing private constants in MockDataGenerator class
-		//MockDataGenerator.GenerateMockData(applicationContext);
+		MockDataGenerator.GenerateMockData(applicationContext);
 	}
 
 }
