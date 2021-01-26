@@ -22,6 +22,5 @@ export default abstract class DeleteDialog<T> extends Dialog<T> {
       this.onSubscriptionCallBack.emit(data);
       this.dialogRef.close();
     });
-    // this.dialogRef.close();
   }
 }

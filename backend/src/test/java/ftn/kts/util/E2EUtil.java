@@ -11,8 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.concurrent.TimeUnit;
 
-import static ftn.kts.e2e.constants.AppConstants.BASE_URL;
-import static ftn.kts.e2e.constants.AppConstants.LOGIN_URL;
+import static ftn.kts.e2e.constants.AppConstants.*;
 
 public class E2EUtil {
     public static void loginUser(WebDriver driver) {
@@ -20,7 +19,7 @@ public class E2EUtil {
     }
 
     public static void loginAdmin(WebDriver driver) {
-        login(driver, "covid19.clinic.llc@gmail.com", "12345");
+        login(driver, EXISTENT_ADMIN_MAIL, EXISTENT_ADMIN_PASS);
     }
 
     private static void login(WebDriver driver, String user, String pass) {
@@ -30,7 +29,6 @@ public class E2EUtil {
         usernameField.sendKeys(user);
         WebElement passwordField = loginPage.getPasswordField();
         passwordField.sendKeys(pass);
-//        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         WebElement loginButton = loginPage.getLoginButton();
         loginButton.click();
         ensureLoginNotDisplayed(driver);
