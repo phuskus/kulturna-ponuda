@@ -11,6 +11,9 @@ public class AppConstants {
     public static final String NONEXISTENT_CATEGORY = "FLKJD:Ldf;sal";
     public static final String EXISTENT_CATEOGORY = "Institution";
 
+    public static final String NONEXISTENT_SUBCATEGORY = "Ne postoji, sine";
+    public static final String EXISTENT_SUBCATEGORY = "Gallery";
+
     public static final String EXISTENT_USER_MAIL = "yahoo@yahoo.com";
     public static final String EXISTENT_USER_PASS = "12345";
     public static final String EXISTENT_USER_NAME = "User Useric";
@@ -18,5 +21,7 @@ public class AppConstants {
     public static final String EXISTENT_ADMIN_MAIL = "covid19.clinic.llc@gmail.com";
     public static final String EXISTENT_ADMIN_PASS = "12345";
     public static final String NONEXISTENT_ADMIN_MAIL = "abvgddjezz@gmail.com";
+
+    public static final String EXISTENT_IMAGE_PATH = "src/test/resources/test_image.jpg";
 
 }
