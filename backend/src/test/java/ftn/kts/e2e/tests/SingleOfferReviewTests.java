@@ -1,5 +1,12 @@
 package ftn.kts.e2e.tests;
 
+import static ftn.kts.e2e.constants.AppConstants.SINGLE_OFFER_URL;
+import static ftn.kts.util.E2EUtil.loginAdmin;
+import static ftn.kts.util.E2EUtil.loginUser;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+
 import ftn.kts.e2e.pages.OfferPage;
 import org.junit.After;
 import org.junit.Before;
@@ -12,8 +19,6 @@ import org.openqa.selenium.support.PageFactory;
 import java.io.File;
 
 import static ftn.kts.e2e.constants.AppConstants.*;
-import static ftn.kts.util.E2EUtil.loginAdmin;
-import static ftn.kts.util.E2EUtil.loginUser;
 import static org.junit.Assert.*;
 
 public class SingleOfferReviewTests {
@@ -127,6 +132,17 @@ public class SingleOfferReviewTests {
         setUpAdmin();
 
         assertFalse(page.getReviewButton().isEnabled());
+    }
+    
+
+    @Test
+    public void checkPostsExists() {
+        setUpUser();
+
+        page.ensurePostsAreDisplayed();
+        
+        List<WebElement> posts = page.getPosts();
+        assertTrue(posts.size() != 0);
     }
 
 }

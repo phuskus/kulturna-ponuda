@@ -29,6 +29,7 @@
         color="primary"
         disableRipple="true"
         [matMenuTriggerFor]="menuSort"
+        id="sort-button"
       >
         Sort
       </button>
@@ -38,6 +39,7 @@
         color="primary"
         disableRipple="true"
         [matMenuTriggerFor]="menuFilter"
+        id="filter-button"
       >
         Filter
       </button>
@@ -59,6 +61,7 @@
           color="secondary"
           disableRipple="true"
           (click)="changeSortDirection($event)"
+          id="sort-direction-button"
         >
           {{ descending ? "Descending" : "Ascending&nbsp;" }}
           <mat-icon>
@@ -93,6 +96,7 @@
         disableRipple="true"
         fxFlex="1 0 40%"
         (click)="fetchOffers()"
+        id="sort-confirm"
       >
         Apply
       </button>
@@ -181,6 +185,7 @@
         disableRipple="true"
         fxFlex="1 0 40%"
         (click)="fetchOffers()"
+        id="filter-confirm"
       >
         Apply
       </button>
@@ -234,7 +239,7 @@
         >
           <div fxLayout="row" fxLayoutAlign="space-between">
             <div fxLayout="column">{{ offer.name }}</div>
-            <div fxLayout="column">{{ offer.address }}, {{ offer.city }}</div>
+            <div fxLayout="column" name="result-location">{{ offer.address }}, {{ offer.city }}</div>
           </div>
 
           <div fxLayout="row" style="padding-top: 8px">

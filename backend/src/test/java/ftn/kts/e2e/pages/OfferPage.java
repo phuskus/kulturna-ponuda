@@ -1,5 +1,8 @@
 package ftn.kts.e2e.pages;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import ftn.kts.dto.ReviewDTO;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
@@ -30,6 +33,12 @@ public class OfferPage {
 
     @FindBy(tagName = "textArea")
     private WebElement reviewContent;
+
+    @FindBy(tagName = "app-single-post")
+    private List<WebElement> posts;
+    
+    @FindBy(tagName = "app-single-review")
+    private List<WebElement> reviews;
 
     public OfferPage(WebDriver driver) {
         this.driver = driver;
@@ -130,6 +139,10 @@ public class OfferPage {
         (new WebDriverWait(driver, 2)).until(ExpectedConditions.visibilityOfElementLocated(By.id("unsubscribe-button")));
     }
 
+	public void ensurePostsAreDisplayed() {
+		(new WebDriverWait(driver, 2)).until(ExpectedConditions.visibilityOfElementLocated(By.tagName("app-single-post")));
+	}
+
     public WebElement getSubscribeButton() {
         return subscribeButton;
     }
@@ -142,7 +155,10 @@ public class OfferPage {
         return reviewButton;
     }
 
-    public WebElement getDialog() {
-        return dialog;
-    }
+    public WebElement getDialog() { return dialog; }
+
+	public List<WebElement> getPosts() {
+		return posts;
+	}
+
 }

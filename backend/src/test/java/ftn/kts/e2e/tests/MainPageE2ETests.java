@@ -18,6 +18,7 @@ import org.springframework.test.annotation.Rollback;
 import static ftn.kts.e2e.constants.AppConstants.BASE_URL;
 import static org.junit.Assert.*;
 
+
 import ftn.kts.e2e.pages.MainPage;
 import ftn.kts.e2e.pages.ResultsPage;
 import ftn.kts.util.E2EUtil;
@@ -138,7 +139,7 @@ public class MainPageE2ETests {
         WebElement profileButton = mainPage.getProfileButton();
         profileButton.click();
 
-        mainPage.ensureIsDisplayedProfileMenu();
+        mainPage.ensureLogoutButtonIsDisplayed();
 
         WebElement logoutButton = mainPage.getLogoutButton();
         (new WebDriverWait(driver, 1)).until(ExpectedConditions.elementToBeClickable(logoutButton)).click();
@@ -237,7 +238,7 @@ public class MainPageE2ETests {
         WebElement profileButton = mainPage.getProfileButton();
         profileButton.click();
 
-        mainPage.ensureIsDisplayedProfileMenu();
+        mainPage.ensureLogoutButtonIsDisplayed();
 
         WebElement editSubscriptionsButton = mainPage.getEditSubscriptionsButton();
         (new WebDriverWait(driver, 3)).until(ExpectedConditions.elementToBeClickable(editSubscriptionsButton)).click();
