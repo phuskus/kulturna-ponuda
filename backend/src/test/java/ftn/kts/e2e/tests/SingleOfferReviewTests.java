@@ -1,20 +1,21 @@
 package ftn.kts.e2e.tests;
 
-import ftn.kts.e2e.pages.DashboardPage;
-import ftn.kts.e2e.pages.OfferPage;
+import static ftn.kts.e2e.constants.AppConstants.SINGLE_OFFER_URL;
+import static ftn.kts.util.E2EUtil.loginAdmin;
+import static ftn.kts.util.E2EUtil.loginUser;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
 
-import static ftn.kts.e2e.constants.AppConstants.EXISTENT_USER_NAME;
-import static ftn.kts.e2e.constants.AppConstants.SINGLE_OFFER_URL;
-import static ftn.kts.util.E2EUtil.loginAdmin;
-import static ftn.kts.util.E2EUtil.loginUser;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import ftn.kts.e2e.pages.OfferPage;
 
 public class SingleOfferReviewTests {
 
@@ -73,6 +74,17 @@ public class SingleOfferReviewTests {
         page.setReviewContent("Some Random Content");
 
         page.confirmReview();
+    }
+    
+
+    @Test
+    public void checkPostsExists() {
+        setUpUser();
+
+        page.ensurePostsAreDisplayed();
+        
+        List<WebElement> posts = page.getPosts();
+        assertTrue(posts.size() != 0);
     }
 
 }

@@ -52,8 +52,8 @@ export class AddPostDialogComponent extends AddDialog<AddPostDialogComponent> {
      this.service
       .addMultipart(this.newObj, this.filesSelected)
       .subscribe((data) => {
-        this.dialogRef.close();
         this.eventBus.emit(new EmitEvent(Events.PostAdd, data));
+        this.dialogRef.close();
       })
 
    }

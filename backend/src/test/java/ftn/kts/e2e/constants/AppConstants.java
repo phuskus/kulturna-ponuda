@@ -18,5 +18,9 @@ public class AppConstants {
     public static final String EXISTENT_ADMIN_MAIL = "covid19.clinic.llc@gmail.com";
     public static final String EXISTENT_ADMIN_PASS = "12345";
     public static final String NONEXISTENT_ADMIN_MAIL = "abvgddjezz@gmail.com";
+    
+    public static final String NEW_POST_TITLE = "New post title wee";
+    public static final String NEW_POST_DESCRIPTION = "New post descirption!";
+    
 
 }

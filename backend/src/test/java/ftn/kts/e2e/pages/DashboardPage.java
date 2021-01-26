@@ -1,6 +1,9 @@
 package ftn.kts.e2e.pages;
 
 import ftn.kts.e2e.components.Table;
+
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -15,8 +18,11 @@ public class DashboardPage {
 
     @FindBy(tagName = "mat-dialog-container")
     private WebElement dialog;
+    
+    @FindBy(css = "button.add-post-button")
+    private List<WebElement> addPostButtons;
 
-    public DashboardPage(WebDriver driver) {
+	public DashboardPage(WebDriver driver) {
         this.driver = driver;
     }
 
@@ -31,6 +37,10 @@ public class DashboardPage {
     public WebElement getDialog() {
         return dialog;
     }
+
+    public List<WebElement> getAddPostButtons() {
+		return addPostButtons;
+	}
 
     // index 0 for edit, 1 for update if both available
     // else delete is 0
@@ -77,5 +87,10 @@ public class DashboardPage {
     public void ensureDialogIsNotDisplayed() {
         (new WebDriverWait(driver, 30)).until(ExpectedConditions
                 .invisibilityOfElementLocated(By.tagName("mat-dialog-container")));
+    }
+    
+    public void ensureAddPostsIsDisplayed() {
+        (new WebDriverWait(driver, 30)).until(ExpectedConditions
+                .visibilityOfElementLocated(By.cssSelector("button.add-post-button")));
     }
 }
