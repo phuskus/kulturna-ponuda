@@ -47,13 +47,9 @@ describe('AbstractDynamicPagingTable', () => {
       pageIndex: jasmine.createSpy('pageIndex'),
     };
 
-    // sortMock = {
-
-    // }
-
     TestBed.configureTestingModule({
-      declarations: [AbstractDynamicPagingTable],
-      imports: [MatSortModule, MatPaginatorModule],
+      declarations: [AbstractDynamicPagingTable, MatSort, MatPaginator],
+      // imports: [MatSortModule, MatPaginatorModule],
       providers: [
         { provide: BaseDynamicPagingService, useValue: serviceMock },
         { provide: MatDialog, useValue: dialogMock },
@@ -62,7 +58,6 @@ describe('AbstractDynamicPagingTable', () => {
 
     fixture = TestBed.createComponent(AbstractDynamicPagingTable);
     component = fixture.componentInstance;
-    component.paginator = paginatorMock;
     service = TestBed.inject(BaseDynamicPagingService);
     dialog = TestBed.inject(MatDialog);
   });
@@ -71,34 +66,21 @@ describe('AbstractDynamicPagingTable', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should fetch data if no filter string', fakeAsync(() => {
+  it('should fetch data when no filter string', fakeAsync(() => {
     component.sort = new MatSort();
     component.paginator = paginatorMock;
     component.ngAfterViewInit();
 
     expect(service.getPage).toHaveBeenCalledTimes(1);
-
-    // service mock has 4 elements
-    // fixture
-    //   .whenStable()
-    //   .then(() => expect(component.dataSource.data.length).toBe(4));
   }));
 
-  it('should search data if it has filter string', fakeAsync(() => {
+  it('should search data when it has filter string', fakeAsync(() => {
     component.sort = new MatSort();
     component.paginator = paginatorMock;
     // set filter text to something
     component.filter = 'query string';
     component.ngAfterViewInit();
 
-    // component.sort.sortChange.emit();
-    // tick(2000);
-
     expect(service.search).toHaveBeenCalled();
-
-    // service mock has 4 elements
-    // fixture
-    //   .whenStable()
-    //   .then(() => expect(component.dataSource.data.length).toBe(4));
   }));
 });
