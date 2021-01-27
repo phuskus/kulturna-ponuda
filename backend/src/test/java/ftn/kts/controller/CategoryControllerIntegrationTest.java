@@ -122,10 +122,6 @@ public class CategoryControllerIntegrationTest {
 		} catch (UniqueConstraintViolationException e) {
 			fail();
 		}
-
-//        httpEntity = new HttpEntity<>(newCategory, getAuthHeadersAdmin(restTemplate));
-//        restTemplate
-//                .exchange("/categories/" + EXISTENT_ID, HttpMethod.PUT, httpEntity, CategoryDTO.class);
 	}
 
 	@Test
@@ -156,8 +152,6 @@ public class CategoryControllerIntegrationTest {
 		} catch (UniqueConstraintViolationException e) {
 			fail();
 		}
-//        httpEntity = new HttpEntity<>(cat, getAuthHeadersAdmin(restTemplate));
-//        restTemplate.exchange("/categories", HttpMethod.POST, httpEntity, CategoryDTO.class);
 	}
 
 	@Test

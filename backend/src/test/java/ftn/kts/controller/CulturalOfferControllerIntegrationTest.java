@@ -33,6 +33,7 @@ import static ftn.kts.util.ControllerUtil.getAuthHeadersUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
 import java.util.List;
@@ -48,6 +49,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ftn.kts.dto.CulturalOfferDTO;
 import ftn.kts.dto.PictureDTO;
@@ -216,6 +222,193 @@ public class CulturalOfferControllerIntegrationTest {
 		assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
 		assertEquals("Cultural offer with id " + FIND_NOT_EXIST_ID + " doesn't exist!", error.getMessage());
 	}
+
+	@Test
+	public void filterOffersQuery_ExactName_ReturnsOneEntity() {
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
+				"/cultural_offers/search?query=" + DB_CULTURAL_OFFER_NAME, HttpMethod.GET, httpEntity,
+				PageCulturalOffers.class);
+
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
+		
+		assertEquals(1, offersList.size());
+		CulturalOfferDTO offer = offersList.get(0);
+		assertNotNull(offer.getId());
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		assertEquals(DB_CULTURAL_OFFER_NAME, offer.getName());
+	}
+	
+	@Test
+	public void filterOffersQuery_GeneralName_ReturnsTwoEntities() {
+		String query = "cultural_offer";
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
+				"/cultural_offers/search?query=" + query, HttpMethod.GET, httpEntity,
+				PageCulturalOffers.class);
+
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
+		
+		assertEquals(2, offersList.size());
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		for (CulturalOfferDTO dto : offersList) {
+			assertTrue(dto.getName().contains(query));
+		}
+	}
+
+	@Test
+	public void filterOffersQuery_GeneralDescription_ReturnsTwoEntities() {
+		String query = "festival";
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
+				"/cultural_offers/search?query=" + query, HttpMethod.GET, httpEntity,
+				PageCulturalOffers.class);
+
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
+		
+		assertEquals(2, offersList.size());
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		for (CulturalOfferDTO dto : offersList) {
+			assertTrue(dto.getDescription().contains(query));
+		}
+	}
+	
+	@Test
+	public void filterOffersQuery_SpecificAddress_ReturnsOneEntity() {
+		String query = "Petrovaradinska";
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
+				"/cultural_offers/search?query=" + query, HttpMethod.GET, httpEntity,
+				PageCulturalOffers.class);
+
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
+		
+		assertEquals(1, offersList.size());
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		for (CulturalOfferDTO dto : offersList) {
+			assertTrue(dto.getAddress().contains(query));
+		}
+	}
+	
+	
+	@Test
+	public void filterOffersRegion_SpecificRegion_ReturnsOneEntity() {
+		String region = "Vojvodina";
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
+				"/cultural_offers/search?regionNames=" + region, HttpMethod.GET, httpEntity,
+				PageCulturalOffers.class);
+
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
+		
+		assertEquals(1, offersList.size());
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		for (CulturalOfferDTO dto : offersList) {
+			assertTrue(dto.getRegion().contains(region));
+		}
+	}
+	
+	@Test
+	public void filterOffersRegion_MultipleRegions_ReturnsTwoEntities() {
+		String region = "Vojvodina,Central Serbia";
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
+				"/cultural_offers/search?regionNames=" + region, HttpMethod.GET, httpEntity,
+				PageCulturalOffers.class);
+
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
+		
+		assertEquals(2, offersList.size());
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		for (CulturalOfferDTO dto : offersList) {
+			assertTrue(region.contains(dto.getRegion()));
+		}
+	}
+
+	@Test
+	public void filterOffersRegion_NonexistantRegion_ReturnsNoEntities() {
+		String region = "Western Serbia";
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
+				"/cultural_offers/search?regionNames=" + region, HttpMethod.GET, httpEntity,
+				PageCulturalOffers.class);
+
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
+		
+		assertEquals(0, offersList.size());
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+	}
+
+	@Test
+	public void filterOffersCity_SpecificCity_ReturnsOneEntity() {
+		String city = "Beograd";
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
+				"/cultural_offers/search?cityNames=" + city, HttpMethod.GET, httpEntity,
+				PageCulturalOffers.class);
+
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
+		
+		assertEquals(1, offersList.size());
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		for (CulturalOfferDTO dto : offersList) {
+			assertTrue(dto.getCity().contains(city));
+		}
+	}
+	
+
+	@Test
+	public void filterOffersCity_NonExistantCity_ReturnsNoEntities() {
+		String city = "Negotin";
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
+				"/cultural_offers/search?cityNames=" + city, HttpMethod.GET, httpEntity,
+				PageCulturalOffers.class);
+
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
+		
+		assertEquals(0, offersList.size());
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+	}
+	
+
+	@Test
+	public void filterOffersCategory_ExistsCategory_ReturnsTwoEntities() {
+		String category = "Festival";
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
+				"/cultural_offers/search?category=" + category, HttpMethod.GET, httpEntity,
+				PageCulturalOffers.class);
+
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
+		
+		assertEquals(2, offersList.size());
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		for (CulturalOfferDTO dto : offersList) {
+			assertTrue(dto.getCategoryName().contains(category));
+		}
+	}
+		
 
 	@Test
 	public void filterOffersName_ExactName_ReturnsOneEntity() {
@@ -457,275 +650,281 @@ public class CulturalOfferControllerIntegrationTest {
 		assertNotNull(message);
 		assertEquals("Subcategory with id " + CATEGORY_NULL_ID + " doesn't exist!", message.getMessage());
 	}
-//
-//	@Test
-//	public void addOffer_ValidWithPicturesAsAdmin_ReturnsObject() throws Exception {
-//		CulturalOfferDTO dto = new CulturalOfferDTO("testname", "testDesc", 0F, 0F, "adr", "city", "reg", 3L, 1L);
-//		HashSet<PictureDTO> pictures = new HashSet<>();
-//
-//		pictures.add(new PictureDTO(1L));
-//		dto.setPictures(pictures);
-//
-//		HttpEntity<Object> httpEntity = new HttpEntity<Object>(dto, getAuthHeadersAdmin(restTemplate));
-//
-//		int size = offerService.getAll().size();
-//
-//		ResponseEntity<CulturalOfferDTO> responseEntity = restTemplate.exchange("/cultural_offers", HttpMethod.POST,
-//				httpEntity, CulturalOfferDTO.class);
-//
-//		CulturalOfferDTO added = responseEntity.getBody();
-//
-//		assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
-//		assertNotNull(added.getId());
-//		assertEquals(1, added.getPictures().size());
-//
-//		List<CulturalOffer> offers = offerService.getAll();
-//		assertEquals(size + 1, offers.size());
-//		assertEquals(added.getId(), offers.get(offers.size() - 1).getId());
-//
-//		offerService.delete(added.getId());
-//	}
-//
-//	@Test
-//	public void addOffer_ValidNoPicturesAsAdmin_ReturnsObject() throws Exception {
-//		CulturalOfferDTO dto = new CulturalOfferDTO("testname", "testDesc", 0F, 0F, "adr", "city", "reg", 3L, 1L);
-//		HttpEntity<Object> httpEntity = new HttpEntity<Object>(dto, getAuthHeadersAdmin(restTemplate));
-//
-//		int size = offerService.getAll().size();
-//
-//		ResponseEntity<CulturalOfferDTO> responseEntity = restTemplate.exchange("/cultural_offers", HttpMethod.POST,
-//				httpEntity, CulturalOfferDTO.class);
-//
-//		CulturalOfferDTO added = responseEntity.getBody();
-//
-//		assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
-//		assertNotNull(added.getId());
-//		assertEquals(0, added.getPictures().size());
-//
-//		List<CulturalOffer> offers = offerService.getAll();
-//		assertEquals(size + 1, offers.size());
-//		assertEquals(added.getId(), offers.get(offers.size() - 1).getId());
-//
-//		offerService.delete(added.getId());
-//	}
-//
-//	@Test
-//	public void addOffer_NullObjectAsAdmin_ReturnsObject() throws Exception {
-//		CulturalOfferDTO dto = null;
-//		HttpEntity<Object> httpEntity = new HttpEntity<Object>(dto, getAuthHeadersAdmin(restTemplate));
-//
-//		ResponseEntity<ErrorMessage> responseEntity = restTemplate.exchange("/cultural_offers", HttpMethod.POST,
-//				httpEntity, ErrorMessage.class);
-//
-//		ErrorMessage message = responseEntity.getBody();
-//
-//		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-//		assertNotNull(message.getMessage());
-//	}
-//
-//	@Test
-//	public void addOffer_MissingNameDescriptionAsAdmin_ReturnsObject() throws Exception {
-//		CulturalOfferDTO dto = new CulturalOfferDTO("testname", "testDesc", 0F, 0F, "adr", "city", "reg", 3L, 1L);
-//		dto.setName(null);
-//		dto.setDescription(null);
-//		HttpEntity<Object> httpEntity = new HttpEntity<Object>(dto, getAuthHeadersAdmin(restTemplate));
-//
-//		ResponseEntity<ErrorMessage> responseEntity = restTemplate.exchange("/cultural_offers", HttpMethod.POST,
-//				httpEntity, ErrorMessage.class);
-//
-//		ErrorMessage message = responseEntity.getBody();
-//
-//		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-//		assertNotNull(message.getMessage());
-//		assertEquals("Validation errors occurred!", message.getMessage());
-//
-//		for (Map.Entry<String, String> kp : message.getErrors().entrySet()) {
-//			if (kp.getKey().equals("name")) {
-//				assertEquals("Name is required!", kp.getValue());
-//			} else if (kp.getKey().equals("description")) {
-//				assertEquals("Description is required!", kp.getValue());
-//			}
-//		}
-//	}
-//
-//	@Test
-//	public void addOffer_ValidAsUser_ReturnsUnauthorized() throws Exception {
-//		CulturalOfferDTO dto = new CulturalOfferDTO("testname", "testDesc", 0F, 0F, "adr", "city", "reg", 3L, 1L);
-//		HttpEntity<Object> httpEntity = new HttpEntity<Object>(dto, getAuthHeadersUser(restTemplate));
-//		ResponseEntity<ErrorMessage> responseEntity = restTemplate.exchange("/cultural_offers", HttpMethod.POST,
-//				httpEntity, ErrorMessage.class);
-//
-//		assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
-//	}
-//
-//	@Test
-//	public void updateOffer_ChangeDescriptionAsAdmin_ReturnsObject() throws Exception {
-//		CulturalOfferDTO dto = new CulturalOfferDTO(CREATE_NAME, CREATE_DESCRIPTION, 0F, 0F, "adr", CREATE_CITY, "reg",
-//				3L, 1L);
-//
-//		CulturalOfferDTO added = offerService.create(dto);
-//
-//		dto.setDescription(UPDATE_NEW_DESCRIPTION);
-//
-//		HttpEntity<Object> httpEntity = new HttpEntity<Object>(dto, getAuthHeadersAdmin(restTemplate));
-//
-//		ResponseEntity<CulturalOfferDTO> responseEntity = restTemplate.exchange("/cultural_offers/" + added.getId(),
-//				HttpMethod.PUT, httpEntity, CulturalOfferDTO.class);
-//
-//		CulturalOfferDTO changed = responseEntity.getBody();
-//
-//		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-//		assertNotNull(changed.getId());
-//		assertEquals(added.getId(), changed.getId());
-//
-//		assertEquals(UPDATE_NEW_DESCRIPTION, changed.getDescription());
-//
-//		offerService.delete(added.getId());
-//	}
-//
-//	@Test
-//	public void updateOffer_ChangeDescriptionAndCityAsAdmin_ReturnsObject() throws Exception {
-//		CulturalOfferDTO dto = new CulturalOfferDTO(CREATE_NAME, CREATE_DESCRIPTION, 0F, 0F, "adr", CREATE_CITY, "reg",
-//				3L, 1L);
-//
-//		CulturalOfferDTO added = offerService.create(dto);
-//
-//		dto.setDescription(UPDATE_NEW_DESCRIPTION);
-//		dto.setCity(UPDATE_NEW_CITY);
-//
-//		HttpEntity<Object> httpEntity = new HttpEntity<Object>(dto, getAuthHeadersAdmin(restTemplate));
-//
-//		ResponseEntity<CulturalOfferDTO> responseEntity = restTemplate.exchange("/cultural_offers/" + added.getId(),
-//				HttpMethod.PUT, httpEntity, CulturalOfferDTO.class);
-//
-//		CulturalOfferDTO changed = responseEntity.getBody();
-//
-//		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-//		assertNotNull(changed.getId());
-//		assertEquals(added.getId(), changed.getId());
-//
-//		assertEquals(UPDATE_NEW_DESCRIPTION, changed.getDescription());
-//		assertEquals(UPDATE_NEW_CITY, changed.getCity());
-//
-//		offerService.delete(added.getId());
-//	}
-//
-//	@Test
-//	public void updateOffer_AddPicturesAsAdmin_ReturnsObject() throws Exception {
-//		CulturalOfferDTO dto = new CulturalOfferDTO(CREATE_NAME, CREATE_DESCRIPTION, 0F, 0F, "adr", CREATE_CITY, "reg",
-//				3L, 1L);
-//
-//		CulturalOfferDTO added = offerService.create(dto);
-//
-//		HashSet<PictureDTO> pictures = new HashSet<>();
-//		pictures.add(new PictureDTO(1L));
-//		dto.setPictures(pictures);
-//
-//		HttpEntity<Object> httpEntity = new HttpEntity<Object>(dto, getAuthHeadersAdmin(restTemplate));
-//
-//		ResponseEntity<CulturalOfferDTO> responseEntity = restTemplate.exchange("/cultural_offers/" + added.getId(),
-//				HttpMethod.PUT, httpEntity, CulturalOfferDTO.class);
-//
-//		CulturalOfferDTO changed = responseEntity.getBody();
-//
-//		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-//		assertNotNull(changed.getId());
-//		assertEquals(added.getId(), changed.getId());
-//
-//		assertEquals(1, changed.getPictures().size());
-//		assertEquals(new Long(1L), ((PictureDTO) changed.getPictures().toArray()[0]).getId());
-//
-//		offerService.delete(added.getId());
-//	}
-//
-//	@Test
-//	public void updateOffer_RemovePicturesAsAdmin_ReturnsObject() throws Exception {
-//		CulturalOfferDTO dto = new CulturalOfferDTO(CREATE_NAME, CREATE_DESCRIPTION, 0F, 0F, "adr", CREATE_CITY, "reg",
-//				3L, 1L);
-//		HashSet<PictureDTO> pictures = new HashSet<>();
-//		pictures.add(new PictureDTO(1L));
-//		dto.setPictures(pictures);
-//
-//		CulturalOfferDTO added = offerService.create(dto);
-//
-//		dto.setPictures(new HashSet<>());
-//
-//		HttpEntity<Object> httpEntity = new HttpEntity<Object>(dto, getAuthHeadersAdmin(restTemplate));
-//
-//		ResponseEntity<CulturalOfferDTO> responseEntity = restTemplate.exchange("/cultural_offers/" + added.getId(),
-//				HttpMethod.PUT, httpEntity, CulturalOfferDTO.class);
-//
-//		CulturalOfferDTO changed = responseEntity.getBody();
-//
-//		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-//		assertNotNull(changed.getId());
-//		assertEquals(added.getId(), changed.getId());
-//
-//		assertEquals(0, changed.getPictures().size());
-//
-//		offerService.delete(added.getId());
-//	}
-//
-//	@Test
-//	public void updateOffer_UpdateAsUser_ReturnsUnauthorized() throws Exception {
-//		CulturalOfferDTO dto = new CulturalOfferDTO(CREATE_NAME, CREATE_DESCRIPTION, 0F, 0F, "adr", CREATE_CITY, "reg",
-//				3L, 1L);
-//
-//		CulturalOfferDTO added = offerService.create(dto);
-//
-//		dto.setDescription(UPDATE_NEW_DESCRIPTION);
-//
-//		HttpEntity<Object> httpEntity = new HttpEntity<Object>(dto, getAuthHeadersUser(restTemplate));
-//
-//		ResponseEntity<ErrorMessage> responseEntity = restTemplate.exchange("/cultural_offers/" + added.getId(),
-//				HttpMethod.PUT, httpEntity, ErrorMessage.class);
-//
-//		assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
-//		assertEquals(CREATE_DESCRIPTION, added.getDescription());
-//
-//		offerService.delete(added.getId());
-//	}
-//
-//	@Test
-//	public void deleteOffer_ExistsIDAsAdmin_ReturnsOK() throws Exception {
-//		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersAdmin(restTemplate));
-//		CulturalOfferDTO dto = new CulturalOfferDTO(CREATE_NAME, CREATE_DESCRIPTION, 0F, 0F, "adr", CREATE_CITY, "reg",
-//				3L, 1L);
-//
-//		CulturalOfferDTO added = offerService.create(dto);
-//		int size = offerService.getAll().size();
-//
-//		ResponseEntity<Void> responseEntity = restTemplate.exchange("/cultural_offers/" + added.getId(),
-//				HttpMethod.DELETE, httpEntity, Void.class);
-//
-//		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-//
-//		assertEquals(size - 1, offerService.getAll().size());
-//	}
-//
-//	@Test
-//	public void deleteOffer_NotExistsIDAsAdmin_ReturnsNotFound() throws Exception {
-//		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersAdmin(restTemplate));
-//
-//		ResponseEntity<ErrorMessage> responseEntity = restTemplate.exchange("/cultural_offers/" + FIND_NOT_EXIST_ID,
-//				HttpMethod.DELETE, httpEntity, ErrorMessage.class);
-//
-//		assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
-//	}
-//
-//	@Test
-//	public void deleteOffer_ExistsIDAsUser_ReturnsUnauthorized() throws Exception {
-//		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
-//
-//		CulturalOfferDTO dto = new CulturalOfferDTO("testname", "testDesc", 0F, 0F, "adr", "city", "reg", 3L, 1L);
-//
-//		CulturalOfferDTO added = offerService.create(dto);
-//
-//		ResponseEntity<ErrorMessage> responseEntity = restTemplate.exchange("/cultural_offers/" + added.getId(),
-//				HttpMethod.DELETE, httpEntity, ErrorMessage.class);
-//
-//		assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
-//
-//		offerService.delete(added.getId());
-//	}
+
+	@Test
+	public void addOffer_ValidWithPicturesAsAdmin_ReturnsObject() throws Exception {
+		CulturalOfferDTO dto = new CulturalOfferDTO("testname", "testDesc", 0F, 0F, "adr", "city", "reg", 3L, 1L, "Festival");
+		HashSet<PictureDTO> pictures = new HashSet<>();
+
+		pictures.add(new PictureDTO(1L));
+		dto.setPictures(pictures);
+
+		ObjectMapper mapper  = new ObjectMapper();
+		String offer = mapper.writeValueAsString(dto);
+		MultipartFile[] files = new MultipartFile[]{};
+		
+		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+		body.add("offer", offer);
+		body.add("files", files);
+		
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(body, getAuthHeadersAdmin(restTemplate));
+
+		int size = offerService.getAll().size();
+
+		ResponseEntity<CulturalOfferDTO> responseEntity = restTemplate.exchange("/cultural_offers", HttpMethod.POST,
+				httpEntity, CulturalOfferDTO.class);
+		
+		CulturalOfferDTO added = responseEntity.getBody();
+
+		assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+		assertNotNull(added.getId());
+		assertEquals(1, added.getPictures().size());
+
+		List<CulturalOffer> offers = offerService.getAll();
+		assertEquals(size + 1, offers.size());
+		assertEquals(added.getId(), offers.get(offers.size() - 1).getId());
+
+		offerService.delete(added.getId());
+	}
+
+	@Test
+	public void addOffer_ValidNoPicturesAsAdmin_ReturnsObject() throws Exception {
+		CulturalOfferDTO dto = new CulturalOfferDTO("testname", "testDesc", 0F, 0F, "adr", "city", "reg", 3L, 1L, "Festival");
+
+		ObjectMapper mapper  = new ObjectMapper();
+		String offer = mapper.writeValueAsString(dto);
+		MultipartFile[] files = new MultipartFile[]{};
+		
+		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+		body.add("offer", offer);
+		body.add("files", files);
+		
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(body, getAuthHeadersAdmin(restTemplate));
+		
+		int size = offerService.getAll().size();
+
+		ResponseEntity<CulturalOfferDTO> responseEntity = restTemplate.exchange("/cultural_offers", HttpMethod.POST,
+				httpEntity, CulturalOfferDTO.class);
+
+		CulturalOfferDTO added = responseEntity.getBody();
+
+		assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+		assertNotNull(added.getId());
+		// 1 picture because of default pic
+		assertEquals(1, added.getPictures().size());
+
+		List<CulturalOffer> offers = offerService.getAll();
+		assertEquals(size + 1, offers.size());
+		assertEquals(added.getId(), offers.get(offers.size() - 1).getId());
+
+		offerService.delete(added.getId());
+	}
+
+	@Test
+	public void addOffer_NullObjectAsAdmin_ReturnsObject() throws Exception {
+		String dto = null;
+		MultipartFile[] files = new MultipartFile[]{};
+		
+		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+		body.add("offer", dto);
+		body.add("files", files);
+		
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(body, getAuthHeadersAdmin(restTemplate));
+
+		ResponseEntity<ErrorMessage> responseEntity = restTemplate.exchange("/cultural_offers", HttpMethod.POST,
+				httpEntity, ErrorMessage.class);
+
+		ErrorMessage message = responseEntity.getBody();
+
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+		assertNotNull(message.getMessage());
+	}
+
+	@Test
+	public void addOffer_ValidAsUser_ReturnsUnauthorized() throws Exception {
+		CulturalOfferDTO dto = new CulturalOfferDTO("testname", "testDesc", 0F, 0F, "adr", "city", "reg", 3L, 1L, "Festival");
+		MultipartFile[] files = new MultipartFile[]{};
+		
+		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+		body.add("offer", dto);
+		body.add("files", files);
+		
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(body, getAuthHeadersUser(restTemplate));
+		ResponseEntity<ErrorMessage> responseEntity = restTemplate.exchange("/cultural_offers", HttpMethod.POST,
+				httpEntity, ErrorMessage.class);
+
+		assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
+	}
+
+	@Test
+	public void updateOffer_ChangeDescriptionAsAdmin_ReturnsObject() throws Exception {
+		CulturalOfferDTO dto = new CulturalOfferDTO(CREATE_NAME, CREATE_DESCRIPTION, 0F, 0F, "adr", CREATE_CITY, "reg",
+				3L, 1L, "Festival");
+
+		CulturalOfferDTO added = offerService.create(dto, null);
+
+		dto.setDescription(UPDATE_NEW_DESCRIPTION);
+
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(dto, getAuthHeadersAdmin(restTemplate));
+
+		ResponseEntity<CulturalOfferDTO> responseEntity = restTemplate.exchange("/cultural_offers/" + added.getId(),
+				HttpMethod.PUT, httpEntity, CulturalOfferDTO.class);
+
+		CulturalOfferDTO changed = responseEntity.getBody();
+
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		assertNotNull(changed.getId());
+		assertEquals(added.getId(), changed.getId());
+
+		assertEquals(UPDATE_NEW_DESCRIPTION, changed.getDescription());
+
+		offerService.delete(added.getId());
+	}
+
+	@Test
+	public void updateOffer_ChangeDescriptionAndCityAsAdmin_ReturnsObject() throws Exception {
+		CulturalOfferDTO dto = new CulturalOfferDTO(CREATE_NAME, CREATE_DESCRIPTION, 0F, 0F, "adr", CREATE_CITY, "reg",
+				3L, 1L, "Festival");
+
+		CulturalOfferDTO added = offerService.create(dto, null);
+
+		dto.setDescription(UPDATE_NEW_DESCRIPTION);
+		dto.setCity(UPDATE_NEW_CITY);
+
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(dto, getAuthHeadersAdmin(restTemplate));
+
+		ResponseEntity<CulturalOfferDTO> responseEntity = restTemplate.exchange("/cultural_offers/" + added.getId(),
+				HttpMethod.PUT, httpEntity, CulturalOfferDTO.class);
+
+		CulturalOfferDTO changed = responseEntity.getBody();
+
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		assertNotNull(changed.getId());
+		assertEquals(added.getId(), changed.getId());
+
+		assertEquals(UPDATE_NEW_DESCRIPTION, changed.getDescription());
+		assertEquals(UPDATE_NEW_CITY, changed.getCity());
+
+		offerService.delete(added.getId());
+		
+	}
+
+	@Test
+	public void updateOffer_AddPicturesAsAdmin_ReturnsObject() throws Exception {
+		CulturalOfferDTO dto = new CulturalOfferDTO(CREATE_NAME, CREATE_DESCRIPTION, 0F, 0F, "adr", CREATE_CITY, "reg",
+				3L, 1L, "Festival");
+
+		CulturalOfferDTO added = offerService.create(dto, null);
+
+		HashSet<PictureDTO> pictures = new HashSet<>();
+		pictures.add(new PictureDTO(1L));
+		dto.setPictures(pictures);
+
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(dto, getAuthHeadersAdmin(restTemplate));
+
+		ResponseEntity<CulturalOfferDTO> responseEntity = restTemplate.exchange("/cultural_offers/" + added.getId(),
+				HttpMethod.PUT, httpEntity, CulturalOfferDTO.class);
+
+		CulturalOfferDTO changed = responseEntity.getBody();
+
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		assertNotNull(changed.getId());
+		assertEquals(added.getId(), changed.getId());
+
+		assertEquals(1, changed.getPictures().size());
+		assertEquals(new Long(1L), ((PictureDTO) changed.getPictures().toArray()[0]).getId());
+
+		offerService.delete(added.getId());
+	}
+
+	@Test
+	public void updateOffer_RemovePicturesAsAdmin_ReturnsObject() throws Exception {
+		CulturalOfferDTO dto = new CulturalOfferDTO(CREATE_NAME, CREATE_DESCRIPTION, 0F, 0F, "adr", CREATE_CITY, "reg",
+				3L, 1L, "Festival");
+		HashSet<PictureDTO> pictures = new HashSet<>();
+		pictures.add(new PictureDTO(1L));
+		dto.setPictures(pictures);
+
+		CulturalOfferDTO added = offerService.create(dto, null);
+
+		dto.setPictures(new HashSet<>());
+
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(dto, getAuthHeadersAdmin(restTemplate));
+
+		ResponseEntity<CulturalOfferDTO> responseEntity = restTemplate.exchange("/cultural_offers/" + added.getId(),
+				HttpMethod.PUT, httpEntity, CulturalOfferDTO.class);
+
+		CulturalOfferDTO changed = responseEntity.getBody();
+
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		assertNotNull(changed.getId());
+		assertEquals(added.getId(), changed.getId());
+
+		assertEquals(0, changed.getPictures().size());
+
+		offerService.delete(added.getId());
+	}
+
+	@Test
+	public void updateOffer_UpdateAsUser_ReturnsUnauthorized() throws Exception {
+		CulturalOfferDTO dto = new CulturalOfferDTO(CREATE_NAME, CREATE_DESCRIPTION, 0F, 0F, "adr", CREATE_CITY, "reg",
+				3L, 1L, "Festival");
+
+		CulturalOfferDTO added = offerService.create(dto, null);
+
+		dto.setDescription(UPDATE_NEW_DESCRIPTION);
+
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(dto, getAuthHeadersUser(restTemplate));
+
+		ResponseEntity<ErrorMessage> responseEntity = restTemplate.exchange("/cultural_offers/" + added.getId(),
+				HttpMethod.PUT, httpEntity, ErrorMessage.class);
+
+		assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
+		assertEquals(CREATE_DESCRIPTION, added.getDescription());
+
+		offerService.delete(added.getId());
+	}
+
+	@Test
+	public void deleteOffer_ExistsIDAsAdmin_ReturnsOK() throws Exception {
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersAdmin(restTemplate));
+		CulturalOfferDTO dto = new CulturalOfferDTO(CREATE_NAME, CREATE_DESCRIPTION, 0F, 0F, "adr", CREATE_CITY, "reg",
+				3L, 1L, "Festival");
+
+		CulturalOfferDTO added = offerService.create(dto, null);
+		int size = offerService.getAll().size();
+
+		ResponseEntity<Void> responseEntity = restTemplate.exchange("/cultural_offers/" + added.getId(),
+				HttpMethod.DELETE, httpEntity, Void.class);
+
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+		assertEquals(size - 1, offerService.getAll().size());
+	}
+
+	@Test
+	public void deleteOffer_NotExistsIDAsAdmin_ReturnsNotFound() throws Exception {
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersAdmin(restTemplate));
+
+		ResponseEntity<ErrorMessage> responseEntity = restTemplate.exchange("/cultural_offers/" + FIND_NOT_EXIST_ID,
+				HttpMethod.DELETE, httpEntity, ErrorMessage.class);
+
+		assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+	}
+
+	@Test
+	public void deleteOffer_ExistsIDAsUser_ReturnsUnauthorized() throws Exception {
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
+
+		CulturalOfferDTO dto = new CulturalOfferDTO("testname", "testDesc", 0F, 0F, "adr", "city", "reg", 3L, 1L, "Festival");
+
+		CulturalOfferDTO added = offerService.create(dto, null);
+
+		ResponseEntity<ErrorMessage> responseEntity = restTemplate.exchange("/cultural_offers/" + added.getId(),
+				HttpMethod.DELETE, httpEntity, ErrorMessage.class);
+
+		assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
+
+		offerService.delete(added.getId());
+	}
 }

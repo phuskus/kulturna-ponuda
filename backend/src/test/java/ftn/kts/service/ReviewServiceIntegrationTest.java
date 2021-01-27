@@ -54,6 +54,44 @@ public class ReviewServiceIntegrationTest {
     }
 
     @Test
+    public void getForOffer_NonexistentOffer_ThrowsNoSuchElementException() {
+        Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+        assertThrows(NoSuchElementException.class, () -> reviewService.getForCulturalOffer(NONEXISTENT_OFFER_ID, pageable));
+    }
+
+    @Test
+    public void getForOffer_ExistentOffer_ReturnsReviews() {
+        Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+
+        Page<ReviewDTO> found = reviewService.getForCulturalOffer(EXISTENT_OFFER_ID, pageable);
+        assertEquals(NUM_REVIEWS_FOR_OFFER, found.getTotalElements());
+    }
+
+    @Test
+    public void searchForReviews_EmptyQuery_ReturnsAllReviews() {
+        Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+
+        Page<ReviewDTO> found = reviewService.search("", pageable);
+        assertEquals(NUM_ITEMS, found.getTotalElements());
+    }
+
+    @Test
+    public void searchForReviews_ExistingContent_ReturnsReview() {
+        Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+
+        Page<ReviewDTO> found = reviewService.search(CONTENT, pageable);
+        assertEquals(1, found.getTotalElements());
+    }
+
+    @Test
+    public void searchForReviews_BigUglyQueryString_ReturnsNoReviews() {
+        Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+
+        Page<ReviewDTO> found = reviewService.search(RANDOM_STRING, pageable);
+        assertEquals(0, found.getTotalElements());
+    }
+
+    @Test
     public void createDelete_ValidNewObject_CreatesAndDeletesSuccessfully(){
         UserDTO user = new UserDTO(EXISTENT_USER_ID, "name", "name", EXISTEND_USERNAME, "pass");
         ReviewDTO review = new ReviewDTO(NEW_RATING, NEW_CONTENT, user, EXISTENT_OFFER_ID, "name");

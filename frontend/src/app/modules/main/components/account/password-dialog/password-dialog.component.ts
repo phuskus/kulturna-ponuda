@@ -42,15 +42,17 @@ export class PasswordDialogComponent extends UpdateDialog<PasswordDialogComponen
     return this.resetForm.controls;
   }
 
-  onChangePassword() {
-    this.authService.changePassword(
-      this.resetForm.value['oldPassword'], 
-      this.resetForm.value['newPassword']).subscribe( () => {
-        this.messageService.openSnackBar(this.snack, 'Successfully changed password!', 'End', 5000, SnackbarColors.SUCCESS);
-        this.dialogRef.close();
-      }, error => {
-        this.messageService.openSnackBar(this.snack, 'Please check your old password!', 'End', 5000, SnackbarColors.ERROR);
-      })
+  onSubmit(): void {
+    if(this.resetForm.valid) {
+      this.authService.changePassword(
+        this.resetForm.value['oldPassword'], 
+        this.resetForm.value['newPassword']).subscribe( () => {
+          this.messageService.openSnackBar(this.snack, 'Successfully changed password!', 'End', 5000, SnackbarColors.SUCCESS);
+          this.dialogRef.close();
+        }, error => {
+          this.messageService.openSnackBar(this.snack, 'Please check your old password!', 'End', 5000, SnackbarColors.ERROR);
+        })
+    }
   }
 
 }

@@ -8,16 +8,15 @@ import static ftn.kts.constants.UserConstants.DB_NEW_USER_PASSWORD;
 import static ftn.kts.constants.UserConstants.DB_REGISTRATION_KEY;
 import static ftn.kts.constants.UserConstants.DB_USER_PASSWORD;
 import static ftn.kts.constants.UserConstants.DB_USER_PASSWORD_DISABLED;
+import static ftn.kts.constants.UserConstants.DB_USER_SURNAME;
 import static ftn.kts.constants.UserConstants.DB_USER_USERNAME;
 import static ftn.kts.constants.UserConstants.DB_USER_USERNAME_DISABLED;
 import static ftn.kts.constants.UserConstants.DB_USER_WRONG_USERNAME;
 import static ftn.kts.constants.UserConstants.INVALID_PASSWORD;
-import static ftn.kts.constants.UserConstants.DB_USER_SURNAME;
 import static ftn.kts.util.ControllerUtil.getAuthHeadersUser;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,6 +33,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ftn.kts.controller.LoginController.PasswordChanger;
 import ftn.kts.dto.UserDTO;
 import ftn.kts.dto.UserTokenStateDTO;
+import ftn.kts.exceptions.ErrorMessage;
 import ftn.kts.model.User;
 import ftn.kts.security.auth.JwtAuthenticationRequest;
 import ftn.kts.service.UserService;
@@ -132,23 +132,25 @@ public class LoginControllerIntegrationTest {
 	}
 	
 	@Test
-	public void confirmRegistration_AccountNotEnabled_OneEntityReturned() {
+	public void confirmRegistration_AccountNotEnabled_Success() {
 		HttpHeaders headers = new HttpHeaders();
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
 		ResponseEntity<UserDTO> responseEntity = restTemplate.exchange("/auth/register/test-key", 
 					HttpMethod.GET, httpEntity, UserDTO.class);			
 		
-		UserDTO dto = responseEntity.getBody();
-		User enabledAccount = userService.getOne(dto.getUsername());
-		
+		User check = userService.findByKey("test-key");
+		assertNull(check);
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertNull(enabledAccount.getKey());
-		assertTrue(enabledAccount.isEnabled());
 		
 		//clean up
-		enabledAccount.setKey(DB_REGISTRATION_KEY);
-		enabledAccount.setEnabled(false);
-		userService.save(enabledAccount);
+		User user = userService.getOne("test2@gmail.com");
+		
+		assertNull(user.getKey());
+		
+		user.setKey(DB_REGISTRATION_KEY);
+		user.setEnabled(false);
+		
+		userService.save(user);
 	}
 	
 	@Test
@@ -209,18 +211,6 @@ public class LoginControllerIntegrationTest {
 		assertNull(token.getAccessToken());
 	}
 	
-	@Test
-	public void createAuthenticationToken_AdminNotChangedPassword_JwtTokenReturned() {
-		JwtAuthenticationRequest dto = new JwtAuthenticationRequest(DB_ADMIN_USERNAME_FAILED, DB_ADMIN_PASSWORD_FAILED);
-		HttpEntity<JwtAuthenticationRequest> httpEntity = new HttpEntity<JwtAuthenticationRequest>(dto);
-		ResponseEntity<UserTokenStateDTO> responseEntity = restTemplate.exchange("/auth/login", 
-					HttpMethod.POST, httpEntity, UserTokenStateDTO.class);
-		UserTokenStateDTO token = responseEntity.getBody();
-		
-		assertEquals(HttpStatus.TEMPORARY_REDIRECT, responseEntity.getStatusCode());
-		assertNotNull(token);
-		
-	}
 	
 	@Test
 	public void createAuthenticationToken_AdminChangedPassword_JwtTokenReturned() {

@@ -67,7 +67,7 @@ public class ReviewControllerIntegrationTest {
     }
 
     @Test
-    public void getAll_FirstReview_ReturnsAllReviews() {
+    public void getAll_FirstReview_ReturnsOneReview() {
         HttpEntity<Object> httpEntity = new HttpEntity<>(getAuthHeadersUser(restTemplate));
         ResponseEntity<ReviewPage> responseEntity = restTemplate
                 .exchange("/reviews?pageNo=0&pageSize=1", HttpMethod.GET, httpEntity, ReviewPage.class);
@@ -95,6 +95,60 @@ public class ReviewControllerIntegrationTest {
                 .exchange("/reviews/" + NONEXISTENT_ID, HttpMethod.GET, httpEntity, ReviewDTO.class);
 
         assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+    }
+
+    @Test
+    public void getByOfferId_NonexistentId_ReturnsNotFound() {
+        HttpEntity<Object> httpEntity = new HttpEntity<>(getAuthHeadersAdmin(restTemplate));
+        ResponseEntity<ReviewPage> responseEntity = restTemplate
+                .exchange("/reviews/offer/" + NONEXISTENT_OFFER_ID, HttpMethod.GET, httpEntity, ReviewPage.class);
+
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+    }
+
+    @Test
+    public void getByOfferId_ExistentId_ReturnsReviewsForOffer() {
+        HttpEntity<Object> httpEntity = new HttpEntity<>(getAuthHeadersAdmin(restTemplate));
+        ResponseEntity<ReviewPage> responseEntity = restTemplate
+                .exchange("/reviews/offer/" + EXISTENT_OFFER_ID, HttpMethod.GET, httpEntity, ReviewPage.class);
+
+        List<ReviewDTO> reviews = responseEntity.getBody().getContent();
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(NUM_REVIEWS_FOR_OFFER, reviews.size());
+    }
+
+    @Test
+    public void search_EmptyQuery_ReturnsOkAndAllReviews() {
+        HttpEntity<Object> httpEntity = new HttpEntity<>(getAuthHeadersUser(restTemplate));
+        ResponseEntity<ReviewPage> responseEntity = restTemplate
+                .exchange("/reviews/search?query=", HttpMethod.GET, httpEntity, ReviewPage.class);
+        List<ReviewDTO> reviews = responseEntity.getBody().getContent();
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(NUM_ITEMS, reviews.size());
+    }
+
+    @Test
+    public void search_BigAndUglyQuery_ReturnsNoReviews() {
+        HttpEntity<Object> httpEntity = new HttpEntity<>(getAuthHeadersUser(restTemplate));
+        ResponseEntity<ReviewPage> responseEntity = restTemplate
+                .exchange("/reviews/search?query=" + RANDOM_STRING, HttpMethod.GET, httpEntity, ReviewPage.class);
+        List<ReviewDTO> reviews = responseEntity.getBody().getContent();
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(0, reviews.size());
+    }
+
+    @Test
+    public void search_ExistentContent_ReturnsOkAndReview() {
+        HttpEntity<Object> httpEntity = new HttpEntity<>(getAuthHeadersUser(restTemplate));
+        ResponseEntity<ReviewPage> responseEntity = restTemplate
+                .exchange("/reviews/search?query="+ REVIEW_CONTENT, HttpMethod.GET, httpEntity, ReviewPage.class);
+        List<ReviewDTO> reviews = responseEntity.getBody().getContent();
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(1, reviews.size());
     }
 
     @Test

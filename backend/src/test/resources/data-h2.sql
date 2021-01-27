@@ -26,14 +26,14 @@ insert into subcategories (name, category_id, icon_id) values ('Okupljanje', 1, 
 insert into cultural_offers (address, city, description, latitude, longitude, name, region, admin_id, category_id, average_rating)
 			values ('Petrovaradinska Tvrdjava', 'Novi Sad', 'Music festival', 45.2526, 19.8623, 'cultural_offer1', 'Vojvodina', 3, 1, -1);
 insert into cultural_offers (address, city, description, latitude, longitude, name, region, admin_id, category_id, average_rating)
-			values ('Kalemegdanska tvrdjava', 'Beograd', 'Music festival', 45.2526, 19.8623, 'cultural_offer2', 'Vojvodina', 3, 1, -1);
+			values ('Kalemegdanska tvrdjava', 'Beograd', 'Music festival', 45.2526, 19.8623, 'cultural_offer2', 'Central Serbia', 3, 1, -1);
 
 insert into cultural_offers_pictures (cultural_offer_id, pictures_id) values (1, 1);
 insert into cultural_offers_pictures (cultural_offer_id, pictures_id) values (2, 2);
 
-insert into posts (content, cultural_offer_id, title, date_posted) values ('test1_offer1', 1,'', '2020-12-15 13:27:00.508-07');
-insert into posts (content, cultural_offer_id, title, date_posted) values ('test2_offer1', 1,'', '2020-12-15 13:27:00.508-07');
-insert into posts (content, cultural_offer_id, title, date_posted) values ('test3_offer2', 2,'', '2020-12-15 13:27:00.508-07');
+insert into posts (content, cultural_offer_id, title, date_posted) values ('test1_offer1', 1, 'title1', '2020-12-15 13:27:00.508-07');
+insert into posts (content, cultural_offer_id, title, date_posted) values ('test2_offer1', 1, 'title2', '2020-12-15 13:27:00.508-07');
+insert into posts (content, cultural_offer_id, title, date_posted) values ('test3_offer2', 2, 'title3', '2020-12-15 13:27:00.508-07');
 
 insert into posts_pictures (post_id, pictures_id) values (1, 1);
 insert into posts_pictures (post_id, pictures_id) values (2, 1);
@@ -42,6 +42,7 @@ insert into posts_pictures (post_id, pictures_id) values (3, 1);
 
 insert into reviews (rating, content, cultural_offer_id, user_id, date_posted) values (5, 'Otkazano zbog korone', 1, 2, '2020-12-15 13:27:00.508-07');
 insert into reviews (rating, content, cultural_offer_id, user_id, date_posted) values (0, 'Ne valja nista', 1, 2, '2020-12-15 13:27:00.508-07');
+insert into reviews (rating, content, cultural_offer_id, user_id, date_posted) values (3, 'Nice review', 1, 2, '2020-12-15 13:27:00.508-07');
 
 
 -- Subscribe to cultural offer 1 as user 1

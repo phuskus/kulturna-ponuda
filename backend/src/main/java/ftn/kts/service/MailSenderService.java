@@ -27,6 +27,7 @@ public class MailSenderService {
         this.emailSender = emailSender;
     }
 
+    @Async
     public Future<SimpleMailMessage> sendEmail(String recipient, String subject, String content) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(recipient);

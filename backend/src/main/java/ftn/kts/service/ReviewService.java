@@ -48,6 +48,7 @@ public class ReviewService {
     }
 
     public Page<ReviewDTO> getForCulturalOffer(long offerId, Pageable pageable) {
+        CulturalOffer offer = offerService.getOne(offerId);
         return reviewRepository.findByCulturalOffer(offerId, pageable).map(this::toDTO);
     }
 

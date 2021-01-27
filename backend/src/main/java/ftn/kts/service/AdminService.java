@@ -9,8 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ftn.kts.dto.AdminDTO;
+import ftn.kts.dto.UserDTO;
+import ftn.kts.exceptions.UniqueConstraintViolationException;
 import ftn.kts.model.Admin;
 import ftn.kts.model.Authority;
+import ftn.kts.model.RegisteredUser;
 import ftn.kts.model.User;
 import ftn.kts.repository.AdminRepository;
 import ftn.kts.security.CustomUserDetailsService;
@@ -65,7 +68,7 @@ public class AdminService {
         sendConfirmation(admin);
         return toDTO(adminRepository.save(admin));
     }
-
+    
     private void sendConfirmation(Admin admin) {
         String generatedKey = RandomUtil.buildAuthString(30);
         admin.setResetKey(generatedKey);

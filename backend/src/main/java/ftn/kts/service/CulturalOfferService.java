@@ -79,7 +79,7 @@ public class CulturalOfferService {
 
 	public CulturalOfferDTO update(CulturalOfferDTO dto, Long id) throws UniqueConstraintViolationException {
 		CulturalOffer offer = getOne(id);
-		//dto.setId(id);
+		dto.setId(id);
 		checkUnique(dto);
 		updateOffer(offer, dto);
 		CulturalOffer saved = offerRepository.save(offer);

@@ -2,6 +2,7 @@
   <input
     matInput
     type="text"
+    name="address"
     [matAutocomplete]="auto"
     [formControl]="inputFieldFormControl"
     placeholder="Enter address here"
@@ -9,6 +10,7 @@
 
   <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption>
     <mat-option
+      name="addressOption"
       *ngFor="let option of searchOptions | async"
       [value]="option.shortAddress"
       (onSelectionChange)="optionSelectionChange(option, $event)"

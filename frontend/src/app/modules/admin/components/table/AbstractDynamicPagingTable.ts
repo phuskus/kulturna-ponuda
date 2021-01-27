@@ -10,7 +10,7 @@ import Page from 'src/app/shared/models/Page';
 @Component({
   template: '',
 })
-export abstract class AbstractDynamicPagingTable extends AbstractTable {
+export class AbstractDynamicPagingTable extends AbstractTable {
   timer = null;
   isLoadingResults: boolean = false;
   filter: string = '';

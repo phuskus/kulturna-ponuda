@@ -28,5 +28,5 @@ public class PageCulturalOffers extends PageImpl<CulturalOfferDTO> {
             @JsonProperty("numberOfElements") int numberOfElements) {
 		super(content, PageRequest.of(number, size), totalElements);
 	}
-
+	
 }

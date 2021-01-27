@@ -13,10 +13,10 @@ export class CardbarComponent implements OnInit {
   constructor(private categoryService : CategoryService) {}
 
   ngOnInit(): void {
-    this.fetchOffers();
+    this.fetchCategories();
   }
 
-  fetchOffers() {
+  fetchCategories() {
     return this.categoryService.getAll().subscribe((res: Category[]) => {
       this.categories = res;
     })

@@ -7,11 +7,9 @@ import ftn.kts.dto.UserTokenStateDTO;
 import ftn.kts.exceptions.UserException;
 import ftn.kts.exceptions.PasswordNotChangedException;
 import ftn.kts.exceptions.UniqueConstraintViolationException;
-import ftn.kts.model.Admin;
 import ftn.kts.model.Authority;
 import ftn.kts.model.RegisteredUser;
 import ftn.kts.model.User;
-import ftn.kts.repository.AdminRepository;
 import ftn.kts.repository.UserRepository;
 import ftn.kts.security.CustomUserDetailsService;
 import ftn.kts.security.TokenUtils;
@@ -24,13 +22,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
-
-import javax.validation.Valid;
 
 @Service
 public class UserService {
@@ -85,6 +79,16 @@ public class UserService {
         save(user);
         return toDTO(user);
     }
+    
+    public UserDTO createWithResetKey(UserDTO dto) throws UniqueConstraintViolationException {
+    	checkUnique(dto);
+    	RegisteredUser user = toEntity(dto);
+    	createUserAuthority(user, "ROLE_USER");
+    	user.setEnabled(true);
+    	user.setResetKey("test-key");
+    	save(user);
+    	return toDTO(user);
+    }
 
     public void createUserAuthority(User user, String role) {
         user.setPassword(userDetailsService.encodePassword(user.getPassword()));
@@ -108,7 +112,7 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    public UserTokenStateDTO getLoggedIn(String username, String password) throws DisabledException, PasswordNotChangedException, UserException {
+    public UserTokenStateDTO getLoggedIn(String username, String password) throws DisabledException, UserException {
         User existUser = null;
         try {
             existUser = getOne(username);
