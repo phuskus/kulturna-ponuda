@@ -17,8 +17,14 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
     Page<Subscription> findBySubcategory(Subcategory subcategory, Pageable pageable);
     Page<Subscription> findByCulturalOffer(CulturalOffer culturalOffer, Pageable pageable);
 
+    @Query("SELECT s FROM Subscription s WHERE s.culturalOffer.id = ?1")
+    List<Subscription> findByCulturalOfferId(long offerId);
+
     @Query("SELECT s FROM Subscription s WHERE s.user.id = ?1 and s.culturalOffer.id = ?2")
     Subscription findByUserAndOffer(long userId, long offerId);
+
+    @Query("SELECT s FROM Subscription s WHERE s.user.username = ?1")
+    Page<Subscription> findByUsername(String username, Pageable pageable);
 
     @Query("SELECT s FROM Subscription s WHERE s.user.username = ?1 and s.culturalOffer.id = ?2")
     Subscription findByUsernameAndOffer(String username, long offerId);

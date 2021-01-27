@@ -36,7 +36,7 @@ public class CategoryController {
     }
 
     @PostMapping
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Object> addCategory(@Valid @RequestBody CategoryDTO dto) throws UniqueConstraintViolationException {
         try {
             return new ResponseEntity<>(service.create(dto), HttpStatus.CREATED);
@@ -46,14 +46,14 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Object> updateCategory(@Valid @RequestBody CategoryDTO dto, @PathVariable long id) throws UniqueConstraintViolationException {
         CategoryDTO updated = service.update(dto, id);
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Object> deleteCategory(@PathVariable("id") long id) {
         try {
             service.delete(id);

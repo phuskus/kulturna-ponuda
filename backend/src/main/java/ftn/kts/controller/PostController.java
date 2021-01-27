@@ -2,6 +2,9 @@ package ftn.kts.controller;
 
 import javax.validation.Valid;
 
+import ftn.kts.model.RegisteredUser;
+import ftn.kts.service.MailSenderService;
+import ftn.kts.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,9 +29,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ftn.kts.dto.CulturalOfferDTO;
 import ftn.kts.dto.PostDTO;
 import ftn.kts.service.PostService;
+
+import java.util.List;
 
 @RestController
 @Validated
@@ -36,10 +40,14 @@ import ftn.kts.service.PostService;
 public class PostController {
 
 	private PostService service;
+	private MailSenderService mailSenderService;
+	private SubscriptionService subscriptionService;
 
 	@Autowired
-	public PostController(PostService service) {
+	public PostController(PostService service, MailSenderService mailSenderService, SubscriptionService subscriptionService) {
 		this.service = service;
+		this.mailSenderService = mailSenderService;
+		this.subscriptionService = subscriptionService;
 	}
 
 	@GetMapping
@@ -91,6 +99,8 @@ public class PostController {
 		ObjectMapper mapper = new ObjectMapper();
 		PostDTO dto = mapper.readValue(post, PostDTO.class);
 		PostDTO created = service.create(dto, files);
+
+		sendPostAddedEmail(created);
 		return new ResponseEntity<>(created, HttpStatus.OK);
 	}
 
@@ -98,6 +108,8 @@ public class PostController {
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<PostDTO> updatePost(@Valid @RequestBody PostDTO dto, @PathVariable("id") Long id) {
 		PostDTO updated = service.update(dto, id);
+
+		sendPostChangedEmail(updated);
 		return new ResponseEntity<>(updated, HttpStatus.OK);
 	}
 
@@ -106,6 +118,28 @@ public class PostController {
 	public ResponseEntity<String> deletePost(@PathVariable("id") long id) {
 		service.delete(id);
 		return new ResponseEntity<>("Successfully deleted post!", HttpStatus.OK);
+	}
+
+	private void sendPostAddedEmail(PostDTO postDTO) {
+		List<RegisteredUser> users = subscriptionService.getUsersForOffer(postDTO.getCulturalOffer());
+
+		for (RegisteredUser user : users) {
+			mailSenderService.sendEmail(
+					user.getUsername(),
+					postDTO.getOfferName() + ": New post",
+					postDTO.getOfferName() + " has a new post:\n" + postDTO.getTitle() + "\n" + postDTO.getContent());
+		}
+	}
+
+	private void sendPostChangedEmail(PostDTO postDTO) {
+		List<RegisteredUser> users = subscriptionService.getUsersForOffer(postDTO.getCulturalOffer());
+
+		for (RegisteredUser user : users) {
+			mailSenderService.sendEmail(
+					user.getUsername(),
+					postDTO.getOfferName() + ": Edited post",
+					postDTO.getOfferName() + " edited a post:\n" + postDTO.getTitle() + "\n" + postDTO.getContent());
+		}
 	}
 
 }
