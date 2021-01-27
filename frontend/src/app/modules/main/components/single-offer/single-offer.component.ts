@@ -18,14 +18,15 @@ import { Post } from 'src/app/shared/models/Post';
 import { PostService } from 'src/app/services/post/post.service';
 import Page from 'src/app/shared/models/Page';
 import { SubscriptionService } from 'src/app/services/subscription/subscription.service';
+import { SubscriptionResponse } from 'src/app/shared/models/SubscriptionResponse';
+import { IsSubscribedResponse } from 'src/app/shared/models/IsSubscribedResponse';
 
 @Component({
   selector: 'app-single-offer',
   templateUrl: './single-offer.component.html',
   styleUrls: ['./single-offer.component.scss'],
 })
-export class SingleOfferComponent
-  implements OnInit, AfterContentInit, OnDestroy {
+export class SingleOfferComponent implements AfterContentInit, OnDestroy {
   offerId: number;
   offer: CulturalOffer;
   previousRoute: string = '';
@@ -38,6 +39,7 @@ export class SingleOfferComponent
   isReviewsLoading: boolean = false;
   subscribeState: string = 'loading';
   isLoggedIn: boolean = false;
+  offerExists: boolean = true;
 
   posts: Post[] = [];
   currentPostPage: number = 1;
@@ -76,24 +78,11 @@ export class SingleOfferComponent
         })
     );
   }
-  ngOnInit(): void {}
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
-  }
-
-  goBack(): void {
-    this.router.navigateByUrl(this.previousRoute);
-  }
 
   ngAfterContentInit(): void {
     this.subscriptions.push(
       this.route.params.subscribe((params) => {
         this.offerId = params.offerId;
-        if (this.offerId === NaN) {
-          // should redirect to 404
-          throw new Error('Error 404, invalid id');
-        }
         this.reviews = [];
         this.currentReviewPage = 0;
         this.totalReviews = 0;
@@ -104,8 +93,15 @@ export class SingleOfferComponent
     );
     this.subscribeToScrollEvent();
 
+    this.isLoggedIn = this.authService.getCurrentUser() != undefined;
+
+    if (!this.isLoggedIn) {
+      this.subscribeState = 'not subscribed';
+      return;
+    }
+
     this.subscriptionService.getIsSubscribedToOffer(this.offerId).subscribe(
-      (data) => {
+      (data: IsSubscribedResponse) => {
         if (data.subscribed) {
           this.subscribeState = 'subscribed';
         } else {
@@ -117,8 +113,14 @@ export class SingleOfferComponent
         console.log(error);
       }
     );
+  }
 
-    this.isLoggedIn = this.authService.getCurrentUser() != undefined;
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
+  goBack(): void {
+    this.router.navigateByUrl(this.previousRoute);
   }
 
   resetFields() {
@@ -131,7 +133,12 @@ export class SingleOfferComponent
 
   fetchOffer() {
     this.offerService.get(this.offerId).subscribe((data: CulturalOffer) => {
-      this.offer = data;
+      if (data === undefined) this.offerExists = false;
+      else {
+        this.offerExists = true;
+        this.offer = data;
+      }
+
       this.eventBus.emit(new EmitEvent(Events.OfferFocused, data));
     });
   }
@@ -234,7 +241,7 @@ export class SingleOfferComponent
 
     this.subscribeState = 'loading';
     this.subscriptionService.subscribeToOffer(this.offerId).subscribe(
-      () => {
+      (response: SubscriptionResponse) => {
         this.subscribeState = 'subscribed';
       },
       (error) => {
@@ -246,7 +253,7 @@ export class SingleOfferComponent
   unsubscribe() {
     this.subscribeState = 'loading';
     this.subscriptionService.unsubscribeFromOffer(this.offerId).subscribe(
-      () => {
+      (response: SubscriptionResponse) => {
         this.subscribeState = 'not subscribed';
       },
       (error) => {

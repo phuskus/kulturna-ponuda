@@ -93,6 +93,10 @@ public class SubcategoryService {
 				.orElseThrow(() -> new NoSuchElementException("Subcategory with id " + id + " doesn't exist!"));
 	}
 
+	public Subcategory findByNameIgnoringCase(String name) {
+		return subcategoryRepository.findByNameIgnoringCase(name);
+	}
+
 	public List<Subcategory> getAll(long id) {
 		return subcategoryRepository.findAll();
 	}

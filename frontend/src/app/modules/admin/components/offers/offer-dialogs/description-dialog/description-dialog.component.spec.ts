@@ -1,10 +1,10 @@
 // import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-// import { DescriptionDialogComponent } from './description-dialog.component';
-
-// describe('DescriptionDialogComponent', () => {
-//   let component: DescriptionDialogComponent;
-//   let fixture: ComponentFixture<DescriptionDialogComponent>;
+import { DescriptionDialogComponent } from './description-dialog.component';
+/*
+describe('DescriptionDialogComponent', () => {
+  let component: DescriptionDialogComponent;
+  let fixture: ComponentFixture<DescriptionDialogComponent>;
 
 //   beforeEach(async () => {
 //     await TestBed.configureTestingModule({
@@ -19,7 +19,8 @@
 //     fixture.detectChanges();
 //   });
 
-//   it('should create', () => {
-//     expect(component).toBeTruthy();
-//   });
-// });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+*/

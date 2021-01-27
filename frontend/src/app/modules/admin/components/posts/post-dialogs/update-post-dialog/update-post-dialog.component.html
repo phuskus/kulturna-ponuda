@@ -4,12 +4,12 @@
         <div mat-dialog-content fxLayout="column">
             <mat-form-field class="example-full-width">
                 <mat-label>Title</mat-label>
-                <input matInput [formControlName]="'title'" />
+                <input matInput [formControlName]="'title'" name="title" />
                 <mat-error *ngIf="f.title.touched && f.title?.errors?.required">Title is required</mat-error>
             </mat-form-field>
             <mat-form-field class="example-full-width">
                 <mat-label>Content</mat-label>
-                <textarea matInput [formControlName]="'content'"></textarea>
+                <textarea matInput [formControlName]="'content'" name="content" ></textarea>
                 <mat-error *ngIf="f.content.touched && f.content?.errors?.required">Content is required</mat-error>
             </mat-form-field>
         </div>
