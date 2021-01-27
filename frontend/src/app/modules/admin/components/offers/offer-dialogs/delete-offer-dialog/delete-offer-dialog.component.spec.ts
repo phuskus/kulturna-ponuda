@@ -19,7 +19,4 @@ describe('DeleteOfferDialogComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
 });

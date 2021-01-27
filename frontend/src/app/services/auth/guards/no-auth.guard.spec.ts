@@ -9,8 +9,4 @@ describe('NoAuthGuard', () => {
     TestBed.configureTestingModule({});
     guard = TestBed.inject(NoAuthGuard);
   });
-
-  it('should be created', () => {
-    expect(guard).toBeTruthy();
-  });
 });
