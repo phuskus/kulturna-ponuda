@@ -28,6 +28,13 @@ import { RegisterPageComponent } from './pages/register-page/register-page.compo
     MatIconModule,
     ValidateEqualModule,
     MatSnackBarModule
+  ],
+  exports: [
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatSnackBarModule
   ]
 })
 export class RegisterModule { }
