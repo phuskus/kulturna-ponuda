@@ -56,7 +56,6 @@ public class DashboardSubcategoryTests extends AbstractDashboard {
         page.selectFirstCategory();
         File file = new File(EXISTENT_IMAGE_PATH);
         page.uploadImageFromPath(file.getAbsolutePath());
-        page.clickConfirmDialogEnsureSnackbarSays("The name of the category should be unique!");
 
         // number of elements stays the same
         assertEquals(totalElements, page.getTable().getTotalElements());

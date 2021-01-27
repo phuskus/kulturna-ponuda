@@ -78,6 +78,6 @@ public class SubcategoryController {
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<String> deleteSubcategory(@PathVariable("id") long id) {
 		service.delete(id);
-		return new ResponseEntity<>("Successfully deleted subcategory!", HttpStatus.OK);
+		return new ResponseEntity<>("{\"message\": \"Successfully deleted subcategory!\"}", HttpStatus.OK);
 	}
 }

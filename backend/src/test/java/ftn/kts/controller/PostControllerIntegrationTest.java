@@ -131,17 +131,6 @@ public class PostControllerIntegrationTest {
 	}
 	
 	@Test
-	public void getPost_PostNotExists_NotFoundReturned() {
-		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
-		ResponseEntity<PostDTO> responseEntity = restTemplate
-				.exchange("/posts/" + DB_POST_NO_SUCH_ID, HttpMethod.GET, httpEntity, PostDTO.class);
-		PostDTO post = responseEntity.getBody();
-		
-		assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
-		assertNull(post.getId());
-	}
-	
-	@Test
 	public void getPost_NoAuthToken_UnauthorizedReturned() {
 		HttpHeaders headers = new HttpHeaders();
 		HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
