@@ -3,12 +3,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
 import { BaseDynamicPagingService } from 'src/app/services/base/base-dynamic-paging.service';
 import { AbstractDynamicPagingTable } from './AbstractDynamicPagingTable';
-import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { async, fakeAsync, tick } from '@angular/core/testing';
 import Page from 'src/app/shared/models/Page';
 import Model from 'src/app/shared/models/Model';
-import * as EventEmitter from 'events';
+import { EventEmitter } from '@angular/core';
+import { Output } from '@angular/core';
 
 class MockTable extends AbstractDynamicPagingTable {}
 class MockModel extends Model {
