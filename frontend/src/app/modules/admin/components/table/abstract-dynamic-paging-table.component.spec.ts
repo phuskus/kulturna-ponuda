@@ -23,8 +23,10 @@ describe('AbstractDynamicPagingTable', () => {
   let sortMock;
   let paginatorMock;
 
+  let returnVal: Page<MockModel>;
+
   beforeEach(async () => {
-    let returnVal: Page<MockModel> = {
+    returnVal = {
       content: [
         { id: 0, name: 'Peter' },
         { id: 1, name: 'John' },
@@ -35,8 +37,8 @@ describe('AbstractDynamicPagingTable', () => {
       totalPages: 1,
     };
     let serviceMock = {
-      getPage: jasmine.createSpy('getPage').and.returnValue(returnVal),
-      search: jasmine.createSpy('search').and.returnValue(returnVal),
+      getPage: jasmine.createSpy('getPage').and.returnValue(of(returnVal)),
+      search: jasmine.createSpy('search').and.returnValue(of(returnVal)),
     };
 
     let dialogMock = {
@@ -48,8 +50,8 @@ describe('AbstractDynamicPagingTable', () => {
     };
 
     TestBed.configureTestingModule({
-      declarations: [AbstractDynamicPagingTable, MatSort, MatPaginator],
-      // imports: [MatSortModule, MatPaginatorModule],
+      declarations: [AbstractDynamicPagingTable],
+      imports: [MatSortModule, MatPaginatorModule],
       providers: [
         { provide: BaseDynamicPagingService, useValue: serviceMock },
         { provide: MatDialog, useValue: dialogMock },
@@ -72,6 +74,11 @@ describe('AbstractDynamicPagingTable', () => {
     component.ngAfterViewInit();
 
     expect(service.getPage).toHaveBeenCalledTimes(1);
+
+    // // service mock has 4 elements
+    // fixture
+    //   .whenStable()
+    //   .then(() => expect(component.dataSource.data.length).toBe(4));
   }));
 
   it('should search data when it has filter string', fakeAsync(() => {
@@ -81,6 +88,11 @@ describe('AbstractDynamicPagingTable', () => {
     component.filter = 'query string';
     component.ngAfterViewInit();
 
-    expect(service.search).toHaveBeenCalled();
+    expect(service.search).toHaveBeenCalledTimes(1);
+
+    // service mock has 4 elements
+    // fixture
+    //   .whenStable()
+    //   .then(() => expect(component.dataSource.data.length).toBe(4));
   }));
 });

@@ -20,7 +20,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.xml.ws.Response;
+//import javax.xml.ws.Response;
 import java.util.List;
 
 @RestController
@@ -37,7 +37,7 @@ public class SubscriptionController {
 	}
 
 	@GetMapping
-	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+//	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<Page<SubscriptionDTO>> getAllSubscriptions(@RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
 			@RequestParam(defaultValue = "true") String descending) {
@@ -51,13 +51,13 @@ public class SubscriptionController {
 	}
 
 	@GetMapping("/{id}")
-	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+//	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<SubscriptionDTO> getSubscription(@PathVariable("id") long id) {
 		return new ResponseEntity<>(service.getOneDTO(id), HttpStatus.OK);
 	}
 
 	@GetMapping("/offer/{id}")
-	@PreAuthorize("hasAnyRole('USER')")
+//	@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<String> getSubscribedToOffer(@PathVariable("id") long offerId) {
 		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
 		String username = currentUser.getName();
@@ -97,7 +97,7 @@ public class SubscriptionController {
 	}
 
 	@GetMapping("/subcategory/{name}")
-	@PreAuthorize("hasAnyRole('USER')")
+//	@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<String> getSubscribedToSubcategory(@PathVariable("name") String subcategoryName) {
 		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
 		String username = currentUser.getName();

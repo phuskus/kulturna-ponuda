@@ -36,7 +36,7 @@ export class SingleOfferComponent
   pageSizeReviews: number = 5;
   isLastReviewPage: boolean = false;
   isReviewsLoading: boolean = false;
-  subscribeState: string = "loading";
+  subscribeState: string = 'loading';
   isLoggedIn: boolean = false;
 
   posts: Post[] = [];
@@ -104,18 +104,21 @@ export class SingleOfferComponent
     );
     this.subscribeToScrollEvent();
 
-    this.subscriptionService.getIsSubscribedToOffer(this.offerId).subscribe((data) => {
-      if (data.subscribed) {
-        this.subscribeState = 'subscribed';
-      } else {
-        this.subscribeState = 'not subscribed';
+    this.subscriptionService.getIsSubscribedToOffer(this.offerId).subscribe(
+      (data) => {
+        if (data.subscribed) {
+          this.subscribeState = 'subscribed';
+        } else {
+          this.subscribeState = 'not subscribed';
+        }
+      },
+      (error) => {
+        console.log('Failed to get isSubscribedToOffer');
+        console.log(error);
       }
-    }, (error) => {
-      console.log('Failed to get isSubscribedToOffer')
-      console.log(error);
-    });
+    );
 
-    this.isLoggedIn = this.authService.getCurrentUser() != undefined
+    this.isLoggedIn = this.authService.getCurrentUser() != undefined;
   }
 
   resetFields() {
@@ -180,7 +183,7 @@ export class SingleOfferComponent
     const drawer = document.getElementById('drawer');
     let header = document.getElementById('header');
 
-    drawer.addEventListener('scroll', (event: any) => {
+    drawer?.addEventListener('scroll', (event: any) => {
       if (
         event.target.offsetHeight + event.target.scrollTop >=
         event.target.scrollHeight
@@ -208,7 +211,7 @@ export class SingleOfferComponent
       data: this.offer,
     });
 
-    const sub = (dialogRef.componentInstance as ReviewDialogComponent).onSubscriptionCallBack.subscribe(
+    const sub = (dialogRef?.componentInstance as ReviewDialogComponent)?.onSubscriptionCallBack.subscribe(
       (data) => {
         this.resetFields();
         this.fetchReviews();
@@ -228,21 +231,27 @@ export class SingleOfferComponent
       this.router.navigateByUrl('/login');
       return;
     }
-    
+
     this.subscribeState = 'loading';
-    this.subscriptionService.subscribeToOffer(this.offerId).subscribe(() => {
-      this.subscribeState = 'subscribed';
-    }, (error) => {
-      console.log(error);
-    });
+    this.subscriptionService.subscribeToOffer(this.offerId).subscribe(
+      () => {
+        this.subscribeState = 'subscribed';
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   unsubscribe() {
     this.subscribeState = 'loading';
-    this.subscriptionService.unsubscribeFromOffer(this.offerId).subscribe(() => {
-      this.subscribeState = 'not subscribed';
-    }, (error) => {
-      console.log(error);
-    });
+    this.subscriptionService.unsubscribeFromOffer(this.offerId).subscribe(
+      () => {
+        this.subscribeState = 'not subscribed';
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 }
