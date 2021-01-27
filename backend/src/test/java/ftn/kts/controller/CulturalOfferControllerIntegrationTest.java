@@ -33,6 +33,7 @@ import static ftn.kts.util.ControllerUtil.getAuthHeadersUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
 import java.util.List;
@@ -216,6 +217,193 @@ public class CulturalOfferControllerIntegrationTest {
 		assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
 		assertEquals("Cultural offer with id " + FIND_NOT_EXIST_ID + " doesn't exist!", error.getMessage());
 	}
+
+	@Test
+	public void filterOffersQuery_ExactName_ReturnsOneEntity() {
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
+				"/cultural_offers/search?query=" + DB_CULTURAL_OFFER_NAME, HttpMethod.GET, httpEntity,
+				PageCulturalOffers.class);
+
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
+		
+		assertEquals(1, offersList.size());
+		CulturalOfferDTO offer = offersList.get(0);
+		assertNotNull(offer.getId());
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		assertEquals(DB_CULTURAL_OFFER_NAME, offer.getName());
+	}
+	
+	@Test
+	public void filterOffersQuery_GeneralName_ReturnsTwoEntities() {
+		String query = "cultural_offer";
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
+				"/cultural_offers/search?query=" + query, HttpMethod.GET, httpEntity,
+				PageCulturalOffers.class);
+
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
+		
+		assertEquals(2, offersList.size());
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		for (CulturalOfferDTO dto : offersList) {
+			assertTrue(dto.getName().contains(query));
+		}
+	}
+
+	@Test
+	public void filterOffersQuery_GeneralDescription_ReturnsTwoEntities() {
+		String query = "festival";
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
+				"/cultural_offers/search?query=" + query, HttpMethod.GET, httpEntity,
+				PageCulturalOffers.class);
+
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
+		
+		assertEquals(2, offersList.size());
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		for (CulturalOfferDTO dto : offersList) {
+			assertTrue(dto.getDescription().contains(query));
+		}
+	}
+	
+	@Test
+	public void filterOffersQuery_SpecificAddress_ReturnsOneEntity() {
+		String query = "Petrovaradinska";
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
+				"/cultural_offers/search?query=" + query, HttpMethod.GET, httpEntity,
+				PageCulturalOffers.class);
+
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
+		
+		assertEquals(1, offersList.size());
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		for (CulturalOfferDTO dto : offersList) {
+			assertTrue(dto.getAddress().contains(query));
+		}
+	}
+	
+	
+	@Test
+	public void filterOffersRegion_SpecificRegion_ReturnsOneEntity() {
+		String region = "Vojvodina";
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
+				"/cultural_offers/search?regionNames=" + region, HttpMethod.GET, httpEntity,
+				PageCulturalOffers.class);
+
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
+		
+		assertEquals(1, offersList.size());
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		for (CulturalOfferDTO dto : offersList) {
+			assertTrue(dto.getRegion().contains(region));
+		}
+	}
+	
+	@Test
+	public void filterOffersRegion_MultipleRegions_ReturnsTwoEntities() {
+		String region = "Vojvodina,Central Serbia";
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
+				"/cultural_offers/search?regionNames=" + region, HttpMethod.GET, httpEntity,
+				PageCulturalOffers.class);
+
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
+		
+		assertEquals(2, offersList.size());
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		for (CulturalOfferDTO dto : offersList) {
+			assertTrue(region.contains(dto.getRegion()));
+		}
+	}
+
+	@Test
+	public void filterOffersRegion_NonexistantRegion_ReturnsNoEntities() {
+		String region = "Western Serbia";
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
+				"/cultural_offers/search?regionNames=" + region, HttpMethod.GET, httpEntity,
+				PageCulturalOffers.class);
+
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
+		
+		assertEquals(0, offersList.size());
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+	}
+
+	@Test
+	public void filterOffersCity_SpecificCity_ReturnsOneEntity() {
+		String city = "Beograd";
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
+				"/cultural_offers/search?cityNames=" + city, HttpMethod.GET, httpEntity,
+				PageCulturalOffers.class);
+
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
+		
+		assertEquals(1, offersList.size());
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		for (CulturalOfferDTO dto : offersList) {
+			assertTrue(dto.getCity().contains(city));
+		}
+	}
+	
+
+	@Test
+	public void filterOffersCity_NonExistantCity_ReturnsNoEntities() {
+		String city = "Negotin";
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
+				"/cultural_offers/search?cityNames=" + city, HttpMethod.GET, httpEntity,
+				PageCulturalOffers.class);
+
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
+		
+		assertEquals(0, offersList.size());
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+	}
+	
+
+	@Test
+	public void filterOffersCategory_ExistsCategory_ReturnsTwoEntities() {
+		String category = "Festival";
+		HttpEntity<Object> httpEntity = new HttpEntity<Object>(getAuthHeadersUser(restTemplate));
+		ResponseEntity<PageCulturalOffers> responseEntity = restTemplate.exchange(
+				"/cultural_offers/search?category=" + category, HttpMethod.GET, httpEntity,
+				PageCulturalOffers.class);
+
+		PageCulturalOffers offers = responseEntity.getBody();
+
+		List<CulturalOfferDTO> offersList = offers.getContent();
+		
+		assertEquals(2, offersList.size());
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		for (CulturalOfferDTO dto : offersList) {
+			assertTrue(dto.getCategoryName().contains(category));
+		}
+	}
+		
 
 	@Test
 	public void filterOffersName_ExactName_ReturnsOneEntity() {
