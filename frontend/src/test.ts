@@ -56,5 +56,23 @@ const context = require.context('./', true, /\.spec\.ts$/);
 // edit profile
 //const context = require.context('./', true, /app.modules.main.components.account.profile-dialog.profile-dialog.component\.spec\.ts$/);
 
+
+// event bus service
+// const context = require.context('./', true, /app.services.event-bus.event-bus.service\.spec\.ts$/);
+
+
+// message service
+// const context = require.context('./', true, /app.services.message.message.service\.spec\.ts$/);
+
+// offer service
+// const context = require.context('./', true, /app.services.offer.offer.service\.spec\.ts$/);
+
+// post service
+// const context = require.context('./', true, /app.services.post.post.service\.spec\.ts$/);
+
+// review service
+// const context = require.context('./', true, /app.services.review.review.service\.spec\.ts$/);
+
+
 // And load the modules.
 context.keys().map(context);

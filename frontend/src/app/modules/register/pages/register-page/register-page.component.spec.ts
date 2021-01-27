@@ -34,9 +34,7 @@ describe('RegisterPageComponent', () => {
       openSnackBar: jasmine.createSpy('openSnackBar').and.returnValue(of(true)),
     };
 
-    let snackBarMock = {
-      
-    };
+    let snackBarMock = {};
 
     TestBed.configureTestingModule({
       declarations: [RegisterPageComponent],
