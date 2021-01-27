@@ -19,7 +19,4 @@ describe('AddressAutocompleteComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
 });

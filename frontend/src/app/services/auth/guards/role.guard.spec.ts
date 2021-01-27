@@ -10,7 +10,4 @@ describe('RoleGuard', () => {
     guard = TestBed.inject(RoleGuard);
   });
 
-  it('should be created', () => {
-    expect(guard).toBeTruthy();
-  });
 });
