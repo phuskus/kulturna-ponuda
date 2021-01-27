@@ -13,7 +13,7 @@ import { FormValidationService } from 'src/app/services/validation/form-validati
 })
 export class ResetPasswordComponent implements OnInit {
 
-  resetForm: FormGroup;
+  public resetForm: FormGroup;
   hidePassword: boolean = true;
   hideConfirmPassword: boolean = true;
 

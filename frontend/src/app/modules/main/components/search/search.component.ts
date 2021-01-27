@@ -8,7 +8,7 @@ import { NavigationExtras, Router } from '@angular/router';
 })
 export class SearchComponent implements OnInit {
   @Input()
-  searchQuery: string = '';
+  public searchQuery: string = '';
   constructor(private router: Router) { }
   
   ngOnInit(): void { }
