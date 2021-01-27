@@ -20,7 +20,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.xml.ws.Response;
+//import javax.xml.ws.Response;
 import java.util.List;
 
 @RestController
@@ -38,7 +38,7 @@ public class SubscriptionController {
 
 	@GetMapping
 	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-	public ResponseEntity<Page<SubscriptionDTO>> getAllSubscriptions(@RequestParam(defaultValue = "0") Integer pageNo,
+	public ResponseEntity<Page<SubscriptionDTO>> getMySubscriptions(@RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
 			@RequestParam(defaultValue = "true") String descending) {
 		Pageable paging;
@@ -46,18 +46,21 @@ public class SubscriptionController {
 			paging = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.DESC, sortBy));
 		else
 			paging = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, sortBy));
-		Page<SubscriptionDTO> subscriptions = service.getAllDTO(paging);
-		return new ResponseEntity<>(subscriptions, HttpStatus.OK);
+		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+		String username = currentUser.getName();
+		Page<SubscriptionDTO> subscriptions = service.getAllDTOForUsername(username, paging);
+		ResponseEntity<Page<SubscriptionDTO>> responseEntity = new ResponseEntity<>(subscriptions, HttpStatus.OK);
+		return responseEntity;
 	}
 
 	@GetMapping("/{id}")
-	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+//	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<SubscriptionDTO> getSubscription(@PathVariable("id") long id) {
 		return new ResponseEntity<>(service.getOneDTO(id), HttpStatus.OK);
 	}
 
 	@GetMapping("/offer/{id}")
-	@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<String> getSubscribedToOffer(@PathVariable("id") long offerId) {
 		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
 		String username = currentUser.getName();
@@ -65,7 +68,7 @@ public class SubscriptionController {
 	}
 
 	@PostMapping("/subscribeOffer/{id}")
-	@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<String> subscribeToOffer(@PathVariable("id") long offerId) {
 		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
 		String username = currentUser.getName();
@@ -81,7 +84,7 @@ public class SubscriptionController {
 	}
 
 	@PostMapping("/unsubscribeOffer/{id}")
-	@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<String> unsubscribeFromOffer(@PathVariable("id") long offerId) {
 		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
 		String username = currentUser.getName();
@@ -97,7 +100,7 @@ public class SubscriptionController {
 	}
 
 	@GetMapping("/subcategory/{name}")
-	@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<String> getSubscribedToSubcategory(@PathVariable("name") String subcategoryName) {
 		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
 		String username = currentUser.getName();
@@ -105,7 +108,7 @@ public class SubscriptionController {
 	}
 
 	@PostMapping("/subscribeSubcategory/{name}")
-	@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<String> subscribeToSubcategory(@PathVariable("name") String subcategoryName) {
 		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
 		String username = currentUser.getName();
@@ -121,7 +124,7 @@ public class SubscriptionController {
 	}
 
 	@PostMapping("/unsubscribeSubcategory/{name}")
-	@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<String> unsubscribeFromSubcategory(@PathVariable("name") String subcategoryName) {
 		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
 		String username = currentUser.getName();
@@ -137,14 +140,14 @@ public class SubscriptionController {
 	}
 
 	@PostMapping
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<String> addSubscription(@Valid @RequestBody SubscriptionDTO dto) {
 		service.create(dto);
-		return new ResponseEntity<>("Successfully added subscription!", HttpStatus.CREATED);
+		return new ResponseEntity<>("{ \"message\": \"" + "Successfully added subscription!" + "}", HttpStatus.CREATED);
 	}
 
 	@PutMapping("/{id}")
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<? extends Object> updateSubscription(@Valid @RequestBody SubscriptionDTO dto,
 			@PathVariable long id) {
 		try {
@@ -156,9 +159,13 @@ public class SubscriptionController {
 	}
 
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<String> deleteSubscription(@PathVariable("id") long id) {
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+	public ResponseEntity<SubscriptionDTO> deleteSubscription(@PathVariable("id") long id) {
+		SubscriptionDTO dto = service.getOneDTO(id);
+		if (dto == null) {
+			return new ResponseEntity<SubscriptionDTO>(dto, HttpStatus.NOT_FOUND);
+		}
 		service.delete(id);
-		return new ResponseEntity<>("Successfully deleted subscription!", HttpStatus.OK);
+		return new ResponseEntity<>(dto, HttpStatus.OK);
 	}
 }

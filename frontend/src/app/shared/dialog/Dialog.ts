@@ -7,6 +7,8 @@ import Model from '../models/Model';
   template: '',
 })
 export default abstract class Dialog<T> {
+  // event to tell parent that dialog has finished its purpose
+  // and return Observable data
   @Output() onSubscriptionCallBack = new EventEmitter<Model>();
 
   constructor(public dialogRef: MatDialogRef<T>, public service: BaseService) {}

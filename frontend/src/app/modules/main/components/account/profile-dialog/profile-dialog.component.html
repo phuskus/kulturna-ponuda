@@ -7,7 +7,7 @@
                 <input 
                     matInput 
                     [formControlName]="'username'"
-                    name="username" 
+                    id="username" 
                     readonly
                 />
             </mat-form-field>
@@ -16,10 +16,10 @@
                 <input 
                     matInput  
                     [formControlName]="'name'"
-                    name="name"
+                    id="name"
                     [(ngModel)]="newObj.name"
                 />
-                <mat-hint 
+                <mat-hint
                     *ngIf="f.name.touched && f.name.invalid && f.name.errors.required"
                     class="error"
                 >
@@ -31,7 +31,7 @@
                 <input 
                     matInput 
                     [formControlName]="'surname'"
-                    name="surname"
+                    id="surname"
                     [(ngModel)]="newObj.surname"
                 />
                 <mat-hint 
@@ -43,10 +43,10 @@
             </mat-form-field>
         </div>
         <div fxLayout="row" fxLayoutAlign="end" mat-dialog-actions>
-            <button mat-button class="button-option-main" [disabled]="profileForm.invalid" (click)="onSubmit()">
+            <button id="editProfile" mat-button class="button-option-main" [disabled]="profileForm.invalid" (click)="onSubmit()">
             Edit
             </button>
-        <button mat-button class="button-option-alt" mat-dialog-close>
+        <button id="cancelProfile" mat-button class="button-option-alt" mat-dialog-close>
             Cancel
         </button>
         </div>

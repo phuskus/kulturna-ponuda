@@ -5,8 +5,6 @@ import ftn.kts.model.CulturalOffer;
 import ftn.kts.model.RegisteredUser;
 import ftn.kts.model.Subscription;
 import ftn.kts.model.Subcategory;
-import ftn.kts.repository.RegisteredUserRepository;
-import ftn.kts.repository.SubcategoryRepository;
 import ftn.kts.repository.SubscriptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,29 +18,42 @@ import java.util.stream.Collectors;
 public class SubscriptionService {
 
 	private SubscriptionRepository subscriptionRepository;
+
 	private CulturalOfferService culturalOfferService;
 	private SubcategoryService subcategoryService;
-	private RegisteredUserRepository registeredUserRepository;
-	private SubcategoryRepository subcategoryRepository;
+	private RegisteredUserService registeredUserService;
 
 	@Autowired
 	public SubscriptionService(SubscriptionRepository subscriptionRepository,
-			CulturalOfferService culturalOfferService, SubcategoryService subcategoryService,
-			RegisteredUserRepository registeredUserRepository, SubcategoryRepository subcategoryRepository) {
+							   CulturalOfferService culturalOfferService, SubcategoryService subcategoryService,
+							   RegisteredUserService registeredUserService) {
 		this.subscriptionRepository = subscriptionRepository;
 		this.culturalOfferService = culturalOfferService;
 		this.subcategoryService = subcategoryService;
-		this.registeredUserRepository = registeredUserRepository;
-		this.subcategoryRepository = subcategoryRepository;
+		this.registeredUserService = registeredUserService;
 	}
 
 	public Page<SubscriptionDTO> getAllDTO(Pageable pageable) {
 		return subscriptionRepository.findAll(pageable).map(this::toDTO);
 	}
 
+	public List<RegisteredUser> getUsersForOffer(long offerId) {
+		List<Subscription> subscriptions = subscriptionRepository.findByCulturalOfferId(offerId);
+		List<RegisteredUser> users = new ArrayList<>();
+		for (Subscription s : subscriptions) {
+			users.add(s.getUser());
+		}
+
+		return users;
+	}
+
 	public SubscriptionDTO getOneDTO(long id) {
 		Subscription subscription = getOne(id);
 		return toDTO(subscription);
+	}
+
+	public Page<SubscriptionDTO> getAllDTOForUsername(String username, Pageable pageable) {
+		return subscriptionRepository.findByUsername(username, pageable).map(this::toDTO);
 	}
 
 	public boolean isSubscribedToOffer(long userId, long offerId) {
@@ -65,7 +76,7 @@ public class SubscriptionService {
 			return "User " + username + " is already subscribed to offer " + offerId;
 		}
 
-		RegisteredUser user = registeredUserRepository.findByUsername(username);
+		RegisteredUser user = registeredUserService.findByUsername(username);
 		if (user == null) {
 			throw new Exception("User " + username + " doesn't exist!");
 		}
@@ -82,7 +93,7 @@ public class SubscriptionService {
 	}
 
 	public String unsubscribeFromOffer(String username, long offerId) throws Exception {
-		RegisteredUser user = registeredUserRepository.findByUsername(username);
+		RegisteredUser user = registeredUserService.findByUsername(username);
 		if (user == null) {
 			throw new Exception("User " + username + " doesn't exist!");
 		}
@@ -107,12 +118,12 @@ public class SubscriptionService {
 			return "User " + username + " is already subscribed to subcategory " + subcategoryName;
 		}
 
-		RegisteredUser user = registeredUserRepository.findByUsername(username);
+		RegisteredUser user = registeredUserService.findByUsername(username);
 		if (user == null) {
 			throw new Exception("User " + username + " doesn't exist!");
 		}
 
-		Subcategory subcategory = subcategoryRepository.findByNameIgnoringCase(subcategoryName);
+		Subcategory subcategory = subcategoryService.findByNameIgnoringCase(subcategoryName);
 		if (subcategory == null) {
 			throw new Exception("Subcategory " + subcategoryName + " doesn't exist!");
 		}
@@ -124,12 +135,12 @@ public class SubscriptionService {
 	}
 
 	public String unsubscribeFromSubcategory(String username, String subcategoryName) throws Exception {
-		RegisteredUser user = registeredUserRepository.findByUsername(username);
+		RegisteredUser user = registeredUserService.findByUsername(username);
 		if (user == null) {
 			throw new Exception("User " + username + " doesn't exist!");
 		}
 
-		Subcategory subcategory = subcategoryRepository.findByNameIgnoringCase(subcategoryName);
+		Subcategory subcategory = subcategoryService.findByNameIgnoringCase(subcategoryName);
 		if (subcategory == null) {
 			throw new Exception("Subcategory " + subcategoryName + " doesn't exist!");
 		}
@@ -183,7 +194,7 @@ public class SubscriptionService {
 		if (dto.getCulturalOfferId() != null) {
 			culturalOffer = culturalOfferService.getOne(dto.getCulturalOfferId());
 		}
-		RegisteredUser registeredUser = registeredUserRepository.getOne(dto.getRegisteredUserId());
+		RegisteredUser registeredUser = registeredUserService.getOne(dto.getRegisteredUserId());
 		return new Subscription(dto.getId(), dto.getDateOfSubscription(), subCategory, culturalOffer, registeredUser);
 	}
 
@@ -194,7 +205,7 @@ public class SubscriptionService {
 
 	private void updateSubscription(Subscription subscription, SubscriptionDTO dto) throws Exception{
 		subscription.setDateOfSubscription(dto.getDateOfSubscription());
-		subscription.setUser(registeredUserRepository.getOne(dto.getRegisteredUserId()));
+		subscription.setUser(registeredUserService.getOne(dto.getRegisteredUserId()));
 
 		if (dto.getCulturalOfferId() != null) {
 

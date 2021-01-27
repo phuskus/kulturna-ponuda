@@ -15,24 +15,14 @@ public class SubscriptionDTO {
     private Long registeredUserId;
     private Long subcategoryId;
     private Long culturalOfferId;
+    private String culturalOfferName;
+    private String subcategoryName;
 
     public SubscriptionDTO() { }
 
     public SubscriptionDTO(Long id, Date dateOfSubscription, RegisteredUser registeredUser, Subcategory subcategory, CulturalOffer culturalOffer) {
+        this(dateOfSubscription, registeredUser, subcategory, culturalOffer);
         this.id = id;
-        this.dateOfSubscription = dateOfSubscription;
-        this.registeredUserId = registeredUser.getId();
-        if (subcategory == null) {
-            this.subcategoryId = null;
-        } else {
-            this.subcategoryId = subcategory.getId();
-        }
-
-        if (culturalOffer == null) {
-            this.culturalOfferId = null;
-        } else {
-            this.culturalOfferId = culturalOffer.getId();
-        }
     }
 
     public SubscriptionDTO(Date dateOfSubscription, RegisteredUser registeredUser, Subcategory subcategory, CulturalOffer culturalOffer) {
@@ -40,14 +30,18 @@ public class SubscriptionDTO {
         this.registeredUserId = registeredUser.getId();
         if (subcategory == null) {
             this.subcategoryId = null;
+            this.subcategoryName = null;
         } else {
             this.subcategoryId = subcategory.getId();
+            this.subcategoryName = subcategory.getName();
         }
 
         if (culturalOffer == null) {
             this.culturalOfferId = null;
+            this.culturalOfferName = null;
         } else {
             this.culturalOfferId = culturalOffer.getId();
+            this.culturalOfferName = culturalOffer.getName();
         }
     }
 
@@ -96,6 +90,22 @@ public class SubscriptionDTO {
 
     public void setCulturalOfferId(Long culturalOfferId) {
         this.culturalOfferId = culturalOfferId;
+    }
+
+    public String getCulturalOfferName() {
+        return culturalOfferName;
+    }
+
+    public void setCulturalOfferName(String culturalOfferName) {
+        this.culturalOfferName = culturalOfferName;
+    }
+
+    public String getSubcategoryName() {
+        return subcategoryName;
+    }
+
+    public void setSubcategoryName(String subcategoryName) {
+        this.subcategoryName = subcategoryName;
     }
 
     @Override

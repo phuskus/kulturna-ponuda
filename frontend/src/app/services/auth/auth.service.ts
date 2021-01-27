@@ -14,11 +14,7 @@ import { Role } from 'src/app/shared/models/Role';
 })
 export class AuthService {
 
-  private endpoint = "http://localhost:9001/auth/";
-  //private readonly loginEndpoint = "http://localhost:9001/auth/login";
-  //private readonly registerEndpoint = "http://localhost:9001/auth/register";
-  //private readonly forgotPasswordEndpoint = "http://localhost:9001/auth/forgot-password";
-  //private readonly resetPasswordEndpoint = "http://localhost:9001/auth/reset-password"; 
+  private endpoint = "http://localhost:9001/auth/"; 
 
   constructor(private http: HttpClient) { }
 
@@ -28,7 +24,7 @@ export class AuthService {
       this.endpoint + 'login',
       JSON.stringify({ username, password }),
       { headers }).map((res: any) => {
-        console.log(res);
+        //console.log(res);
         let user: UserTokenState =  {
           id: res && res['id'],
           token: res && res['accessToken'],
@@ -37,7 +33,7 @@ export class AuthService {
         };
         if (user.token) {
           localStorage.setItem('currentUser', JSON.stringify(user));
-          console.log(localStorage['currentUser']);
+          //console.log(localStorage['currentUser']);
           return true;
         }
       }).pipe(
@@ -143,6 +139,13 @@ export class AuthService {
     else {
       return Role['NO_AUTH'];
     }
+  }
+
+  checkIfAdmin(): boolean {
+    let role: Role = this.getCurrentUserRole();
+    if (role === Role.ADMIN)
+      return true;
+    return false;
   }
 
 

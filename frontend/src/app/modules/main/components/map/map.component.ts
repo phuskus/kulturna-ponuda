@@ -41,8 +41,8 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
   public map: Map;
   public marginLeft: string = '0px';
   public markers: Marker[] = [];
-  private initLatLng: LatLng = new LatLng(44.304604, 20.838051);
-  private initZoom = 8;
+  public initLatLng: LatLng = new LatLng(44.304604, 20.838051);
+  public initZoom = 8;
 
   public options: MapOptions = {
     layers: [
@@ -61,12 +61,12 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
   public displayInfoLat: string = '0px';
   public displayInfoLon: string = '0px';
 
-  private offerList: CulturalOffer[];
+  public offerList: CulturalOffer[];
   public focusedOffer: CulturalOffer;
 
-  private previousResultsPage: string = '';
+  public previousResultsPage: string = '';
 
-  private subscriptions: Subscription[] = [];
+  public subscriptions: Subscription[] = [];
 
   constructor(
     private eventBus: EventBusService,

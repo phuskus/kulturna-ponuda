@@ -62,6 +62,8 @@ public class CulturalOfferServiceIntegrationTest {
 		CulturalOfferDTO newOfferDTO = new CulturalOfferDTO(CREATE_NAME, CREATE_DESCRIPTION,
 				CREATE_LATITUDE, CREATE_LONGITUDE, CREATE_ADRESS, CREATE_CITY, CREATE_REGION,
 				ADMIN_ID, CATEGORY_ID, "Festival");
+
+		newOfferDTO.setAverageRating(-1d);
 		CulturalOfferDTO createdOffer = cultOfferService.create(newOfferDTO, null);
 		assertNotNull(createdOffer.getId());
 		
@@ -157,6 +159,105 @@ public class CulturalOfferServiceIntegrationTest {
 	public void getAll_TwoEntitesReturned() {
 		List<CulturalOffer> found = cultOfferService.getAll();
 		assertEquals(found.size(), FIND_ALL_NUMBER_OF_ITEMS);
+	}
+
+	@Test
+	public void search_QueryExactName_OneEntityReturned() {
+		String categoryName = "";
+		String query = "cultural_offer1";
+		String regionNames = "";
+		String cityNames = "";
+		Pageable paging = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+		Page<CulturalOfferDTO> found = cultOfferService.filterAll(categoryName, query, regionNames, cityNames, paging);
+		assertEquals(found.getNumberOfElements(), 1);
+	}
+
+	@Test
+	public void search_QueryGeneralName_TwoEntitiesReturned() {
+		String categoryName = "";
+		String query = "cultural_offer";
+		String regionNames = "";
+		String cityNames = "";
+		Pageable paging = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+		Page<CulturalOfferDTO> found = cultOfferService.filterAll(categoryName, query, regionNames, cityNames, paging);
+		assertEquals(found.getNumberOfElements(), 2);
+	}
+
+	@Test
+	public void search_QueryGeneralDescription_TwoEntitiesReturned() {
+		String categoryName = "";
+		String query = "festival";
+		String regionNames = "";
+		String cityNames = "";
+		Pageable paging = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+		Page<CulturalOfferDTO> found = cultOfferService.filterAll(categoryName, query, regionNames, cityNames, paging);
+		assertEquals(found.getNumberOfElements(), 2);
+	}
+
+	@Test
+	public void search_RegionOneRegion_OneEntityReturned() {
+		String categoryName = "";
+		String query = "";
+		String regionNames = "Vojvodina";
+		String cityNames = "";
+		Pageable paging = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+		Page<CulturalOfferDTO> found = cultOfferService.filterAll(categoryName, query, regionNames, cityNames, paging);
+		assertEquals(found.getNumberOfElements(), 1);
+	}
+
+	@Test
+	public void search_RegionTwoRegions_TwoEntitiesReturned() {
+		String categoryName = "";
+		String query = "";
+		String regionNames = "Vojvodina,Central Serbia";
+		String cityNames = "";
+		Pageable paging = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+		Page<CulturalOfferDTO> found = cultOfferService.filterAll(categoryName, query, regionNames, cityNames, paging);
+		assertEquals(found.getNumberOfElements(), 2);
+	}
+
+	@Test
+	public void search_CityTwoCities_TwoEntitiesReturned() {
+		String categoryName = "";
+		String query = "";
+		String regionNames = "";
+		String cityNames = "Beograd,Novi Sad";
+		Pageable paging = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+		Page<CulturalOfferDTO> found = cultOfferService.filterAll(categoryName, query, regionNames, cityNames, paging);
+		assertEquals(found.getNumberOfElements(), 2);
+	}
+
+	@Test
+	public void search_CategoryShared_TwoEntitiesReturned() {
+		String categoryName = "Festival";
+		String query = "";
+		String regionNames = "";
+		String cityNames = "";
+		Pageable paging = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+		Page<CulturalOfferDTO> found = cultOfferService.filterAll(categoryName, query, regionNames, cityNames, paging);
+		assertEquals(found.getNumberOfElements(), 2);
+	}
+
+	@Test
+	public void search_CategorySharedOneRegion_OneEntityReturned() {
+		String categoryName = "Festival";
+		String query = "";
+		String regionNames = "Vojvodina";
+		String cityNames = "";
+		Pageable paging = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+		Page<CulturalOfferDTO> found = cultOfferService.filterAll(categoryName, query, regionNames, cityNames, paging);
+		assertEquals(found.getNumberOfElements(), 1);
+	}
+
+	@Test
+	public void search_CategorySharedOneRegionOneCity_NoEntitiesReturned() {
+		String categoryName = "Festival";
+		String query = "";
+		String regionNames = "Vojvodina";
+		String cityNames = "Beograd";
+		Pageable paging = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+		Page<CulturalOfferDTO> found = cultOfferService.filterAll(categoryName, query, regionNames, cityNames, paging);
+		assertEquals(found.getNumberOfElements(), 0);
 	}
 	
 	@Test

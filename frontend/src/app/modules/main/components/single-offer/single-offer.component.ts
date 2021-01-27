@@ -18,14 +18,15 @@ import { Post } from 'src/app/shared/models/Post';
 import { PostService } from 'src/app/services/post/post.service';
 import Page from 'src/app/shared/models/Page';
 import { SubscriptionService } from 'src/app/services/subscription/subscription.service';
+import { SubscriptionResponse } from 'src/app/shared/models/SubscriptionResponse';
+import { IsSubscribedResponse } from 'src/app/shared/models/IsSubscribedResponse';
 
 @Component({
   selector: 'app-single-offer',
   templateUrl: './single-offer.component.html',
   styleUrls: ['./single-offer.component.scss'],
 })
-export class SingleOfferComponent
-  implements OnInit, AfterContentInit, OnDestroy {
+export class SingleOfferComponent implements AfterContentInit, OnDestroy {
   offerId: number;
   offer: CulturalOffer;
   previousRoute: string = '';
@@ -36,8 +37,9 @@ export class SingleOfferComponent
   pageSizeReviews: number = 5;
   isLastReviewPage: boolean = false;
   isReviewsLoading: boolean = false;
-  subscribeState: string = "loading";
+  subscribeState: string = 'loading';
   isLoggedIn: boolean = false;
+  offerExists: boolean = true;
 
   posts: Post[] = [];
   currentPostPage: number = 1;
@@ -76,7 +78,42 @@ export class SingleOfferComponent
         })
     );
   }
-  ngOnInit(): void {}
+
+  ngAfterContentInit(): void {
+    this.subscriptions.push(
+      this.route.params.subscribe((params) => {
+        this.offerId = params.offerId;
+        this.reviews = [];
+        this.currentReviewPage = 0;
+        this.totalReviews = 0;
+        this.fetchOffer();
+        this.fetchReviews();
+        this.fetchPosts();
+      })
+    );
+    this.subscribeToScrollEvent();
+
+    this.isLoggedIn = this.authService.getCurrentUser() != undefined;
+
+    if (!this.isLoggedIn) {
+      this.subscribeState = 'not subscribed';
+      return;
+    }
+
+    this.subscriptionService.getIsSubscribedToOffer(this.offerId).subscribe(
+      (data: IsSubscribedResponse) => {
+        if (data.subscribed) {
+          this.subscribeState = 'subscribed';
+        } else {
+          this.subscribeState = 'not subscribed';
+        }
+      },
+      (error) => {
+        console.log('Failed to get isSubscribedToOffer');
+        console.log(error);
+      }
+    );
+  }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
@@ -84,38 +121,6 @@ export class SingleOfferComponent
 
   goBack(): void {
     this.router.navigateByUrl(this.previousRoute);
-  }
-
-  ngAfterContentInit(): void {
-    this.subscriptions.push(
-      this.route.params.subscribe((params) => {
-        this.offerId = params.offerId;
-        if (this.offerId === NaN) {
-          // should redirect to 404
-          throw new Error('Error 404, invalid id');
-        }
-        this.reviews = [];
-        this.currentReviewPage = 0;
-        this.totalReviews = 0;
-        this.fetchReviews();
-        this.fetchPosts();
-        this.fetchOffer();
-      })
-    );
-    this.subscribeToScrollEvent();
-
-    this.subscriptionService.getIsSubscribedToOffer(this.offerId).subscribe((data) => {
-      if (data.subscribed) {
-        this.subscribeState = 'subscribed';
-      } else {
-        this.subscribeState = 'not subscribed';
-      }
-    }, (error) => {
-      console.log('Failed to get isSubscribedToOffer')
-      console.log(error);
-    });
-
-    this.isLoggedIn = this.authService.getCurrentUser() != undefined
   }
 
   resetFields() {
@@ -127,10 +132,21 @@ export class SingleOfferComponent
   }
 
   fetchOffer() {
-    this.offerService.get(this.offerId).subscribe((data: CulturalOffer) => {
-      this.offer = data;
-      this.eventBus.emit(new EmitEvent(Events.OfferFocused, data));
-    });
+    this.offerService.get(this.offerId).subscribe(
+      (data: CulturalOffer) => {
+        if (data === undefined) this.offerExists = false;
+        else {
+          this.offerExists = true;
+          this.offer = data;
+        }
+
+        this.eventBus.emit(new EmitEvent(Events.OfferFocused, data));
+      },
+      (err) => {
+        this.offerExists = false;
+        throw new Error('bad offer');
+      }
+    );
   }
 
   fetchPosts() {
@@ -180,7 +196,7 @@ export class SingleOfferComponent
     const drawer = document.getElementById('drawer');
     let header = document.getElementById('header');
 
-    drawer.addEventListener('scroll', (event: any) => {
+    drawer?.addEventListener('scroll', (event: any) => {
       if (
         event.target.offsetHeight + event.target.scrollTop >=
         event.target.scrollHeight
@@ -208,7 +224,7 @@ export class SingleOfferComponent
       data: this.offer,
     });
 
-    const sub = (dialogRef.componentInstance as ReviewDialogComponent).onSubscriptionCallBack.subscribe(
+    const sub = (dialogRef?.componentInstance as ReviewDialogComponent)?.onSubscriptionCallBack.subscribe(
       (data) => {
         this.resetFields();
         this.fetchReviews();
@@ -228,21 +244,27 @@ export class SingleOfferComponent
       this.router.navigateByUrl('/login');
       return;
     }
-    
+
     this.subscribeState = 'loading';
-    this.subscriptionService.subscribeToOffer(this.offerId).subscribe(() => {
-      this.subscribeState = 'subscribed';
-    }, (error) => {
-      console.log(error);
-    });
+    this.subscriptionService.subscribeToOffer(this.offerId).subscribe(
+      (response: SubscriptionResponse) => {
+        this.subscribeState = 'subscribed';
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   unsubscribe() {
     this.subscribeState = 'loading';
-    this.subscriptionService.unsubscribeFromOffer(this.offerId).subscribe(() => {
-      this.subscribeState = 'not subscribed';
-    }, (error) => {
-      console.log(error);
-    });
+    this.subscriptionService.unsubscribeFromOffer(this.offerId).subscribe(
+      (response: SubscriptionResponse) => {
+        this.subscribeState = 'not subscribed';
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 }

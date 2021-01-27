@@ -12,7 +12,7 @@ import { UserService } from '../user/user.service';
 })
 export class ReviewService extends BaseDynamicPagingService {
   constructor(public http: HttpClient, private userService: UserService) {
-    super('reviews', http);
+    super(http, 'reviews');
   }
 
   createEmpty(): Review {
@@ -40,7 +40,7 @@ export class ReviewService extends BaseDynamicPagingService {
         this.httpOptions
       )
       .pipe(
-        catchError(this.handleError<Page<Review>>()),
+        catchError(this.handleError<Page<Review>>('getOfferId')),
         delay(delayInMiliseconds)
       );
   }
@@ -54,6 +54,6 @@ export class ReviewService extends BaseDynamicPagingService {
 
     return this.http
       .post<Review>(this.url, formData)
-      .pipe(catchError(this.handleError<Review>()));
+      .pipe(catchError(this.handleError<Review>('addMultipart')));
   }
 }

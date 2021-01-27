@@ -15,7 +15,6 @@ import { UserService } from 'src/app/services/user/user.service';
 export class ReviewDialogComponent
   extends AddDialog<ReviewDialogComponent>
   implements OnInit {
-  public username: string = 'sstefann';
   private filesSelected: FileList;
   newObj: Review;
 

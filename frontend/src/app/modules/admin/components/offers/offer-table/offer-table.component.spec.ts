@@ -1,4 +1,9 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { OfferTableComponent } from './offer-table.component';
 
@@ -8,15 +13,20 @@ describe('OfferTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ OfferTableComponent ]
-    })
-    .compileComponents();
+      imports: [
+        HttpClientTestingModule,
+        MatDialogModule,
+        MatSortModule,
+        MatPaginatorModule,
+        BrowserAnimationsModule,
+      ],
+      declarations: [OfferTableComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(OfferTableComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
