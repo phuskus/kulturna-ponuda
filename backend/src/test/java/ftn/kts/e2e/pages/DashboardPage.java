@@ -108,6 +108,43 @@ public class DashboardPage {
         WebElement option = driver.findElement(By.className("pick-category-option"));
         (new WebDriverWait(driver, 3)).until(ExpectedConditions.elementToBeClickable(option)).click();
     }
+    
+    public void selectFirstRegion() {
+    	WebElement autocomplete = driver.findElement(By.name("region"));
+        (new WebDriverWait(driver, 5)).until(ExpectedConditions.elementToBeClickable(autocomplete)).click();
+
+        WebElement option = driver.findElement(By.name("regionOption"));
+        (new WebDriverWait(driver, 5)).until(ExpectedConditions.elementToBeClickable(option)).click();
+    }
+    
+    public void selectFirstSubcategory() {
+    	WebElement autocomplete = driver.findElement(By.name("category"));
+        (new WebDriverWait(driver, 5)).until(ExpectedConditions.elementToBeClickable(autocomplete)).click();
+
+        WebElement option = driver.findElement(By.name("categoryOption"));
+        (new WebDriverWait(driver, 5)).until(ExpectedConditions.elementToBeClickable(option)).click();
+    }
+    
+    public void selectFirstAddress() {
+    	WebElement autocomplete = driver.findElement(By.name("address"));
+        (new WebDriverWait(driver, 5)).until(ExpectedConditions.elementToBeClickable(autocomplete)).click();
+        autocomplete.sendKeys("Jevrejska 9, Novi Sad");
+        (new WebDriverWait(driver, 5)).until(ExpectedConditions.visibilityOfElementLocated(By.name("addressOption")));
+        WebElement option = driver.findElement(By.name("addressOption"));
+        (new WebDriverWait(driver, 5)).until(ExpectedConditions.elementToBeClickable(option)).click();
+    }
+    
+    public void ensureTableIsLoaded() {
+    	(new WebDriverWait(driver, 5)).until(ExpectedConditions.invisibilityOfElementLocated(By.tagName("mat-progress-spinner")));
+    }
+    
+    public void ensureCancelButtonIsDisplayed() {
+    	 (new WebDriverWait(driver, 3)).until(ExpectedConditions.visibilityOfElementLocated(By.className("button-option-alt")));
+    }
+    
+    public void ensureMainButtonIsDisplayed() {
+    	(new WebDriverWait(driver, 3)).until(ExpectedConditions.visibilityOfElementLocated(By.className("button-option-main")));
+    }
 
     private void ensureSnackbarSays(String message) {
         (new WebDriverWait(driver, 3)).until(ExpectedConditions.visibilityOfElementLocated(By.tagName("snack-bar-container")));
