@@ -42,6 +42,7 @@ insert into posts_pictures (post_id, pictures_id) values (3, 1);
 
 insert into reviews (rating, content, cultural_offer_id, user_id, date_posted) values (5, 'Otkazano zbog korone', 1, 2, '2020-12-15 13:27:00.508-07');
 insert into reviews (rating, content, cultural_offer_id, user_id, date_posted) values (0, 'Ne valja nista', 1, 2, '2020-12-15 13:27:00.508-07');
+insert into reviews (rating, content, cultural_offer_id, user_id, date_posted) values (3, 'Nice review', 1, 2, '2020-12-15 13:27:00.508-07');
 
 
 -- Subscribe to cultural offer 1 as user 1
