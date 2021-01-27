@@ -259,4 +259,5 @@ public class MainPageE2ETests {
 
         assertEquals(deleteButtons.size(), numberOfRows - 1);
     }
+    
 }
