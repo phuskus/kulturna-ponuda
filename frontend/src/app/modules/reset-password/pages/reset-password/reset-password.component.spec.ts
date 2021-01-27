@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -34,9 +34,7 @@ describe('ResetPasswordComponent', () => {
     };
 
     let authServiceMock = {
-      checkIfAdmin: jasmine.createSpy('checkIfAdmin')
-        .and.returnValue(false),
-      logout: jasmine.createSpy('logout')
+      resetPassword: jasmine.createSpy('resetPassword').and.returnValue(of())
     };
 
     let snackBarMock = {
@@ -51,7 +49,11 @@ describe('ResetPasswordComponent', () => {
     };
 
     let activatedRouteMock = {
-
+      snapshot: {
+        params: {
+          key: {}
+        }
+      }
     };
 
     let messageServiceMock = {
@@ -71,7 +73,7 @@ describe('ResetPasswordComponent', () => {
         { provide: MatSnackBar, useValue: snackBarMock },
         { provide: FormValidationService, useValue: formValidationServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
-        { provide: FormBuilder, useValue: formBuilderMock },
+        FormBuilder
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
@@ -90,7 +92,27 @@ describe('ResetPasswordComponent', () => {
     fixture.detectChanges();
   });
 
+  class ResetFormData {
+    newPassword: string;
+    confirmPassword: string;
+  }
+
+  function setFormValues(formData: ResetFormData) {
+    component.resetForm.patchValue({ ...formData });
+  }
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should call reset password', fakeAsync(() => {
+    let formData: ResetFormData = {
+      newPassword: 'asdasd123',
+      confirmPassword: 'asdasd123'
+    };
+
+    setFormValues(formData);
+    component.onSubmit();
+    expect(authService.resetPassword).toHaveBeenCalled();
+  }));
 });
