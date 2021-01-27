@@ -28,7 +28,7 @@ export abstract class AbstractTable implements AfterViewInit {
 
   ngAfterViewInit(): void {
     // when sort is changed go back to first page
-    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
+    this.sort?.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
     this.getTableData();
   }
 
@@ -50,7 +50,7 @@ export abstract class AbstractTable implements AfterViewInit {
       data: row,
     });
 
-    const sub = (dialogRef.componentInstance as Dialog<Model>).onSubscriptionCallBack.subscribe(
+    const sub = (dialogRef?.componentInstance as Dialog<Model>)?.onSubscriptionCallBack?.subscribe(
       (data) => {
         this.updateTable();
 

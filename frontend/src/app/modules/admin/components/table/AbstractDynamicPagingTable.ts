@@ -11,7 +11,7 @@ import Page from 'src/app/shared/models/Page';
 @Component({
   template: '',
 })
-export abstract class AbstractDynamicPagingTable extends AbstractTable {
+export class AbstractDynamicPagingTable extends AbstractTable {
   timer = null;
   isLoadingResults: boolean = false;
   filter: string = '';
@@ -28,6 +28,7 @@ export abstract class AbstractDynamicPagingTable extends AbstractTable {
       .pipe(this.getDataPipeline())
       .subscribe((data) => {
         this.dataSource.data = data;
+        alert(this.dataSource.data.length);
       });
   }
 

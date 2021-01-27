@@ -17,7 +17,7 @@ class MockModel extends Model {
 @Injectable({
   providedIn: 'root',
 })
-class MockBaseService extends BaseService {
+export class MockBaseService extends BaseService {
   constructor(public http: HttpClient) {
     super(http);
     this.url = 'api/model';
