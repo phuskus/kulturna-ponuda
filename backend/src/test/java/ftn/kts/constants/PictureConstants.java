@@ -12,6 +12,6 @@ public class PictureConstants {
 	public static final String DB_INSERT_FILE_CONTENT = "testcontent";
 	
 	public static final String PROJECT_FOLDER = System.getProperty("user.dir");
-	public static final String FILE_FOLDER = "\\pictures\\";
+	public static final String FILE_FOLDER = "/src/main/webapp/WEB-INF/";
 	
 }

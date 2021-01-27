@@ -104,6 +104,7 @@ public class CulturalOfferDTO {
 		this.posts = new HashSet<>();
 		this.pictures = new HashSet<>();
 		this.categoryName = categoryName;
+		this.averageRating = -1d;
 	}
 
 	public Long getId() {

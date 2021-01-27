@@ -112,7 +112,7 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    public UserTokenStateDTO getLoggedIn(String username, String password) throws DisabledException, PasswordNotChangedException, UserException {
+    public UserTokenStateDTO getLoggedIn(String username, String password) throws DisabledException, UserException {
         User existUser = null;
         try {
             existUser = getOne(username);

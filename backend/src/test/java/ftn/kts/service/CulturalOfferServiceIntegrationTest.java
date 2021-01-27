@@ -62,6 +62,7 @@ public class CulturalOfferServiceIntegrationTest {
 		CulturalOfferDTO newOfferDTO = new CulturalOfferDTO(CREATE_NAME, CREATE_DESCRIPTION,
 				CREATE_LATITUDE, CREATE_LONGITUDE, CREATE_ADRESS, CREATE_CITY, CREATE_REGION,
 				ADMIN_ID, CATEGORY_ID, "Festival");
+
 		newOfferDTO.setAverageRating(-1d);
 		CulturalOfferDTO createdOffer = cultOfferService.create(newOfferDTO, null);
 		assertNotNull(createdOffer.getId());

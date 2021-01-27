@@ -28,7 +28,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @Service
 public class PictureService {
 	private final String projectFolder = System.getProperty("user.dir");
-	private final String fileFolder = "/src/main/webapp/WEB-INF/images/";
+	private final String baseFolder = "/src/main/webapp/WEB-INF/";
+	private final String fileFolder = baseFolder + "images/";
 
     private PictureRepository pictureRepository;
 
@@ -75,7 +76,7 @@ public class PictureService {
 
 	public void delete(Long id) throws IOException {
 		Picture picture = getOne(id);
-		Files.delete(Paths.get(projectFolder + picture.getPath()));
+		Files.delete(Paths.get(projectFolder + baseFolder + picture.getPath()));
 		pictureRepository.delete(picture);
 	}
 	

@@ -24,9 +24,9 @@ public class ControllerUtil {
 		String accessToken = "Bearer " + responseEntity.getBody().getAccessToken();
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("Authorization", accessToken);
-		List<MediaType> acceptList = new ArrayList<>();
+		/*List<MediaType> acceptList = new ArrayList<>();
 		acceptList.add(MediaType.APPLICATION_JSON);
-		headers.setAccept(acceptList);
+		headers.setAccept(acceptList);*/
 
 		return headers;
 	}
@@ -37,9 +37,9 @@ public class ControllerUtil {
 		String accessToken = "Bearer " + responseEntity.getBody().getAccessToken();
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("Authorization", accessToken);
-		List<MediaType> acceptList = new ArrayList<>();
+		/*List<MediaType> acceptList = new ArrayList<>();
 		acceptList.add(MediaType.APPLICATION_JSON);
-		headers.setAccept(acceptList);
+		headers.setAccept(acceptList);*/
 
 		return headers;
 	}
