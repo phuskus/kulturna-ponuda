@@ -39,47 +39,67 @@
         Write a review
       </button>
 
-      <button id="unsubscribe-button" *ngIf="subscribeState == 'subscribed'" [disabled]="isActionDisabled()" mat-raised-button class="unsub-btn" disableRipple="true" (click)="unsubscribe()">
+      <button
+        id="unsubscribe-button"
+        *ngIf="subscribeState == 'subscribed'"
+        [disabled]="isActionDisabled()"
+        mat-raised-button
+        class="unsub-btn"
+        disableRipple="true"
+        (click)="unsubscribe()"
+      >
         Unsubscribe
       </button>
-  
-      <button id="subscribe-button" *ngIf="subscribeState == 'not subscribed'" [disabled]="isActionDisabled()" mat-raised-button class="sub-btn" disableRipple="true" (click)="subscribe()">
+
+      <button
+        id="subscribe-button"
+        *ngIf="subscribeState == 'not subscribed'"
+        [disabled]="isActionDisabled()"
+        mat-raised-button
+        class="sub-btn"
+        disableRipple="true"
+        (click)="subscribe()"
+      >
         Subscribe
       </button>
-  
-      <mat-spinner *ngIf="subscribeState == 'loading'" [diameter]="25" style="display: inline; margin-left: 10px;"></mat-spinner>
+
+      <mat-spinner
+        *ngIf="subscribeState == 'loading'"
+        [diameter]="25"
+        style="display: inline; margin-left: 10px"
+      ></mat-spinner>
     </div>
 
     <div class="mat-h4 offer-desc">
       {{ offer.description }}
     </div>
-    
+
     <div class="mat-h3" style="font-weight: 550">Posts</div>
 
-  <div fxLayout="column" fxLayoutGap="2%">
-    <app-single-post
-      *ngFor="
-        let post of posts
-          | paginate
-            : {
-                itemsPerPage: pageSizePosts,
-                currentPage: currentPostPage,
-                totalItems: totalPosts
-              }
-      "
-      [post]="post"
-    ></app-single-post>
-    <div fxLayout="row" fxLayoutAlign="center">
-      <pagination-controls
-        class="pagination-control"
-        previousLabel="Prev"
-        nextLabel="Next"
-        responsive="true"
-        (pageChange)="handlePageChange($event)"
-      >
-      </pagination-controls>
+    <div fxLayout="column" fxLayoutGap="2%">
+      <app-single-post
+        *ngFor="
+          let post of posts
+            | paginate
+              : {
+                  itemsPerPage: pageSizePosts,
+                  currentPage: currentPostPage,
+                  totalItems: totalPosts
+                }
+        "
+        [post]="post"
+      ></app-single-post>
+      <div fxLayout="row" fxLayoutAlign="center">
+        <pagination-controls
+          class="pagination-control"
+          previousLabel="Prev"
+          nextLabel="Next"
+          responsive="true"
+          (pageChange)="handlePageChange($event)"
+        >
+        </pagination-controls>
+      </div>
     </div>
-  </div>
 
     <div class="mat-h3" style="font-weight: 550">Reviews</div>
 
@@ -104,8 +124,5 @@
     </div>
   </div>
 
-
-  <ng-template class="content" #notFound>
-    Saaaaawy
-  </ng-template>
+  <ng-template class="content" #notFound> </ng-template>
 </div>

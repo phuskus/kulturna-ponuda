@@ -86,9 +86,9 @@ export class SingleOfferComponent implements AfterContentInit, OnDestroy {
         this.reviews = [];
         this.currentReviewPage = 0;
         this.totalReviews = 0;
+        this.fetchOffer();
         this.fetchReviews();
         this.fetchPosts();
-        this.fetchOffer();
       })
     );
     this.subscribeToScrollEvent();
@@ -132,15 +132,21 @@ export class SingleOfferComponent implements AfterContentInit, OnDestroy {
   }
 
   fetchOffer() {
-    this.offerService.get(this.offerId).subscribe((data: CulturalOffer) => {
-      if (data === undefined) this.offerExists = false;
-      else {
-        this.offerExists = true;
-        this.offer = data;
-      }
+    this.offerService.get(this.offerId).subscribe(
+      (data: CulturalOffer) => {
+        if (data === undefined) this.offerExists = false;
+        else {
+          this.offerExists = true;
+          this.offer = data;
+        }
 
-      this.eventBus.emit(new EmitEvent(Events.OfferFocused, data));
-    });
+        this.eventBus.emit(new EmitEvent(Events.OfferFocused, data));
+      },
+      (err) => {
+        this.offerExists = false;
+        throw new Error('bad offer');
+      }
+    );
   }
 
   fetchPosts() {
