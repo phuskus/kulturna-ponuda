@@ -1,4 +1,10 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { AdminService } from 'src/app/services/admin/admin.service';
+import { AdminModule } from '../../../admin.module';
 
 import { AdminTableComponent } from './admin-table.component';
 
@@ -8,9 +14,15 @@ describe('AdminTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AdminTableComponent ]
-    })
-    .compileComponents();
+      imports: [
+        HttpClientTestingModule,
+        MatDialogModule,
+        MatSortModule,
+        MatPaginatorModule,
+      ],
+      providers: [AdminService],
+      declarations: [AdminTableComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

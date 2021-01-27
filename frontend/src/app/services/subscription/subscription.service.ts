@@ -12,7 +12,7 @@ import { BaseDynamicPagingService } from "../base/base-dynamic-paging.service";
 })
 export class SubscriptionService extends BaseDynamicPagingService {
     constructor(public http: HttpClient) {
-        super('subscriptions', http);
+        super(http, 'subscriptions');
     }
 
     createEmpty(): Subscription {

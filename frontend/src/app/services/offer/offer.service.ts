@@ -13,7 +13,7 @@ import { BaseDynamicPagingService } from '../base/base-dynamic-paging.service';
 })
 export class OfferService extends BaseDynamicPagingService {
   constructor(public http: HttpClient) {
-    super('cultural_offers', http);
+    super(http, 'cultural_offers');
   }
 
   createEmpty(): CulturalOffer {
@@ -55,7 +55,7 @@ export class OfferService extends BaseDynamicPagingService {
     const options = { ...this.httpOptions, params };
     return this.http
       .get<Page<CulturalOffer>>(this.url + '/search', options)
-      .pipe(catchError(this.handleError<Page<CulturalOffer>>()));
+      .pipe(catchError(this.handleError<Page<CulturalOffer>>('searchOffer')));
   }
 
   addMultipart(offer: CulturalOffer, files: FileList): Observable<CulturalOffer> {
@@ -67,6 +67,6 @@ export class OfferService extends BaseDynamicPagingService {
 
     return this.http
       .post<CulturalOffer>(this.url, formData)
-      .pipe(catchError(this.handleError<CulturalOffer>()));
+      .pipe(catchError(this.handleError<CulturalOffer>('addMultipartOffer')));
   }
 }

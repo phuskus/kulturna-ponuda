@@ -9,7 +9,7 @@ import { BaseService } from '../base/base.service';
 })
 export class UserService extends BaseService {
   constructor(public http: HttpClient) {
-    super('auth/account', http);
+    super(http, 'auth/account');
   }
 
   getLoggedUser(): Observable<User> {
