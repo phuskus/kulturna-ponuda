@@ -32,6 +32,9 @@ const context = require.context('./', true, /\.spec\.ts$/);
 // category card
 //const context = require.context('./', true, /app.modules.main.components.category-card.category-card.component\.spec\.ts$/);
 
+// map
+// const context = require.context('./', true, /app.modules.main.components.map.map.component\.spec\.ts$/);
+
 // single offer
 // const context = require.context('./', true, /app.modules.main.components.single-offer.single-offer.component\.spec\.ts$/);
 
