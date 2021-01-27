@@ -21,7 +21,7 @@ export default abstract class DeleteDialog<T> extends Dialog<T> {
     if (!data) throw new Error('Data is a requied parameter for delete dialog');
   }
 
-  onSubmit() {
+  onSubmit(): void {
     this.service.delete(this.data.id).subscribe(
       (data) => {
         this.onSubscriptionCallBack.emit(data);

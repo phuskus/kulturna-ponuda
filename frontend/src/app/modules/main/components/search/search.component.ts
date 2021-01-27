@@ -9,14 +9,14 @@ import { NavigationExtras, Router } from '@angular/router';
 export class SearchComponent implements OnInit {
   @Input()
   public searchQuery: string = '';
-  constructor(private router: Router) { }
-  
-  ngOnInit(): void { }
+  constructor(private router: Router) {}
 
-  onSubmit() {
+  ngOnInit(): void {}
+
+  onSubmit(): void {
     const navigationExtras: NavigationExtras = {
       queryParams: { query: this.searchQuery },
-      queryParamsHandling: 'merge'
+      queryParamsHandling: 'merge',
     };
     this.router.navigate(['/offers/search'], navigationExtras);
   }

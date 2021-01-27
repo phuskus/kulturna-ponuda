@@ -18,7 +18,7 @@ export class SingleReviewComponent implements OnInit {
     });
   }
 
-  carouselCells() {
+  carouselCells(): number {
     return Math.min(3, this.review.pictures.length);
   }
 }

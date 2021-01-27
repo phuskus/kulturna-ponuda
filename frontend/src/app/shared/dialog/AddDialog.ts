@@ -24,7 +24,7 @@ export default abstract class AddDialog<T> extends Dialog<T> {
     this.newObj = service.createEmpty();
   }
 
-  onSubmit() {
+  onSubmit(): void {
     this.service.add(this.newObj).subscribe(
       (data) => {
         this.onSubscriptionCallBack.emit(data);

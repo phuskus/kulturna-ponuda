@@ -46,7 +46,7 @@ export class AbstractDynamicPagingTable extends AbstractTable {
 
   fetchData(): Observable<Page<Model>> {
     this.isLoadingResults = true;
-    let isDescending: boolean = this.sort.direction === 'desc';
+    const isDescending: boolean = this.sort.direction === 'desc';
     if (this.filter === '') return this.getPage(isDescending);
 
     return this.search(isDescending);
@@ -77,12 +77,12 @@ export class AbstractDynamicPagingTable extends AbstractTable {
     return data.content;
   }
 
-  handleError() {
+  handleError(): Observable<any> {
     this.isLoadingResults = false;
     return observableOf([]);
   }
 
-  applyFilter(event: Event) {
+  applyFilter(event: Event): void {
     clearTimeout(this.timer);
     this.timer = setTimeout(() => {
       const filterValue = (event.target as HTMLInputElement).value;

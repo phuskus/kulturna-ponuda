@@ -13,18 +13,18 @@ export class StarRatingComponent {
   @Input() public color: string = goldColor;
   @Input() public size: number = 40;
   @Input() public readonly: boolean = false;
-  @Input() public gap: string = "5px";
+  @Input() public gap: string = '5px';
 
   @Output() public newRatingEvent = new EventEmitter<number>();
 
-  public rangeArray: Array<number> = [];
+  public rangeArray: number[] = [];
 
   constructor() {
     this.rangeArray = this.createArrayFromOneToMaxRating();
   }
 
-  createArrayFromOneToMaxRating() {
-    let rangeArray: Array<number> = [];
+  createArrayFromOneToMaxRating(): number[] {
+    const rangeArray: number[] = [];
     for (let i = 1; i <= this.maxRating; i++) rangeArray.push(i);
     return rangeArray;
   }

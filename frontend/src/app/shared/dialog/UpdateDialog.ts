@@ -25,7 +25,7 @@ export default abstract class UpdateDialog<T> extends Dialog<T> {
     this.newObj = JSON.parse(JSON.stringify(data));
   }
 
-  onSubmit() {
+  onSubmit(): void {
     this.service.update(this.newObj.id, this.newObj).subscribe(
       (data) => {
         this.onSubscriptionCallBack.emit(data);

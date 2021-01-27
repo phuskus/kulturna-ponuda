@@ -25,9 +25,9 @@ export class DeleteAdminDialogComponent extends DeleteDialog<DeleteAdminDialogCo
     super(dialogRef, service, snackbar, messageService, data);
   }
 
-  onSubmit() {
+  onSubmit(): void {
     // check if he's trying to delete himself
-    let user: UserTokenState = this.authService.getCurrentUser();
+    const user: UserTokenState = this.authService.getCurrentUser();
     if (user.id === this.data.id) {
       this.snackbarError("You can't delete yourself!");
       this.dialogRef.close();

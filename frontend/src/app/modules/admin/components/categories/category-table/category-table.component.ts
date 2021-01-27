@@ -30,7 +30,7 @@ export class CategoryTableComponent extends AbstractTable {
     this.openDialog(DeleteCategoryDialogComponent, row);
   }
 
-  getSubcategoryNames(category: Category) {
+  getSubcategoryNames(category: Category): string {
     return category.subcategories
       .map((sub) => sub.name)
       .join(', ')
