@@ -24,7 +24,7 @@ export default abstract class UpdateDialog<T> extends Dialog<T> {
   onSubmit() {
     this.service.update(this.newObj.id, this.newObj).subscribe((data) => {
       this.onSubscriptionCallBack.emit(data);
-      this.dialogRef.close();
     });
+    this.dialogRef.close();
   }
 }

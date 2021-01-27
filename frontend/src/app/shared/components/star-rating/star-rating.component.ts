@@ -15,7 +15,7 @@ export class StarRatingComponent {
   @Input() public readonly: boolean = false;
   @Input() public gap: string = "5px";
 
-  @Output() private newRatingEvent = new EventEmitter<number>();
+  @Output() public newRatingEvent = new EventEmitter<number>();
 
   public rangeArray: Array<number> = [];
 

@@ -3,11 +3,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
 import { BaseDynamicPagingService } from 'src/app/services/base/base-dynamic-paging.service';
 import { AbstractDynamicPagingTable } from './AbstractDynamicPagingTable';
-import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { async, fakeAsync, tick } from '@angular/core/testing';
 import Page from 'src/app/shared/models/Page';
 import Model from 'src/app/shared/models/Model';
+import { EventEmitter } from '@angular/core';
+import { Output } from '@angular/core';
 
 class MockTable extends AbstractDynamicPagingTable {}
 class MockModel extends Model {
@@ -15,16 +17,16 @@ class MockModel extends Model {
 }
 
 describe('AbstractDynamicPagingTable', () => {
-  let component: AbstractDynamicPagingTable;
-  let fixture: ComponentFixture<AbstractDynamicPagingTable>;
+  let component: MockTable;
+  let fixture: ComponentFixture<MockTable>;
   let service: BaseDynamicPagingService;
   let dialog: MatDialog;
+  let returnVal: Page<MockModel>;
 
-  let sortMock;
   let paginatorMock;
 
   beforeEach(async () => {
-    let returnVal: Page<MockModel> = {
+    returnVal = {
       content: [
         { id: 0, name: 'Peter' },
         { id: 1, name: 'John' },
@@ -35,8 +37,8 @@ describe('AbstractDynamicPagingTable', () => {
       totalPages: 1,
     };
     let serviceMock = {
-      getPage: jasmine.createSpy('getPage').and.returnValue(returnVal),
-      search: jasmine.createSpy('search').and.returnValue(returnVal),
+      getPage: jasmine.createSpy('getPage').and.returnValue(of(returnVal)),
+      search: jasmine.createSpy('search').and.returnValue(of(returnVal)),
     };
 
     let dialogMock = {
@@ -47,22 +49,16 @@ describe('AbstractDynamicPagingTable', () => {
       pageIndex: jasmine.createSpy('pageIndex'),
     };
 
-    // sortMock = {
-
-    // }
-
     TestBed.configureTestingModule({
-      declarations: [AbstractDynamicPagingTable],
-      imports: [MatSortModule, MatPaginatorModule],
+      declarations: [MockTable, MatSort, MatPaginator],
       providers: [
         { provide: BaseDynamicPagingService, useValue: serviceMock },
         { provide: MatDialog, useValue: dialogMock },
       ],
     });
 
-    fixture = TestBed.createComponent(AbstractDynamicPagingTable);
+    fixture = TestBed.createComponent(MockTable);
     component = fixture.componentInstance;
-    component.paginator = paginatorMock;
     service = TestBed.inject(BaseDynamicPagingService);
     dialog = TestBed.inject(MatDialog);
   });
@@ -71,34 +67,22 @@ describe('AbstractDynamicPagingTable', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should fetch data if no filter string', fakeAsync(() => {
+  it('should fetch data when no filter string', fakeAsync(() => {
     component.sort = new MatSort();
     component.paginator = paginatorMock;
     component.ngAfterViewInit();
 
     expect(service.getPage).toHaveBeenCalledTimes(1);
-
-    // service mock has 4 elements
-    // fixture
-    //   .whenStable()
-    //   .then(() => expect(component.dataSource.data.length).toBe(4));
   }));
 
-  it('should search data if it has filter string', fakeAsync(() => {
+  it('should search data when it has filter string', fakeAsync(() => {
     component.sort = new MatSort();
     component.paginator = paginatorMock;
+
     // set filter text to something
     component.filter = 'query string';
     component.ngAfterViewInit();
 
-    // component.sort.sortChange.emit();
-    // tick(2000);
-
-    expect(service.search).toHaveBeenCalled();
-
-    // service mock has 4 elements
-    // fixture
-    //   .whenStable()
-    //   .then(() => expect(component.dataSource.data.length).toBe(4));
+    expect(service.search).toHaveBeenCalledTimes(1);
   }));
 });

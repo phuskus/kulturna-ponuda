@@ -86,9 +86,9 @@ export class SingleOfferComponent implements AfterContentInit, OnDestroy {
         this.reviews = [];
         this.currentReviewPage = 0;
         this.totalReviews = 0;
+        this.fetchOffer();
         this.fetchReviews();
         this.fetchPosts();
-        this.fetchOffer();
       })
     );
     this.subscribeToScrollEvent();
@@ -132,15 +132,21 @@ export class SingleOfferComponent implements AfterContentInit, OnDestroy {
   }
 
   fetchOffer() {
-    this.offerService.get(this.offerId).subscribe((data: CulturalOffer) => {
-      if (data === undefined) this.offerExists = false;
-      else {
-        this.offerExists = true;
-        this.offer = data;
-      }
+    this.offerService.get(this.offerId).subscribe(
+      (data: CulturalOffer) => {
+        if (data === undefined) this.offerExists = false;
+        else {
+          this.offerExists = true;
+          this.offer = data;
+        }
 
-      this.eventBus.emit(new EmitEvent(Events.OfferFocused, data));
-    });
+        this.eventBus.emit(new EmitEvent(Events.OfferFocused, data));
+      },
+      (err) => {
+        this.offerExists = false;
+        throw new Error('bad offer');
+      }
+    );
   }
 
   fetchPosts() {
@@ -190,7 +196,7 @@ export class SingleOfferComponent implements AfterContentInit, OnDestroy {
     const drawer = document.getElementById('drawer');
     let header = document.getElementById('header');
 
-    drawer.addEventListener('scroll', (event: any) => {
+    drawer?.addEventListener('scroll', (event: any) => {
       if (
         event.target.offsetHeight + event.target.scrollTop >=
         event.target.scrollHeight
@@ -218,7 +224,7 @@ export class SingleOfferComponent implements AfterContentInit, OnDestroy {
       data: this.offer,
     });
 
-    const sub = (dialogRef.componentInstance as ReviewDialogComponent).onSubscriptionCallBack.subscribe(
+    const sub = (dialogRef?.componentInstance as ReviewDialogComponent)?.onSubscriptionCallBack.subscribe(
       (data) => {
         this.resetFields();
         this.fetchReviews();

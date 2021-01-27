@@ -27,7 +27,6 @@ export class AbstractDynamicPagingTable extends AbstractTable {
       .pipe(this.getDataPipeline())
       .subscribe((data) => {
         this.dataSource.data = data;
-        alert(this.dataSource.data.length);
       });
   }
 

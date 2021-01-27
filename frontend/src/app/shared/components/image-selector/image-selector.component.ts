@@ -13,11 +13,9 @@ import {
 })
 export class ImageSelectorComponent implements OnDestroy {
   @Input() public multiple: boolean = false;
-  @Output() private newFilesEvent = new EventEmitter<FileList>();
+  @Output() public newFilesEvent = new EventEmitter<FileList>();
 
   public picturePaths: Array<string> = [];
-
-  constructor() {}
 
   ngOnDestroy(): void {
     // destroy all created object urls to free memory

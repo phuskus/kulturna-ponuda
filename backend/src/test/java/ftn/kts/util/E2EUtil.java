@@ -30,11 +30,16 @@ public class E2EUtil {
         usernameField.sendKeys(user);
         WebElement passwordField = loginPage.getPasswordField();
         passwordField.sendKeys(pass);
+        ensureLoginBtnClickable(driver);
         WebElement loginButton = loginPage.getLoginButton();
         loginButton.click();
         ensureLoginNotDisplayed(driver);
     }
 
+    public static void ensureLoginBtnClickable(WebDriver driver) {
+        (new WebDriverWait(driver, 30)).until(ExpectedConditions
+                .elementToBeClickable(By.id("login-btn")));
+    }
     public static void ensureLoginNotDisplayed(WebDriver driver) {
         (new WebDriverWait(driver, 30)).until(ExpectedConditions
                 .invisibilityOfElementLocated(By.id("login-component")));

@@ -28,7 +28,7 @@ export class OfferTableComponent extends AbstractDynamicPagingTable implements O
       'region',
       'city',
       'address',
-      'avrageRating',
+      'averageRating',
       'description',
       'pictures',
       'post',
