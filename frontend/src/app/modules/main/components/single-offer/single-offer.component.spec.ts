@@ -121,7 +121,6 @@ describe('SingleOfferComponent', () => {
     expect(offerService.get).toHaveBeenCalled();
     expect(reviewService.getForOfferId).toHaveBeenCalled();
     expect(postService.getForOfferId).toHaveBeenCalled();
-    expect(subscriptionService.getIsSubscribedToOffer).toHaveBeenCalled();
   });
 
   it('should navigate to log in when user not signed in and clicks write review', () => {
