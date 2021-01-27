@@ -8,6 +8,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { async, fakeAsync, tick } from '@angular/core/testing';
 import Page from 'src/app/shared/models/Page';
 import Model from 'src/app/shared/models/Model';
+import * as EventEmitter from 'events';
 
 class MockTable extends AbstractDynamicPagingTable {}
 class MockModel extends Model {
@@ -15,15 +16,13 @@ class MockModel extends Model {
 }
 
 describe('AbstractDynamicPagingTable', () => {
-  let component: AbstractDynamicPagingTable;
-  let fixture: ComponentFixture<AbstractDynamicPagingTable>;
+  let component: MockTable;
+  let fixture: ComponentFixture<MockTable>;
   let service: BaseDynamicPagingService;
   let dialog: MatDialog;
-
-  let sortMock;
-  let paginatorMock;
-
   let returnVal: Page<MockModel>;
+
+  let paginatorMock;
 
   beforeEach(async () => {
     returnVal = {
@@ -50,15 +49,14 @@ describe('AbstractDynamicPagingTable', () => {
     };
 
     TestBed.configureTestingModule({
-      declarations: [AbstractDynamicPagingTable],
-      imports: [MatSortModule, MatPaginatorModule],
+      declarations: [MockTable, MatSort, MatPaginator],
       providers: [
         { provide: BaseDynamicPagingService, useValue: serviceMock },
         { provide: MatDialog, useValue: dialogMock },
       ],
     });
 
-    fixture = TestBed.createComponent(AbstractDynamicPagingTable);
+    fixture = TestBed.createComponent(MockTable);
     component = fixture.componentInstance;
     service = TestBed.inject(BaseDynamicPagingService);
     dialog = TestBed.inject(MatDialog);
@@ -74,25 +72,16 @@ describe('AbstractDynamicPagingTable', () => {
     component.ngAfterViewInit();
 
     expect(service.getPage).toHaveBeenCalledTimes(1);
-
-    // // service mock has 4 elements
-    // fixture
-    //   .whenStable()
-    //   .then(() => expect(component.dataSource.data.length).toBe(4));
   }));
 
   it('should search data when it has filter string', fakeAsync(() => {
     component.sort = new MatSort();
     component.paginator = paginatorMock;
+
     // set filter text to something
     component.filter = 'query string';
     component.ngAfterViewInit();
 
     expect(service.search).toHaveBeenCalledTimes(1);
-
-    // service mock has 4 elements
-    // fixture
-    //   .whenStable()
-    //   .then(() => expect(component.dataSource.data.length).toBe(4));
   }));
 });
