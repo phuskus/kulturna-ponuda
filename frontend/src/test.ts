@@ -47,7 +47,14 @@ const context = require.context('./', true, /\.spec\.ts$/);
 // cardbar
 //const context = require.context('./', true, /app.modules.main.components.cardbar.cardbar.component\.spec\.ts$/);
 
+// login
+//const context = require.context('./', true, /app.modules.login.pages.login-page.login-page.component\.spec\.ts$/);
 
+// change password
+//const context = require.context('./', true, /app.modules.main.components.account.password-dialog.password-dialog.component\.spec\.ts$/);
+
+// edit profile
+//const context = require.context('./', true, /app.modules.main.components.account.profile-dialog.profile-dialog.component\.spec\.ts$/);
 
 // And load the modules.
 context.keys().map(context);

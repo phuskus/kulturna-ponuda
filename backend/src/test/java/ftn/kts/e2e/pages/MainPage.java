@@ -34,6 +34,12 @@ public class MainPage {
     @FindBy(className = "delete-subscription-button")
     private List<WebElement> deleteButtons;
     
+    @FindBy(id = "edit-profile-button")
+    private WebElement editProfileButton;
+    
+    @FindBy(id = "change-password-button")
+    private WebElement changePasswordButton;
+    
     public MainPage() {
     }
 
@@ -51,6 +57,14 @@ public class MainPage {
     
     public void clickLoginButton() {
     	loginButton.click();
+    }
+    
+    public void clickEditProfileButton() {
+    	editProfileButton.click();
+    }
+    
+    public void clickChangePasswordButton() {
+    	changePasswordButton.click();
     }
     
     public void ensureMainPageIsDisplayed() {
@@ -130,8 +144,14 @@ public class MainPage {
     public WebElement getProfileButton() {
         return profileButton;
     }
-
     
+    public WebElement getEditProfileButton() {
+    	return editProfileButton;
+    }
+    
+    public WebElement getChangePasswordButton() {
+    	return changePasswordButton;
+    }
 
     public WebElement getLogoutButton() {
         return logoutButton;
@@ -152,4 +172,13 @@ public class MainPage {
     public void ensureIsNotDisplayed(WebElement element) {
         (new WebDriverWait(driver, 3)).until(ExpectedConditions.invisibilityOf(element));
     }
+    
+    public void ensureEditProfileButtonDisplayed() {
+    	 (new WebDriverWait(driver, 5)).until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-profile-button")));
+    }
+    
+    public void ensurePasswordButtonDisplayed() {
+    	(new WebDriverWait(driver, 5)).until(ExpectedConditions.visibilityOfElementLocated(By.id("change-password-button")));
+    }
+    
 }
