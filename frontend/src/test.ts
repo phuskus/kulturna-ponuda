@@ -53,5 +53,14 @@ const context = require.context('./', true, /\.spec\.ts$/);
 // edit profile
 //const context = require.context('./', true, /app.modules.main.components.account.profile-dialog.profile-dialog.component\.spec\.ts$/);
 
+// auth service
+//const context = require.context('./', true, /app.services.auth.auth.service\.spec\.ts$/);
+
+// jwt service
+//const context = require.context('./', true, /app.services.auth.jwt-token.service\.spec\.ts$/);
+
+// user service
+//const context = require.context('./', true, /app.services.user.user.service\.spec\.ts$/);
+
 // And load the modules.
 context.keys().map(context);

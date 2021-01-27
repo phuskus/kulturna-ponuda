@@ -7,13 +7,13 @@ export class JwtTokenService {
 
   constructor() { }
 
-  getToken(): String {
+  getToken(): string {
     var currentUser = JSON.parse(localStorage.getItem('currentUser'));
     var token = currentUser && currentUser.token;
     return token ? token : "";
   }
 
-  getExpirationDate(): String {
+  getExpirationDate(): string {
     var currentUser = JSON.parse(localStorage.getItem('currentUser'));
     var expDate = currentUser && currentUser.expiresIn;
     return expDate ? expDate : "";
@@ -23,21 +23,9 @@ export class JwtTokenService {
   checkToken(): boolean {
     if (this.getToken() != '') {
       return true;
-    } else if (!this.isTokenExpired()) {
-      return true;
     } else {
       return false;
     }
   }
 
-  isTokenExpired(): boolean {
-    let exp = this.getExpirationDate();
-    if (exp != '') {
-      if (Date.now() >= +exp * 1000) {
-        return false;
-      }
-    } else {
-      return true;
-    }
-  }
 }
