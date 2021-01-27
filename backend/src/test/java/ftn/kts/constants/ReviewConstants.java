@@ -5,7 +5,7 @@ public class ReviewConstants {
     public static Long EXISTENT_ID = 2L;
     public static Long EXISTENT_USER_ID = 2L;
     public static Long EXISTENT_OFFER_ID = 1L;
-    public static Long NONEXISTENT_OFFER_ID = -1L;
+    public static Long NONEXISTENT_OFFER_ID = 132132L;
     public static Long NONEXISTENT_ID = 177L;
     public static String EXISTEND_USERNAME = "test2@gmail.com";
 

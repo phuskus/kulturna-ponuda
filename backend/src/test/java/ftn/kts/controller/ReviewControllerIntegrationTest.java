@@ -98,15 +98,6 @@ public class ReviewControllerIntegrationTest {
     }
 
     @Test
-    public void getByOfferId_NonexistentId_ReturnsNotFound() {
-        HttpEntity<Object> httpEntity = new HttpEntity<>(getAuthHeadersAdmin(restTemplate));
-        ResponseEntity<ReviewPage> responseEntity = restTemplate
-                .exchange("/reviews/offer/" + NONEXISTENT_OFFER_ID, HttpMethod.GET, httpEntity, ReviewPage.class);
-
-        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
-    }
-
-    @Test
     public void getByOfferId_ExistentId_ReturnsReviewsForOffer() {
         HttpEntity<Object> httpEntity = new HttpEntity<>(getAuthHeadersAdmin(restTemplate));
         ResponseEntity<ReviewPage> responseEntity = restTemplate

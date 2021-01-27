@@ -88,6 +88,7 @@ export class AddSubcategoryDialogComponent
         this.onSubscriptionCallBack.emit(data);
         this.dialogRef.close();
       }, (error) => {
+        this.dialogRef.close();
         console.log(error);
       });
   }
