@@ -66,7 +66,7 @@ describe('ProfileDialogComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should submit with valid form', () => {
+  it('should submit with valid form', (done) => {
     const validData = {
       username: 'test@test.com',
       name: 'test1',
@@ -88,6 +88,7 @@ describe('ProfileDialogComponent', () => {
           user.id,
           user
         );
+        done();
       }) 
     })
   })

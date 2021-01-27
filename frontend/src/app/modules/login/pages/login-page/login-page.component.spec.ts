@@ -8,6 +8,7 @@ import { FormValidationService } from 'src/app/services/validation/form-validati
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { LoginPageComponent } from './login-page.component';
 import { RouterTestingModule } from '@angular/router/testing';
+import { Router } from '@angular/router';
 
 describe('LoginPageComponent', () => {
   let component: LoginPageComponent;
@@ -16,6 +17,7 @@ describe('LoginPageComponent', () => {
   let authService: AuthService;
   let validationService: FormValidationService;
   let messageService: MessageService;
+  let router: Router;
 
   beforeEach(() => {
     let authServiceMock = {
@@ -37,6 +39,10 @@ describe('LoginPageComponent', () => {
       
     };
 
+    let routerMock = {
+      navigate:jasmine.createSpy('navigate')
+    }
+
     TestBed.configureTestingModule({
       declarations: [ LoginPageComponent ],
       imports: [ RouterTestingModule ],
@@ -45,7 +51,8 @@ describe('LoginPageComponent', () => {
         { provide: AuthService, useValue: authServiceMock },
         { provide: FormValidationService, useValue: validationServiceMock },
         { provide: MessageService, useValue: messageServiceMock },
-        { provide: MatSnackBar, useValue: snackBarMock}
+        { provide: MatSnackBar, useValue: snackBarMock},
+        { provide: Router, useValue: routerMock }
       ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     })
@@ -58,6 +65,7 @@ describe('LoginPageComponent', () => {
     authService = TestBed.inject(AuthService);
     validationService = TestBed.inject(FormValidationService);
     messageService = TestBed.inject(MessageService);
+    router = TestBed.inject(Router);
   });
 
   it('should create', () => {
@@ -89,6 +97,8 @@ describe('LoginPageComponent', () => {
       validData.username,
       validData.password
     );
+
+    expect(router.navigate).toHaveBeenCalledWith(['/']);
   });
 
   it('should not submit with empty username', () => {

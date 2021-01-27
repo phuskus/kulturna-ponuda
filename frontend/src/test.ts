@@ -73,6 +73,14 @@ const context = require.context('./', true, /\.spec\.ts$/);
 // review service
 // const context = require.context('./', true, /app.services.review.review.service\.spec\.ts$/);
 
+// auth service
+//const context = require.context('./', true, /app.services.auth.auth.service\.spec\.ts$/);
+
+// jwt service
+//const context = require.context('./', true, /app.services.auth.jwt-token.service\.spec\.ts$/);
+
+// user service
+//const context = require.context('./', true, /app.services.user.user.service\.spec\.ts$/);
 
 // And load the modules.
 context.keys().map(context);
