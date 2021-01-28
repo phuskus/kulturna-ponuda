@@ -17,7 +17,6 @@
                     matInput  
                     [formControlName]="'name'"
                     id="name"
-                    [(ngModel)]="newObj.name"
                 />
                 <mat-hint
                     *ngIf="f.name.touched && f.name.invalid && f.name.errors.required"
@@ -32,7 +31,6 @@
                     matInput 
                     [formControlName]="'surname'"
                     id="surname"
-                    [(ngModel)]="newObj.surname"
                 />
                 <mat-hint 
                     *ngIf="f.surname.touched && f.surname.invalid && f.surname.errors.required"
