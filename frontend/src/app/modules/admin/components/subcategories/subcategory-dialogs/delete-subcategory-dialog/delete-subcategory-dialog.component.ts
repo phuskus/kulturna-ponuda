@@ -3,6 +3,8 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import DeleteDialog from 'src/app/shared/dialog/DeleteDialog';
 import { SubcategoryService } from 'src/app/services/subcategory/subcategory.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MessageService } from 'src/app/services/message/message.service';
 
 @Component({
   selector: 'app-delete-subcategory-dialog',
@@ -13,8 +15,10 @@ export class DeleteSubcategoryDialogComponent extends DeleteDialog<DeleteSubcate
   constructor(
     public dialogRef: MatDialogRef<DeleteSubcategoryDialogComponent>,
     public service: SubcategoryService,
+    public snackbar: MatSnackBar,
+    public messageService: MessageService,
     @Inject(MAT_DIALOG_DATA) public data: Subcategory
   ) {
-    super(dialogRef, service, data);
+    super(dialogRef, service, snackbar, messageService, data);
   }
 }

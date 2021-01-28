@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { CategoryService } from 'src/app/services/category/category.service';
+import { MessageService } from 'src/app/services/message/message.service';
 import AddDialog from 'src/app/shared/dialog/AddDialog';
 import { Category } from 'src/app/shared/models/Category';
 
@@ -14,8 +16,10 @@ export class AddCategoryDialogComponent extends AddDialog<AddCategoryDialogCompo
 
   constructor(
     public dialogRef: MatDialogRef<AddCategoryDialogComponent>,
-    public service: CategoryService
+    public service: CategoryService,
+    public snackbar: MatSnackBar,
+    public messageService: MessageService
   ) {
-    super(dialogRef, service);
+    super(dialogRef, service, snackbar, messageService);
   }
 }

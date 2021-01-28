@@ -1,6 +1,6 @@
 import Model from "./Model";
 
-export class UserTokenState extends Model {
+export interface UserTokenState extends Model {
     token: string;
     expiresIn: string;
     userRole: string;

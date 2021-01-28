@@ -1,6 +1,6 @@
-export class PageParams {
-    pageNo: number;
-    pageSize: number;
-    sortBy: string;
-    descending: boolean;
+export interface PageParams {
+  pageNo: number;
+  pageSize: number;
+  sortBy: string;
+  descending: boolean;
 }

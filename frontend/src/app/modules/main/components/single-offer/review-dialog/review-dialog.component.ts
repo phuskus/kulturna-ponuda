@@ -6,6 +6,8 @@ import Model from 'src/app/shared/models/Model';
 import { Review } from 'src/app/shared/models/Review';
 import { CulturalOffer } from 'src/app/shared/models/CulturalOffer';
 import { UserService } from 'src/app/services/user/user.service';
+import { MessageService } from 'src/app/services/message/message.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-review-dialog',
@@ -22,9 +24,11 @@ export class ReviewDialogComponent
     public dialogRef: MatDialogRef<ReviewDialogComponent>,
     public service: ReviewService,
     public userService: UserService,
+    public snackbar: MatSnackBar,
+    public messageService: MessageService,
     @Inject(MAT_DIALOG_DATA) public data: CulturalOffer
   ) {
-    super(dialogRef, service);
+    super(dialogRef, service, snackbar, messageService);
   }
   ngOnInit(): void {
     this.newObj.culturalOfferId = this.data.id;

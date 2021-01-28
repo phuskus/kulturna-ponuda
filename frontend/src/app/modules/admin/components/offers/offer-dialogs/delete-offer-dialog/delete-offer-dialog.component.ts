@@ -1,5 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MessageService } from 'src/app/services/message/message.service';
 import { OfferService } from 'src/app/services/offer/offer.service';
 import DeleteDialog from 'src/app/shared/dialog/DeleteDialog';
 import { CulturalOffer } from 'src/app/shared/models/CulturalOffer';
@@ -13,8 +15,10 @@ export class DeleteOfferDialogComponent extends DeleteDialog<DeleteOfferDialogCo
   constructor(
     public dialogRef: MatDialogRef<DeleteOfferDialogComponent>,
     public service: OfferService,
+    public snackbar: MatSnackBar,
+    public messageService: MessageService,
     @Inject(MAT_DIALOG_DATA) public data: CulturalOffer
   ) {
-    super(dialogRef, service, data);
+    super(dialogRef, service, snackbar, messageService, data);
   }
 }

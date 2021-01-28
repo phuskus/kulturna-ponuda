@@ -1,4 +1,3 @@
-export default abstract class Model {
-  public id: number;
-
+export default interface Model {
+  id: number;
 }

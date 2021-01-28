@@ -37,9 +37,9 @@ export class AddSubcategoryDialogComponent
     public service: SubcategoryService,
     public snackbar: MatSnackBar,
     public catService: CategoryService,
-    private messageService: MessageService
+    public messageService: MessageService
   ) {
-    super(dialogRef, service);
+    super(dialogRef, service, snackbar, messageService);
     this.form = this.fb.group({
       name: ['', [Validators.required]],
       category: [

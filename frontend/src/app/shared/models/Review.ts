@@ -2,7 +2,7 @@ import Model from './Model';
 import { Picture } from './Picture';
 import { User } from './User';
 
-export class Review extends Model {
+export interface Review extends Model {
   rating: number;
   content: string;
   user: User;

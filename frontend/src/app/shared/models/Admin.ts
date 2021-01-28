@@ -1,3 +1,3 @@
 import { User } from './User';
 
-export class Admin extends User {}
+export interface Admin extends User {}

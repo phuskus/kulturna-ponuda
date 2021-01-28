@@ -1,3 +1,3 @@
 export interface SubscriptionResponse {
-    message: string;
+  message: string;
 }

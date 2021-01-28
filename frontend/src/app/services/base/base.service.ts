@@ -14,7 +14,7 @@ import Model from 'src/app/shared/models/Model';
 @Injectable({
   providedIn: 'root',
 })
-export class BaseService {
+export abstract class BaseService {
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ export class BaseService {
     if (path) this.url = AppSettings.API_ENDPOINT + path;
   }
 
-  createEmpty(): Model {throw new Error("")};
+  abstract createEmpty(): Model;
 
   getAll(): Observable<Model[]> {
     return this.http

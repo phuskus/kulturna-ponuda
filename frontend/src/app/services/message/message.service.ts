@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root',
@@ -29,12 +29,14 @@ export class MessageService {
     snackBar.open(message, action, {
       duration: duration,
       panelClass: [style],
-      verticalPosition: 'top',
+      verticalPosition: 'bottom',
       horizontalPosition: 'center',
     });
   }
 }
 
 export enum SnackbarColors {
-  SUCCESS, ERROR, INFO
+  SUCCESS,
+  ERROR,
+  INFO,
 }

@@ -1,6 +1,6 @@
-import Model from "./Model";
+import Model from './Model';
 
-export class Picture extends Model {
+export interface Picture extends Model {
   placeholder: string;
   image: string;
   path: string;

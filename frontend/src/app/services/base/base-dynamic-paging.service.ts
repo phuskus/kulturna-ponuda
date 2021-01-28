@@ -9,7 +9,7 @@ import { BaseService } from './base.service';
 @Injectable({
   providedIn: 'root',
 })
-export class BaseDynamicPagingService extends BaseService {
+export abstract class BaseDynamicPagingService extends BaseService {
   constructor(public http: HttpClient, @Optional() public path?: string) {
     super(http, path);
   }

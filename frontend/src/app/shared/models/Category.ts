@@ -1,7 +1,7 @@
-import { Subcategory } from "./Subcategory";
+import Model from './Model';
+import { Subcategory } from './Subcategory';
 
-export class Category {
-    id: number;
-    name: string;
-    subcategories: Subcategory[];
-  }
+export interface Category extends Model {
+  name: string;
+  subcategories: Subcategory[];
+}
