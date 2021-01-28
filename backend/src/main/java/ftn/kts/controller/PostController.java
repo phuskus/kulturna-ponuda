@@ -115,9 +115,9 @@ public class PostController {
 
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<String> deletePost(@PathVariable("id") long id) {
+	public ResponseEntity<Object> deletePost(@PathVariable("id") long id) {
 		service.delete(id);
-		return new ResponseEntity<>("Successfully deleted post!", HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	private void sendPostAddedEmail(PostDTO postDTO) {

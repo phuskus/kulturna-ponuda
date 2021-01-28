@@ -76,8 +76,8 @@ public class SubcategoryController {
 
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<String> deleteSubcategory(@PathVariable("id") long id) {
+	public ResponseEntity<Object> deleteSubcategory(@PathVariable("id") long id) {
 		service.delete(id);
-		return new ResponseEntity<>("{\"message\": \"Successfully deleted subcategory!\"}", HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

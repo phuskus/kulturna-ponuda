@@ -149,9 +149,9 @@ public class CulturalOfferController {
 
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<String> deleteOffer(@PathVariable("id") long id) {
+	public ResponseEntity<Object> deleteOffer(@PathVariable("id") long id) {
 		service.delete(id);
-		return new ResponseEntity<>("Successfully deleted cultural offer!", HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 }
