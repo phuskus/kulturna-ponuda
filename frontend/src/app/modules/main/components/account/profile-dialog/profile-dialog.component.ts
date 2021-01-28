@@ -37,4 +37,15 @@ export class ProfileDialogComponent extends UpdateDialog<ProfileDialogComponent>
   get f() {
     return this.profileForm.controls;
   }
+
+  onSubmit(): void {
+    if (this.profileForm.valid) {
+      this.newObj.name = this.profileForm.value['name'];
+      this.newObj.surname = this.profileForm.value['surname'];
+      this.service.update(this.newObj.id, this.newObj).subscribe(() => {
+        this.snackbarSuccess('Successfully updated profile!')
+        this.dialogRef.close();
+      }, err => this.snackbarError("Failed to update profile!"));
+    }
+  }
 }
