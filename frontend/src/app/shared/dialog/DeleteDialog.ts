@@ -27,7 +27,7 @@ export default abstract class DeleteDialog<T> extends Dialog<T> {
         this.onSubscriptionCallBack.emit(data);
         this.snackbarSuccess('Successfuly deleted');
       },
-      (err) => this.snackbarError('Failed to delete')
+      (err: Error) => this.snackbarError(err.message)
     );
     this.dialogRef.close();
   }

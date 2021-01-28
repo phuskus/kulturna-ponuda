@@ -30,10 +30,7 @@ export default abstract class AddDialog<T> extends Dialog<T> {
         this.onSubscriptionCallBack.emit(data);
         this.snackbarSuccess(`Successfully Added!`);
       },
-      (err) => {
-        console.log(err.messsage);
-        this.snackbarError('Failed to add!')
-      }
+      (err: Error) => this.snackbarError(err.message)
     );
     this.dialogRef.close();
   }

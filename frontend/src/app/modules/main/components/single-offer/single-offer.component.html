@@ -7,7 +7,9 @@
   </div>
 
   <div *ngIf="offerExists; else notFound" class="content" id="main-content">
-    <carousel [cellsToShow]="3" [images]="images" [borderRadius]="10">
+    <!-- <carousel [cellsToShow]="3" [images]="images" [borderRadius]="10">
+    </carousel> -->
+    <carousel [cellsToShow]="3" [images]="offer.pictures" [borderRadius]="10">
     </carousel>
 
     <div class="mat-title title-name">{{ offer.name }}</div>

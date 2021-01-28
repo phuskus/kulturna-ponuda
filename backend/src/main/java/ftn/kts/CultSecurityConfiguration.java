@@ -94,6 +94,6 @@ public class CultSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		web.ignoring().antMatchers(HttpMethod.POST, "/auth/login", "/auth/register, /reviews/*", "/reviews");
 		web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/*.html", "/favicon.ico", "/**/*.html",
 				"/**/*.css", "/**/*.js", "/categories", "/cultural_offers/*", "/reviews", "/reviews/*", "/reviews/offer/*", "/posts",
-				"/posts/offer/*","/pictures", "/images/*");
+				"/posts/offer/*","/pictures", "/images/*", "/images/offer/*");
 	}
 }

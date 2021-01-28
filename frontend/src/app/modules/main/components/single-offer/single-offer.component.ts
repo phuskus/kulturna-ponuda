@@ -20,6 +20,7 @@ import Page from 'src/app/shared/models/Page';
 import { SubscriptionService } from 'src/app/services/subscription/subscription.service';
 import { SubscriptionResponse } from 'src/app/shared/models/SubscriptionResponse';
 import { IsSubscribedResponse } from 'src/app/shared/models/IsSubscribedResponse';
+import { PathExtractionService } from 'src/app/services/path-extraction/path-extraction.service';
 
 @Component({
   selector: 'app-single-offer',
@@ -48,13 +49,6 @@ export class SingleOfferComponent implements AfterContentInit, OnDestroy {
 
   private subscriptions: Subscription[] = [];
 
-  public images: any = [
-    { path: '../../assets/imgs/img1.jpg' },
-    { path: '../../assets/imgs/img2.jpg' },
-    { path: '../../assets/imgs/img3.jpg' },
-    { path: '../../assets/imgs/img-1.jpg' },
-  ];
-
   constructor(
     public dialog: MatDialog,
     public offerService: OfferService,
@@ -64,7 +58,8 @@ export class SingleOfferComponent implements AfterContentInit, OnDestroy {
     private route: ActivatedRoute,
     private postService: PostService,
     private eventBus: EventBusService,
-    public subscriptionService: SubscriptionService
+    public subscriptionService: SubscriptionService,
+    public pathService: PathExtractionService
   ) {
     this.offer = offerService.createEmpty();
     this.subscriptions.push(
@@ -137,6 +132,9 @@ export class SingleOfferComponent implements AfterContentInit, OnDestroy {
         if (data === undefined) this.offerExists = false;
         else {
           this.offerExists = true;
+          data.pictures.forEach((picture) => {
+            picture.path = this.pathService.getFullImgPath(picture.path);
+          });
           this.offer = data;
         }
 
@@ -198,7 +196,7 @@ export class SingleOfferComponent implements AfterContentInit, OnDestroy {
 
     drawer?.addEventListener('scroll', (event: any) => {
       if (
-        event.target.offsetHeight + event.target.scrollTop >=
+        event.target.offsetHeight + event.target.scrollTop + 50 >=
         event.target.scrollHeight
       ) {
         this.scrolledToTheEndSoFetchNextPage();

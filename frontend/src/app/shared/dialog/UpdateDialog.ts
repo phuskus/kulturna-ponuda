@@ -31,7 +31,7 @@ export default abstract class UpdateDialog<T> extends Dialog<T> {
         this.onSubscriptionCallBack.emit(data);
         this.snackbarSuccess('Successfully updated!');
       },
-      (err) => this.snackbarError('Failed to update!')
+      (err: Error) => this.snackbarError(err.message)
     );
     this.dialogRef.close();
   }

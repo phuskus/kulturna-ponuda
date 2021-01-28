@@ -70,9 +70,10 @@ export abstract class BaseService {
       const message =
         error.error instanceof ErrorEvent
           ? error.error.message
-          : `server returned code ${error.status} with body "${error.error}"`;
+          : `server returned code ${error.status} with body "${error.error.message}"`;
 
-      throw new Error(`${operation} failed: ${message}`);
+      // throw new Error(`${operation} failed: ${message}`);
+      throw new Error(message);
     };
   }
 }

@@ -1,5 +1,6 @@
 package ftn.kts;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -79,6 +80,12 @@ public abstract class MockDataGenerator {
             {"mon.png", "Monument placeholder"},
             {"lmark.png", "Landmark placeholder"}
     };
+
+    private static final String  offerImgPath = "\\src\\main\\webapp\\WEB-INF\\images\\offer\\";
+    private static final File  offerImgDir = new File(System.getProperty("user.dir") + offerImgPath);
+
+    private static final int MIN_OFFER_IMGS = 5;
+    private static final int MAX_OFFER_IMGS = 10;
 
     private static final String[][] LOCATIONS = {
             {"Belgrade", "44.80401", "20.46513", "Central Serbia"},
@@ -346,8 +353,8 @@ public abstract class MockDataGenerator {
                                 subcategory.getId(),
                                 subcategory.getName());
                         dto.setAverageRating(-1d);
-                        Set<PictureDTO> pictures = new HashSet<>();
-                        pictures.add(icons.get(iconCounter));
+                        Set<PictureDTO> pictures = GenerateImagesForCulturalOffer(applicationContext);
+//                        pictures.add(icons.get(iconCounter));
                         dto.setPictures(pictures);
                         culturalOfferList.add(culturalOfferService.create(dto, null));
                         break;
@@ -359,6 +366,26 @@ public abstract class MockDataGenerator {
             iconCounter++;
         }
         return culturalOfferList;
+    }
+
+    public static Set<PictureDTO> GenerateImagesForCulturalOffer(ApplicationContext applicationContext) throws IOException {
+        PictureService pictureService = applicationContext.getBean(PictureService.class);
+        Set<PictureDTO> pictures = new HashSet<>();
+        File[] files = offerImgDir.listFiles();
+        int randomCount = random.nextInt(MAX_OFFER_IMGS - MIN_OFFER_IMGS);
+        int size = MIN_OFFER_IMGS + randomCount;
+
+        for(int i = 0; i < size; i++){
+            File imgFile = files[random.nextInt(files.length)];
+            PictureDTO dto = new PictureDTO(imgFile.getName(), offerImgPath + imgFile.getName());
+            try {
+                pictures.add(pictureService.save(dto, "images/"));
+            } catch (IOException e) {
+                System.out.println("Something went wrong with generating image...");
+                e.printStackTrace();
+            }
+        }
+        return pictures;
     }
 
     private static void GenerateSubscriptions(ApplicationContext applicationContext, List<UserDTO> userList, List<CulturalOfferDTO> culturalOfferList, List<SubcategoryDTO> subcategoryList) {

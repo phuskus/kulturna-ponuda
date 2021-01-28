@@ -13,7 +13,7 @@ public class Picture {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(name = "path", unique = true, nullable = false)
+	@Column(name = "path", unique = false, nullable = false)
 	private String path;
 	@Column(name = "placeholder", unique = false, nullable = false)
 	private String placeholder;
