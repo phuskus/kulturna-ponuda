@@ -21,7 +21,7 @@ export class SinglePostComponent
     });
   }
 
-  carouselCells() {
+  carouselCells(): number {
     return Math.min(3, this.post.pictures.length);
   }
 }

@@ -88,7 +88,7 @@ export class SingleOfferComponent implements AfterContentInit, OnDestroy {
     );
     this.subscribeToScrollEvent();
 
-    this.isLoggedIn = this.authService.getCurrentUser() != undefined;
+    this.isLoggedIn = this.authService.getCurrentUser() !== undefined;
 
     if (!this.isLoggedIn) {
       this.subscribeState = 'not subscribed';
@@ -118,7 +118,7 @@ export class SingleOfferComponent implements AfterContentInit, OnDestroy {
     this.router.navigateByUrl(this.previousRoute);
   }
 
-  resetFields() {
+  resetFields(): void {
     this.reviews = [];
     this.isLastReviewPage = false;
     this.isReviewsLoading = false;
@@ -126,7 +126,7 @@ export class SingleOfferComponent implements AfterContentInit, OnDestroy {
     this.totalReviews = 0;
   }
 
-  fetchOffer() {
+  fetchOffer(): void {
     this.offerService.get(this.offerId).subscribe(
       (data: CulturalOffer) => {
         if (data === undefined) this.offerExists = false;
@@ -147,7 +147,7 @@ export class SingleOfferComponent implements AfterContentInit, OnDestroy {
     );
   }
 
-  fetchPosts() {
+  fetchPosts(): void {
     this.postService
       .getForOfferId(this.offerId, this.currentPostPage - 1, this.pageSizePosts)
       .subscribe((data: Page<Post>) => {
@@ -156,7 +156,7 @@ export class SingleOfferComponent implements AfterContentInit, OnDestroy {
       });
   }
 
-  fetchReviews() {
+  fetchReviews(): void {
     // increase before call so there cannot be two api calls with same page num
     this.currentReviewPage += 1;
     this.isReviewsLoading = true;
@@ -171,7 +171,7 @@ export class SingleOfferComponent implements AfterContentInit, OnDestroy {
           this.reviews = this.reviews.concat(data.content);
           this.isReviewsLoading = false;
           this.totalReviews = data.totalElements;
-          if (data.totalPages == this.currentReviewPage) {
+          if (data.totalPages === this.currentReviewPage) {
             this.isLastReviewPage = true;
           }
         },
@@ -179,7 +179,7 @@ export class SingleOfferComponent implements AfterContentInit, OnDestroy {
       );
   }
 
-  handleError(error: any) {
+  handleError(error: any): void {
     console.log(error);
     this.isReviewsLoading = false;
     this.currentReviewPage -= 1;
@@ -190,9 +190,9 @@ export class SingleOfferComponent implements AfterContentInit, OnDestroy {
     this.fetchPosts();
   }
 
-  subscribeToScrollEvent() {
+  subscribeToScrollEvent(): void {
     const drawer = document.getElementById('drawer');
-    let header = document.getElementById('header');
+    const header = document.getElementById('header');
 
     drawer?.addEventListener('scroll', (event: any) => {
       if (
@@ -207,7 +207,7 @@ export class SingleOfferComponent implements AfterContentInit, OnDestroy {
     });
   }
 
-  scrolledToTheEndSoFetchNextPage() {
+  scrolledToTheEndSoFetchNextPage(): void {
     if (!this.isLastReviewPage && !this.isReviewsLoading) this.fetchReviews();
   }
 
@@ -233,11 +233,11 @@ export class SingleOfferComponent implements AfterContentInit, OnDestroy {
     );
   }
 
-  isActionDisabled() {
-    return this.authService.getCurrentUserRole() == Role.ADMIN;
+  isActionDisabled(): boolean {
+    return this.authService.getCurrentUserRole() === Role.ADMIN;
   }
 
-  subscribe() {
+  subscribe(): void {
     if (!this.isLoggedIn) {
       this.router.navigateByUrl('/login');
       return;
@@ -254,7 +254,7 @@ export class SingleOfferComponent implements AfterContentInit, OnDestroy {
     );
   }
 
-  unsubscribe() {
+  unsubscribe(): void {
     this.subscribeState = 'loading';
     this.subscriptionService.unsubscribeFromOffer(this.offerId).subscribe(
       (response: SubscriptionResponse) => {

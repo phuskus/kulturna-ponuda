@@ -25,15 +25,15 @@ export default abstract class Dialog<T> {
 
   abstract onSubmit(): void;
 
-  snackbarSuccess(message: string) {
+  snackbarSuccess(message: string): void {
     this.showSnacbar(message, SnackbarColors.SUCCESS);
   }
 
-  snackbarError(message: string) {
+  snackbarError(message: string): void {
     this.showSnacbar(message, SnackbarColors.ERROR);
   }
 
-  private showSnacbar(message: string, color: SnackbarColors) {
+  private showSnacbar(message: string, color: SnackbarColors): void {
     this.messageService.openSnackBar(
       this.snackbar,
       message,

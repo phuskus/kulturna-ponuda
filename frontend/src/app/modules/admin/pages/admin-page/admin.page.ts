@@ -21,12 +21,12 @@ export class AdminPage {
     public snackBar: MatSnackBar
   ) {}
 
-  getLastUrlPath() {
+  getLastUrlPath(): string {
     return '/' + window.location.pathname.split('/').pop();
   }
 
-  openLink() {
-    let win = window.open('https://youtu.be/dQw4w9WgXcQ?t=43', 'blank');
+  openLink(): void {
+    const win = window.open('https://youtu.be/dQw4w9WgXcQ?t=43', 'blank');
     win.focus();
   }
 

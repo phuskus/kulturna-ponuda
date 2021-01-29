@@ -30,7 +30,7 @@ export class ImageSelectorComponent implements OnDestroy {
     this.newFilesEvent.emit(filesSelected);
   }
 
-  createPictureURLsAndSetPicturePaths(files: FileList) {
+  createPictureURLsAndSetPicturePaths(files: FileList): void {
     this.picturePaths = [];
     Array.from(files).forEach((file) =>
       this.picturePaths.push(URL.createObjectURL(file))
